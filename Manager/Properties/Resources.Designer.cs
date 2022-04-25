@@ -246,9 +246,9 @@ namespace nIS.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Uitstaande saldo.
         /// </summary>
-        internal static string Balance_Outstanding {
+        internal static string Balance_outstanding {
             get {
-                return ResourceManager.GetString("Balance Outstanding", resourceCulture);
+                return ResourceManager.GetString("Balance outstanding", resourceCulture);
             }
         }
         
