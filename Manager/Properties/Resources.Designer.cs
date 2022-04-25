@@ -280,6 +280,15 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Verbandno:.
+        /// </summary>
+        internal static string Bond_no_ {
+            get {
+                return ResourceManager.GetString("Bond no:", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bonus rente.
         /// </summary>
         internal static string Bonus_Interest {

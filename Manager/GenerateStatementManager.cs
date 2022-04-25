@@ -3986,8 +3986,8 @@ namespace nIS
                                 {
                                     trans.OutstandingCapital = "-";
                                 }
-                                tableHTML.Append("<tr class='ht-20'><td class='w-13 text-center'>" + trans.PostingDate
-                                    + "</td><td class='w-13 text-center'>" + trans.EffectiveDate + "</td><td class='w-35'>"
+                                tableHTML.Append("<tr class='ht-20'><td class='w-13 text-center'>" + trans.PostingDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy)
+                                    + "</td><td class='w-13 text-center'>" + trans.EffectiveDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td><td class='w-35'>"
                                     + trans.Description + "</td><td class='w-12 text-right'>" + trans.Debit
                                     + "</td><td class='w-12 text-right'>" + trans.Credit + "</td><td class='w-15 text-right'>"
                                     + trans.OutstandingCapital + "</td></tr>");
