@@ -167,15 +167,31 @@ namespace nIS
 
         public const string AT_A_GLANCE_PAGE_TYPE = "At a Glance";
 
-        public const string INVESTMENT_PAGE_TYPE = "Investment";
+        public const string INVESTMENT_PAGE_TYPE_OTHER_ENGLISH = "Investment Other Segment For English";
 
-        public const string WEALTH_INVESTMENT_PAGE_TYPE = "Investment wealth";
+        public const string INVESTMENT_PAGE_TYPE_OTHER_AFRICAN = "Investment Other Segment For African";
+
+        public const string WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_ENGLISH = "Investment Wealth Segment For English";
+
+        public const string WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_AFRICAN = "Investment Wealth Segment For African";
 
         public const string PERSONAL_LOAN_PAGE_TYPE = "Personal Loan";
 
-        public const string HOME_LOAN_PAGE_TYPE = "Home Loan ENG";
+        public const string HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE = "Home Loan For Other Segment English";
 
-        public const string MULTI_CURRENCY_PAGE_TYPE = "Multi Currency";
+        public const string HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE = "Home Loan For Other Segment African";
+
+        public const string HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE = "Home Loan For PML Segment English";
+
+        public const string HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE = "Home Loan For PML Segment African";
+
+        public const string HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE = "Home Loan For Wealth Segment African";
+
+        public const string HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE = "Home Loan For Wealth Segment English";
+
+        public const string MULTI_CURRENCY_FOR_CIB_PAGE_TYPE = "Multi Currency For CIB";
+
+        public const string MULTI_CURRENCY_FOR_WEA_PAGE_TYPE = "Multi Currency For Wealth";
 
         public const string GREENBACKS_PAGE_TYPE = "Greenbacks";
 
@@ -327,13 +343,13 @@ namespace nIS
 
         public const string MCA_TRANSACTION_DETAIL_DIV_HTML = "<div id={{WidgetId}} class='card border-0'><div class='card-body text-left py-0'><div class='pt-1'><table class='MCATransactionTable mca_custom_table'><thead><tr class='ht-30'><th class='w-15 text-center'>Transaction date</th><th class='w-35 text-left'>Description and additional information</th><th class='w-12 text-right'>Debit</th><th class='w-12 text-right'>Credit</th><th class='w-7 text-center'>Rate</th><th class='w-7 text-center'>Days</th><th class='w-12 text-right'>Accrued interest</th></tr></thead></table><div class='pt-0 overflow-auto'><table id='MCATransactionTable' class='MCATransactionTable mca_custom_table'><tbody>{{MCATransactionRow}}</tbody></table></div></div></div></div>";
 
-        public const string MCA_VAT_ANALYSIS_DETAIL_DIV_HTML = "<div id={{WidgetId}} class='card border-0'><div class='card-body text-left py-0'><div class='pt-1'><table class='MCATransactionTable mca_small_table'><thead><tr class='ht-30'><th class='ip-w-25 text-left'>From</th><th class='ip-w-25 text-left'>To</th><th class='ip-w-25 text-right'>Rate</th><th class='ip-w-25 text-right'>Amount</th></tr></thead></table><div class='pt-0 overflow-auto'><table class='MCATransactionTable mca_small_table' id='MCAVATTable'><tbody>{{MCAVATTable}}</tbody></table></div></div></div></div>";
+        public const string MCA_VAT_ANALYSIS_DETAIL_DIV_HTML = "<div id={{WidgetId}} class='card border-0'><div class='card-body text-left py-0'><div class='pt-1'><table class='MCATransactionTable mca_small_table'><thead><tr class='ht-30'><th class='ip-w-25 text-left'>From</th><th class='ip-w-25 text-left'>To</th><th class='ip-w-25 text-right'>Rate</th><th class='ip-w-25 text-right'>Amount</th></tr></thead><tbody>{{MCAVATTable}}</tbody></table></div></div></div>";
 
         public const string MCA_WEALTH_ACCOUNT_SUMMARY_DETAILS_WIDGET_HTML = "<div id={{WidgetId}} class='card border-0'><div class='card-body text-left py-0'><div class='mca_header_label-w pb-2'>Currency Account Statement</div><div class='mca_sub_header_label pb-2'>Please examine this statement at once. If no errors are reported to us within 15 days, this statement will be considered correct.</div></div></div><div class='card border-0'><div class='card-body text-left py-0'><div class='MCADetailDiv'><h4 class='pl-25px'><span class='mca_detail_statement_label-w'>Account summary</span></h4><table class='mca_custom_table mt-2' border='0'><tbody><tr><td class='w-25'>Account no:</td><td class='w-25 text-right pr-4 mca_text_custom_color-w'>{{AccountNo}}</td><td class='w-25'>Statement no:</td><td class='w-25 text-right mca_text_custom_color-w'>{{StatementNo}}</td></tr><tr><td class='w-25'>Overdraft limit:</td><td class='w-25 text-right pr-4 mca_text_custom_color-w'>{{OverdraftLimit}}</td><td class='w-25'>Statement date</td><td class='w-25 text-right mca_text_custom_color-w'>{{StatementDate}}</td></tr><tr><td class='w-25'>Currency:</td><td class='w-25 text-right pr-4 mca_text_custom_color-w'>{{Currency}}</td><td class='w-25'>Statement frequency</td><td class='w-25 text-right mca_text_custom_color-w'>{{Statementfrequency}}</td></tr><tr><td class='w-25'>Free balance:</td><td class='w-25 text-right pr-4 mca_text_custom_color-w'>{{FreeBalance}}</td><td class='w-25'></td><td class='w-25 text-right pr-4 mca_text_custom_color-w'></td></tr></tbody></table></div>";
 
         public const string MCA_WEALTH_TRANSACTION_DETAIL_DIV_HTML = "<div id={{WidgetId}} class='card border-0'><div class='card-body text-left py-0'><div class='pt-1'><table class='MCATransactionTable-W mca_custom_table'><thead><tr class='ht-30'><th class='w-15 text-center'>Transaction date</th><th class='w-35 text-left'>Description and additional information</th><th class='w-12 text-right'>Debit</th><th class='w-12 text-right'>Credit</th><th class='w-7 text-center'>Rate</th><th class='w-7 text-center'>Days</th><th class='w-12 text-right'>Accrued interest</th></tr></thead></table><div class='pt-0 overflow-auto'><table id='MCATransactionTable' class='MCATransactionTable-W mca_custom_table'><tbody>{{MCATransactionRow}}</tbody></table></div></div></div></div>";
 
-        public const string MCA_WEALTH_VAT_ANALYSIS_DETAIL_DIV_HTML = "<div id={{WidgetId}} class='card border-0'><div class='card-body text-left py-0'><div class='pt-1'><table class='MCATransactionTable-W mca_small_table'><thead><tr class='ht-30'><th class='ip-w-25 text-left'>From</th><th class='ip-w-25 text-left'>To</th><th class='ip-w-25 text-right'>Rate</th><th class='ip-w-25 text-right'>Amount</th></tr></thead></table><div class='pt-0 overflow-auto'><table class='MCATransactionTable-W mca_small_table' id='MCAVATTable'><tbody>{{MCAVATTable}}</tbody></table></div></div></div></div>";
+        public const string MCA_WEALTH_VAT_ANALYSIS_DETAIL_DIV_HTML = "<div id={{WidgetId}} class='card border-0'><div class='card-body text-left py-0'><div class='pt-1'><table class='MCATransactionTable-W mca_small_table'><thead><tr class='ht-30'><th class='ip-w-25 text-left'>From</th><th class='ip-w-25 text-left'>To</th><th class='ip-w-25 text-right'>Rate</th><th class='ip-w-25 text-right'>Amount</th></tr></thead><tbody>{{MCAVATTable}}</tbody></table></div></div></div>";
 
         public const string MCA_WEALTH_BRANCH_DETAILS_WIDGET_HTML = "<div id={{WidgetId}} class='card border-0 ht-150px'><div class='card-body BranchDetails py-1 ht-130px'>{{BranchDetails}}</div><div class='card-body ConactCenterDiv text-success-w float-right pt-2'>{{ContactCenter}}</div></div>";
 
