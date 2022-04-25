@@ -345,6 +345,7 @@ namespace nIS
         public string BackgroundImageURL { get; set; }
         public string HeaderHTML { get; set; }
         public string FooterHTML { get; set; }
+        public PageType PageType { get; set; }
 
         #endregion
 

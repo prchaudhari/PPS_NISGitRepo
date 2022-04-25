@@ -4,6 +4,7 @@
 
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
+    using SelectPdf;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
@@ -588,7 +589,7 @@
         /// <param name="fileName"> the file name </param>
         /// <param name="batchId"> the batch identifier </param>
         /// <param name="customerId"> the customer identifier </param>
-        public string WriteToFile(string Message, string fileName, long batchId, long customerId, string baseURL, string outputLocation)
+        public string WriteToFile(string Message, string fileName, long batchId, long customerId, string baseURL, string outputLocation, bool printPdf = false, string headerHtml = "", string footerHtml = "")
         {
             //string resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
             string statementDestPath = outputLocation + "\\Statements" + "\\" + batchId;
@@ -621,6 +622,16 @@
 
             //To move js, css and other assets contents which are common to each statment file
             //DirectoryCopy(resourceFilePath, (statementDestPath + "\\common"), true);
+
+            //Printing PDF
+            if (printPdf)
+            {
+                var outputPdfPath = Path.Combine(path, Path.GetFileNameWithoutExtension(fileName) + ".pdf");
+                if (GeneratePdf(filepath, outputPdfPath, headerHtml, footerHtml, "", customerId))
+                {
+                    //File.Delete(filepath);
+                }
+            }
 
             return filepath;
         }
@@ -1232,6 +1243,71 @@
             catch (Exception)
             {
                 return "0";
+            }
+        }
+
+        public bool GeneratePdf(string htmlStatementPath, string outPdfPath, string headerHtml, string footerHtml, string password, long customerId)
+        {
+            try
+            {
+                //htmlStatementPath = @"C:\UserFiles\Statements\1161\112233\Statement_112233_78_4_19_2022_7_44_29_PM.html";
+
+                // read parameters from the webpage
+                string url = htmlStatementPath;
+
+                PdfPageSize pageSize = PdfPageSize.A4;
+
+                PdfPageOrientation pdfOrientation = PdfPageOrientation.Portrait;
+
+                // instantiate a html to pdf converter object
+                HtmlToPdf converter = new HtmlToPdf();
+
+                // set converter options
+                converter.Options.PdfPageSize = pageSize;
+                converter.Options.PdfPageOrientation = pdfOrientation;
+                converter.Options.WebPageWidth = 1152;
+                converter.Options.WebPageHeight = 960;
+
+                converter.Options.MarginBottom = 0;
+                converter.Options.MarginTop = 40;
+                converter.Options.MarginLeft = 40;
+                converter.Options.MarginRight = 40;
+
+                //headerHtml = "<b>Header</b>";
+                //footerHtml = "<b>Footer</b>";
+
+                //PdfHtmlSection headHtml = new PdfHtmlSection(headerHtml, Path.GetDirectoryName(htmlStatementPath));
+                PdfHtmlSection headHtml = new PdfHtmlSection(@"C:\UserFiles\Statements\1161\header.html");
+                converter.Header.Add(headHtml);
+                converter.Header.Height = 80;
+                //PdfHtmlSection footHtml = new PdfHtmlSection(footerHtml, Path.GetDirectoryName(htmlStatementPath));
+                PdfHtmlSection footHtml = new PdfHtmlSection(@"C:\UserFiles\Statements\1161\footer.html");
+                converter.Footer.Add(footHtml);
+                converter.Footer.Height = 80;
+
+                converter.Options.DisplayFooter = true;
+                converter.Options.DisplayHeader = true;
+
+                headHtml.AutoFitHeight = HtmlToPdfPageFitMode.AutoFit;
+                footHtml.AutoFitHeight = HtmlToPdfPageFitMode.AutoFit;
+
+                // create a new pdf document converting an url
+                PdfDocument doc = converter.ConvertUrl(url);
+
+                doc.Fonts.Add(@"C:\temp\MarkPro-Regular.ttf");
+                doc.Fonts.Add(@"C:\temp\Mark Pro.ttf");
+                doc.Fonts.Add(@"C:\temp\Mark Pro Bold.ttf");
+
+                // save pdf document
+                doc.Save(outPdfPath);
+
+                // close pdf document
+                doc.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
             }
         }
 
