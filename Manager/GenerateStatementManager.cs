@@ -4112,7 +4112,7 @@ namespace nIS
                         TotalOutstandingAmt = 0.0m;
                     }
 
-                    var segmentType = customer?.Segment;
+                    var segmentType = HomeLoans?[0].SegmentType;
 
                     switch (segmentType.ToLower())
                     {
@@ -4169,7 +4169,7 @@ namespace nIS
                         TotalOutstandingAmt = 0.0m;
                     }
 
-                    var segmentType = customer?.Segment;
+                    var segmentType = HomeLoans?[0].SegmentType;
 
                     switch (segmentType.ToLower())
                     {

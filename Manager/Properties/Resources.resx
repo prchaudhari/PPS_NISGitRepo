@@ -303,7 +303,7 @@
   <data name="Avo Business" xml:space="preserve">
     <value>Avo-sake</value>
   </data>
-  <data name="Balance Outstanding" xml:space="preserve">
+  <data name="Balance outstanding" xml:space="preserve">
     <value>Uitstaande saldo</value>
   </data>
   <data name="Basic instalment" xml:space="preserve">
@@ -626,5 +626,8 @@
   </data>
   <data name="String1" xml:space="preserve">
     <value />
+  </data>
+  <data name="Bond no:" xml:space="preserve">
+    <value>Verbandno:</value>
   </data>
 </root>
