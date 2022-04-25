@@ -5491,15 +5491,15 @@ namespace nIS
                 var MCAMaster = MCAMasterList[0];
                 if (MCAMaster.MCATransactions != null && MCAMaster.MCATransactions.Count > 0)
                 {
-                    MCAMaster.MCATransactions.ForEach(trans =>
-                    {
-                    tableHTML.Append("<tr class='ht-20'>" +
-                                     "<td class='ip-w-25 text-left'>" + DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
-                                     "<td class='ip-w-25 text-left'>" + DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
-                                     "<td class='ip-w-25 text-right'>" + (trans.Rate != null ? Math.Round(decimal.Parse(trans.Rate.ToString()), 2).ToString() : "0.00") + "</td>" +
-                                     "<td class='ip-w-25 text-right'>" + (trans.Credit != null ? Math.Round(decimal.Parse(trans.Credit.ToString()), 2).ToString() : "0.00") + "</td>" +
-                                         "</tr>");
-                    });
+                    //MCAMaster.MCATransactions.ForEach(trans =>
+                    //{
+                    //tableHTML.Append("<tr class='ht-20'>" +
+                    //                 "<td class='ip-w-25 text-left'>" + DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
+                    //                 "<td class='ip-w-25 text-left'>" + DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
+                    //                 "<td class='ip-w-25 text-right'>" + (trans.Rate != null ? Math.Round(decimal.Parse(trans.Rate.ToString()), 2).ToString() : "0.00") + "</td>" +
+                    //                 "<td class='ip-w-25 text-right'>" + (trans.Credit != null ? Math.Round(decimal.Parse(trans.Credit.ToString()), 2).ToString() : "0.00") + "</td>" +
+                    //                     "</tr>");
+                    //});
                 }
                 pageContent.Replace("{{MCAVATTable_" + page.Identifier + "_" + widget.Identifier + "}}", tableHTML.ToString());
             }
