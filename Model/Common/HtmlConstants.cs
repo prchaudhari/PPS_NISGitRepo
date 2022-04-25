@@ -167,15 +167,31 @@ namespace nIS
 
         public const string AT_A_GLANCE_PAGE_TYPE = "At a Glance";
 
-        public const string INVESTMENT_PAGE_TYPE = "Investment";
+        public const string INVESTMENT_PAGE_TYPE_OTHER_ENGLISH = "Investment Other Segment For English";
 
-        public const string WEALTH_INVESTMENT_PAGE_TYPE = "Investment wealth";
+        public const string INVESTMENT_PAGE_TYPE_OTHER_AFRICAN = "Investment Other Segment For African";
+
+        public const string WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_ENGLISH = "Investment Wealth Segment For English";
+
+        public const string WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_AFRICAN = "Investment Wealth Segment For African";
 
         public const string PERSONAL_LOAN_PAGE_TYPE = "Personal Loan";
 
-        public const string HOME_LOAN_PAGE_TYPE = "Home Loan ENG";
+        public const string HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE = "Home Loan For Other Segment English";
 
-        public const string MULTI_CURRENCY_PAGE_TYPE = "Multi Currency";
+        public const string HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE = "Home Loan For Other Segment African";
+
+        public const string HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE = "Home Loan For PML Segment English";
+
+        public const string HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE = "Home Loan For PML Segment African";
+
+        public const string HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE = "Home Loan For Wealth Segment African";
+
+        public const string HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE = "Home Loan For Wealth Segment English";
+
+        public const string MULTI_CURRENCY_FOR_CIB_PAGE_TYPE = "Multi Currency For CIB";
+
+        public const string MULTI_CURRENCY_FOR_WEA_PAGE_TYPE = "Multi Currency For Wealth";
 
         public const string GREENBACKS_PAGE_TYPE = "Greenbacks";
 

@@ -1279,7 +1279,7 @@ namespace nIS
                             {
                                 CustomerId = item.CustomerId,
                                 BatchId = item.BatchId,
-                                AccountType = HtmlConstants.INVESTMENT_PAGE_TYPE,
+                                AccountType = HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_ENGLISH,
                                 TotalAmount = item.InvestmentAmt
                             });
 
@@ -1295,7 +1295,7 @@ namespace nIS
                             {
                                 CustomerId = item.CustomerId,
                                 BatchId = item.BatchId,
-                                AccountType = HtmlConstants.HOME_LOAN_PAGE_TYPE,
+                                AccountType = HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE,
                                 TotalAmount = item.HomeLoanAmt
                             });
 
@@ -1343,8 +1343,8 @@ namespace nIS
                             {
                                 CustomerId = item.CustomerId,
                                 BatchId = item.BatchId,
-                                AccountType = HtmlConstants.INVESTMENT_PAGE_TYPE,
-                                MonthwiseAmount = this.Get_MonthwiseAccountAnanlyses(item, HtmlConstants.INVESTMENT_PAGE_TYPE).ToList()
+                                AccountType = HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_ENGLISH,
+                                MonthwiseAmount = this.Get_MonthwiseAccountAnanlyses(item, HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_ENGLISH).ToList()
                             });
 
                             records.Add(new DM_AccountAnanlysis()
@@ -1359,8 +1359,8 @@ namespace nIS
                             {
                                 CustomerId = item.CustomerId,
                                 BatchId = item.BatchId,
-                                AccountType = HtmlConstants.HOME_LOAN_PAGE_TYPE,
-                                MonthwiseAmount = this.Get_MonthwiseAccountAnanlyses(item, HtmlConstants.HOME_LOAN_PAGE_TYPE).ToList()
+                                AccountType = HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE,
+                                MonthwiseAmount = this.Get_MonthwiseAccountAnanlyses(item, HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE).ToList()
                             });
 
                             //records.Add(new DM_AccountAnanlysis()
@@ -1786,8 +1786,8 @@ namespace nIS
                             {
                                 CustomerId = item.CustomerId,
                                 BatchId = item.BatchId,
-                                AccountType = HtmlConstants.INVESTMENT_PAGE_TYPE,
-                                MonthwiseRewardPoints = this.Get_MonthwiseRewardPoints(item, HtmlConstants.INVESTMENT_PAGE_TYPE).ToList(),
+                                AccountType = HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_ENGLISH,
+                                MonthwiseRewardPoints = this.Get_MonthwiseRewardPoints(item, HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_ENGLISH).ToList(),
                                 TenantCode = item.TenantCode
                             });
 
@@ -1795,8 +1795,8 @@ namespace nIS
                             {
                                 CustomerId = item.CustomerId,
                                 BatchId = item.BatchId,
-                                AccountType = HtmlConstants.HOME_LOAN_PAGE_TYPE,
-                                MonthwiseRewardPoints = this.Get_MonthwiseRewardPoints(item, HtmlConstants.HOME_LOAN_PAGE_TYPE).ToList(),
+                                AccountType = HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE,
+                                MonthwiseRewardPoints = this.Get_MonthwiseRewardPoints(item, HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE).ToList(),
                                 TenantCode = item.TenantCode
                             });
 
@@ -2146,7 +2146,10 @@ namespace nIS
                 decimal res = 0.0m;
                 switch (dataFor)
                 {
-                    case HtmlConstants.INVESTMENT_PAGE_TYPE:
+                    case HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_ENGLISH:
+                    case HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_ENGLISH:
+                    case HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_AFRICAN:
+                    case HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_AFRICAN:
                         if (!string.IsNullOrEmpty(_AccountAnanlysis.InvestmentAmt1) && _AccountAnanlysis.InvestmentAmt1 != "0")
                         {
                             records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Jan", Amount = decimal.TryParse(_AccountAnanlysis.InvestmentAmt1, out res) ? res : 0 });
@@ -2197,7 +2200,12 @@ namespace nIS
                         }
                         break;
 
-                    case HtmlConstants.HOME_LOAN_PAGE_TYPE:
+                    case HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE:
+                    case HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE:
+                    case HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE:
+                    case HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE:
+                    case HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE:
+                    case HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE:
                         if (!string.IsNullOrEmpty(_AccountAnanlysis.HomeLoanAmt1) && _AccountAnanlysis.HomeLoanAmt1 != "0")
                         {
                             records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Jan", Amount = decimal.TryParse(_AccountAnanlysis.HomeLoanAmt1, out res) ? res : 0 });
@@ -2366,7 +2374,10 @@ namespace nIS
                 decimal res = 0.0m;
                 switch (dataFor)
                 {
-                    case HtmlConstants.INVESTMENT_PAGE_TYPE:
+                    case HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_ENGLISH:
+                    case HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_ENGLISH:
+                    case HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_AFRICAN:
+                    case HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_AFRICAN:
                         if (!string.IsNullOrEmpty(rp.InvestmentGreenbacks1) && rp.InvestmentGreenbacks1 != "0")
                         {
                             records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Jan", RewardPoint = decimal.TryParse(rp.InvestmentGreenbacks1, out res) ? res : 0 });
@@ -2417,7 +2428,12 @@ namespace nIS
                         }
                         break;
 
-                    case HtmlConstants.HOME_LOAN_PAGE_TYPE:
+                    case HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE:
+                    case HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE:
+                    case HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE:
+                    case HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE:
+                    case HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE:
+                    case HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE:
                         if (!string.IsNullOrEmpty(rp.HomeLoanGreenbacks1) && rp.HomeLoanGreenbacks1 != "0")
                         {
                             records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Jan", RewardPoint = decimal.TryParse(rp.HomeLoanGreenbacks1, out res) ? res : 0 });
