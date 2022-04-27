@@ -539,13 +539,13 @@
 
   .mca_detail_statement_label-w {
     color: rgb(128, 84, 119) !important;
-    font-family: 'Mark Pro Bold' !important;
+    font-family: 'Mark Pro Regular' !important;
     font-size: 12pt !important;
   }
 
   .mca_header_label-w {
     font-size: 14pt;
-    font-family: 'Mark Pro Bold';
+    font-family: 'Mark Pro Regular';
     color: rgb(128, 84, 119) !important;
   }
 
@@ -562,7 +562,7 @@
 
   .mca_small_table {
     width: 40%;
-    border-collapse: collapse;
+    border-collapse: inherit;
     font-family: 'Mark Pro Regular';
     font-size: 8pt;
   }
@@ -583,7 +583,7 @@
 
   .mca_custom_table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: inherit;
     font-family: 'Mark Pro Regular';
     font-size: 8pt;
   }
@@ -611,6 +611,7 @@
     color: rgb(255, 255, 255);
     font-size: 8pt;
     font-family: 'Mark Pro Regular';
+    font-weight: normal !important;
   }
 
   .MCATransactionTable tbody, .MCATransactionTable-W tbody {
@@ -623,10 +624,11 @@
   }
 
   .MCATransactionTable-W th {
-    background-color: rgb(128, 84, 119) !important;
+    background-color: black !important;
     color: rgb(255, 255, 255);
     font-size: 8pt;
     font-family: 'Mark Pro Regular';
+    font-weight: normal !important;
   }
 
   .w-7 {
@@ -643,6 +645,18 @@
 
   .w-15 {
     width: 15%;
+  }
+
+  .w-5 {
+    width: 5%;
+  }
+
+  .w-10 {
+    width: 10%;
+  }
+
+  .w-20 {
+    width: 20%;
   }
 
   .w-35 {
