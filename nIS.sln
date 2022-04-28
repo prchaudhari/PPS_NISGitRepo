@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31729.503
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{F0D96183-2E1E-4919-ACBC-B9297EFA4633}"
 EndProject
@@ -81,6 +81,34 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubscriptionTenantService", "SubscriptionTenantService\SubscriptionTenantService.csproj", "{5A8894C8-056F-4FA1-AC28-39D314C3CD04}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateStatementRenderEngine", "GenerateStatementRenderEngine\GenerateStatementRenderEngine.csproj", "{2E0CD6FE-E144-4DFC-A33B-524B6D7BA700}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OtherFiles", "OtherFiles", "{94432251-4CE7-4325-AC9A-E765FC0CE3CA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HeaderFooters", "HeaderFooters", "{8137012A-3267-40D3-9113-89D6A93F5A32}"
+	ProjectSection(SolutionItems) = preProject
+		HeaderFooters\Greenbacks_footer.html = HeaderFooters\Greenbacks_footer.html
+		HeaderFooters\Greenbacks_header.html = HeaderFooters\Greenbacks_header.html
+		HeaderFooters\header_header.html = HeaderFooters\header_header.html
+		HeaderFooters\Home Loan For Other Segment African_footer.html = HeaderFooters\Home Loan For Other Segment African_footer.html
+		HeaderFooters\Home Loan For Other Segment African_header.html = HeaderFooters\Home Loan For Other Segment African_header.html
+		HeaderFooters\Home Loan For Other Segment English_footer.html = HeaderFooters\Home Loan For Other Segment English_footer.html
+		HeaderFooters\Home Loan For Other Segment English_header.html = HeaderFooters\Home Loan For Other Segment English_header.html
+		HeaderFooters\Home Loan For PML Segment African_footer.html = HeaderFooters\Home Loan For PML Segment African_footer.html
+		HeaderFooters\Home Loan For PML Segment African_header.html = HeaderFooters\Home Loan For PML Segment African_header.html
+		HeaderFooters\Home Loan For PML Segment English_footer.html = HeaderFooters\Home Loan For PML Segment English_footer.html
+		HeaderFooters\Home Loan For PML Segment English_header.html = HeaderFooters\Home Loan For PML Segment English_header.html
+		HeaderFooters\Home Loan For Wealth Segment African_footer.html = HeaderFooters\Home Loan For Wealth Segment African_footer.html
+		HeaderFooters\Home Loan For Wealth Segment African_header.html = HeaderFooters\Home Loan For Wealth Segment African_header.html
+		HeaderFooters\Home Loan For Wealth Segment English_footer.html = HeaderFooters\Home Loan For Wealth Segment English_footer.html
+		HeaderFooters\Home Loan For Wealth Segment English_header.html = HeaderFooters\Home Loan For Wealth Segment English_header.html
+		HeaderFooters\Multi Currency For CIB_footer.html = HeaderFooters\Multi Currency For CIB_footer.html
+		HeaderFooters\Multi Currency For CIB_header.html = HeaderFooters\Multi Currency For CIB_header.html
+		HeaderFooters\Multi Currency For Wealth_footer.html = HeaderFooters\Multi Currency For Wealth_footer.html
+		HeaderFooters\Multi Currency For Wealth_header.html = HeaderFooters\Multi Currency For Wealth_header.html
+		HeaderFooters\Personal Loan_footer.html = HeaderFooters\Personal Loan_footer.html
+		HeaderFooters\Personal Loan_header.html = HeaderFooters\Personal Loan_header.html
+		HeaderFooters\Wealth_header.html = HeaderFooters\Wealth_header.html
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -248,6 +276,7 @@ Global
 		{F4D1AD6D-B95C-4AEC-A8C3-15E390F57BFB} = {B5B42337-A14B-44FE-BDFE-82C9D1D73980}
 		{33C4BC59-7894-4178-A5F1-357B346C8CF5} = {B5B42337-A14B-44FE-BDFE-82C9D1D73980}
 		{8F106082-6B72-4D09-8396-0F3C177B304A} = {B5B42337-A14B-44FE-BDFE-82C9D1D73980}
+		{8137012A-3267-40D3-9113-89D6A93F5A32} = {94432251-4CE7-4325-AC9A-E765FC0CE3CA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FE2FF880-80B7-4CAC-ABF3-0464E99CA78C}
