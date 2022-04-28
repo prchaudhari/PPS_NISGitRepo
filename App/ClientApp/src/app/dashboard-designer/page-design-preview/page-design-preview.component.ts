@@ -8,7 +8,7 @@ import * as $ from 'jquery';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SummaryAtGlanceComponent, AccountInformationComponent,
   SavingTrendsPreviewComponent, SpendindTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent, 
-  DynamicBarChartWidgetPreviewComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent, PortfolioAccountAnalysisPreviewComponent, YTDRewardPointsPreviewComponent, PointsRedeemedYTDPreviewComponent, ProductRelatedPointsEarnedPreviewComponent, CategorySpendRewardsPreviewComponent } from '../widgetComponent/widgetComponent';
+  DynamicBarChartWidgetPreviewComponent, DynamicHhtmlComponent, StaticHtmlComponent, PageBreakComponent, SegmentBasedContentComponent, PortfolioAccountAnalysisPreviewComponent, YTDRewardPointsPreviewComponent, PointsRedeemedYTDPreviewComponent, ProductRelatedPointsEarnedPreviewComponent, CategorySpendRewardsPreviewComponent } from '../widgetComponent/widgetComponent';
 import { DynamicWidgetService } from '../../layout/widget-dynamic/dynamicwidget.service';
 import { AppSettings } from '../../appsettings';
 
@@ -177,6 +177,9 @@ export class PageDesignPreviewComponent extends DialogComponent<PageDesignPrevie
       }
       else if (widgetName == 'StaticHtml') {
         return StaticHtmlComponent;
+      }
+      else if (widgetName == 'PageBreak') {
+        return PageBreakComponent;
       }
       else if (widgetName == 'SegmentBasedContent') {
         return SegmentBasedContentComponent;

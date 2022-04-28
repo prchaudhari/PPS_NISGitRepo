@@ -320,6 +320,10 @@ export class AddComponent implements OnInit {
           this.widgetList[i].ImageSource = "assets/images/StaticHtml.JPG";
           this.widgetList[i].WidgetIcon = "fa fa-html5";
         }
+        else if (this.widgetList[i].WidgetName == "PageBreak") {
+          this.widgetList[i].ImageSource = "assets/images/PageBreak.JPG";
+          this.widgetList[i].WidgetIcon = "fa fa-scissors";
+        }
         else if (this.widgetList[i].WidgetName == "SegmentBasedContent") {
           this.widgetList[i].ImageSource = "assets/images/SegmentBasedContent.JPG";
           this.widgetList[i].WidgetIcon = "fa fa-id-card-o";

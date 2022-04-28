@@ -607,22 +607,15 @@ namespace nIS
                                                 staticHtmlWidget = staticHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
                                                 htmlString.Append(staticHtmlWidget);
                                             }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.STATIC_SEGMENT_BASED_CONTENT_NAME)
+                                            else if (mergedlst[i].WidgetName == HtmlConstants.PAGE_BREAK_WIDGET_NAME)
                                             {
-                                                //var html = "<div>This is sample SegmentBasedContent</div>";
-                                                //if (mergedlst[i].WidgetSetting != string.Empty && validationEngine.IsValidJson(mergedlst[i].WidgetSetting))
-                                                //{
-                                                //    //dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
-                                                //    dynamic widgetSetting = JArray.Parse(mergedlst[i].WidgetSetting);
-                                                //    if (widgetSetting.html.ToString().Length > 0)
-                                                //    {
-                                                //        html = widgetSetting.html;
-                                                //    }
-                                                //}
-                                                //var segmentBasedContentWidget = HtmlConstants.SEGMENT_BASED_CONTENT_WIDGET_HTML.Replace("{{SegmentBasedContent}}", html);
-                                                //segmentBasedContentWidget = segmentBasedContentWidget.Replace("{{WidgetDivHeight}}", divHeight);
-                                                //htmlString.Append(segmentBasedContentWidget);
-
+                                                var html = "<div style=\"page-break-before:always\">&nbsp;</div>";
+                                                var pageBreakWidget = HtmlConstants.PAGE_BREAK_WIDGET_HTML.Replace("{{PageBreak}}", html);
+                                                pageBreakWidget = pageBreakWidget.Replace("{{WidgetDivHeight}}", divHeight);
+                                                htmlString.Append(pageBreakWidget);
+                                            }
+                                            else if (mergedlst[i].WidgetName == HtmlConstants.STATIC_SEGMENT_BASED_CONTENT_NAME)
+                                            {                                               
                                                 var html = "<div>This is sample SegmentBasedContent</div>";
                                                 if (mergedlst[i].WidgetSetting != string.Empty && validationEngine.IsValidJson(mergedlst[i].WidgetSetting))
                                                 {

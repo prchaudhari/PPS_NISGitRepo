@@ -589,7 +589,7 @@
         /// <param name="fileName"> the file name </param>
         /// <param name="batchId"> the batch identifier </param>
         /// <param name="customerId"> the customer identifier </param>
-        public string WriteToFile(string Message, string fileName, long batchId, long customerId, string baseURL, string outputLocation, bool printPdf = false, string headerHtml = "", string footerHtml = "")
+        public string WriteToFile(string Message, string fileName, long batchId, long customerId, string baseURL, string outputLocation, bool printPdf = false, string headerHtml = "", string footerHtml = "", string segment = "")
         {
             //string resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
             string statementDestPath = outputLocation + "\\Statements" + "\\" + batchId;
@@ -627,7 +627,7 @@
             if (printPdf)
             {
                 var outputPdfPath = Path.Combine(path, Path.GetFileNameWithoutExtension(fileName) + ".pdf");
-                if (GeneratePdf(filepath, outputPdfPath, headerHtml, footerHtml, "", customerId))
+                if (GeneratePdf(filepath, outputPdfPath, headerHtml, footerHtml, "", customerId, segment))
                 {
                     //File.Delete(filepath);
                 }
@@ -784,7 +784,7 @@
                 {
                     if (File.Exists(file.Value))
                     {
-                        if(file.Key.Contains(".json"))
+                        if (file.Key.Contains(".json"))
                         {
                             File.Copy(file.Value, Path.Combine(spath, file.Key));
                         }
@@ -1111,7 +1111,7 @@
                 var userName = System.Configuration.ConfigurationManager.AppSettings["PdfCrowdUserName"];
                 var apiKey = System.Configuration.ConfigurationManager.AppSettings["PdfCrowdApiKey"];
                 var client = new pdfcrowd.HtmlToPdfClient(userName, apiKey);
-                
+
                 //Set the output page width. The safe maximum is 200in otherwise some PDF viewers may be unable to open the PDF.
                 client.setPageWidth("12in");
 
@@ -1246,7 +1246,7 @@
             }
         }
 
-        public bool GeneratePdf(string htmlStatementPath, string outPdfPath, string headerHtml, string footerHtml, string password, long customerId)
+        public bool GeneratePdf(string htmlStatementPath, string outPdfPath, string headerHtml, string footerHtml, string password, long customerId, string segment)
         {
             try
             {
@@ -1276,13 +1276,15 @@
                 //headerHtml = "<b>Header</b>";
                 //footerHtml = "<b>Footer</b>";
 
+
+
                 //PdfHtmlSection headHtml = new PdfHtmlSection(headerHtml, Path.GetDirectoryName(htmlStatementPath));
-                PdfHtmlSection headHtml = new PdfHtmlSection(@"C:\UserFiles\Statements\1161\header.html");
+                PdfHtmlSection headHtml = new PdfHtmlSection(@"C:\UserFiles\HeaderFooters\"+ segment +"_header.html");
                 //PdfHtmlSection headHtml = new PdfHtmlSection(@"C:\UserFiles\Statements\1163\header.html");//Wealth
                 converter.Header.Add(headHtml);
                 converter.Header.Height = 80;
                 //PdfHtmlSection footHtml = new PdfHtmlSection(footerHtml, Path.GetDirectoryName(htmlStatementPath));
-                PdfHtmlSection footHtml = new PdfHtmlSection(@"C:\UserFiles\Statements\1161\footer.html");
+                PdfHtmlSection footHtml = new PdfHtmlSection(@"C:\UserFiles\HeaderFooters\" + segment + "_footer.html");
                 converter.Footer.Add(footHtml);
                 converter.Footer.Height = 80;
 

@@ -15,7 +15,7 @@ import {
   CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
   SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
   SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
-  DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent, CustomerDetailsComponent, BankDetailsComponent, WealthBankDetailsComponent,
+  DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, PageBreakComponent, SegmentBasedContentComponent, CustomerDetailsComponent, BankDetailsComponent, WealthBankDetailsComponent,
   InvestmentPortfolioStatementComponent, InvestmentWealthPortfolioStatementComponent, InvestorPerformanceComponent, WealthInvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, WealthExplanatoryNotesComponent, NedbankServiceComponent, WealthNedbankServiceComponent,
   PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
   PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent, HomeLoanTotalAmountDetailComponent, HomeLoanAccountsBreakdownComponent, HomeLoanPaymentDueSpecialMsgComponent,
@@ -1554,6 +1554,22 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: false
             })
           }
+          else if (widget.WidgetName == "PageBreak") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 12,
+              rows: 1,
+              y: 0,
+              x: 0,
+              component: PageBreakComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
+              IsDynamicWidget: false
+            })
+          }
           else if (widget.WidgetName == "SegmentBasedContent") {
             return this.widgetsGridsterItemArray.push({
               cols: 4,
@@ -2101,6 +2117,9 @@ export class AddDashboardDesignerComponent implements OnInit {
       }
       else if (widget.WidgetName == "StaticHtml") {
         gridObj.component = StaticHtmlComponent
+      }
+      else if (widget.WidgetName == "PageBreak") {
+        gridObj.component = PageBreakComponent
       }
       else if (widget.WidgetName == "SegmentBasedContent") {
         gridObj.component = SegmentBasedContentComponent

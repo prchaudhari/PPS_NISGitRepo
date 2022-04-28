@@ -885,6 +885,10 @@ namespace nIS
                                                                 pageHtmlContent.Append(this.StaticHtmlWidgetFormatting(pageWidget, counter, statement, page, divHeight));
                                                                 break;
 
+                                                            case HtmlConstants.PAGE_BREAK_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.PageBreakWidgetFormatting(pageWidget, counter, statement, page, divHeight));
+                                                                break;
+
                                                             case HtmlConstants.STATIC_SEGMENT_BASED_CONTENT_NAME:
                                                                 pageHtmlContent.Append(this.SegmentBasedContentWidgetFormatting(pageWidget, counter, statement, page, divHeight));
                                                                 break;
@@ -1501,6 +1505,9 @@ namespace nIS
                                     break;
                                 case HtmlConstants.STATIC_HTML_WIDGET_NAME:
                                     this.BindDummyDataToStaticHtmlWidget(pageContent, statement, page, widget);
+                                    break;
+                                case HtmlConstants.PAGE_BREAK_WIDGET_NAME:
+                                    this.BindDummyDataToPageBreakWidget(pageContent, statement, page, widget);
                                     break;
 
                                 case HtmlConstants.STATIC_SEGMENT_BASED_CONTENT_NAME:
@@ -2249,6 +2256,14 @@ namespace nIS
                                                     staticHtmlWidget = staticHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
                                                     htmlString.Append(staticHtmlWidget);
                                                 }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.PAGE_BREAK_WIDGET_NAME)
+                                                {
+                                                    var html = "<div style=\"page-break-before:always\">&nbsp;</div>";
+                                                    
+                                                    var pageBreakWidget = HtmlConstants.STATIC_HTML_WIDGET_HTML.Replace("{{StaticHtml}}", html);
+                                                    pageBreakWidget = pageBreakWidget.Replace("{{WidgetDivHeight}}", divHeight);
+                                                    htmlString.Append(pageBreakWidget);
+                                                }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.STATIC_SEGMENT_BASED_CONTENT_NAME)
                                                 {
                                                     var html = "<div>This is sample SegmentBasedContent</div>";
@@ -2876,6 +2891,13 @@ namespace nIS
                                                     var staticHtmlWidget = HtmlConstants.STATIC_HTML_WIDGET_HTML.Replace("{{StaticHtml}}", html);
                                                     staticHtmlWidget = staticHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
                                                     htmlString.Append(staticHtmlWidget);
+                                                }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.PAGE_BREAK_WIDGET_NAME)
+                                                {
+                                                    var html = "<div style=\"page-break-before:always\">&nbsp;</div>";
+                                                    var pageBreakWidget = HtmlConstants.STATIC_HTML_WIDGET_HTML.Replace("{{PageBreak}}", html);
+                                                    pageBreakWidget = pageBreakWidget.Replace("{{WidgetDivHeight}}", divHeight);
+                                                    htmlString.Append(pageBreakWidget);
                                                 }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.STATIC_SEGMENT_BASED_CONTENT_NAME)
                                                 {
@@ -5852,6 +5874,19 @@ namespace nIS
 
         #endregion
 
+        #region PageBreak Widget Formatting
+
+        private string PageBreakWidgetFormatting(PageWidget pageWidget, int counter, Statement statement, Page page, string divHeight)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var widgetHTML = new StringBuilder(HtmlConstants.PAGE_BREAK_WIDGET_HTML.Replace("{{PageBreak}}", "{{PageBreak_" + statement.Identifier + "_" + page.Identifier + "_" + pageWidget.Identifier + "}}"));
+            widgetHTML.Replace("{{WidgetDivHeight}}", "auto");
+            widgetHTML.Replace("{{WidgetId}}", "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString());
+            return widgetHTML.ToString();
+        }
+
+        #endregion
+
         #region SegmentBasedContent Widget Formatting
 
         private string SegmentBasedContentWidgetFormatting(PageWidget pageWidget, int counter, Statement statement, Page page, string divHeight)
@@ -8149,6 +8184,17 @@ namespace nIS
                 }
             }
             pageContent.Replace("{{StaticHtml_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", html);
+        }
+
+        #endregion
+
+        #region Bind dummy data to Page Break widget
+
+        private void BindDummyDataToPageBreakWidget(StringBuilder pageContent, Statement statement, Page page, PageWidget widget)
+        {
+            var html = "<div style=\"page-break-before:always\">&nbsp;</div>";
+            
+            pageContent.Replace("{{PageBreak_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", html);
         }
 
         #endregion

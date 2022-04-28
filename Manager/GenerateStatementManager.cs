@@ -1472,7 +1472,7 @@ namespace nIS
                     else
                     {
                         string fileName = "Statement_" + customer.Identifier + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
-                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, batchMaster.Identifier, customer.Identifier, statementRawData.BaseURL, statementRawData.OutputLocation, true);
+                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, batchMaster.Identifier, customer.Identifier, statementRawData.BaseURL, statementRawData.OutputLocation, true, statement.Pages[0].PageTypeName);
 
                         logDetailRecord.StatementFilePath = filePath;
                         logDetailRecord.Status = ScheduleLogStatus.Completed.ToString();
@@ -1725,6 +1725,10 @@ namespace nIS
 
                                     case HtmlConstants.STATIC_HTML_WIDGET_NAME:
                                         IsFailed = this.BindStaticHtmlWidgetData(pageContent, customer, page, widget, statement, ErrorMessages);
+                                        break;
+
+                                    case HtmlConstants.PAGE_BREAK_WIDGET_NAME:
+                                        IsFailed = this.BindPageBreakWidgetData(pageContent, customer, page, widget, statement, ErrorMessages);
                                         break;
 
                                     case HtmlConstants.INVESTMENT_PORTFOLIO_STATEMENT_WIDGET_NAME:
@@ -2102,7 +2106,7 @@ namespace nIS
                         string headerHtml = statement.Pages[0].HeaderHTML;
                         string footerHtml = statement.Pages[0].FooterHTML;
 
-                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, batchMaster.Identifier, customer.CustomerId, statementRawData.BaseURL, statementRawData.OutputLocation, printPdf: true, headerHtml: headerHtml, footerHtml: footerHtml);
+                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, batchMaster.Identifier, customer.CustomerId, statementRawData.BaseURL, statementRawData.OutputLocation, printPdf: true, headerHtml: headerHtml, footerHtml: footerHtml, segment: statement.Pages[0].PageTypeName);
 
                         logDetailRecord.StatementFilePath = filePath;
                         logDetailRecord.Status = ScheduleLogStatus.Completed.ToString();
@@ -2792,6 +2796,23 @@ namespace nIS
             catch (Exception ex)
             {
                 ErrorMessages.Append("<li>Error occurred while configuring StaticHtml widget for Page: " + page.Identifier + " and Widget: " + widget.Identifier + ". error: " + ex.Message + "!!</li>");
+                return true;
+            }
+        }
+
+        private bool BindPageBreakWidgetData(StringBuilder pageContent, DM_CustomerMaster customer, Page page, PageWidget widget, Statement statement, StringBuilder ErrorMessages)
+        {
+            try
+            {
+                var html = "<div style=\"page-break-before:always\">&nbsp;</div>";
+                
+                pageContent.Replace("{{PageBreak_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", html);
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                ErrorMessages.Append("<li>Error occurred while configuring PageBreak widget for Page: " + page.Identifier + " and Widget: " + widget.Identifier + ". error: " + ex.Message + "!!</li>");
                 return true;
             }
         }
