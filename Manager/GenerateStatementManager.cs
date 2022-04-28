@@ -1594,7 +1594,7 @@ namespace nIS
                     }
                     if (IsMCAPageTypePresent)
                     {
-                        MCA = this.mcaDataRepository.Get_DM_MCAMaster(new CustomerMCASearchParameter() { BatchId = batchMaster.Identifier, InvestorId = customer.InvestorId  }, tenantCode)?.ToList();
+                        MCA = this.mcaDataRepository.Get_DM_MCAMaster(new CustomerMCASearchParameter() { BatchId = batchMaster.Identifier, InvestorId = customer.InvestorId }, tenantCode)?.ToList();
                     }
 
                     if (IsPersonalLoanPageTypePresent)
@@ -3175,6 +3175,7 @@ namespace nIS
                         case "consumer banking":
                         case "ncb":
                         case "pbvcm":
+                        case "pml":
                             contactCenter = HtmlConstants.CONSUMER_BANKING;
                             break;
                         case "prb":
@@ -3196,10 +3197,26 @@ namespace nIS
 
                     StringBuilder BranchDetail = new StringBuilder();
                     BranchDetail.Append(HtmlConstants.BANK_DETAILS);
-                    BranchDetail.Replace("{{TodayDate}}", string.Empty);
+                    BranchDetail.Replace("{{TodayDate}}<br>", string.Empty);
+                    if (page.PageTypeName == HtmlConstants.MULTI_CURRENCY_FOR_WEA_PAGE_TYPE || page.PageTypeName == HtmlConstants.MULTI_CURRENCY_FOR_CIB_PAGE_TYPE)
+                    {
+                        if (page.PageTypeName == HtmlConstants.MULTI_CURRENCY_FOR_WEA_PAGE_TYPE)
+                        {
+                            contactCenter = "<p class='mca_text_custom_color-w'>" + HtmlConstants.CORPORATE_BANKING + "</p>";
+                        }
+                        else
+                        {
+                            contactCenter = "<p class='text-success'>" + HtmlConstants.CORPORATE_BANKING + "</p>";
+                        }
+                        BranchDetail.Append(contactCenter);
+                        pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+                    }
+                    else
+                    {
+                        pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", contactCenter);
+                    }
 
                     pageContent.Replace("{{BranchDetails_" + page.Identifier + "_" + widget.Identifier + "}}", BranchDetail.ToString());
-                    pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", contactCenter);
                 }
                 else
                 {
@@ -5490,13 +5507,13 @@ namespace nIS
                         }
 
                         tableHTML.Append("<tr class='ht-20'>" +
-                                         "<td class='w-15 text-center'>" + trans.Transaction_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
-                                         "<td class='w-35 text-left'>" + trans.Description + "</td>" +
-                                         "<td class='w-12 text-right'>" + debit + "</td>" +
-                                         "<td class='w-12 text-right'>" + credit + "</td>" +
-                                         "<td class='w-7 text-center'>" + (trans.Rate != null ? Math.Round(decimal.Parse(trans.Rate.ToString()), 2).ToString() : "") + "</td>" +
-                                         "<td class='w-7 text-center'>" + trans.Days + "</td>" +
-                                         "<td class='w-12 text-right'>" + (trans.AccuredInterest != null ? Math.Round(decimal.Parse(trans.AccuredInterest.ToString()), 2).ToString() : "") + "</td>" +
+                                         "<td class='w-20 text-center'>" + trans.Transaction_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
+                                         "<td class='w-40 text-left'>" + trans.Description + "</td>" +
+                                         "<td class='w-10 text-right'>" + debit + "</td>" +
+                                         "<td class='w-10 text-right'>" + credit + "</td>" +
+                                         "<td class='w-5 text-center'>" + (trans.Rate != null ? Math.Round(decimal.Parse(trans.Rate.ToString()), 2).ToString() : "") + "</td>" +
+                                         "<td class='w-5 text-center'>" + trans.Days + "</td>" +
+                                         "<td class='w-10 text-right'>" + (trans.AccuredInterest != null ? Math.Round(decimal.Parse(trans.AccuredInterest.ToString()), 2).ToString() : "") + "</td>" +
                                          "</tr>");
                     });
                 }
