@@ -1070,7 +1070,39 @@ namespace nIS
                                                             case HtmlConstants.NEDBANK_WEALTH_MCA_BRANCH_DETAILS_WIDGET_NAME:
                                                                 pageHtmlContent.Append(this.MCAWealthBranchDetailsWidgetFormatting(pageWidget, page, counter));
                                                                 break;
-                                                                
+                                                            case HtmlConstants.CORPORATESAVER_AGENT_MESSAGE_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.CorporateSaverAgentMessageWidgetFormatting(pageWidget));
+                                                                break;
+
+                                                            case HtmlConstants.NEDBANK_CORPORATESAVER_TRANSACTION_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.CorporateSaverTransactionWidgetFormatting(pageWidget, page));
+                                                                break;
+
+                                                            case HtmlConstants.CORPORATESAVER_AGENT_ADDRESS_NAME:
+                                                                pageHtmlContent.Append(this.CorporateSaverAgentAddressFormatting(pageWidget, page));
+                                                                break;
+
+                                                            case HtmlConstants.NETBANK_CORPORATESAVER_AGENTDETAILS_NAME:
+                                                                pageHtmlContent.Append(this.CorporateAgentDetailsFormatting(pageWidget, page));
+                                                                break;
+
+                                                            case HtmlConstants.NEDBANK_CORPORATESAVER_CLIENTANDAGENT_DETAILS_NAME:
+                                                                pageHtmlContent.Append(this.CorporateSaverClientDetailsFormatting(pageWidget));
+                                                                break;
+
+                                                            case HtmlConstants.NEDBANK_CORPORATESAVER_LASTTOTAL_NAME:
+                                                                pageHtmlContent.Append(this.CorporateSaverLastTotalWidgetFormatting(pageWidget, page));
+                                                                break;
+
+                                                            case HtmlConstants.NEDBANK_WEALTH_CORPORATESAVER_VAT_ANALYSIS_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.CorporateSaverWealthVATAnalysisWidgetFormatting(pageWidget, page));
+                                                                break;
+
+                                                            case HtmlConstants.NEDBANK_WEALTH_CORPORATESAVER_BRANCH_DETAILS_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.CorporateSaverWealthBranchDetailsWidgetFormatting(pageWidget, page, counter));
+                                                                break;
+
+
                                                         }
                                                     }
                                                     else
@@ -4775,6 +4807,7 @@ namespace nIS
                                                         htmlString.Append(widgetHtml.ToString());
                                                     }
                                                 }
+
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_GREENBACKS_TOTAL_REWARDS_POINTS_WIDGET_NAME)
                                                 {
                                                     var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_GREENBACKS_TOTAL_REWARDS_POINTS_WIDGET_HTML);
@@ -4994,6 +5027,191 @@ namespace nIS
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_WEALTH_MCA_BRANCH_DETAILS_WIDGET_NAME)
                                                 {
                                                     var htmlWidget = new StringBuilder(HtmlConstants.MCA_WEALTH_BRANCH_DETAILS_WIDGET_HTML);
+                                                    StringBuilder htmlBankDetails = new StringBuilder();
+                                                    htmlBankDetails.Append(HtmlConstants.BANK_DETAILS);
+                                                    htmlBankDetails.Replace("{{TodayDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd));
+
+                                                    htmlWidget.Replace("{{BranchDetails}}", htmlBankDetails.ToString());
+                                                    htmlWidget.Replace("{{ContactCenter}}", HtmlConstants.WEA_BANKING);
+                                                    htmlString.Append(htmlWidget.ToString());
+                                                }
+                                                //else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_CORPORATESAVER_TRANSACTION_WIDGET_NAME)
+                                                //{
+                                                //    string jsonstr = HtmlConstants.CORPORATESAVER_TRANSACTION_PREVIEW_JSON_STRING;
+                                                //    var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_CORPORATESAVER_TRANSACTION_WIDGET_HTML);
+                                                //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                                //    {
+                                                //        var mcaTransaction = JsonConvert.DeserializeObject<List<DM_CorporateSaverTransaction>>(jsonstr);
+                                                //        StringBuilder rowsHTML = new StringBuilder();
+                                                //        var res = 0.0m;
+                                                //        mcaTransaction.ForEach(trans =>
+                                                //        {
+                                                //            res = 0.0m;
+                                                //            string debit = string.Empty;
+                                                //            string credit = string.Empty;
+                                                //            if (trans.Debit != null && decimal.TryParse(trans.Debit.ToString(), out res))
+                                                //            {
+                                                //                debit = res > 0 ? res.ToString() : trans.Debit.ToString();
+                                                //            }
+                                                //            else
+                                                //            {
+                                                //                debit = "";
+                                                //            }
+
+                                                //            if (trans.Credit != null && decimal.TryParse(trans.Credit.ToString(), out res))
+                                                //            {
+                                                //                credit = res > 0 ? res.ToString() : trans.Credit.ToString();
+                                                //            }
+                                                //            else
+                                                //            {
+                                                //                credit = "";
+                                                //            }
+
+                                                //            rowsHTML.Append("<tr class='ht-20'>" +
+                                                //                "<td class='w-15 text-center'>" + trans.Transaction_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
+                                                //                "<td class='w-35 text-left'>" + trans.Description + "</td>" +
+                                                //                "<td class='w-12 text-right'>" + debit + "</td>" +
+                                                //                "<td class='w-12 text-right'>" + credit + "</td>" +
+                                                //                "<td class='w-7 text-center'>" + trans.Rate + "</td>" +
+                                                //                "<td class='w-7 text-center'>" + trans.Days + "</td>" +
+                                                //                "<td class='w-12 text-right'>" + trans.AccuredInterest + "</td>" +
+                                                //                "</tr>"
+                                                //                );
+                                                //        });
+                                                //        widgetHtml.Replace("{{MCATransactionRow}}", rowsHTML.ToString());
+                                                //        htmlString.Append(widgetHtml);
+                                                //    }
+                                                //}
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.CORPORATESAVER_AGENT_MESSAGE_WIDGET_NAME)
+                                                {
+                                                    string jsonstr = HtmlConstants.CORPORATESAVER_ACCOUNT_SUMMARY_PREVIEW_JSON_STRING;
+                                                    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                                    {
+                                                        var mcaMaster = JsonConvert.DeserializeObject<DM_MCAMaster>(jsonstr);
+                                                        var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_AGENT_MESSAGE_HTML);
+                                                        htmlWidget.Replace("{{AccountNo}}", mcaMaster.CustomerId);
+                                                        htmlWidget.Replace("{{StatementNo}}", mcaMaster.StatementNo);
+                                                        htmlWidget.Replace("{{OverdraftLimit}}", mcaMaster.OverdraftLimit != null ? mcaMaster.OverdraftLimit.ToString() : "0.00");
+                                                        htmlWidget.Replace("{{StatementDate}}", mcaMaster.StatementDate != null ? mcaMaster.StatementDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) : DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
+                                                        htmlWidget.Replace("{{Currency}}", mcaMaster.Currency);
+                                                        htmlWidget.Replace("{{Statementfrequency}}", mcaMaster.StatementFrequency);
+                                                        htmlWidget.Replace("{{FreeBalance}}", mcaMaster.FreeBalance != null ? mcaMaster.FreeBalance.ToString() : "0.00");
+                                                        htmlString.Append(htmlWidget);
+                                                    }
+                                                }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.NETBANK_CORPORATESAVER_AGENTDETAILS_NAME)
+                                                {
+                                                    string jsonstr = HtmlConstants.CORPORATESAVER_TRANSACTION_PREVIEW_JSON_STRING;
+                                                    var widgetHtml = new StringBuilder(HtmlConstants.NETBANK_CORPORATESAVER_AGENTDETAILS_HTML);
+                                                    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                                    {
+                                                        var mcaTransaction = JsonConvert.DeserializeObject<List<DM_MCATransaction>>(jsonstr);
+                                                        StringBuilder rowsHTML = new StringBuilder();
+                                                        if (mcaTransaction.Count > 0)
+                                                        {
+                                                            var trans = mcaTransaction[0];
+                                                            rowsHTML.Append("<tr class='ht-20'>" +
+                                                                "<td class='w-25 text-left'>" + DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
+                                                                "<td class='w-25 text-right'>" + DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
+                                                                "<td class='w-25 text-center'>" + trans.Rate + "</td>" +
+                                                                "<td class='w-25 text-center'>" + trans.Credit + "</td>" +
+                                                                "</tr>"
+                                                                );
+                                                        }
+                                                        widgetHtml.Replace("{{MCAVATTable}}", rowsHTML.ToString());
+                                                        htmlString.Append(widgetHtml);
+                                                    }
+                                                }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_CORPORATESAVER_TRANSACTION_WIDGET_NAME)
+                                                {
+                                                    string jsonstr = HtmlConstants.CORPORATESAVER_TRANSACTION_PREVIEW_JSON_STRING;
+                                                    var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_CORPORATESAVER_TRANSACTION_WIDGET_HTML);
+                                                    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                                    {
+                                                        var mcaTransaction = JsonConvert.DeserializeObject<List<DM_MCATransaction>>(jsonstr);
+                                                        StringBuilder rowsHTML = new StringBuilder();
+                                                        var res = 0.0m;
+                                                        mcaTransaction.ForEach(trans =>
+                                                        {
+                                                            res = 0.0m;
+                                                            string debit = string.Empty;
+                                                            string credit = string.Empty;
+                                                            if (trans.Debit != null && decimal.TryParse(trans.Debit.ToString(), out res))
+                                                            {
+                                                                debit = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res);
+                                                            }
+                                                            else
+                                                            {
+                                                                debit = "";
+                                                            }
+
+                                                            if (trans.Credit != null && decimal.TryParse(trans.Credit.ToString(), out res))
+                                                            {
+                                                                credit = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res);
+                                                            }
+                                                            else
+                                                            {
+                                                                credit = "";
+                                                            }
+
+                                                            rowsHTML.Append("<tr class='ht-20'>" +
+                                                                "<td class='w-15 text-center'>" + trans.Transaction_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
+                                                                "<td class='w-35 text-left'>" + trans.Description + "</td>" +
+                                                                "<td class='w-12 text-right'>" + debit + "</td>" +
+                                                                "<td class='w-12 text-right'>" + credit + "</td>" +
+                                                                "<td class='w-7 text-center'>" + trans.Rate + "</td>" +
+                                                                "<td class='w-7 text-center'>" + trans.Days + "</td>" +
+                                                                "<td class='w-12 text-right'>" + trans.AccuredInterest + "</td>" +
+                                                                "</tr>"
+                                                                );
+                                                        });
+                                                        widgetHtml.Replace("{{MCATransactionRow}}", rowsHTML.ToString());
+                                                        htmlString.Append(widgetHtml);
+                                                    }
+                                                }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_WEALTH_CORPORATESAVER_VAT_ANALYSIS_WIDGET_NAME)
+                                                {
+                                                    string jsonstr = HtmlConstants.CORPORATESAVER_TRANSACTION_PREVIEW_JSON_STRING;
+                                                    var widgetHtml = new StringBuilder(HtmlConstants.CORPORATESAVER_WEALTH_VAT_ANALYSIS_DETAIL_DIV_HTML);
+                                                    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                                    {
+                                                        var mcaTransaction = JsonConvert.DeserializeObject<List<DM_MCATransaction>>(jsonstr);
+                                                        StringBuilder rowsHTML = new StringBuilder();
+                                                        if (mcaTransaction.Count > 0)
+                                                        {
+                                                            var trans = mcaTransaction[0];
+                                                            rowsHTML.Append("<tr class='ht-20'>" +
+                                                                "<td class='w-25 text-left'>" + DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
+                                                                "<td class='w-25 text-right'>" + DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
+                                                                "<td class='w-25 text-center'>" + trans.Rate + "</td>" +
+                                                                "<td class='w-25 text-center'>" + trans.Credit + "</td>" +
+                                                                "</tr>"
+                                                                );
+                                                        }
+                                                        widgetHtml.Replace("{{MCAVATTable}}", rowsHTML.ToString());
+                                                        htmlString.Append(widgetHtml);
+                                                    }
+                                                }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_CORPORATESAVER_CLIENTANDAGENT_DETAILS_NAME)
+                                                {
+                                                    string jsonstr = HtmlConstants.CORPORATESAVER_ACCOUNT_SUMMARY_PREVIEW_JSON_STRING;
+                                                    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                                    {
+                                                        var mcaMaster = JsonConvert.DeserializeObject<DM_MCAMaster>(jsonstr);
+                                                        var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_CLIENT_DETAILS_HTML);
+                                                        htmlWidget.Replace("{{AccountNo}}", mcaMaster.CustomerId);
+                                                        htmlWidget.Replace("{{StatementNo}}", mcaMaster.StatementNo);
+                                                        htmlWidget.Replace("{{OverdraftLimit}}", mcaMaster.OverdraftLimit != null ? mcaMaster.OverdraftLimit.ToString() : "0.00");
+                                                        htmlWidget.Replace("{{StatementDate}}", mcaMaster.StatementDate != null ? mcaMaster.StatementDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) : DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
+                                                        htmlWidget.Replace("{{Currency}}", mcaMaster.Currency);
+                                                        htmlWidget.Replace("{{Statementfrequency}}", mcaMaster.StatementFrequency);
+                                                        htmlWidget.Replace("{{FreeBalance}}", mcaMaster.FreeBalance != null ? mcaMaster.FreeBalance.ToString() : "0.00");
+                                                        htmlString.Append(htmlWidget);
+                                                    }
+                                                }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_WEALTH_CORPORATESAVER_BRANCH_DETAILS_WIDGET_NAME)
+                                                {
+                                                    var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_WEALTH_BRANCH_DETAILS_WIDGET_HTML);
                                                     StringBuilder htmlBankDetails = new StringBuilder();
                                                     htmlBankDetails.Append(HtmlConstants.BANK_DETAILS);
                                                     htmlBankDetails.Replace("{{TodayDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd));
@@ -5741,6 +5959,7 @@ namespace nIS
             htmlWidget.Replace("{{MCATransactionRow}}", "{{MCATransactionRow_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
             return htmlWidget.ToString();
         }
+       
 
         private string MCAVATAnalysisWidgetFormatting(PageWidget pageWidget, Page page)
         {
@@ -5780,6 +5999,81 @@ namespace nIS
         private string MCAWealthBranchDetailsWidgetFormatting(PageWidget pageWidget, Page page, int counter)
         {
             var htmlWidget = new StringBuilder(HtmlConstants.MCA_WEALTH_BRANCH_DETAILS_WIDGET_HTML);
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            htmlWidget.Replace("{{BranchDetails}}", "{{BranchDetails_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{ContactCenter}}", "{{ContactCenter_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{WidgetId}}", widgetId);
+            return htmlWidget.ToString();
+        }
+        private string CorporateSaverAgentMessageWidgetFormatting(PageWidget pageWidget)
+        {
+            var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_AGENT_MESSAGE_HTML);
+            return htmlWidget.ToString();
+        }
+
+        private string CorporateSaverTransactionWidgetFormatting(PageWidget pageWidget, Page page)
+        {
+            var htmlWidget = new StringBuilder(HtmlConstants.NEDBANK_CORPORATESAVER_TRANSACTION_WIDGET_HTML);
+            htmlWidget.Replace("{{CorporateSaverTransactions}}", "{{CorporateSaverTransactions_" + pageWidget.Identifier + "}}");
+            return htmlWidget.ToString();
+        }
+        private string CorporateSaverAgentAddressFormatting(PageWidget pageWidget, Page page)
+        {
+            var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_AGENT_ADDRESS_HTML);
+            htmlWidget.Replace("{{AgentAddress}}", "{{AgentAddress_" + page.Identifier+ "_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{AgentContact}}", "{{AgentContact_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            return htmlWidget.ToString();
+        }
+
+        private string CorporateAgentDetailsFormatting(PageWidget pageWidget, Page page)
+        {
+            var htmlWidget = new StringBuilder(HtmlConstants.NETBANK_CORPORATESAVER_AGENTDETAILS_HTML);
+            htmlWidget.Replace("{{Interest}}", "{{Interest_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{VATonfee}}", "{{VATonfee_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{Agentfeededucted}}", "{{Agentfeededucted_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{yeartodate}}", "{{yeartodate_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            return htmlWidget.ToString();
+        }
+
+        private string CorporateSaverClientDetailsFormatting(PageWidget pageWidget)
+        {
+            var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_CLIENT_DETAILS_HTML);
+            htmlWidget.Replace("{{TaxInvoiceNo}}", "{{TaxInvoiceNo_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{ContactPerson}}", "{{ContactPerson_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{EmailAddress}}", "{{EmailAddress_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{RegNo}}", "{{RegNo_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{VATRegNo}}", "{{VATRegNo_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{FSPLicNo}}", "{{FSPLicNo_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{AgentRefNo}}", "{{AgentRefNo_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{StatementNo}}", "{{StatementNo_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{AccountNo}}", "{{AccountNo_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{Branchcode}}", "{{Branchcode_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{Agentprofile}}", "{{Agentprofile_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{CIFNo}}", "{{CIFNo_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{ClientCode}}", "{{ClientCode_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{RelationshipManager}}", "{{RelationshipManager_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{VATCalculation}}", "{{VATCalculation_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{ClientVATNo}}", "{{ClientVATNo_" + pageWidget.Identifier + "}}");
+            return htmlWidget.ToString();
+        }
+
+        private string CorporateSaverLastTotalWidgetFormatting(PageWidget pageWidget, Page page)
+        {
+            var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_LASTTOTAL_HTML);
+                        htmlWidget.Replace("{{dynemicTables}}", "{{dynemicTables_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            return htmlWidget.ToString();
+        }
+
+        private string CorporateSaverWealthVATAnalysisWidgetFormatting(PageWidget pageWidget, Page page)
+        {
+            var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_WEALTH_VAT_ANALYSIS_DETAIL_DIV_HTML);
+            htmlWidget.Replace("{{MCAVATTable}}", "{{MCAVATTable_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            return htmlWidget.ToString();
+        }
+
+        private string CorporateSaverWealthBranchDetailsWidgetFormatting(PageWidget pageWidget, Page page, int counter)
+        {
+            var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_WEALTH_BRANCH_DETAILS_WIDGET_HTML);
             var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
             htmlWidget.Replace("{{BranchDetails}}", "{{BranchDetails_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
             htmlWidget.Replace("{{ContactCenter}}", "{{ContactCenter_" + page.Identifier + "_" + pageWidget.Identifier + "}}");

@@ -324,6 +324,17 @@
     text-align: right;
 }
 
+.CScustomTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Mark Pro Regular';
+    font-size: 8pt;
+}
+
+    .CScustomTable td {
+        padding: 0px 5px;
+    }
+
 .customTable td {
     padding: 0px 25px;
     font-family: 'Mark Pro Regular';

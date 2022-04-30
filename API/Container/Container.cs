@@ -57,6 +57,7 @@ namespace nIS
             unityContainer.RegisterType<IInvestmentRepository, SQLInvestmentRepository>();
             unityContainer.RegisterType<ICustomerRepository, SQLCustomerRepository>();
             unityContainer.RegisterType<IMCARepository, SQLMCARepository>();
+            unityContainer.RegisterType<ICorporateSaverRepository, SQLCorporateSaverRepository>();
             return unityContainer;
         }
     }

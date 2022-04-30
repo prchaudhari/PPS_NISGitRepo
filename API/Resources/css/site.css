@@ -2162,6 +2162,15 @@ a {
         padding: 0px 25px;
         font-size: 14px;
     }
+    .CScustomTable {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: 'Mark Pro Regular';
+        font-size: 8pt;
+    }
+    .CScustomTable td {
+        padding: 0px 5px;
+    }
 
     .InvestorPermanaceTable td {
         padding: 0px 25px;

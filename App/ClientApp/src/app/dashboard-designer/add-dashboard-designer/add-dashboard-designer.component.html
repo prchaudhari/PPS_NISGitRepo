@@ -54,7 +54,13 @@
                   'fa-bar-chart fa-lg': widget.WidgetType == 'BarGraph' || widget.WidgetName == 'AccountAnalysis' || widget.WidgetName == 'YTDRewardsPoints' || widget.WidgetName == 'PointsRedeemedYTD' || widget.WidgetName == 'ProductRelatedPointsEarned',
                   'fa-line-chart fa-lg': widget.WidgetType == 'LineGraph',
                   'fa-pie-chart fa-lg': widget.WidgetType == 'PieChart' || widget.WidgetName == 'CategorySpendRewards',
-                  'fa-code fa-code': widget.WidgetName == 'StaticHtml',
+                  'fa-code fa-code':  widget.WidgetName == 'CSAgentLogo',
+                  'fa-book fa-book':  widget.WidgetName == 'CorporateSaverAgentMessage',
+                  'fa-snowflake-o fa-snowflake-o':  widget.WidgetName == 'CorporateSaverAgentAddress',
+                  'fa-facebook fa-facebook':  widget.WidgetName == 'CorporateSaverTransaction',
+                  'fa-twitter fa-twitter':  widget.WidgetName == 'CorporateAgentDetails',
+                  'fa-instagram fa-instagram':  widget.WidgetName == 'CorporateSaverClientandAgentDetails',
+                  'fa-linkedin fa-linkedin':  widget.WidgetName == 'CorporateSaverTableTotal',
                   'fa-id-card-o': widget.WidgetName == 'SegmentBasedContent',
                   'fa-tags': widget.WidgetName == 'HomeLoanSummaryTaxPurpose' || widget.WidgetName == 'WealthHomeLoanSummaryTaxPurpose',
                   'fa-repeat' : widget.WidgetName == 'HomeLoanInstalment' || widget.WidgetName == 'WealthHomeLoanInstalment',
@@ -65,7 +71,6 @@
       </li>
     </ul>
   </div>
-
   <div class="overlay" [ngClass]="isWidgetSidebar? 'show' : 'hide'"></div>
   <div class="dashboard-inner-container">
     <div class="widget-container">
@@ -76,6 +81,14 @@
           <button class='fa fa-gear mr-3 widget-action' (click)="isVideoConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='Video'"></button>
           <button class='fa fa-gear mr-3 widget-action' (click)="isStaticHtmlConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='StaticHtml'"></button>
           <button class='fa fa-gear mr-3 widget-action' (click)="isSegmentBasedContentConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='SegmentBasedContent'"></button>
+          <button class='fa fa-gear mr-3 widget-action' (click)="isCSAgentLogoConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='CSAgentLogo'"></button>
+          <button class='fa fa-gear mr-3 widget-action' (click)="isCorporateSaverAgentMessageConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='CorporateSaverAgentMessage'"></button>
+          <button class='fa fa-gear mr-3 widget-action' (click)="isCorporateSaverAgentAddressConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='CorporateSaverAgentAddress'"></button>
+          <button class='fa fa-gear mr-3 widget-action' (click)="isCorporateSaverTransactionConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='CorporateSaverTransaction'"></button>
+          <button class='fa fa-gear mr-3 widget-action' (click)="isCorporateAgentDetailsConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='CorporateAgentDetails'"></button>
+          <button class='fa fa-gear mr-3 widget-action' (click)="isCorporateSaverClientandAgentDetailsConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='CorporateSaverClientandAgentDetails'"></button>
+          <button class='fa fa-gear mr-3 widget-action' (click)="isCorporateSaverTableTotalConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='CorporateSaverTableTotal'"></button>
+         
           <vidyo-widget [vdoItem]='item' *ngIf="item.value=='Video'"></vidyo-widget>
           <image-widget [imgItem]='item' *ngIf="item.value=='Image'"></image-widget>
           <Segment-based-content-widget [SegmentBasedContentItem]='item' *ngIf="item.value=='SegmentBasedContent'"></Segment-based-content-widget>

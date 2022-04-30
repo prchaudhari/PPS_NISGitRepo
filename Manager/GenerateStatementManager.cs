@@ -62,6 +62,8 @@ namespace nIS
 
         private IMCARepository mcaDataRepository = null;
 
+        private ICorporateSaverRepository corporateSaverDataRepository = null;
+
         /// <summary>
         /// The schedule log repository.
         /// </summary>
@@ -124,6 +126,7 @@ namespace nIS
                 this.cryptoManager = this.unityContainer.Resolve<ICryptoManager>();
                 this.customerRepository = this.unityContainer.Resolve<ICustomerRepository>();
                 this.mcaDataRepository = this.unityContainer.Resolve<IMCARepository>();
+                this.corporateSaverDataRepository = this.unityContainer.Resolve<ICorporateSaverRepository>();
             }
             catch (Exception ex)
             {
@@ -1517,6 +1520,7 @@ namespace nIS
                     var PersonalLoanAccounts = new List<DM_PersonalLoanMaster>();
                     var HomeLoanAccounts = new List<DM_HomeLoanMaster>();
                     var MCA = new List<DM_MCAMaster>();
+                    var CorporateSaver = new List<DM_CorporateSaverMaster>();
                     var PersonalLoan = new List<DM_PersonalLoanMaster>();
 
                     var AccountsSummaries = new List<DM_AccountsSummary>();
@@ -1537,6 +1541,7 @@ namespace nIS
                     var IsHomeLoanPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE).ToList().Count > 0;
                     var IsRewardPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.GREENBACKS_PAGE_TYPE).ToList().Count > 0;
                     var IsMCAPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_PAGE_TYPE).ToList().Count > 0;
+                    var IsCorporateSaverPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == HtmlConstants.CORPORATE_SAVER_PAGE_TYPE).ToList().Count > 0;
 
                     if (IsPortFolioPageTypePresent)
                     {
@@ -1594,8 +1599,13 @@ namespace nIS
                     }
                     if (IsMCAPageTypePresent)
                     {
-                        MCA = this.mcaDataRepository.Get_DM_MCAMaster(new CustomerMCASearchParameter() { BatchId = batchMaster.Identifier, InvestorId = customer.InvestorId  }, tenantCode)?.ToList();
+                        MCA = this.mcaDataRepository.Get_DM_MCAMaster(new CustomerMCASearchParameter() { BatchId = batchMaster.Identifier, InvestorId = customer.InvestorId }, tenantCode)?.ToList();
                     }
+                    if (IsCorporateSaverPageTypePresent)
+                    {
+                        CorporateSaver = this.corporateSaverDataRepository.Get_DM_CorporateSaverMaster(new CustomerCorporateSaverSearchParameter() { BatchId = batchMaster.Identifier, InvestorId = customer.InvestorId }, tenantCode)?.ToList();
+                    }
+
 
                     if (IsPersonalLoanPageTypePresent)
                     {
@@ -1820,6 +1830,10 @@ namespace nIS
                                         this.BindPortfolioCustomerAddressDetailsWidgetData(pageContent, customer, page, widget);
                                         break;
 
+                                    case HtmlConstants.CORPORATESAVER_AGENT_ADDRESS_NAME:
+                                        this.BindCorporateSaverAgentAddressDetailsWidgetData(pageContent, CorporateSaver[0], page, widget);
+                                        break;
+
                                     case HtmlConstants.NEDBANK_PORTFOLIO_CLIENT_CONTACT_DETAILS_WIDGET_NAME:
                                         this.BindPortfolioClientContactDetailsWidgetData(pageContent, page, widget);
                                         break;
@@ -1897,6 +1911,33 @@ namespace nIS
                                         break;
 
                                     case HtmlConstants.NEDBANK_WEALTH_MCA_BRANCH_DETAILS_WIDGET_NAME:
+                                        this.BindBranchDetailsWidgetData(pageContent, BranchId, page, widget, tenantCode, customer);
+                                        break;
+                                    case HtmlConstants.CORPORATESAVER_AGENT_MESSAGE_WIDGET_NAME:
+                                        this.BindCorporateSaverAgentMessageWidgetData(pageContent, BranchId, page, widget, tenantCode, customer);
+                                        break;
+
+                                    case HtmlConstants.NEDBANK_CORPORATESAVER_TRANSACTION_WIDGET_NAME:
+                                        this.BindCorporateSaverTransactionDetailWidgetData(pageContent, CorporateSaver, widget, page);
+                                        break;
+
+                                    case HtmlConstants.NETBANK_CORPORATESAVER_AGENTDETAILS_NAME:
+                                        this.BindCorporateAgentDetailsData(pageContent, CorporateSaver, widget, page);
+                                        break;
+
+                                    case HtmlConstants.NEDBANK_CORPORATESAVER_CLIENTANDAGENT_DETAILS_NAME:
+                                        this.BindCorporateSaverClientDetailsWidgetData(pageContent, CorporateSaver, widget);
+                                        break;
+
+                                    case HtmlConstants.NEDBANK_CORPORATESAVER_LASTTOTAL_NAME:
+                                        this.BindCorporateSaverLastTotalWidgetData(pageContent, CorporateSaver, widget, page);
+                                        break;
+
+                                    case HtmlConstants.NEDBANK_WEALTH_CORPORATESAVER_VAT_ANALYSIS_WIDGET_NAME:
+                                        this.BindMCAVATAnalysisDetailWidgetData(pageContent, MCA, widget, page);
+                                        break;
+
+                                    case HtmlConstants.NEDBANK_WEALTH_CORPORATESAVER_BRANCH_DETAILS_WIDGET_NAME:
                                         this.BindBranchDetailsWidgetData(pageContent, BranchId, page, widget, tenantCode, customer);
                                         break;
                                 }
@@ -3117,12 +3158,14 @@ namespace nIS
 
         private void BindCustomerDetailsWidgetData(StringBuilder pageContent, DM_CustomerMaster customer, Page page, PageWidget widget, bool isShowCellNo = false, string vatNo = "")
         {
+
+
             var CustomerDetails = (!string.IsNullOrEmpty(customer.Title) && customer.Title.ToLower() != "null" ? customer.Title + " " : string.Empty) + (!string.IsNullOrEmpty(customer.FirstName) && customer.FirstName.ToLower() != "null" ? customer.FirstName + " " : string.Empty) + (!string.IsNullOrEmpty(customer.SurName) && customer.SurName.ToLower() != "null" ? customer.SurName + " " : string.Empty) + "<br>" +
-                (!string.IsNullOrEmpty(customer.AddressLine0) ? (customer.AddressLine0) : string.Empty) + "<br>" +
-                (!string.IsNullOrEmpty(customer.AddressLine1) ? (customer.AddressLine1) : string.Empty) + "<br>" +
-                (!string.IsNullOrEmpty(customer.AddressLine2) ? (customer.AddressLine2) : string.Empty) + "<br>" +
-                (!string.IsNullOrEmpty(customer.AddressLine3) ? (customer.AddressLine3) : string.Empty) + "<br>" +
-                (!string.IsNullOrEmpty(customer.AddressLine4) ? customer.AddressLine4 : string.Empty) + "<br>";
+            (!string.IsNullOrEmpty(customer.AddressLine0) ? (customer.AddressLine0) : string.Empty) + "<br>" +
+            (!string.IsNullOrEmpty(customer.AddressLine1) ? (customer.AddressLine1) : string.Empty) + "<br>" +
+            (!string.IsNullOrEmpty(customer.AddressLine2) ? (customer.AddressLine2) : string.Empty) + "<br>" +
+            (!string.IsNullOrEmpty(customer.AddressLine3) ? (customer.AddressLine3) : string.Empty) + "<br>" +
+            (!string.IsNullOrEmpty(customer.AddressLine4) ? customer.AddressLine4 : string.Empty) + "<br>";
 
             if (isShowCellNo)
             {
@@ -3135,9 +3178,59 @@ namespace nIS
             }
 
             pageContent.Replace("{{CustomerDetails_" + page.Identifier + "_" + widget.Identifier + "}}", CustomerDetails);
+
         }
 
         private void BindBranchDetailsWidgetData(StringBuilder pageContent, long BranchId, Page page, PageWidget widget, string tenantCode, DM_CustomerMaster customer)
+        {
+            try
+            {
+                var branchDetails = this.tenantTransactionDataRepository.Get_DM_BranchMaster(BranchId, tenantCode)?.FirstOrDefault();
+                if (branchDetails != null)
+                {
+                    var contactCenter = string.Empty;
+                    switch (customer.Segment.ToLower())
+                    {
+                        case "consumer banking":
+                        case "ncb":
+                        case "pbvcm":
+                            contactCenter = HtmlConstants.CONSUMER_BANKING;
+                            break;
+                        case "prb":
+                            contactCenter = HtmlConstants.INVESTMENT_PRIVATE_BANKING;
+                            break;
+                        case "sbs":
+                            contactCenter = HtmlConstants.INVESTMENT_SBS_BANKING;
+                            break;
+                        case "nbb":
+                            contactCenter = HtmlConstants.NBB_BANKING;
+                            break;
+                        case "cib":
+                            contactCenter = HtmlConstants.CORPORATE_BANKING;
+                            break;
+                        case "wea":
+                            contactCenter = HtmlConstants.WEA_BANKING;
+                            break;
+                    }
+
+                    StringBuilder BranchDetail = new StringBuilder();
+                    BranchDetail.Append(HtmlConstants.BANK_DETAILS);
+                    BranchDetail.Replace("{{TodayDate}}", string.Empty);
+
+                    pageContent.Replace("{{BranchDetails_" + page.Identifier + "_" + widget.Identifier + "}}", BranchDetail.ToString());
+                    pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", contactCenter);
+                }
+                else
+                {
+                    pageContent.Replace("{{BranchDetails_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+                    pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+        private void BindCorporateSaverAgentMessageWidgetData(StringBuilder pageContent, long BranchId, Page page, PageWidget widget, string tenantCode, DM_CustomerMaster customer)
         {
             try
             {
@@ -5006,6 +5099,17 @@ namespace nIS
                                 (!string.IsNullOrEmpty(customer.AddressLine4) ? customer.AddressLine4 : string.Empty);
             pageContent.Replace("{{CustomerAddress_" + page.Identifier + "_" + widget.Identifier + "}}", custAddress);
         }
+        private void BindCorporateSaverAgentAddressDetailsWidgetData(StringBuilder pageContent, DM_CorporateSaverMaster CorporateSaver, Page page, PageWidget widget)
+        {
+            var AgentAddress = (!string.IsNullOrEmpty(CorporateSaver.AgentClientAddress1) ? (CorporateSaver.AgentClientAddress1 + "<br>") : string.Empty) +
+                                (!string.IsNullOrEmpty(CorporateSaver.AgentClientAddress2) ? (CorporateSaver.AgentClientAddress2 + "<br>") : string.Empty) +
+                                (!string.IsNullOrEmpty(CorporateSaver.AgentClientAddress3) ? (CorporateSaver.AgentClientAddress3 + "<br>") : string.Empty) +
+                                (!string.IsNullOrEmpty(CorporateSaver.AgentClientAddress4) ? (CorporateSaver.AgentClientAddress4 + "<br>") : string.Empty) +
+                                (!string.IsNullOrEmpty(CorporateSaver.AgentClientAddress5) ? (CorporateSaver.AgentClientAddress5 + "<br>") : string.Empty) +
+                                (!string.IsNullOrEmpty(CorporateSaver.AgentClientAddress6) ? (CorporateSaver.AgentClientAddress6 + "<br>") : string.Empty);
+            pageContent.Replace("{{AgentAddress_" + page.Identifier + "_" + widget.Identifier + "}}", AgentAddress);
+            pageContent.Replace("{{AgentContact_" + page.Identifier + "_" + widget.Identifier + "}}", CorporateSaver.AgentContactDetails);
+        }
 
         private void BindPortfolioClientContactDetailsWidgetData(StringBuilder pageContent, Page page, PageWidget widget)
         {
@@ -5429,6 +5533,36 @@ namespace nIS
             {
             }
         }
+        private void BindCorporateSaverClientDetailsWidgetData(StringBuilder pageContent, List<DM_CorporateSaverMaster> CorporateSaverMasterList, PageWidget widget)
+        {
+            try
+            {
+                if (CorporateSaverMasterList != null && CorporateSaverMasterList.Count > 0)
+                {
+                    var CorporateSaverMaster = CorporateSaverMasterList[0];
+                    pageContent.Replace("{{TaxInvoiceNo_" + widget.Identifier + "}}", CorporateSaverMaster.TaxInvoiceNo);
+                    pageContent.Replace("{{ContactPerson_" + widget.Identifier + "}}", CorporateSaverMaster.AgentContactPerson);
+                    pageContent.Replace("{{EmailAddress_" + widget.Identifier + "}}", CorporateSaverMaster.AgentEmailAddress);
+                    pageContent.Replace("{{RegNo_" + widget.Identifier + "}}", CorporateSaverMaster.AgentRegNo);
+                    pageContent.Replace("{{VATRegNo_" + widget.Identifier + "}}", CorporateSaverMaster.AgentVATRegNo);
+                    pageContent.Replace("{{FSPLicNo_" + widget.Identifier + "}}", CorporateSaverMaster.AgentFSPLicNo);
+                    pageContent.Replace("{{AgentRefNo_" + widget.Identifier + "}}", CorporateSaverMaster.AgentReference);
+                    pageContent.Replace("{{StatementNo_" + widget.Identifier + "}}", CorporateSaverMaster.StatementNo);
+                    pageContent.Replace("{{AccountNo_" + widget.Identifier + "}}", Convert.ToString(CorporateSaverMaster.InvestorId));
+                    pageContent.Replace("{{Branchcode_" + widget.Identifier + "}}", CorporateSaverMaster.BranchCode);
+                    pageContent.Replace("{{Agentprofile_" + widget.Identifier + "}}", CorporateSaverMaster.AgentProfile);
+                    pageContent.Replace("{{CIFNo_" + widget.Identifier + "}}", CorporateSaverMaster.CIFNo);
+                    pageContent.Replace("{{ClientCode_" + widget.Identifier + "}}", CorporateSaverMaster.ClientCode);
+                    pageContent.Replace("{{RelationshipManager_" + widget.Identifier + "}}", CorporateSaverMaster.RelationshipManager);
+                    pageContent.Replace("{{VATCalculation_" + widget.Identifier + "}}", CorporateSaverMaster.VATCalculation);
+                    pageContent.Replace("{{ClientVATNo_" + widget.Identifier + "}}", CorporateSaverMaster.ClientVatNo);
+
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
 
         private void BindMCATransactionDetailWidgetData(StringBuilder pageContent, List<DM_MCAMaster> MCAMasterList, PageWidget widget, Page page)
         {
@@ -5476,6 +5610,165 @@ namespace nIS
                 pageContent.Replace("{{MCATransactionRow_" + page.Identifier + "_" + widget.Identifier + "}}", tableHTML.ToString());
             }
         }
+        private void BindCorporateSaverLastTotalWidgetData(StringBuilder pageContent, List<DM_CorporateSaverMaster> DM_CorporateSaverMasterList, PageWidget widget, Page page)
+        {
+            StringBuilder tableHTML = new StringBuilder();
+            StringBuilder tableHTML2 = new StringBuilder();
+            int tableHTMLCounter = 1, tableHTML2Counter = 1;
+            if (DM_CorporateSaverMasterList != null && DM_CorporateSaverMasterList.Count > 0)
+            {
+                var CorporateSaverMaster = DM_CorporateSaverMasterList[0];
+                // dynamic CorporateSaverTaxMatured = null; dynamic CorporateSaverTaxCurrent = null;
+                var CorporateSaverTaxMatured = CorporateSaverMaster.CorporateSaverTax.Where(item => item.InvestType.Contains("Matured"))?.ToList();
+                var CorporateSaverTaxCurrent = CorporateSaverMaster.CorporateSaverTax.Where(item => item.InvestType.Contains("Current"))?.ToList();
+
+
+                
+                CorporateSaverMaster.CorporateSaverTax.ForEach(invest =>
+                {
+                    if (invest.InvestType.Contains("Current"))
+                    {
+                        if (tableHTMLCounter == 1)
+                        {
+                            tableHTML.Append("<div class='TotalAmountDetailsDiv' style='height: 40px !important; text-align: center; padding: 6px !important;'><span class='fnt-14pt'>" + invest.InvestType + "</span ></div>");
+                        }
+
+                        tableHTML.Append("<table class= 'CScustomTable HomeLoanDetailDiv' border = '0' style = 'height: auto;margin-bottom:2%;' ><tbody>");
+                        tableHTML.Append("<tr><td colspan='2' class='w-25' style='font-weight: bold;padding-bottom: 8px !important;padding-top: 8px !important;'>" + invest.InterestDescription + "</td></tr>");
+                        tableHTML.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Interest instruction</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + invest.InterestIntruction + "</td><td class='w-25' style='padding-bottom: 8px !important'>Date Invested</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + Convert.ToDateTime(invest.DateInvested).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy2) + "</td></tr>");
+                        tableHTML.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Capital</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>"
+                           + (invest.CapitalMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.CapitalMstr)) : "") +
+                            "</td><td class='w-25' style='padding-bottom: 8px !important'>Agent fee deducted</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + (invest.AgentFeeDeducted != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.AgentFeeDeducted)) : "") + "</td></tr>");
+                        tableHTML.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Interest</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + (invest.InterestMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.InterestMstr)) : "") + "</td><td class='w-25' style='padding-bottom: 8px !important'>VAT on fee</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + (invest.VatOnFeeMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.VatOnFeeMstr)) : "") + "</td></tr>");
+                        tableHTML.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Agent Fee Structure</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" +
+                            (invest.AGENT_FEE_STRUCTURE_1 != null ? String.Format("{0:0.00}", invest.AGENT_FEE_STRUCTURE_1) + "%" + " " + invest.AGENT_FEE_STRUCTURE_2 : String.Empty) 
+                            + "</td><td class='w-25' style='padding-bottom: 8px !important'>Interest (less agent fee and VAT)</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + (invest.VatOnFeeMstr0 != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.VatOnFeeMstr0)) : "") + "</td></tr>");
+                        tableHTML.Append("</tbody></table>");
+
+                        if (tableHTMLCounter == CorporateSaverTaxCurrent.Count)
+                        {
+
+                            tableHTML.Append("<div class='d-flex flex-row' style='margin-top: -1.5%;'>");
+                            tableHTML.Append("<div class='paymentDueHeaderBlock ' style='margin-right:3px; margin-bottom:1px; '>Total Capital</div>");
+                            tableHTML.Append("<div class='paymentDueHeaderBlock ' style='margin-right:3px; margin-bottom:1px; '>Total Interest</div>");
+                            tableHTML.Append("<div class='paymentDueHeaderBlock ' style='margin-right:3px; margin-bottom:1px; '>Total agent fee (deducted)</div>");
+                            tableHTML.Append("<div class='paymentDueHeaderBlock ' style='margin-right:3px; margin-bottom:1px; '>VAT on fee</div>");
+                            tableHTML.Append("<div class='paymentDueHeaderBlock'>Interest (less agent fee & VAT)</div>");
+                            tableHTML.Append("</div>");
+                            tableHTML.Append("<div class='d-flex flex-row' style='margin-top: 2px !important;margin-bottom: 1%;'>");
+                            tableHTML.Append("<div class='paymentDueHeaderBlock ' style='margin-right:3px; margin-bottom:1px; '>" + (invest.TotalCapitalMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.TotalCapitalMstr)) : "") + "</div>");
+                            tableHTML.Append("<div class='paymentDueHeaderBlock ' style='margin-right:3px; margin-bottom:1px; '>" + (invest.TotalInterestMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.TotalInterestMstr)) : "") + "</div>");
+                            tableHTML.Append("<div class='paymentDueHeaderBlock' style='margin-right:3px; margin-bottom:1px; '>" + (invest.TotalAgentFeeMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.TotalAgentFeeMstr)) : "") + "</div>");
+                            tableHTML.Append("<div class='paymentDueHeaderBlock ' style='margin-right:3px; margin-bottom:1px; '>" + (invest.VatOnFeeMstr0 != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.VatOnFeeMstr0)) : "") + "</div>");
+                            tableHTML.Append("<div class='paymentDueHeaderBlock'>" + (invest.InterestAgentFeeMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.InterestAgentFeeMstr)) : "") + "</div>");
+                            tableHTML.Append("</div>");
+                        }
+                        tableHTMLCounter = tableHTMLCounter + 1;
+                    }
+                    else if (invest.InvestType.Contains("Matured"))
+                    {
+                        if (tableHTML2Counter == 1)
+                        {
+                            tableHTML2.Append("<div class='TotalAmountDetailsDiv' style='height: 40px !important; text-align: center; padding: 6px !important;'><span class='fnt-14pt'>" + invest.InvestType + "</span ></div>");
+                        }
+
+                        tableHTML2.Append("<table class= 'CScustomTable HomeLoanDetailDiv' border = '0' style = 'height: auto;margin-bottom:2%;' ><tbody>");
+                        tableHTML2.Append("<tr><td colspan='2' class='w-25' style='font-weight: bold;padding-bottom: 8px !important;padding-top: 8px !important;'>" + invest.InterestDescription + "</td></tr>");
+                        tableHTML2.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Interest instruction</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + invest.InterestIntruction + "</td><td class='w-25' style='padding-bottom: 8px !important'>Date Invested</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + Convert.ToDateTime(invest.DateInvested).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy2) + "</td></tr>");
+                        tableHTML2.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Capital</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>"
+                           + (invest.CapitalMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.CapitalMstr)) : "") +
+                            "</td><td class='w-25' style='padding-bottom: 8px !important'>Agent fee deducted</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + (invest.AgentFeeDeducted != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.AgentFeeDeducted)) : "") + "</td></tr>");
+                        tableHTML2.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Interest</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + (invest.InterestMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.InterestMstr)) : "") + "</td><td class='w-25' style='padding-bottom: 8px !important'>VAT on fee</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + (invest.VatOnFeeMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.VatOnFeeMstr)) : "") + "</td></tr>");
+                        tableHTML2.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Agent Fee Structure</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" +
+                          (invest.AGENT_FEE_STRUCTURE_1 != null ? String.Format("{0:0.00}", invest.AGENT_FEE_STRUCTURE_1) + "%" + " " + invest.AGENT_FEE_STRUCTURE_2 : String.Empty) 
+                            + "</td><td class='w-25' style='padding-bottom: 8px !important'>Interest (less agent fee and VAT)</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + (invest.VatOnFeeMstr0 != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.VatOnFeeMstr0)) : "") + "</td></tr>");
+                        tableHTML2.Append("</tbody></table>");
+
+                        if (tableHTML2Counter == CorporateSaverTaxMatured.Count)
+                        {
+
+                            tableHTML2.Append("<div class='d-flex flex-row' style='margin-top: -1.5%;'>");
+                            tableHTML2.Append("<div class='paymentDueHeaderBlock'style='margin-right:3px; margin-bottom:1px;'>Total Capital</div>");
+                            tableHTML2.Append("<div class='paymentDueHeaderBlock'style='margin-right:3px; margin-bottom:1px;'>Total Interest</div>");
+                            tableHTML2.Append("<div class='paymentDueHeaderBlock'style='margin-right:3px; margin-bottom:1px;'>Total agent fee (deducted)</div>");
+                            tableHTML2.Append("<div class='paymentDueHeaderBlock'style='margin-right:3px; margin-bottom:1px;'>VAT on fee</div>");
+                            tableHTML2.Append("<div class='paymentDueHeaderBlock'style='margin-right:3px; margin-bottom:1px;'>Interest (less agent fee & VAT)</div>");
+                            tableHTML2.Append("</div>");                             
+                            tableHTML2.Append("<div class='d-flex flex-row' style='margin-top: 2px !important;margin-bottom: 1%;'>");
+                            tableHTML2.Append("<div class='paymentDueHeaderBlock'style='margin-right:3px; margin-bottom:1px;'>" + (invest.TotalCapitalMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.TotalCapitalMstr)) : "") + "</div>");
+                            tableHTML2.Append("<div class='paymentDueHeaderBlock'style='margin-right:3px; margin-bottom:1px;'>" + (invest.TotalInterestMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.TotalInterestMstr)) : "") + "</div>");
+                            tableHTML2.Append("<div class='paymentDueHeaderBlock'style='margin-right:3px; margin-bottom:1px;'>" + (invest.TotalAgentFeeMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.TotalAgentFeeMstr)) : "") + "</div>");
+                            tableHTML2.Append("<div class='paymentDueHeaderBlock'style='margin-right:3px; margin-bottom:1px;'>" + (invest.VatOnFeeMstr0 != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.VatOnFeeMstr0)) : "") + "</div>");
+                            tableHTML2.Append("<div class='paymentDueHeaderBlock'style='margin-right:3px; margin-bottom:1px;'>" + (invest.InterestAgentFeeMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.InterestAgentFeeMstr)) : "") + "</div>");
+                            tableHTML2.Append("</div>");
+                        }
+                        tableHTML2Counter = tableHTML2Counter + 1;
+
+                    }
+
+
+                });
+                tableHTML.Append(tableHTML2);
+                pageContent.Replace("{{dynemicTables_" + page.Identifier + "_" + widget.Identifier + "}}", tableHTML.ToString());
+            }
+
+        }
+
+
+        private void BindCorporateSaverTransactionDetailWidgetData(StringBuilder pageContent, List<DM_CorporateSaverMaster> CorporateSaverMasterList, PageWidget widget, Page page)
+        {
+            StringBuilder tableHTML = new StringBuilder();
+            if (CorporateSaverMasterList != null && CorporateSaverMasterList.Count > 0)
+            {
+                var CorporateSaverMaster = CorporateSaverMasterList[0];
+                int counter = 1;
+                if (CorporateSaverMaster.CorporateSaverTransactions != null && CorporateSaverMaster.CorporateSaverTransactions.Count > 0)
+                {
+                    var res = 0.0m;
+                    CorporateSaverMaster.CorporateSaverTransactions.ForEach(trans =>
+                    {
+                        if (counter == 1)
+                        {
+                            pageContent.Replace("{{FromDate}}", Convert.ToDateTime(trans.FromDate).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy2));
+                        }
+                        if (counter == CorporateSaverMaster.CorporateSaverTransactions.Count)
+                        {
+                            pageContent.Replace("{{ToDate}}", Convert.ToDateTime(trans.ToDate).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy2));
+                        }
+                        tableHTML.Append("<tr class='ht-20'>");
+                        tableHTML.Append("<td class='w-12 text-center'>" + Convert.ToDateTime(trans.FromDate).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>");
+                        tableHTML.Append("<td class='text-left'  style='width: 25%'>" + trans.PaymentDetails + "</td>");
+                        tableHTML.Append("<td class='text-left'  style='width: 25%'>" + trans.TransactionDescription + "</td>");
+
+                        if (decimal.TryParse(trans.Amount, out res))
+                        {
+                            tableHTML.Append("<td class='w-15 text-right'> " + (res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + "</td>");
+                        }
+                        else
+                        {
+                            tableHTML.Append("<td class='w-15 text-center'> - </td>");
+                        }
+                        if (decimal.TryParse(trans.Rate, out res))
+                        {
+                            // (res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-" + "%</td>");
+
+                            tableHTML.Append("<td class='w-8 text-right'>" + (res > 0 ? String.Format("{0:0.00}", res) + "%" : String.Empty) + "</td>");
+                        }
+                        if (decimal.TryParse(trans.CapitalBalance, out res))
+                        {
+                            tableHTML.Append("<td class='w-15 text-right'> " + (res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + "</td>");
+                        }
+                        else
+                        {
+                            tableHTML.Append("<td class='w-15 text-center'> - </td>");
+                        }
+                        tableHTML.Append("</tr>");
+                        counter++;
+                    });
+                }
+                pageContent.Replace("{{CorporateSaverTransactions_" + widget.Identifier + "}}", tableHTML.ToString());
+            }
+        }
 
         private void BindMCAVATAnalysisDetailWidgetData(StringBuilder pageContent, List<DM_MCAMaster> MCAMasterList, PageWidget widget, Page page)
         {
@@ -5487,12 +5780,12 @@ namespace nIS
                 {
                     MCAMaster.MCATransactions.ForEach(trans =>
                     {
-                    tableHTML.Append("<tr class='ht-20'>" +
-                                     "<td class='ip-w-25 text-left'>" + DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
-                                     "<td class='ip-w-25 text-left'>" + DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
-                                     "<td class='ip-w-25 text-right'>" + (trans.Rate != null ? Math.Round(decimal.Parse(trans.Rate.ToString()), 2).ToString() : "0.00") + "</td>" +
-                                     "<td class='ip-w-25 text-right'>" + (trans.Credit != null ? Math.Round(decimal.Parse(trans.Credit.ToString()), 2).ToString() : "0.00") + "</td>" +
-                                         "</tr>");
+                        tableHTML.Append("<tr class='ht-20'>" +
+                                         "<td class='ip-w-25 text-left'>" + DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
+                                         "<td class='ip-w-25 text-left'>" + DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
+                                         "<td class='ip-w-25 text-right'>" + (trans.Rate != null ? Math.Round(decimal.Parse(trans.Rate.ToString()), 2).ToString() : "0.00") + "</td>" +
+                                         "<td class='ip-w-25 text-right'>" + (trans.Credit != null ? Math.Round(decimal.Parse(trans.Credit.ToString()), 2).ToString() : "0.00") + "</td>" +
+                                             "</tr>");
                     });
                 }
                 pageContent.Replace("{{MCAVATTable_" + page.Identifier + "_" + widget.Identifier + "}}", tableHTML.ToString());
@@ -5500,6 +5793,25 @@ namespace nIS
         }
 
 
+
+        private void BindCorporateAgentDetailsData(StringBuilder pageContent, List<DM_CorporateSaverMaster> CorporateSaverMasterList,
+            PageWidget widget, Page page)
+        {
+            // StringBuilder tableHTML = new StringBuilder();
+            if (CorporateSaverMasterList != null && CorporateSaverMasterList.Count > 0)
+            {
+                var CorporateSaverMaster = CorporateSaverMasterList[0];
+                if (CorporateSaverMaster != null)
+                {
+                    pageContent.Replace("{{Interest_" + page.Identifier + "_" + widget.Identifier + "}}", "R1 018,29 ");
+                    pageContent.Replace("{{VATonfee_" + page.Identifier + "_" + widget.Identifier + "}}", "R0,00"); //CorporateSaverMaster.VatOnFee);
+                    pageContent.Replace("{{Agentfeededucted_" + page.Identifier + "_" + widget.Identifier + "}}", "R551,53");// CorporateSaverMaster.AgentFeeDeducted);
+                    pageContent.Replace("{{yeartodate_" + page.Identifier + "_" + widget.Identifier + "}}", " 28-02-2022"); //CorporateSaverMaster.AgentFeeStructure1);
+
+                }
+
+            }
+        }
 
         private StringBuilder Translate(StringBuilder inputStr, DM_CustomerMaster customer)
         {

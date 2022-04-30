@@ -107,24 +107,24 @@ export class ImageComponent {
   public baseURL = AppSettings.baseURL;
 
   constructor(private _http: HttpClient,
-    private sanitizer: DomSanitizer) {}
+    private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
     if (this.imgItem != null && this.imgItem.WidgetSetting != null && this.imgItem.WidgetSetting != '' && this.testJSON(this.imgItem.WidgetSetting)) {
       let widgetSetting = JSON.parse(this.imgItem.WidgetSetting);
       if (!widgetSetting.isPersonalize && widgetSetting.AssetLibraryId != 0 && widgetSetting.AssetId != 0) {
         this._http.get(this.baseURL + 'assetlibrary/asset/download?assetIdentifier=' + widgetSetting.AssetId, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
-        .subscribe(
-          data => {
-            let contentType = data.headers.get('Content-Type');
-            let fileName = data.headers.get('x-filename');
-            const blob = new Blob([data.body], { type: contentType });
-            let objectURL = URL.createObjectURL(blob);
-            this.ImageSrc = this.sanitizer.bypassSecurityTrustResourceUrl(objectURL); //this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(objectURL));
-          },
-          error => {
-            //$('.overlay').show();
-          });
+          .subscribe(
+            data => {
+              let contentType = data.headers.get('Content-Type');
+              let fileName = data.headers.get('x-filename');
+              const blob = new Blob([data.body], { type: contentType });
+              let objectURL = URL.createObjectURL(blob);
+              this.ImageSrc = this.sanitizer.bypassSecurityTrustResourceUrl(objectURL); //this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(objectURL));
+            },
+            error => {
+              //$('.overlay').show();
+            });
       } else {
         this.ImageSrc = 'assets/images/icon-image.png';
       }
@@ -168,7 +168,7 @@ export class ImageComponent {
         } else {
           $('#Image1').css('height', 'auto');
         }
-      } 
+      }
     }, 100);
   }
 }
@@ -199,49 +199,49 @@ export class VideoComponent {
   public baseURL = AppSettings.baseURL;
 
   constructor(private _http: HttpClient,
-    private sanitizer: DomSanitizer) {}
+    private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
-    if(this.vdoItem != null) {
-      this.videoWidgetDivId = "VideoWidgetDiv"+this.vdoItem.x+this.vdoItem.y;
-      this.videoControlTagId = 'videoConfigPreviewSrc'+this.vdoItem.x+this.vdoItem.y;
+    if (this.vdoItem != null) {
+      this.videoWidgetDivId = "VideoWidgetDiv" + this.vdoItem.x + this.vdoItem.y;
+      this.videoControlTagId = 'videoConfigPreviewSrc' + this.vdoItem.x + this.vdoItem.y;
     }
     if (this.vdoItem != null && this.vdoItem.WidgetSetting != null && this.vdoItem.WidgetSetting != '' && this.testJSON(this.vdoItem.WidgetSetting)) {
       let widgetSetting = JSON.parse(this.vdoItem.WidgetSetting);
-      if(widgetSetting.isEmbedded) {
+      if (widgetSetting.isEmbedded) {
         this.videoSrc = widgetSetting.SourceUrl;
       }
       else if (!widgetSetting.isPersonalize && widgetSetting.AssetLibraryId != 0 && widgetSetting.AssetId != 0) {
         this._http.get(this.baseURL + 'assetlibrary/asset/download?assetIdentifier=' + widgetSetting.AssetId, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
-        .subscribe(
-          data => {
-            let contentType = data.headers.get('Content-Type');
-            const blob = new Blob([data.body], { type: contentType });
-            let objectURL = URL.createObjectURL(blob);
-            var url = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(objectURL));
-            var videoDiv = document.getElementById(this.videoWidgetDivId);
-            if (videoDiv != undefined && videoDiv != null) {
-              if (videoDiv.hasChildNodes()) {
-                videoDiv.removeChild(document.getElementById(this.videoControlTagId));
-              }
-              
-              var video = document.createElement('video');
-              video.id = this.videoControlTagId;
-              video.style.height = "200px";
-              video.style.width = "75%";
-              video.controls = true;
+          .subscribe(
+            data => {
+              let contentType = data.headers.get('Content-Type');
+              const blob = new Blob([data.body], { type: contentType });
+              let objectURL = URL.createObjectURL(blob);
+              var url = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(objectURL));
+              var videoDiv = document.getElementById(this.videoWidgetDivId);
+              if (videoDiv != undefined && videoDiv != null) {
+                if (videoDiv.hasChildNodes()) {
+                  videoDiv.removeChild(document.getElementById(this.videoControlTagId));
+                }
 
-              var sourceTag = document.createElement('source');
-              sourceTag.setAttribute('src', url);
-              sourceTag.setAttribute('type', 'video/mp4');
-              video.appendChild(sourceTag);
-              videoDiv.appendChild(video);
-            }
-          },
-          error => {
-            //$('.overlay').show();
-          });
-      } 
+                var video = document.createElement('video');
+                video.id = this.videoControlTagId;
+                video.style.height = "200px";
+                video.style.width = "75%";
+                video.controls = true;
+
+                var sourceTag = document.createElement('source');
+                sourceTag.setAttribute('src', url);
+                sourceTag.setAttribute('type', 'video/mp4');
+                video.appendChild(sourceTag);
+                videoDiv.appendChild(video);
+              }
+            },
+            error => {
+              //$('.overlay').show();
+            });
+      }
       else {
         this.videoSrc = 'assets/images/SampleVideo.mp4';
       }
@@ -578,8 +578,8 @@ export class TransactionDetailsComponent {
   }
   constructor(
     private fb: FormBuilder,
-   ) {
-    
+  ) {
+
   }
 }
 
@@ -889,7 +889,7 @@ export class AnalyticsWidgetComponent {
 
   ngAfterViewInit() {
     setTimeout(() => {
-      Highcharts.chart('chartWidgetPiecontainer', this.options4);      
+      Highcharts.chart('chartWidgetPiecontainer', this.options4);
     }, 100);
   }
 
@@ -956,7 +956,7 @@ export class SavingTrendsComponent {
   }
   ngAfterViewInit() {
     setTimeout(() => {
-      Highcharts.chart('savingTrendscontainer', this.options4);      
+      Highcharts.chart('savingTrendscontainer', this.options4);
     }, 100);
   }
 
@@ -1079,7 +1079,7 @@ export class SpendindTrendsComponent {
   }
   ngAfterViewInit() {
     setTimeout(() => {
-      Highcharts.chart('spendingTrendscontainer', this.options4);  
+      Highcharts.chart('spendingTrendscontainer', this.options4);
     }, 10);
   }
 
@@ -1173,16 +1173,16 @@ export class DynamicPieChartWidgetComponent {
   }
 
   ngAfterViewInit() {
-    if(this.piechartItem != undefined) {
+    if (this.piechartItem != undefined) {
       setTimeout(() => {
-        Highcharts.chart(this.barChartDivId, this.options4);  
+        Highcharts.chart(this.barChartDivId, this.options4);
       }, 10);
     }
   }
 
   ngOnInit() {
-    if(this.piechartItem != undefined) {
-      this.barChartDivId = "pieChartcontainer"+this.piechartItem.WidgetId;
+    if (this.piechartItem != undefined) {
+      this.barChartDivId = "pieChartcontainer" + this.piechartItem.WidgetId;
       $(document).ready(function () {
         setTimeout(function () {
           window.dispatchEvent(new Event('resize'));
@@ -1248,16 +1248,16 @@ export class DynamicLineChartWidgetComponent {
   }
 
   ngAfterViewInit() {
-    if(this.linechartItem != undefined) {
+    if (this.linechartItem != undefined) {
       setTimeout(() => {
-        Highcharts.chart(this.barChartDivId, this.options4);  
+        Highcharts.chart(this.barChartDivId, this.options4);
       }, 10);
     }
   }
 
   ngOnInit() {
-    if(this.linechartItem != undefined) {
-      this.barChartDivId = "lineGraphcontainer"+this.linechartItem.WidgetId;
+    if (this.linechartItem != undefined) {
+      this.barChartDivId = "lineGraphcontainer" + this.linechartItem.WidgetId;
       $(document).ready(function () {
         setTimeout(function () {
           window.dispatchEvent(new Event('resize'));
@@ -1330,16 +1330,16 @@ export class DynamicBarChartWidgetComponent {
     }]
   }
   ngAfterViewInit() {
-    if(this.barchartItem != undefined) {
+    if (this.barchartItem != undefined) {
       setTimeout(() => {
-        Highcharts.chart(this.barChartDivId, this.options4);  
+        Highcharts.chart(this.barChartDivId, this.options4);
       }, 10);
     }
   }
 
   ngOnInit() {
-    if(this.barchartItem != undefined) {
-      this.barChartDivId = "barGraphcontainer"+this.barchartItem.WidgetId;
+    if (this.barchartItem != undefined) {
+      this.barChartDivId = "barGraphcontainer" + this.barchartItem.WidgetId;
       $(document).ready(function () {
         setTimeout(function () {
           window.dispatchEvent(new Event('resize'));
@@ -1365,10 +1365,9 @@ export class DynamicBarChartWidgetComponent {
 })
 export class DynamicHhtmlComponent {
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit() {
-    
   }
 
 }
@@ -1389,12 +1388,99 @@ export class DynamicHhtmlComponent {
 })
 export class StaticHtmlComponent {
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit() {
-    
+
   }
 
+}
+
+// Component Created for StaticHtml Widget--
+@Component({
+  selector: 'cs-agent-logo-widget',
+  template: `<div class="widget">
+    <div class="widget-header">
+      <span class="widget-header-title"></span>
+    </div>
+    <div class="widget-area position-relative width100">
+      <div class="widget-indicator-inner pt-2">
+        <i class="fa fa-lg fa-code" aria-hidden="true" style='font-size:2em;'><p>I am CS Agent</p></i>
+      </div>
+    </div>
+  </div>`
+})
+export class CSAgentLogoComponent {
+}
+
+
+//Component Created for StaticHtml Widget--
+@Component({
+  selector: 'corporate-saver-agent-message',
+  template: `<div id=WidgetId class='card border-0' style='height:100%;'>
+    <div class='card-body text-left py-0'>
+      <div class='pb-2' style='font-size: 14pt; font-family: "Mark Pro Bold";'>BDO Wealth Advisers (Pty) Ltd</div>
+      <div class='pb-2'  style='font-size: 8pt; font-family: "Mark Pro Regular";'>As a valued client, you are enjoying the benefits of Bonus Call, Should your weighted average balance (WAB) for the following month drop below 85% of your opening balance, you will earn interest at 3,80% pa.If your WAB meets or exceeds the 85% threshold, you will earn an additional 25 basis points, ie 4,05% interest pa.</div>
+      </div>
+      </div>`
+})
+export class CorporateSaverAgentMessageComponent {
+}
+@Component({
+  selector: 'corporate-saver-transaction',
+  template: `<div class="widget">
+  <div class="widget-header">
+    <span class="widget-header-title"></span>
+  </div>
+  <div class="widget-area position-relative width100">
+    <div class="widget-indicator-inner pt-2">
+      <i class="fa fa-lg fa-code" aria-hidden="true" style='font-size:2em;'><p>I am CS Agent</p></i>
+    </div>
+  </div>
+</div>`})
+export class CorporateSaverTransactionComponent {
+}
+@Component({
+  selector: 'corporate-agent-details',
+  template: `<div class="widget">
+  <div class="widget-header">
+    <span class="widget-header-title"></span>
+  </div>
+  <div class="widget-area position-relative width100">
+    <div class="widget-indicator-inner pt-2">
+      <i class="fa fa-lg fa-code" aria-hidden="true" style='font-size:2em;'><p>I am CS Agent</p></i>
+    </div>
+  </div>
+</div>`})
+export class CorporateAgentDetailsComponent {
+}
+@Component({
+  selector: 'corporate-saver-client-details',
+  template: `<div class="widget">
+  <div class="widget-header">
+    <span class="widget-header-title"></span>
+  </div>
+  <div class="widget-area position-relative width100">
+    <div class="widget-indicator-inner pt-2">
+      <i class="fa fa-lg fa-code" aria-hidden="true" style='font-size:2em;'><p>I am CS Agent</p></i>
+    </div>
+  </div>
+</div>`})
+export class CorporateSaverClientDetailsComponent {
+}
+@Component({
+  selector: 'corporate-saver-table-total',
+  template: `<div class="widget">
+  <div class="widget-header">
+    <span class="widget-header-title"></span>
+  </div>
+  <div class="widget-area position-relative width100">
+    <div class="widget-indicator-inner pt-2">
+      <i class="fa fa-lg fa-code" aria-hidden="true" style='font-size:2em;'><p>I am CS Agent</p></i>
+    </div>
+  </div>
+</div>`})
+export class CorporateSaverTableTotalComponent {
 }
 
 
@@ -1419,17 +1505,15 @@ export class SegmentBasedContentComponent {
 
   constructor(private _http: HttpClient,
     private sanitizer: DomSanitizer) {
-    }
+  }
 
   ngOnInit() {
     if (this.SegmentBasedContentItem != null && this.SegmentBasedContentItem.WidgetSetting != null && this.SegmentBasedContentItem.WidgetSetting != '' && this.testJSON(this.SegmentBasedContentItem.WidgetSetting)) {
       let widgetSetting = JSON.parse(this.SegmentBasedContentItem.WidgetSetting);
-      if(widgetSetting.length > 0)
-      {
+      if (widgetSetting.length > 0) {
         this.html = this.sanitizer.bypassSecurityTrustHtml(widgetSetting[0].Html);
       }
-      else
-      {
+      else {
         this.html = '';
       }
     }
@@ -1455,7 +1539,7 @@ export class SegmentBasedContentComponent {
     setTimeout(() => {
       if (this.SegmentBasedContentItem != null && this.SegmentBasedContentItem.WidgetSetting != null && this.SegmentBasedContentItem.WidgetSetting != '' && this.testJSON(this.SegmentBasedContentItem.WidgetSetting)) {
         let widgetSetting = JSON.parse(this.SegmentBasedContentItem.WidgetSetting);
-      } 
+      }
     }, 100);
   }
 
@@ -1519,7 +1603,7 @@ export class SavingTrendsPreviewComponent {
   }
   ngAfterViewInit() {
     setTimeout(() => {
-      Highcharts.chart('savingTrendsPreviewContainer', this.options4);      
+      Highcharts.chart('savingTrendsPreviewContainer', this.options4);
     }, 100);
   }
 
@@ -1593,7 +1677,7 @@ export class SpendindTrendsPreviewComponent {
   }
   ngAfterViewInit() {
     setTimeout(() => {
-      Highcharts.chart('spendingTrendsPreviewcontainer', this.options4);  
+      Highcharts.chart('spendingTrendsPreviewcontainer', this.options4);
     }, 10);
   }
 
@@ -1678,7 +1762,7 @@ export class AnalyticsWidgetPreviewComponent {
 
   ngAfterViewInit() {
     setTimeout(() => {
-      Highcharts.chart('chartWidgetPiePreviewcontainer', this.options4);      
+      Highcharts.chart('chartWidgetPiePreviewcontainer', this.options4);
     }, 100);
   }
 
@@ -1746,16 +1830,16 @@ export class DynamicLineChartWidgetPreviewComponent {
   }
 
   ngAfterViewInit() {
-    if(this.linechartItem != undefined) {
+    if (this.linechartItem != undefined) {
       setTimeout(() => {
-        Highcharts.chart(this.barChartDivId, this.options4);  
+        Highcharts.chart(this.barChartDivId, this.options4);
       }, 10);
     }
   }
 
   ngOnInit() {
-    if(this.linechartItem != undefined) {
-      this.barChartDivId = "dynamiclinechartpreviewcontainer"+this.linechartItem.WidgetId;
+    if (this.linechartItem != undefined) {
+      this.barChartDivId = "dynamiclinechartpreviewcontainer" + this.linechartItem.WidgetId;
       $(document).ready(function () {
         setTimeout(function () {
           window.dispatchEvent(new Event('resize'));
@@ -1829,16 +1913,16 @@ export class DynamicBarChartWidgetPreviewComponent {
   }
 
   ngAfterViewInit() {
-    if(this.dynamicBarchartItem != undefined) {
+    if (this.dynamicBarchartItem != undefined) {
       setTimeout(() => {
-        Highcharts.chart(this.barChartDivId, this.options4);  
+        Highcharts.chart(this.barChartDivId, this.options4);
       }, 10);
     }
   }
 
   ngOnInit() {
-    if(this.dynamicBarchartItem != undefined) {
-      this.barChartDivId = "dynamicbarchartpreviewcontainer"+this.dynamicBarchartItem.WidgetId;
+    if (this.dynamicBarchartItem != undefined) {
+      this.barChartDivId = "dynamicbarchartpreviewcontainer" + this.dynamicBarchartItem.WidgetId;
       $(document).ready(function () {
         setTimeout(function () {
           window.dispatchEvent(new Event('resize'));
@@ -1921,16 +2005,16 @@ export class DynamicPieChartWidgetPreviewComponent {
   }
 
   ngAfterViewInit() {
-    if(this.piechartItem != undefined) {
+    if (this.piechartItem != undefined) {
       setTimeout(() => {
-        Highcharts.chart(this.barChartDivId, this.options4);  
+        Highcharts.chart(this.barChartDivId, this.options4);
       }, 10);
     }
   }
 
   ngOnInit() {
-    if(this.piechartItem != undefined) {
-      this.barChartDivId = "dynamicpiechartpreviewcontainer"+this.piechartItem.WidgetId;
+    if (this.piechartItem != undefined) {
+      this.barChartDivId = "dynamicpiechartpreviewcontainer" + this.piechartItem.WidgetId;
       $(document).ready(function () {
         setTimeout(function () {
           window.dispatchEvent(new Event('resize'));
@@ -1957,6 +2041,20 @@ export class DynamicPieChartWidgetPreviewComponent {
 export class CustomerDetailsComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
+}
+@Component({
+  selector: 'Corporate-Saver-Agent-Address',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+       <div class='card border-0'>
+          <div class="card-body AgentAddress">
+          Address 1 <br>Address 2 <br>Address 3 <br>Address 4 <br><br><p style="color:green;">Agent contact details | 0219187800</p>
+          </div>
+      </div>
+    </div>
+  </div>`
+})
+export class CorporateSaverAgentAddressComponent {
 }
 
 // Component Created for Bank Details Widget -- Nedbank
