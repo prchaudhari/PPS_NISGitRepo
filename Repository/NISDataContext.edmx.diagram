@@ -98,7 +98,7 @@
         <EntityTypeShape EntityType="NISModel.NB_BatchMaster_Source" Width="1.5" PointX="11.75" PointY="7.75" />
         <EntityTypeShape EntityType="NISModel.NB_BranchMaster" Width="1.5" PointX="0.75" PointY="14.75" />
         <EntityTypeShape EntityType="NISModel.NB_BranchMaster_Old" Width="1.5" PointX="7.75" PointY="14.75" />
-        <EntityTypeShape EntityType="NISModel.NB_CustomerMaster" PointX="10.375" PointY="15.75" Width="1.5" />
+        <EntityTypeShape EntityType="NISModel.NB_CustomerMaster" PointX="10.375" PointY="16.125" Width="1.75" />
         <EntityTypeShape EntityType="NISModel.NB_Investment_Source" Width="1.5" PointX="18.75" PointY="0.75" />
         <EntityTypeShape EntityType="NISModel.NB_InvestmentMaster" Width="1.5" PointX="16.25" PointY="11.125" />
         <EntityTypeShape EntityType="NISModel.NB_InvestmentMaster_Old" Width="1.5" PointX="0.75" PointY="18.75" />

@@ -822,7 +822,7 @@
         /// <param name="batchId"> the batch identifier </param>
         /// <param name="customerId"> the customer identifier </param>
         /// <returns>true if deleted successfully, otherwise false.</returns>
-        public bool DeleteUnwantedDirectory(long batchId, long customerId, string baseURL)
+        public bool DeleteUnwantedDirectory(long batchId, long? customerId, string baseURL)
         {
             string deleteDirPath = baseURL + "\\Statements" + "\\" + batchId + "\\" + customerId;
             DirectoryInfo directoryInfo = new DirectoryInfo(deleteDirPath);

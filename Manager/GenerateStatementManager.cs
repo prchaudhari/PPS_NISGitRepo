@@ -1813,7 +1813,7 @@ namespace nIS
                                         break;
 
                                     case HtmlConstants.WEALTH_HOME_LOAN_BRANCH_DETAILS_WIDGET_NAME:
-                                        IsFailed = this.BindHomeLoanWealthBranchDetailsData(pageContent, page, widget, ErrorMessages);
+                                        IsFailed = this.BindHomeLoanWealthBranchDetailsData(pageContent, page, widget, HomeLoanAccounts, ErrorMessages);
                                         break;
 
                                     case HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_DETAILS_WIDGET_NAME:
@@ -2805,7 +2805,7 @@ namespace nIS
             try
             {
                 var html = "<div style=\"page-break-before:always\">&nbsp;</div>";
-                
+
                 pageContent.Replace("{{PageBreak_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", html);
 
                 return false;
@@ -3149,9 +3149,9 @@ namespace nIS
                 (!string.IsNullOrEmpty(customer.AddressLine3) ? (customer.AddressLine3) : string.Empty) + "<br>" +
                 (!string.IsNullOrEmpty(customer.AddressLine4) ? customer.AddressLine4 : string.Empty) + "<br>";
 
-            if (isShowCellNo)
+            if (isShowCellNo && !string.IsNullOrWhiteSpace(customer.Mask_Cell_No))
             {
-                CustomerDetails += "<br><br> Cell:" + customer.Mask_Cell_No;
+                CustomerDetails += "<br><br> Cell: " + customer.Mask_Cell_No;
             }
 
             if (page.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_FOR_CIB_PAGE_TYPE || page.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_FOR_WEA_PAGE_TYPE)
@@ -3237,9 +3237,15 @@ namespace nIS
                 var BondDetails = new StringBuilder();
                 if (HomeLoans.Count == 1)
                 {
-                    BondDetails.Append("Bond No: " + HomeLoans[0].InvestorId.ToString() + "<br>");
+                    BondDetails.Append("Bond No: " + HomeLoans?.FirstOrDefault().BondNo.ToString() + "<br>");
                 }
-                BondDetails.Append(DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd));
+
+                var date = string.Empty;
+                if (HomeLoans != null && HomeLoans.Count > 0)
+                {
+                    date = HomeLoans.FirstOrDefault().StatementDate != null ? Convert.ToDateTime(HomeLoans.FirstOrDefault().StatementDate).ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd) : "";
+                }
+                BondDetails.Append(date);
 
                 var contactCenter = string.Empty;
 
@@ -4247,7 +4253,7 @@ namespace nIS
                     TabContentHtml.Append((HomeLoans.Count > 1) ? "<div class='tab-content'>" : string.Empty);
                     HomeLoans.ForEach(HomeLoan =>
                     {
-                        var accNo = HomeLoan.InvestorId.ToString();
+                        var accNo = HomeLoan.BondNo.ToString();
                         string lastFourDigisOfAccountNumber = accNo.Length > 4 ? accNo.Substring(Math.Max(0, accNo.Length - 4)) : accNo;
 
                         TabContentHtml.Append("<div id='HomeLoan-" + lastFourDigisOfAccountNumber + "' >");
@@ -4260,24 +4266,10 @@ namespace nIS
                         var secDesc1 = string.Empty;
                         var secDesc2 = string.Empty;
                         var secDesc3 = string.Empty;
-                        if (HomeLoan.SecDescription1.Length > 15 || ((HomeLoan.SecDescription1 + " " + HomeLoan.SecDescription2).Length > 25))
-                        {
-                            secDesc1 = HomeLoan.SecDescription1;
-                            if ((HomeLoan.SecDescription2 + " " + HomeLoan.SecDescription3).Length > 25)
-                            {
-                                secDesc2 = HomeLoan.SecDescription2;
-                                secDesc3 = HomeLoan.SecDescription3;
-                            }
-                            else
-                            {
-                                secDesc2 = HomeLoan.SecDescription2 + " " + HomeLoan.SecDescription3;
-                            }
-                        }
-                        else
-                        {
-                            secDesc1 = HomeLoan.SecDescription1 + " " + HomeLoan.SecDescription2;
-                            secDesc2 = HomeLoan.SecDescription3;
-                        }
+
+                        secDesc1 = HomeLoan.SecDescription1;
+                        secDesc2 = HomeLoan.SecDescription2;
+                        secDesc3 = HomeLoan.SecDescription3;
 
                         LoanDetailHtml.Replace("{{SecDescription1}}", secDesc1);
                         LoanDetailHtml.Replace("{{SecDescription2}}", secDesc2);
@@ -4324,6 +4316,7 @@ namespace nIS
                         var LoanTransactionHtml = new StringBuilder(HtmlConstants.HOME_LOAN_TRANSACTION_DETAIL_DIV_HTML);
                         LoanTransactionHtml.Replace("HomeLoanTransactionTable", "HomeLoanTransactionTable_" + HomeLoan.InvestorId + "_" + page.Identifier);
                         StringBuilder tableHTML = new StringBuilder();
+                        string debit, credit, remainingBalance = string.Empty;
                         if (HomeLoan.LoanTransactions != null && HomeLoan.LoanTransactions.Count > 0)
                         {
                             HomeLoan.LoanTransactions.ForEach(trans =>
@@ -4331,32 +4324,35 @@ namespace nIS
                                 res = 0.0m;
                                 if (decimal.TryParse(trans.Debit, out res))
                                 {
-                                    trans.Debit = res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : trans.Debit;
+                                    trans.Debit = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res);
+                                    debit = trans.Debit.Replace("R", "").Replace("$", "");
                                 }
                                 else
                                 {
-                                    trans.Debit = trans.Debit;
+                                    debit = trans.Debit;
                                 }
 
                                 if (decimal.TryParse(trans.Credit, out res))
                                 {
-                                    trans.Credit = res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : trans.Credit;
+                                    trans.Credit = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res);
+                                    credit = trans.Credit.Replace("R", "").Replace("$", "");
                                 }
                                 else
                                 {
-                                    trans.Credit = trans.Credit;
+                                    credit = trans.Credit;
                                 }
 
                                 if (decimal.TryParse(trans.RunningBalance, out res))
                                 {
-                                    trans.RunningBalance = res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : trans.RunningBalance;
+                                    trans.RunningBalance = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res);
+                                    remainingBalance = trans.RunningBalance.Replace("R", "").Replace("$", "");
                                 }
                                 else
                                 {
-                                    trans.RunningBalance = trans.RunningBalance;
+                                    remainingBalance = trans.RunningBalance;
                                 }
 
-                                tableHTML.Append("<tr class='ht-20'><td class='w-13 text-center'>" + trans.Posting_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td><td class='w-13 text-center'>" + trans.Effective_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td><td class='w-35'>" + trans.Description + "</td><td class='w-12 text-right'>" + trans.Debit + "</td><td class='w-12 text-right'>" + trans.Credit + "</td><td class='w-15 text-right'>" + trans.RunningBalance + "</td></tr>");
+                                tableHTML.Append("<tr class='ht-20'><td class='w-13 text-center'>" + trans.Posting_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td><td class='w-13 text-center'>" + trans.Effective_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td><td class='w-35'>" + trans.Description + "</td><td class='w-12 text-right'>" + debit + "</td><td class='w-12 text-right'>" + credit + "</td><td class='w-15 text-right'>" + remainingBalance + "</td></tr>");
                             });
                         }
                         LoanTransactionHtml.Replace("{{HomeLoanTransactionRow}}", tableHTML.ToString());
@@ -4366,7 +4362,7 @@ namespace nIS
                         #region Loan arrears
                         var paddingClass = HomeLoan.LoanTransactions.Count > 10 ? "pb-2 pt-5" : "py-2";
                         var LoanArrearHtml = new StringBuilder(HtmlConstants.HOME_LOAN_STATEMENT_OVERVIEW_AND_PAYMENT_DUE_DIV_HTML).Replace("{{PaddingClass}}", paddingClass);
-                        LoanArrearHtml.Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MMMM_yyyy));
+                        LoanArrearHtml.Replace("{{StatementDate}}", (HomeLoan?.StatementDate != null ? Convert.ToDateTime(HomeLoan?.StatementDate).ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd) : ""));
                         res = 0.0m;
                         if (decimal.TryParse(HomeLoan.Balance, out res))
                         {
@@ -4483,24 +4479,10 @@ namespace nIS
                         var secDesc1 = string.Empty;
                         var secDesc2 = string.Empty;
                         var secDesc3 = string.Empty;
-                        if (HomeLoan.SecDescription1.Length > 15 || ((HomeLoan.SecDescription1 + " " + HomeLoan.SecDescription2).Length > 25))
-                        {
-                            secDesc1 = HomeLoan.SecDescription1;
-                            if ((HomeLoan.SecDescription2 + " " + HomeLoan.SecDescription3).Length > 25)
-                            {
-                                secDesc2 = HomeLoan.SecDescription2;
-                                secDesc3 = HomeLoan.SecDescription3;
-                            }
-                            else
-                            {
-                                secDesc2 = HomeLoan.SecDescription2 + " " + HomeLoan.SecDescription3;
-                            }
-                        }
-                        else
-                        {
-                            secDesc1 = HomeLoan.SecDescription1 + " " + HomeLoan.SecDescription2;
-                            secDesc2 = HomeLoan.SecDescription3;
-                        }
+
+                        secDesc1 = HomeLoan.SecDescription1;
+                        secDesc2 = HomeLoan.SecDescription2;
+                        secDesc3 = HomeLoan.SecDescription3;
 
                         LoanDetailHtml.Replace("{{SecDescription1}}", secDesc1);
                         LoanDetailHtml.Replace("{{SecDescription2}}", secDesc2);
@@ -4547,6 +4529,7 @@ namespace nIS
                         var LoanTransactionHtml = new StringBuilder(HtmlConstants.HOME_LOAN_WEALTH_TRANSACTION_DETAIL_DIV_HTML);
                         LoanTransactionHtml.Replace("HomeLoanTransactionTable", "HomeLoanTransactionTable_" + HomeLoan.InvestorId + "_" + page.Identifier);
                         StringBuilder tableHTML = new StringBuilder();
+                        string debit, credit, runningBalance = string.Empty;
                         if (HomeLoan.LoanTransactions != null && HomeLoan.LoanTransactions.Count > 0)
                         {
                             HomeLoan.LoanTransactions.ForEach(trans =>
@@ -4554,32 +4537,35 @@ namespace nIS
                                 res = 0.0m;
                                 if (decimal.TryParse(trans.Debit, out res))
                                 {
-                                    trans.Debit = res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : trans.Debit;
+                                    trans.Debit = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res);
+                                    debit = trans.Debit.Replace("R", "").Replace("$", "");
                                 }
                                 else
                                 {
-                                    trans.Debit = trans.Debit;
+                                    debit = trans.Debit;
                                 }
 
                                 if (decimal.TryParse(trans.Credit, out res))
                                 {
-                                    trans.Credit = res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : trans.Credit;
+                                    trans.Credit = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res);
+                                    credit = trans.Credit.Replace("R", "").Replace("$", "");
                                 }
                                 else
                                 {
-                                    trans.Credit = trans.Credit;
+                                    credit = trans.Credit;
                                 }
 
                                 if (decimal.TryParse(trans.RunningBalance, out res))
                                 {
-                                    trans.RunningBalance = res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : trans.RunningBalance;
+                                    trans.RunningBalance = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res);
+                                    runningBalance = trans.RunningBalance.Replace("R", "").Replace("$", "");
                                 }
                                 else
                                 {
-                                    trans.RunningBalance = trans.RunningBalance;
+                                    runningBalance = trans.RunningBalance;
                                 }
 
-                                tableHTML.Append("<tr class='ht-20'><td class='w-13 text-center'>" + trans.Posting_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td><td class='w-13 text-center'>" + trans.Effective_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td><td class='w-35'>" + trans.Description + "</td><td class='w-12 text-right'>" + trans.Debit + "</td><td class='w-12 text-right'>" + trans.Credit + "</td><td class='w-15 text-right'>" + trans.RunningBalance + "</td></tr>");
+                                tableHTML.Append("<tr class='ht-20'><td class='w-13 text-center'>" + trans.Posting_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td><td class='w-13 text-center'>" + trans.Effective_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td><td class='w-35'>" + trans.Description + "</td><td class='w-12 text-right'>" + debit + "</td><td class='w-12 text-right'>" + credit + "</td><td class='w-15 text-right'>" + runningBalance + "</td></tr>");
                             });
                         }
                         LoanTransactionHtml.Replace("{{HomeLoanTransactionRow}}", tableHTML.ToString());
@@ -4589,7 +4575,7 @@ namespace nIS
                         #region Loan arrears
                         var paddingClass = HomeLoan.LoanTransactions.Count > 10 ? "pb-2 pt-5" : "py-2";
                         var LoanArrearHtml = new StringBuilder(HtmlConstants.HOME_LOAN_WEALTH_STATEMENT_OVERVIEW_AND_PAYMENT_DUE_DIV_HTML).Replace("{{PaddingClass}}", paddingClass);
-                        LoanArrearHtml.Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MMMM_yyyy));
+                        LoanArrearHtml.Replace("{{StatementDate}}", (HomeLoan?.StatementDate != null ? Convert.ToDateTime(HomeLoan?.StatementDate).ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd) : ""));
                         res = 0.0m;
                         if (decimal.TryParse(HomeLoan.Balance, out res))
                         {
@@ -4890,7 +4876,7 @@ namespace nIS
                                 htmlForWidget.Replace("{{TotalInstalment}}", "R0.00");
                             }
 
-                            htmlForWidget.Replace("{{InstalmentDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
+                            htmlForWidget.Replace("{{InstalmentDate}}", HomeLoan.LoanTransactions.Select(x => x.Posting_Date).OrderByDescending(x => x)?.FirstOrDefault().ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
                             pageContent.Replace("{{Home_Loan_Instalment_Details_" + widget.Identifier + "}}", htmlForWidget.ToString());
 
                             #endregion
@@ -4910,13 +4896,20 @@ namespace nIS
             }
         }
 
-        private bool BindHomeLoanWealthBranchDetailsData(StringBuilder pageContent, Page page, PageWidget widget, StringBuilder ErrorMessages)
+        private bool BindHomeLoanWealthBranchDetailsData(StringBuilder pageContent, Page page, PageWidget widget, List<DM_HomeLoanMaster> HomeLoanMaster, StringBuilder ErrorMessages)
         {
             try
             {
                 StringBuilder htmlString = new StringBuilder();
                 htmlString.Append(HtmlConstants.BANK_DETAILS);
-                htmlString.Replace("{{TodayDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd));
+                if (HomeLoanMaster != null && HomeLoanMaster.Count > 0)
+                {
+                    htmlString.Replace("{{TodayDate}}", HomeLoanMaster.FirstOrDefault().StatementDate != null ? Convert.ToDateTime(HomeLoanMaster.FirstOrDefault().StatementDate).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) : "");
+                }
+                else
+                {
+                    htmlString.Replace("{{TodayDate}}", string.Empty);
+                }
                 pageContent.Replace("{{BranchDetails_" + page.Identifier + "_" + widget.Identifier + "}}", htmlString.ToString());
                 pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", HtmlConstants.WEA_BANKING);
                 return false;
@@ -5013,7 +5006,7 @@ namespace nIS
                                 htmlForWidget.Replace("{{TotalInstalment}}", "R0.00");
                             }
 
-                            htmlForWidget.Replace("{{InstalmentDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
+                            htmlForWidget.Replace("{{InstalmentDate}}", HomeLoan.LoanTransactions.Select(x => x.Posting_Date).OrderByDescending(x => x)?.FirstOrDefault().ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
                             pageContent.Replace("{{Home_Loan_Instalment_Details_" + widget.Identifier + "}}", htmlForWidget.ToString());
 
                             #endregion
@@ -5490,7 +5483,8 @@ namespace nIS
                         res = 0.0m;
                         if (trans.Debit != null && decimal.TryParse(trans.Debit.ToString(), out res))
                         {
-                            debit = res > 0 ? Math.Round(res, 2).ToString() : Math.Round(decimal.Parse(trans.Debit.ToString())).ToString();
+                            var debitBalance = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(res));
+                            debit = debitBalance.Replace("R", "").Replace("$", "");
                         }
                         else
                         {
@@ -5500,6 +5494,8 @@ namespace nIS
                         if (trans.Credit != null && decimal.TryParse(trans.Credit.ToString(), out res))
                         {
                             credit = res > 0 ? Math.Round(res, 2).ToString() : Math.Round(decimal.Parse(trans.Credit.ToString())).ToString();
+                            var creditBalance = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(res));
+                            credit = creditBalance.Replace("R", "").Replace("$", "");
                         }
                         else
                         {
@@ -5509,8 +5505,8 @@ namespace nIS
                         tableHTML.Append("<tr class='ht-20'>" +
                                          "<td class='w-20 text-center'>" + trans.Transaction_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
                                          "<td class='w-40 text-left'>" + trans.Description + "</td>" +
-                                         "<td class='w-10 text-right'>" + debit + "</td>" +
-                                         "<td class='w-10 text-right'>" + credit + "</td>" +
+                                         "<td class='w-10 text-right'>" + (debit == "0" ? "" : debit) + "</td>" +
+                                         "<td class='w-10 text-right'>" + (credit == "0" ? "" : credit) + "</td>" +
                                          "<td class='w-5 text-center'>" + (trans.Rate != null ? Math.Round(decimal.Parse(trans.Rate.ToString()), 2).ToString() : "") + "</td>" +
                                          "<td class='w-5 text-center'>" + trans.Days + "</td>" +
                                          "<td class='w-10 text-right'>" + (trans.AccuredInterest != null ? Math.Round(decimal.Parse(trans.AccuredInterest.ToString()), 2).ToString() : "") + "</td>" +

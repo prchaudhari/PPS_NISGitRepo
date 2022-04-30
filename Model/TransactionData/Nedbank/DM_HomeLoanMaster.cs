@@ -36,6 +36,8 @@ namespace nIS
         public List<DM_HomeLoanTransaction> LoanTransactions { get; set; }
         public string TenantCode { get; set; }
         public string SegmentType { get; set; }
+        public string BondNo { get; set; }
+        public DateTime? StatementDate { get; set; }
     }
 
     public class DM_HomeLoanArrear
