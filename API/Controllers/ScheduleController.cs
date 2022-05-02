@@ -35,6 +35,7 @@ namespace nIS
         /// </summary>
         private ScheduleManager scheduleManager = null;
 
+
         /// <summary>
         /// The unity container
         /// </summary>
@@ -521,6 +522,7 @@ namespace nIS
         }
 
         #endregion
+
 
         #region Download
 

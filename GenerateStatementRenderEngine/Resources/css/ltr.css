@@ -291,7 +291,7 @@
 }
 
 .CustomerDetails {
-    font-size: 8pt;
+    font-size: 9pt;
     text-align: left;
     font-family: 'Mark Pro Medium';
     height: 110px;
@@ -334,7 +334,7 @@
 .customTable td {
     padding: 0px 25px;
     font-family: 'Mark Pro Regular';
-    font-size: 8pt;
+    font-size: 9pt;
     height: 20px;
 }
 
@@ -440,7 +440,7 @@
 
 .card-body-header {
     font-size: 14pt;
-    font-family: 'Mark Pro Bold';
+    font-family: 'Mark Pro Regular';
     color: rgb(0, 91, 0) !important;
 }
 

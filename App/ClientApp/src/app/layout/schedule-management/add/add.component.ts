@@ -772,6 +772,7 @@ export class AddComponent implements OnInit {
   }
 
   vaildateForm() {
+  
     if (this.scheduleForm.invalid)
       return true;
     // if (this.scheduleForm.value.DayOfMonth == "Please Select") {
@@ -797,12 +798,13 @@ export class AddComponent implements OnInit {
         return true;
       }
     }
-    if (this.filterDateDifferenecError) {
+    if (this.isEndDate == true && this.filterDateDifferenecError) {
       return true;
     }
-    if(this.isEndAfter==true && this.scheduleForm.value.scheduleEndAfterNoOccurences<=0) {
+    if(this.isEndAfter == true && this.scheduleForm.value.scheduleEndAfterNoOccurences <= 0) {
       return true;
     }
+  
     return false;
   }
 

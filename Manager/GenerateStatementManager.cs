@@ -3151,7 +3151,7 @@ namespace nIS
 
             if (isShowCellNo && !string.IsNullOrWhiteSpace(customer.Mask_Cell_No))
             {
-                CustomerDetails += "<br><br> Cell: " + customer.Mask_Cell_No;
+                CustomerDetails += "<br> Cell: " + customer.Mask_Cell_No;
             }
 
             if (page.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_FOR_CIB_PAGE_TYPE || page.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_FOR_WEA_PAGE_TYPE)
@@ -4055,10 +4055,13 @@ namespace nIS
                             var plArrears = PersonalLoan.LoanArrears;
                             var paddingClass = PersonalLoan.LoanTransactions.Count > 10 ? "pb-2 pt-5" : "py-2";
                             var LoanArrearHtml = new StringBuilder(HtmlConstants.PERSONAL_LOAN_PAYMENT_DUE_DETAIL).Replace("{{PaddingClass}}", paddingClass);
+                            bool is120 = false, is90 = false, is60 = false, is30 = false, isCurrent = false;
+
                             res = 0.0m;
                             if (decimal.TryParse(plArrears.Arrears_120, out res))
                             {
                                 LoanArrearHtml.Replace("{{After120Days}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                                is120 = res > 0;
                             }
                             else
                             {
@@ -4069,6 +4072,7 @@ namespace nIS
                             if (decimal.TryParse(plArrears.Arrears_90, out res))
                             {
                                 LoanArrearHtml.Replace("{{After90Days}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                                is90 = res > 0;
                             }
                             else
                             {
@@ -4079,6 +4083,7 @@ namespace nIS
                             if (decimal.TryParse(plArrears.Arrears_60, out res))
                             {
                                 LoanArrearHtml.Replace("{{After60Days}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                                is60 = res > 0;
                             }
                             else
                             {
@@ -4089,6 +4094,7 @@ namespace nIS
                             if (decimal.TryParse(plArrears.Arrears_30, out res))
                             {
                                 LoanArrearHtml.Replace("{{After30Days}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                                is30 = res > 0;
                             }
                             else
                             {
@@ -4099,10 +4105,29 @@ namespace nIS
                             if (decimal.TryParse(plArrears.Arrears_0, out res))
                             {
                                 LoanArrearHtml.Replace("{{Current}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+
+                                isCurrent = res > 0;
                             }
                             else
                             {
                                 LoanArrearHtml.Replace("{{Current}}", "R0.00");
+                            }
+
+                            if(is30 || is60 || is90 || is120)
+                            {
+                                LoanArrearHtml.Append("<p style='font-family:Mark Pro Regular; font-size: 9pt;'>Your Nedbank personal loan is in arrears. According to your loan agreement with Nedbank, you are required to make regular monthly payments. Failure to do so results in extra interest being charged, and your arrear status and payment history being reported to the credit bureaus. This may have a negative impact on your ability to obtain credit. </p>");
+                                LoanArrearHtml.Append("<p style='font-family:Mark Pro Regular; font-size: 9pt;'>Please settle the arrears by paying at any Nedbank Branch or by arranging a debit order through the Nedbank Contact Centre. If you cannot pay, please call 0860 103 117 urgently to discuss the options available to you.</p>");
+                            }
+
+                            if (decimal.TryParse(plArrears.Arrears_120, out res))
+                            {
+                                if (res > 0)
+                                {
+                                    LoanArrearHtml.Append("<div style=\"font-size: 14pt;font-family: 'Mark Pro Bold';color: rgb(0, 91, 0) !important;\">Insurance</div>");
+                                    LoanArrearHtml.Append("<p style='font-family:Mark Pro Regular; font-size: 9pt;'>We would like to remind you of the credit life insurance benefits available to you through your Nedbank Insurance policy. When you pass away, Nedbank Insurance will cover your outstanding loan amount. If you are permanently employed, you will also enjoy cover for comprehensive disability and loss of income. The disability benefit will cover your monthly instalments if you cannot earn your usual income due to illness or bodily injury.</p>");
+                                    LoanArrearHtml.Append("<p style='font-family:Mark Pro Regular; font-size: 9pt;'>The loss-of-income benefit includes unemployment, retrenchment or any other event where you cannot earn an income. This benefit will cover your monthly instalments for up to 12 months. The disability and loss-of-income benefits end when you turn 65 years old. If you are a pensioner, self-employed, employed in the informal sector, employed by a family-owned business or receiving a social grant, you will be covered for the death benefit only.</p>");
+                                    LoanArrearHtml.Append("<p style='font-family:Mark Pro Regular; font-size: 9pt;'>Your policy document explains the provisions of your benefits, the claim events you are covered for and how the claims process works. If you need information about your policy or want to claim, please call us on 0860 333 111. Nedgroup Life Assurance Company Ltd is a licensed insurer FSP40915</p>");
+                                }
                             }
 
                             TabContentHtml.Append(LoanArrearHtml.ToString());
