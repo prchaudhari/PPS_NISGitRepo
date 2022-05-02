@@ -1542,7 +1542,8 @@ namespace nIS
                     var IsRewardPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.GREENBACKS_PAGE_TYPE).ToList().Count > 0;
                     var IsMCAPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_PAGE_TYPE).ToList().Count > 0;
                     var IsCorporateSaverPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == HtmlConstants.CORPORATE_SAVER_PAGE_TYPE).ToList().Count > 0;
-
+                    // var IsMCAPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == "").ToList().Count > 0;
+                    // var IsCorporateSaverPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == "").ToList().Count > 0;
                     if (IsPortFolioPageTypePresent)
                     {
                         AccountsSummaries = this.tenantTransactionDataRepository.GET_DM_AccountSummaries(customerSearchParameter, tenantCode)?.ToList();
@@ -5599,7 +5600,7 @@ namespace nIS
                     pageContent.Replace("{{ClientCode_" + widget.Identifier + "}}", CorporateSaverMaster.ClientCode);
                     pageContent.Replace("{{RelationshipManager_" + widget.Identifier + "}}", CorporateSaverMaster.RelationshipManager);
                     pageContent.Replace("{{VATCalculation_" + widget.Identifier + "}}", CorporateSaverMaster.VATCalculation);
-                    pageContent.Replace("{{ClientVATNo_" + widget.Identifier + "}}", CorporateSaverMaster.ClientVatNo);
+                    pageContent.Replace("{{ClientVATNo_" + widget.Identifier + "}}", CorporateSaverMaster.ClientVatNo != null ? CorporateSaverMaster.ClientVatNo : "Not provided");
 
                 }
             }
@@ -5674,7 +5675,7 @@ namespace nIS
                     {
                         if (tableHTMLCounter == 1)
                         {
-                            tableHTML.Append("<div class='TotalAmountDetailsDiv' style='height: 40px !important; text-align: center; padding: 6px !important;'><span class='fnt-14pt'>" + invest.InvestType + "</span ></div>");
+                            tableHTML.Append("<div class='CSTotalAmountDetailsDiv' style='height: 40px !important; text-align: center; padding: 6px !important;'><span class='fnt-14pt'>" + invest.InvestType + "</span ></div>");
                         }
 
                         tableHTML.Append("<table class= 'CScustomTable HomeLoanDetailDiv' border = '0' style = 'height: auto;margin-bottom:2%;' ><tbody>");
@@ -5684,7 +5685,7 @@ namespace nIS
                            + (invest.CapitalMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.CapitalMstr)) : "") +
                             "</td><td class='w-25' style='padding-bottom: 8px !important'>Agent fee deducted</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + (invest.AgentFeeDeducted != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.AgentFeeDeducted)) : "") + "</td></tr>");
                         tableHTML.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Interest</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + (invest.InterestMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.InterestMstr)) : "") + "</td><td class='w-25' style='padding-bottom: 8px !important'>VAT on fee</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + (invest.VatOnFeeMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.VatOnFeeMstr)) : "") + "</td></tr>");
-                        tableHTML.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Agent Fee Structure</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" +
+                        tableHTML.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Agent fee structure</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" +
                             (invest.AGENT_FEE_STRUCTURE_1 != null ? String.Format("{0:0.00}", invest.AGENT_FEE_STRUCTURE_1) + "%" + " " + invest.AGENT_FEE_STRUCTURE_2 : String.Empty) 
                             + "</td><td class='w-25' style='padding-bottom: 8px !important'>Interest (less agent fee and VAT)</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + (invest.VatOnFeeMstr0 != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.VatOnFeeMstr0)) : "") + "</td></tr>");
                         tableHTML.Append("</tbody></table>");
@@ -5693,18 +5694,18 @@ namespace nIS
                         {
 
                             tableHTML.Append("<div class='d-flex flex-row' style='margin-top: -1.5%;'>");
-                            tableHTML.Append("<div class='paymentDueHeaderBlock ' style='margin-right:3px; margin-bottom:1px; '>Total Capital</div>");
-                            tableHTML.Append("<div class='paymentDueHeaderBlock ' style='margin-right:3px; margin-bottom:1px; '>Total Interest</div>");
-                            tableHTML.Append("<div class='paymentDueHeaderBlock ' style='margin-right:3px; margin-bottom:1px; '>Total agent fee (deducted)</div>");
-                            tableHTML.Append("<div class='paymentDueHeaderBlock ' style='margin-right:3px; margin-bottom:1px; '>VAT on fee</div>");
-                            tableHTML.Append("<div class='paymentDueHeaderBlock'>Interest (less agent fee & VAT)</div>");
+                            tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='font-weight: bold;margin-right:3px; margin-bottom:1px; '>Total capital</div>");
+                            tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='font-weight: bold;margin-right:3px; margin-bottom:1px; '>Total interest</div>");
+                            tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='font-weight: bold;margin-right:3px; margin-bottom:1px; '>Total agent fee </br>(deducted)</div>");
+                            tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='font-weight: bold;margin-right:3px; margin-bottom:1px; '>VAT on fee</div>");
+                            tableHTML.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold;margin-bottom:1px'>Interest</br>(less agent fee & VAT)</div>");
                             tableHTML.Append("</div>");
                             tableHTML.Append("<div class='d-flex flex-row' style='margin-top: 2px !important;margin-bottom: 1%;'>");
-                            tableHTML.Append("<div class='paymentDueHeaderBlock ' style='margin-right:3px; margin-bottom:1px; '>" + (invest.TotalCapitalMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.TotalCapitalMstr)) : "") + "</div>");
-                            tableHTML.Append("<div class='paymentDueHeaderBlock ' style='margin-right:3px; margin-bottom:1px; '>" + (invest.TotalInterestMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.TotalInterestMstr)) : "") + "</div>");
-                            tableHTML.Append("<div class='paymentDueHeaderBlock' style='margin-right:3px; margin-bottom:1px; '>" + (invest.TotalAgentFeeMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.TotalAgentFeeMstr)) : "") + "</div>");
-                            tableHTML.Append("<div class='paymentDueHeaderBlock ' style='margin-right:3px; margin-bottom:1px; '>" + (invest.VatOnFeeMstr0 != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.VatOnFeeMstr0)) : "") + "</div>");
-                            tableHTML.Append("<div class='paymentDueHeaderBlock'>" + (invest.InterestAgentFeeMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.InterestAgentFeeMstr)) : "") + "</div>");
+                            tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='margin-right:3px; margin-bottom:1px; '>" + (invest.TotalCapitalMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.TotalCapitalMstr)) : "") + "</div>");
+                            tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='margin-right:3px; margin-bottom:1px; '>" + (invest.TotalInterestMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.TotalInterestMstr)) : "") + "</div>");
+                            tableHTML.Append("<div class='paymentDueHeaderBlock1' style='margin-right:3px; margin-bottom:1px; '>" + (invest.TotalAgentFeeMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.TotalAgentFeeMstr)) : "") + "</div>");
+                            tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='margin-right:3px; margin-bottom:1px; '>" + (invest.VatOnFeeMstr0 != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.VatOnFeeMstr0)) : "") + "</div>");
+                            tableHTML.Append("<div class='paymentDueHeaderBlock1' style='margin-bottom:1px; '>" + (invest.InterestAgentFeeMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.InterestAgentFeeMstr)) : "") + "</div>");
                             tableHTML.Append("</div>");
                         }
                         tableHTMLCounter = tableHTMLCounter + 1;
@@ -5713,7 +5714,7 @@ namespace nIS
                     {
                         if (tableHTML2Counter == 1)
                         {
-                            tableHTML2.Append("<div class='TotalAmountDetailsDiv' style='height: 40px !important; text-align: center; padding: 6px !important;'><span class='fnt-14pt'>" + invest.InvestType + "</span ></div>");
+                            tableHTML2.Append("<div class='CSTotalAmountDetailsDiv' style='height: 40px !important; text-align: center; padding: 6px !important;'><span class='fnt-14pt'>" + invest.InvestType + "</span ></div>");
                         }
 
                         tableHTML2.Append("<table class= 'CScustomTable HomeLoanDetailDiv' border = '0' style = 'height: auto;margin-bottom:2%;' ><tbody>");
@@ -5723,7 +5724,7 @@ namespace nIS
                            + (invest.CapitalMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.CapitalMstr)) : "") +
                             "</td><td class='w-25' style='padding-bottom: 8px !important'>Agent fee deducted</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + (invest.AgentFeeDeducted != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.AgentFeeDeducted)) : "") + "</td></tr>");
                         tableHTML2.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Interest</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + (invest.InterestMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.InterestMstr)) : "") + "</td><td class='w-25' style='padding-bottom: 8px !important'>VAT on fee</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + (invest.VatOnFeeMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.VatOnFeeMstr)) : "") + "</td></tr>");
-                        tableHTML2.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Agent Fee Structure</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" +
+                        tableHTML2.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Agent fee structure</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" +
                           (invest.AGENT_FEE_STRUCTURE_1 != null ? String.Format("{0:0.00}", invest.AGENT_FEE_STRUCTURE_1) + "%" + " " + invest.AGENT_FEE_STRUCTURE_2 : String.Empty) 
                             + "</td><td class='w-25' style='padding-bottom: 8px !important'>Interest (less agent fee and VAT)</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + (invest.VatOnFeeMstr0 != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.VatOnFeeMstr0)) : "") + "</td></tr>");
                         tableHTML2.Append("</tbody></table>");
@@ -5732,18 +5733,18 @@ namespace nIS
                         {
 
                             tableHTML2.Append("<div class='d-flex flex-row' style='margin-top: -1.5%;'>");
-                            tableHTML2.Append("<div class='paymentDueHeaderBlock'style='margin-right:3px; margin-bottom:1px;'>Total Capital</div>");
-                            tableHTML2.Append("<div class='paymentDueHeaderBlock'style='margin-right:3px; margin-bottom:1px;'>Total Interest</div>");
-                            tableHTML2.Append("<div class='paymentDueHeaderBlock'style='margin-right:3px; margin-bottom:1px;'>Total agent fee (deducted)</div>");
-                            tableHTML2.Append("<div class='paymentDueHeaderBlock'style='margin-right:3px; margin-bottom:1px;'>VAT on fee</div>");
-                            tableHTML2.Append("<div class='paymentDueHeaderBlock'style='margin-right:3px; margin-bottom:1px;'>Interest (less agent fee & VAT)</div>");
+                            tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold;margin-right:3px; margin-bottom:1px;'>Total capital</div>");
+                            tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold;margin-right:3px; margin-bottom:1px;'>Total interest</div>");
+                            tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold;margin-right:3px; margin-bottom:1px;'>Total agent fee </br>(deducted)</div>");
+                            tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold;margin-right:3px; margin-bottom:1px;'>VAT on fee</div>");
+                            tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold; margin-bottom:1px'>Interest</br>(less agent fee & VAT)</div>");
                             tableHTML2.Append("</div>");                             
                             tableHTML2.Append("<div class='d-flex flex-row' style='margin-top: 2px !important;margin-bottom: 1%;'>");
-                            tableHTML2.Append("<div class='paymentDueHeaderBlock'style='margin-right:3px; margin-bottom:1px;'>" + (invest.TotalCapitalMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.TotalCapitalMstr)) : "") + "</div>");
-                            tableHTML2.Append("<div class='paymentDueHeaderBlock'style='margin-right:3px; margin-bottom:1px;'>" + (invest.TotalInterestMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.TotalInterestMstr)) : "") + "</div>");
-                            tableHTML2.Append("<div class='paymentDueHeaderBlock'style='margin-right:3px; margin-bottom:1px;'>" + (invest.TotalAgentFeeMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.TotalAgentFeeMstr)) : "") + "</div>");
-                            tableHTML2.Append("<div class='paymentDueHeaderBlock'style='margin-right:3px; margin-bottom:1px;'>" + (invest.VatOnFeeMstr0 != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.VatOnFeeMstr0)) : "") + "</div>");
-                            tableHTML2.Append("<div class='paymentDueHeaderBlock'style='margin-right:3px; margin-bottom:1px;'>" + (invest.InterestAgentFeeMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.InterestAgentFeeMstr)) : "") + "</div>");
+                            tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='margin-right:3px; margin-bottom:1px;'>" + (invest.TotalCapitalMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.TotalCapitalMstr)) : "") + "</div>");
+                            tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='margin-right:3px; margin-bottom:1px;'>" + (invest.TotalInterestMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.TotalInterestMstr)) : "") + "</div>");
+                            tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='margin-right:3px; margin-bottom:1px;'>" + (invest.TotalAgentFeeMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.TotalAgentFeeMstr)) : "") + "</div>");
+                            tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='margin-right:3px; margin-bottom:1px;'>" + (invest.VatOnFeeMstr0 != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.VatOnFeeMstr0)) : "") + "</div>");
+                            tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='margin-bottom:1px;'>" + (invest.InterestAgentFeeMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.InterestAgentFeeMstr)) : "") + "</div>");
                             tableHTML2.Append("</div>");
                         }
                         tableHTML2Counter = tableHTML2Counter + 1;

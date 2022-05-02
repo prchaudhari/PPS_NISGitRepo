@@ -19,7 +19,7 @@ namespace nIS.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -82,6 +82,15 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rekening no.
+        /// </summary>
+        internal static string Account_no {
+            get {
+                return ResourceManager.GetString("Account no", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Soort rekening.
         /// </summary>
         internal static string Account_type {
@@ -132,6 +141,51 @@ namespace nIS.Properties {
         internal static string After_90_days {
             get {
                 return ResourceManager.GetString("After 90 days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Agent kontak no.
+        /// </summary>
+        internal static string Agent_contact_details {
+            get {
+                return ResourceManager.GetString("Agent contact details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Agentgelde afgetrek.
+        /// </summary>
+        internal static string Agent_fee_deducted {
+            get {
+                return ResourceManager.GetString("Agent fee deducted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Agentgeldestruktuur.
+        /// </summary>
+        internal static string Agent_fee_structure {
+            get {
+                return ResourceManager.GetString("Agent fee structure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Agent verwysing.
+        /// </summary>
+        internal static string Agent_reference {
+            get {
+                return ResourceManager.GetString("Agent reference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Agent se profiel.
+        /// </summary>
+        internal static string Agent_s_profile {
+            get {
+                return ResourceManager.GetString("Agent\'s profile", resourceCulture);
             }
         }
         
@@ -334,6 +388,15 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Takkode.
+        /// </summary>
+        internal static string Branch_code {
+            get {
+                return ResourceManager.GetString("Branch code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Uiteensetting van u beleggingsrekenings.
         /// </summary>
         internal static string Breakdown_of_your_investment_accounts {
@@ -343,11 +406,74 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Daggeldtransaksies vir die tydperk.
+        /// </summary>
+        internal static string Call_transaction_details_for_the_period {
+            get {
+                return ResourceManager.GetString("Call transaction details for the period", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kapitaal.
+        /// </summary>
+        internal static string Capital {
+            get {
+                return ResourceManager.GetString("Capital", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kapitaalsaldo.
+        /// </summary>
+        internal static string Capital_balance {
+            get {
+                return ResourceManager.GetString("Capital balance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kliënt-CIF no.
+        /// </summary>
+        internal static string CIF_no {
+            get {
+                return ResourceManager.GetString("CIF no", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Klik vir.
         /// </summary>
         internal static string click_here {
             get {
                 return ResourceManager.GetString("click here", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kliëntkode.
+        /// </summary>
+        internal static string Client_code {
+            get {
+                return ResourceManager.GetString("Client code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kliënt besonderhede.
+        /// </summary>
+        internal static string Client_details {
+            get {
+                return ResourceManager.GetString("Client details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kliënt-BTW no.
+        /// </summary>
+        internal static string Client_VAT_no {
+            get {
+                return ResourceManager.GetString("Client VAT no", resourceCulture);
             }
         }
         
@@ -370,11 +496,29 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kontak persoon.
+        /// </summary>
+        internal static string Contact_person {
+            get {
+                return ResourceManager.GetString("Contact person", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kontak jou verhoudingsbankier om aansoek te doen.
         /// </summary>
         internal static string Contact_your_relationship_banker_to_apply {
             get {
                 return ResourceManager.GetString("Contact your relationship banker to apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Corporate Saver staat.
+        /// </summary>
+        internal static string Corporate_Saver_statement {
+            get {
+                return ResourceManager.GetString("Corporate Saver statement", resourceCulture);
             }
         }
         
@@ -415,11 +559,38 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Huidige belegging.
+        /// </summary>
+        internal static string Current_investment_details {
+            get {
+                return ResourceManager.GetString("Current investment details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Huidige beleggersaldo.
         /// </summary>
         internal static string Current_investor_balance {
             get {
                 return ResourceManager.GetString("Current investor balance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Datum.
+        /// </summary>
+        internal static string Date {
+            get {
+                return ResourceManager.GetString("Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Belê op.
+        /// </summary>
+        internal static string Date_invested {
+            get {
+                return ResourceManager.GetString("Date invested", resourceCulture);
             }
         }
         
@@ -483,6 +654,15 @@ namespace nIS.Properties {
         internal static string effective_from {
             get {
                 return ResourceManager.GetString("effective from", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Epos.
+        /// </summary>
+        internal static string Email_address {
+            get {
+                return ResourceManager.GetString("Email address", resourceCulture);
             }
         }
         
@@ -567,6 +747,15 @@ namespace nIS.Properties {
                         "mply log in to the Money app or Online Banking, choose a time slot that suits yo" +
                         "u and specify whether you prefer to have the meeting over the phone or in person" +
                         "", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FDV- lisensie no.
+        /// </summary>
+        internal static string FSP_license_no {
+            get {
+                return ResourceManager.GetString("FSP license no", resourceCulture);
             }
         }
         
@@ -740,6 +929,15 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Aantekening.
+        /// </summary>
+        internal static string Important_information {
+            get {
+                return ResourceManager.GetString("Important information", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Paaiement.
         /// </summary>
         internal static string Instalment {
@@ -776,6 +974,15 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rente (min agentgelde en BTW).
+        /// </summary>
+        internal static string Interest__less_agent_fee_and_VAT_ {
+            get {
+                return ResourceManager.GetString("Interest (less agent fee and VAT)", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rentebeskikking.
         /// </summary>
         internal static string Interest_disposal {
@@ -790,6 +997,15 @@ namespace nIS.Properties {
         internal static string Interest_due {
             get {
                 return ResourceManager.GetString("Interest due", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Renteopdrag.
+        /// </summary>
+        internal static string Interest_instruction {
+            get {
+                return ResourceManager.GetString("Interest instruction", resourceCulture);
             }
         }
         
@@ -817,6 +1033,15 @@ namespace nIS.Properties {
         internal static string Investment_no {
             get {
                 return ResourceManager.GetString("Investment no", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Beleggingsportefeulje soos op.
+        /// </summary>
+        internal static string Investment_portfolio_at {
+            get {
+                return ResourceManager.GetString("Investment portfolio at", resourceCulture);
             }
         }
         
@@ -1159,6 +1384,15 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Betalingsbesonderhede.
+        /// </summary>
+        internal static string Payment_details {
+            get {
+                return ResourceManager.GetString("Payment details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Betalings.
         /// </summary>
         internal static string Payments {
@@ -1204,6 +1438,15 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Koers.
+        /// </summary>
+        internal static string Rate {
+            get {
+                return ResourceManager.GetString("Rate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Geregistreerde bedrag.
         /// </summary>
         internal static string Registered_amount {
@@ -1218,6 +1461,24 @@ namespace nIS.Properties {
         internal static string Registration_date {
             get {
                 return ResourceManager.GetString("Registration date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registrasie no.
+        /// </summary>
+        internal static string Registration_no {
+            get {
+                return ResourceManager.GetString("Registration no", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verhoudingsbestuurder.
+        /// </summary>
+        internal static string Relationship_manager {
+            get {
+                return ResourceManager.GetString("Relationship manager", resourceCulture);
             }
         }
         
@@ -1343,6 +1604,15 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Staat no.
+        /// </summary>
+        internal static string Statement_no {
+            get {
+                return ResourceManager.GetString("Statement no", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Staattydperk.
         /// </summary>
         internal static string Statement_Period {
@@ -1398,6 +1668,33 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Belastingfaktuur no.
+        /// </summary>
+        internal static string Tax_invoice_no {
+            get {
+                return ResourceManager.GetString("Tax invoice no", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Belastingtotale.
+        /// </summary>
+        internal static string Tax_totals {
+            get {
+                return ResourceManager.GetString("Tax totals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Belastingtotale (jaar tot op datum).
+        /// </summary>
+        internal static string Tax_totals__year_to_date_ {
+            get {
+                return ResourceManager.GetString("Tax totals (year to date)", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bepalings en voorwaardes geld.
         /// </summary>
         internal static string Terms_and_conditions_apply {
@@ -1431,6 +1728,15 @@ namespace nIS.Properties {
         internal static string Tired_of_waiting_for_the_post_to_arrive__Switch_to_eStatements_today {
             get {
                 return ResourceManager.GetString("Tired of waiting for the post to arrive? Switch to eStatements today", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Agentgelde afgetrek.
+        /// </summary>
+        internal static string Total_agent_fee__deducted_ {
+            get {
+                return ResourceManager.GetString("Total agent fee (deducted)", resourceCulture);
             }
         }
         
@@ -1471,11 +1777,29 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kapitaaltotaal.
+        /// </summary>
+        internal static string Total_capital {
+            get {
+                return ResourceManager.GetString("Total capital", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Totaal.
         /// </summary>
         internal static string Total_instalment {
             get {
                 return ResourceManager.GetString("Total instalment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rente totaal.
+        /// </summary>
+        internal static string Total_interest {
+            get {
+                return ResourceManager.GetString("Total interest", resourceCulture);
             }
         }
         
@@ -1523,6 +1847,33 @@ namespace nIS.Properties {
             get {
                 return ResourceManager.GetString("Try the Nedbank Home-buying Toolkit on the Nedbank Money app today. Simply open t" +
                         "he app and click on", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BTW-berekening.
+        /// </summary>
+        internal static string VAT_calculation {
+            get {
+                return ResourceManager.GetString("VAT calculation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BTW op gelde.
+        /// </summary>
+        internal static string VAT_on_fee {
+            get {
+                return ResourceManager.GetString("VAT on fee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BTW-registrasie no.
+        /// </summary>
+        internal static string VAT_registration_no {
+            get {
+                return ResourceManager.GetString("VAT registration no", resourceCulture);
             }
         }
         
