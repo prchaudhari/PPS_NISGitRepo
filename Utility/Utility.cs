@@ -1297,9 +1297,9 @@
                 // create a new pdf document converting an url
                 PdfDocument doc = converter.ConvertUrl(url);
 
-                doc.Fonts.Add(@"C:\temp\MarkPro-Regular.ttf");
-                doc.Fonts.Add(@"C:\temp\Mark Pro.ttf");
-                doc.Fonts.Add(@"C:\temp\Mark Pro Bold.ttf");
+                doc.Fonts.Add(@"C:\UserFiles\Fonts\MarkPro-Regular.ttf");
+                doc.Fonts.Add(@"C:\UserFiles\Fonts\Mark Pro.ttf");
+                doc.Fonts.Add(@"C:\UserFiles\Fonts\Mark Pro Bold.ttf");
 
                 // save pdf document
                 doc.Save(outPdfPath);
