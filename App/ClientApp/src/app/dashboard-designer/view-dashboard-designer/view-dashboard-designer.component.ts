@@ -465,6 +465,9 @@ export class ViewDashboardDesignerComponent implements OnInit {
             else if (widget.WidgetName == "StaticHtml") {
               gridObj.component = StaticHtmlComponent
             }
+            else if (widget.WidgetName == "PageBreak") {
+              gridObj.component = PageBreakComponent
+            }
             else if (widget.WidgetName == "SegmentBasedContent") {
               gridObj.component = SegmentBasedContentComponent
             }

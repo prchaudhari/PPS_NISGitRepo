@@ -148,7 +148,8 @@
         /// <param name="fileName"> the file name </param>
         /// <param name="batchId"> the batch identifier </param>
         /// <param name="customerId"> the customer identifier </param>
-        string WriteToFile(string Message, string fileName, long batchId, long customerId, string baseURL, string outputLocation);
+        /// <param name="printPdf"> specify if pdf need to be printed.</param>
+        string WriteToFile(string Message, string fileName, long batchId, long customerId, string baseURL, string outputLocation, bool printPdf = false, string headerHtml = "", string footerHtml = "", string segment = "");
 
         /// <summary>
         /// This method help to write json stringin to actual file

@@ -842,7 +842,9 @@ namespace nIS
                                                                 break;
 
                                                             case HtmlConstants.BRANCH_DETAILS_WIDGET_NAME:
-                                                                if (page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE)
+                                                                if ((page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE
+                                                    || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE
+                                                    || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE))
                                                                 {
                                                                     if (statementPages.Count == 1)
                                                                     {
@@ -856,7 +858,9 @@ namespace nIS
                                                                 break;
 
                                                             case HtmlConstants.WEALTH_BRANCH_DETAILS_WIDGET_NAME:
-                                                                if (page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE)
+                                                                if ((page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE
+                                                    || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE
+                                                    || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE))
                                                                 {
                                                                     if (statementPages.Count == 1)
                                                                     {
@@ -879,6 +883,10 @@ namespace nIS
 
                                                             case HtmlConstants.STATIC_HTML_WIDGET_NAME:
                                                                 pageHtmlContent.Append(this.StaticHtmlWidgetFormatting(pageWidget, counter, statement, page, divHeight));
+                                                                break;
+
+                                                            case HtmlConstants.PAGE_BREAK_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.PageBreakWidgetFormatting(pageWidget, counter, statement, page, divHeight));
                                                                 break;
 
                                                             case HtmlConstants.STATIC_SEGMENT_BASED_CONTENT_NAME:
@@ -1470,7 +1478,7 @@ namespace nIS
                     var statementPageContent = newStatementPageContents.Where(item => item.PageTypeId == page.PageTypeId && item.Id == i).FirstOrDefault();
 
                     var MarketingMessages = string.Empty;
-                    if (page.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE)
+                    if (page.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_ENGLISH || page.PageTypeName == HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_ENGLISH || page.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_AFRICAN || page.PageTypeName == HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_AFRICAN)
                     {
                         MarketingMessages = HtmlConstants.INVESTMENT_MARKETING_MESSAGE_JSON_STR;
                     }
@@ -1478,7 +1486,9 @@ namespace nIS
                     {
                         MarketingMessages = HtmlConstants.PERSONAL_LOAN_MARKETING_MESSAGE_JSON_STR;
                     }
-                    else if (page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE)
+                    else if ((page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE
+                                                    || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE
+                                                    || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE))
                     {
                         MarketingMessages = HtmlConstants.HOME_LOAN_MARKETING_MESSAGE_JSON_STR;
                     }
@@ -1527,6 +1537,9 @@ namespace nIS
                                     break;
                                 case HtmlConstants.STATIC_HTML_WIDGET_NAME:
                                     this.BindDummyDataToStaticHtmlWidget(pageContent, statement, page, widget);
+                                    break;
+                                case HtmlConstants.PAGE_BREAK_WIDGET_NAME:
+                                    this.BindDummyDataToPageBreakWidget(pageContent, statement, page, widget);
                                     break;
 
                                 case HtmlConstants.STATIC_SEGMENT_BASED_CONTENT_NAME:
@@ -2275,6 +2288,14 @@ namespace nIS
                                                     staticHtmlWidget = staticHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
                                                     htmlString.Append(staticHtmlWidget);
                                                 }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.PAGE_BREAK_WIDGET_NAME)
+                                                {
+                                                    var html = "<div style=\"page-break-before:always\">&nbsp;</div>";
+                                                    
+                                                    var pageBreakWidget = HtmlConstants.STATIC_HTML_WIDGET_HTML.Replace("{{StaticHtml}}", html);
+                                                    pageBreakWidget = pageBreakWidget.Replace("{{WidgetDivHeight}}", divHeight);
+                                                    htmlString.Append(pageBreakWidget);
+                                                }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.STATIC_SEGMENT_BASED_CONTENT_NAME)
                                                 {
                                                     var html = "<div>This is sample SegmentBasedContent</div>";
@@ -2674,9 +2695,9 @@ namespace nIS
                     var isBackgroundImage = false;
 
                     IList<Page> pages = this.pageRepository.GetPages(pageSearchParameter, tenantCode);
-                    IsInvestmentStatement = pages.Where(it => it.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE).ToList().Count > 0;
+                    IsInvestmentStatement = pages.Where(it => it.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_ENGLISH || it.PageTypeName == HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_ENGLISH || it.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_AFRICAN || it.PageTypeName == HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_AFRICAN).ToList().Count > 0;
                     IsPersonalLoanStatement = pages.Where(it => it.PageTypeName == HtmlConstants.PERSONAL_LOAN_PAGE_TYPE).ToList().Count > 0;
-                    IsHomeLoanStatement = pages.Where(it => it.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE).ToList().Count > 0;
+                    IsHomeLoanStatement = pages.Where(it => (it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE)).ToList().Count > 0;
                     var MarketingMessages = string.Empty;
 
                     if (IsInvestmentStatement)
@@ -2903,6 +2924,13 @@ namespace nIS
                                                     staticHtmlWidget = staticHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
                                                     htmlString.Append(staticHtmlWidget);
                                                 }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.PAGE_BREAK_WIDGET_NAME)
+                                                {
+                                                    var html = "<div style=\"page-break-before:always\">&nbsp;</div>";
+                                                    var pageBreakWidget = HtmlConstants.STATIC_HTML_WIDGET_HTML.Replace("{{PageBreak}}", html);
+                                                    pageBreakWidget = pageBreakWidget.Replace("{{WidgetDivHeight}}", divHeight);
+                                                    htmlString.Append(pageBreakWidget);
+                                                }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.STATIC_SEGMENT_BASED_CONTENT_NAME)
                                                 {
                                                     //var html = "<div>This is sample SegmentBasedContent</div>";
@@ -2953,7 +2981,9 @@ namespace nIS
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.BRANCH_DETAILS_WIDGET_NAME)
                                                 {
                                                     var htmlWidget = new StringBuilder(HtmlConstants.BRANCH_DETAILS_WIDGET_HTML);
-                                                    if (page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE)
+                                                    if ((page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE
+                                                    || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE
+                                                    || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE))
                                                     {
                                                         if (statementPages.Count == 1)
                                                         {
@@ -2987,7 +3017,9 @@ namespace nIS
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.WEALTH_BRANCH_DETAILS_WIDGET_NAME)
                                                 {
                                                     var htmlWidget = new StringBuilder(HtmlConstants.WEALTH_BRANCH_DETAILS_WIDGET_HTML);
-                                                    if (page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE)
+                                                    if ((page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE
+                                                    || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE
+                                                    || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE))
                                                     {
                                                         if (statementPages.Count == 1)
                                                         {
@@ -3477,7 +3509,9 @@ namespace nIS
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.SPECIAL_MESSAGE_WIDGET_NAME)
                                                 {
                                                     var widgetHtml = new StringBuilder(HtmlConstants.SPECIAL_MESSAGE_HTML);
-                                                    if (page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE)
+                                                    if ((page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE
+                                                    || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE
+                                                    || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE))
                                                     {
                                                         string jsonstr = HtmlConstants.HOME_LOAN_SPECIAL_MESSAGES_WIDGET_PREVIEW_JSON_STRING;
                                                         if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
@@ -6134,6 +6168,19 @@ namespace nIS
 
         #endregion
 
+        #region PageBreak Widget Formatting
+
+        private string PageBreakWidgetFormatting(PageWidget pageWidget, int counter, Statement statement, Page page, string divHeight)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var widgetHTML = new StringBuilder(HtmlConstants.PAGE_BREAK_WIDGET_HTML.Replace("{{PageBreak}}", "{{PageBreak_" + statement.Identifier + "_" + page.Identifier + "_" + pageWidget.Identifier + "}}"));
+            widgetHTML.Replace("{{WidgetDivHeight}}", "auto");
+            widgetHTML.Replace("{{WidgetId}}", "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString());
+            return widgetHTML.ToString();
+        }
+
+        #endregion
+
         #region SegmentBasedContent Widget Formatting
 
         private string SegmentBasedContentWidgetFormatting(PageWidget pageWidget, int counter, Statement statement, Page page, string divHeight)
@@ -6473,7 +6520,9 @@ namespace nIS
         private void BindDummyDataToBranchDetailsWidget(StringBuilder pageContent, Page page, PageWidget widget, int pagesCount)
         {
             var htmlWidget = new StringBuilder(HtmlConstants.BRANCH_DETAILS_WIDGET_HTML);
-            if (page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE)
+            if ((page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE
+                                                    || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE
+                                                    || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE))
             {
                 if (pagesCount == 1)
                 {
@@ -6502,7 +6551,9 @@ namespace nIS
         private void BindDummyDataToWealthBranchDetailsWidget(StringBuilder pageContent, Page page, PageWidget widget, int pagesCount)
         {
             var htmlWidget = new StringBuilder(HtmlConstants.WEALTH_BRANCH_DETAILS_WIDGET_HTML);
-            if (page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE)
+            if ((page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE
+                                                    || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE
+                                                    || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE))
             {
                 if (pagesCount == 1)
                 {
@@ -6938,7 +6989,9 @@ namespace nIS
         private void BindDummyDataToSpecialMessageWidget(StringBuilder pageContent, Page page, PageWidget widget)
         {
             string jsonstr = string.Empty;
-            if (page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE)
+            if ((page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE
+                                                    || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE
+                                                    || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE))
             {
                 jsonstr = HtmlConstants.HOME_LOAN_SPECIAL_MESSAGES_WIDGET_PREVIEW_JSON_STRING;
             }
@@ -8425,6 +8478,17 @@ namespace nIS
                 }
             }
             pageContent.Replace("{{StaticHtml_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", html);
+        }
+
+        #endregion
+
+        #region Bind dummy data to Page Break widget
+
+        private void BindDummyDataToPageBreakWidget(StringBuilder pageContent, Statement statement, Page page, PageWidget widget)
+        {
+            var html = "<div style=\"page-break-before:always\">&nbsp;</div>";
+            
+            pageContent.Replace("{{PageBreak_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", html);
         }
 
         #endregion

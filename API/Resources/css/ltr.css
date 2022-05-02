@@ -324,21 +324,11 @@
     text-align: right;
 }
 
-.CScustomTable {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: 'Mark Pro Regular';
-    font-size: 8pt;
-}
-
-    .CScustomTable td {
-        padding: 0px 5px;
-    }
-
 .customTable td {
     padding: 0px 25px;
     font-family: 'Mark Pro Regular';
     font-size: 8pt;
+    height: 20px;
 }
 
 .customTable th {
@@ -352,7 +342,7 @@
 }
 
 .ServicesDiv {
-    background-color: #f3f3f3;
+    background-color: #F2F2F2;
     height: 250px;
     font-family: 'Mark Pro Regular';
     padding: 1.5rem !important;
@@ -360,7 +350,7 @@
 }
 
 .ServicesDiv250 {
-    background-color: #f3f3f3;
+    background-color: #F2F2F2;
     height: 250px;
     font-family: 'Mark Pro Regular';
     padding: 1.5rem !important;
@@ -388,6 +378,9 @@
     color: #fff;
     font-size: 8pt;
     font-family: 'Mark Pro Regular';
+    font-weight: normal;
+    padding: 0px 7px;
+    border-right: solid;
 }
 
 .LoanTransactionTable-W th {
@@ -413,7 +406,7 @@
 }
 
     .InvestmentBreakdown tbody tr:nth-of-type(odd) {
-        background-color: #f3f3f3 !important;
+        background-color: #F2F2F2 !important;
     }
 
 .InvestmentDetail td span {
@@ -429,7 +422,7 @@
 
 .card-body-header-name {
     font-size: 14pt;
-    color: #2d6444 !important;
+    color: #1C6B40 !important;
     font-weight: bolder;
     font-family: sans-serif;
 }
@@ -459,7 +452,7 @@
     font-size: 12pt;
     color: #005b00 !important;
     font-family: 'Mark Pro Regular';
-    padding: 0px 25px;
+    padding: 18px 25px;
 }
 
 .card-body-sub-header2 {
@@ -469,7 +462,7 @@
 }
 
 .TotalAmountDetailsDiv {
-    background-color: #2d6444 !important;
+    background-color: #1C6B40 !important;
     padding: 10px 25px;
     height: 60px;
     color: #fff !important;
@@ -503,6 +496,14 @@
     width: 7%;
 }
 
+.w-5 {
+    width: 5%;
+}
+
+.w-10 {
+    width: 10%;
+}
+
 .w-12 {
     width: 12%;
 }
@@ -513,6 +514,10 @@
 
 .w-15 {
     width: 15%;
+}
+
+.w-20 {
+    width: 20%;
 }
 
 .w-35 {
@@ -589,7 +594,7 @@
 }
 
 .InvestmentPermanaceDiv {
-    background-color: #f3f3f3;
+    background-color: #F2F2F2;
     padding-top: 1rem !important;
     padding-bottom: 1rem !important;
     font-family: 'Mark Pro Regular';
@@ -655,7 +660,7 @@
 }
 
 .bg-success-new {
-    background-color: #2d6444 !important;
+    background-color: #1C6B40 !important;
 }
 
 .eConfirm-logo-container {
@@ -697,7 +702,7 @@
 }
 
 .paymentDueFooterBlock {
-    background-color: #f3f3f3 !important;
+    background-color: #F2F2F2 !important;
     text-align: center;
     /*padding-top: .5rem !important;
     height: 30px;*/
@@ -737,7 +742,7 @@
 }
 
 .LoanAmountDetailsDiv {
-    background-color: #2d6444 !important;
+    background-color: #1C6B40 !important;
     padding: 10px 25px;
     height: 60px;
     color: #fff !important;
@@ -751,7 +756,7 @@
 }
 
 .LoanTransactionTable tbody tr:nth-of-type(odd), LoanTransactionTable-W tbody tr:nth-of-type(odd) {
-    background-color: #f3f3f3 !important;
+    background-color: #F2F2F2 !important;
 }
 
 .SpecialMessageDiv {
@@ -794,12 +799,12 @@
     }
 
 .PersonalLoanDetailDiv {
-    background-color: #f3f3f3;
-    padding: 10px 0px;
+    background-color: #F2F2F2;
+    padding: 20px 0px;
 }
 
 .HomeLoanDetailDiv {
-    background-color: #f3f3f3;
+    background-color: #F2F2F2;
     padding: 10px 0px;
 }
 
@@ -818,7 +823,7 @@
 .PaymentDueSpecialMessageDiv {
     font-family: 'Mark Pro Regular';
     font-size: 12pt;
-    background-color: #2d6444 !important;
+    background-color: #1C6B40 !important;
     padding: 5px 25px;
     color: #fff !important;
 }
@@ -921,7 +926,7 @@ hr {
 
 .TotalRewardPointsSpan {
     border-radius: 50% !important;
-    background-color: #2d6444 !important;
+    background-color: #1C6B40 !important;
     display: inline-block;
     width: 5rem;
     height: 5rem;
@@ -1081,7 +1086,7 @@ hr {
 }
 
 .InvestmentBreakdownW tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3 !important;
+    background-color: #F2F2F2 !important;
 }
 
 .SummaryTable td {
@@ -1120,18 +1125,18 @@ hr {
 
 .mca_detail_statement_label-w {
     color: rgb(128, 84, 119) !important;
-    font-family: 'Mark Pro Bold' !important;
+    font-family: 'Mark Pro Regular' !important;
     font-size: 12pt !important;
 }
 
 .mca_header_label-w {
     font-size: 14pt;
-    font-family: 'Mark Pro Bold';
+    font-family: 'Mark Pro Regular';
     color: rgb(128, 84, 119) !important;
 }
 
 .MCADetailDiv {
-    background-color: #f3f3f3;
+    background-color: #F2F2F2;
     padding: 10px 0px;
 }
 
@@ -1143,7 +1148,7 @@ hr {
 
 .mca_small_table {
     width: 40%;
-    border-collapse: collapse;
+    border-collapse: inherit;
     font-family: 'Mark Pro Regular';
     font-size: 8pt;
 }
@@ -1164,7 +1169,7 @@ hr {
 
 .mca_custom_table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: inherit;
     font-family: 'Mark Pro Regular';
     font-size: 8pt;
 }
@@ -1192,6 +1197,7 @@ hr {
     color: rgb(255, 255, 255);
     font-size: 8pt;
     font-family: 'Mark Pro Regular';
+    font-weight: normal !important;
 }
 
 .MCATransactionTable tbody, .MCATransactionTable-W tbody {
@@ -1200,12 +1206,13 @@ hr {
 }
 
     .MCATransactionTable tbody tr:nth-of-type(odd), .MCATransactionTable-W tbody tr:nth-of-type(odd) {
-        background-color: #f3f3f3 !important;
+        background-color: #F2F2F2 !important;
     }
 
 .MCATransactionTable-W th {
-    background-color: rgb(128, 84, 119) !important;
+    background-color: black !important;
     color: rgb(255, 255, 255);
     font-size: 8pt;
     font-family: 'Mark Pro Regular';
+    font-weight: normal !important;
 }

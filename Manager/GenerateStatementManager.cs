@@ -1475,7 +1475,7 @@ namespace nIS
                     else
                     {
                         string fileName = "Statement_" + customer.Identifier + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
-                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, batchMaster.Identifier, customer.Identifier, statementRawData.BaseURL, statementRawData.OutputLocation);
+                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, batchMaster.Identifier, customer.Identifier, statementRawData.BaseURL, statementRawData.OutputLocation, true, statement.Pages[0].PageTypeName);
 
                         logDetailRecord.StatementFilePath = filePath;
                         logDetailRecord.Status = ScheduleLogStatus.Completed.ToString();
@@ -1536,9 +1536,9 @@ namespace nIS
                     var customerSearchParameter = new CustomerSearchParameter() { CustomerId = customer.CustomerId, BatchId = batchMaster.Identifier };
 
                     var IsPortFolioPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.AT_A_GLANCE_PAGE_TYPE).ToList().Count > 0;
-                    var IsInvestmentPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE || it.PageTypeName == HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE).ToList().Count > 0;
+                    var IsInvestmentPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_ENGLISH || it.PageTypeName == HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_ENGLISH || it.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_AFRICAN || it.PageTypeName == HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_AFRICAN).ToList().Count > 0;
                     var IsPersonalLoanPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == HtmlConstants.PERSONAL_LOAN_PAGE_TYPE).ToList().Count > 0;
-                    var IsHomeLoanPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE).ToList().Count > 0;
+                    var IsHomeLoanPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE).ToList().Count > 0;
                     var IsRewardPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.GREENBACKS_PAGE_TYPE).ToList().Count > 0;
                     var IsMCAPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_PAGE_TYPE).ToList().Count > 0;
                     var IsCorporateSaverPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == HtmlConstants.CORPORATE_SAVER_PAGE_TYPE).ToList().Count > 0;
@@ -1692,11 +1692,11 @@ namespace nIS
                                         string vatNo = string.Empty;
                                         if (statement.Pages.Count == 1)
                                         {
-                                            if (page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE || page.PageTypeName.Trim() == HtmlConstants.PERSONAL_LOAN_PAGE_TYPE)
+                                            if (page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName.Trim() == HtmlConstants.PERSONAL_LOAN_PAGE_TYPE)
                                             {
                                                 isShowCellNo = true;
                                             }
-                                            if (page.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_PAGE_TYPE)
+                                            if (page.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_FOR_CIB_PAGE_TYPE || page.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_FOR_WEA_PAGE_TYPE)
                                             {
                                                 if (MCA != null && MCA.Count > 0)
                                                 {
@@ -1708,7 +1708,7 @@ namespace nIS
                                         break;
 
                                     case HtmlConstants.BRANCH_DETAILS_WIDGET_NAME:
-                                        if (page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE)
+                                        if (page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE)
                                         {
                                             if (statement.Pages.Count == 1)
                                             {
@@ -1735,6 +1735,10 @@ namespace nIS
 
                                     case HtmlConstants.STATIC_HTML_WIDGET_NAME:
                                         IsFailed = this.BindStaticHtmlWidgetData(pageContent, customer, page, widget, statement, ErrorMessages);
+                                        break;
+
+                                    case HtmlConstants.PAGE_BREAK_WIDGET_NAME:
+                                        IsFailed = this.BindPageBreakWidgetData(pageContent, customer, page, widget, statement, ErrorMessages);
                                         break;
 
                                     case HtmlConstants.INVESTMENT_PORTFOLIO_STATEMENT_WIDGET_NAME:
@@ -1787,7 +1791,7 @@ namespace nIS
                                         break;
 
                                     case HtmlConstants.HOME_LOAN_TOTAL_AMOUNT_DETAIL_WIDGET_NAME:
-                                        this.BindHomeLoanTotalAmountDetailWidgetData(pageContent, HomeLoanAccounts, page, widget);
+                                        this.BindHomeLoanTotalAmountDetailWidgetData(pageContent, HomeLoanAccounts, page, widget, customer);
                                         break;
 
                                     case HtmlConstants.HOME_LOAN_ACCOUNTS_BREAKDOWN_WIDGET_NAME:
@@ -1803,7 +1807,7 @@ namespace nIS
                                         break;
 
                                     case HtmlConstants.WEALTH_HOME_LOAN_TOTAL_AMOUNT_WIDGET_NAME:
-                                        this.BindHomeLoanWealthTotalAmountDetailWidgetData(pageContent, HomeLoanAccounts, page, widget);
+                                        this.BindHomeLoanWealthTotalAmountDetailWidgetData(pageContent, HomeLoanAccounts, page, widget, customer);
                                         break;
 
                                     case HtmlConstants.WEALTH_HOME_LOAN_ACCOUNTS_BREAKDOWN_WIDGET_NAME:
@@ -2070,7 +2074,7 @@ namespace nIS
                             statementMetadataRecords.Add(new StatementMetadata
                             {
                                 AccountNumber = HomeLoan.InvestorId.ToString(),
-                                AccountType = HtmlConstants.HOME_LOAN_PAGE_TYPE,
+                                AccountType = HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE,
                                 CustomerId = customer.CustomerId,
                                 CustomerName = customer.FirstName.Trim() + " " + customer.SurName.Trim(),
                                 StatementPeriod = "Monthly",
@@ -2139,7 +2143,11 @@ namespace nIS
                     else
                     {
                         string fileName = "Statement_" + customer.CustomerId + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
-                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, batchMaster.Identifier, customer.CustomerId, statementRawData.BaseURL, statementRawData.OutputLocation);
+
+                        string headerHtml = statement.Pages[0].HeaderHTML;
+                        string footerHtml = statement.Pages[0].FooterHTML;
+
+                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, batchMaster.Identifier, customer.CustomerId, statementRawData.BaseURL, statementRawData.OutputLocation, printPdf: true, headerHtml: headerHtml, footerHtml: footerHtml, segment: statement.Pages[0].PageTypeName);
 
                         logDetailRecord.StatementFilePath = filePath;
                         logDetailRecord.Status = ScheduleLogStatus.Completed.ToString();
@@ -2833,6 +2841,23 @@ namespace nIS
             }
         }
 
+        private bool BindPageBreakWidgetData(StringBuilder pageContent, DM_CustomerMaster customer, Page page, PageWidget widget, Statement statement, StringBuilder ErrorMessages)
+        {
+            try
+            {
+                var html = "<div style=\"page-break-before:always\">&nbsp;</div>";
+                
+                pageContent.Replace("{{PageBreak_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", html);
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                ErrorMessages.Append("<li>Error occurred while configuring PageBreak widget for Page: " + page.Identifier + " and Widget: " + widget.Identifier + ". error: " + ex.Message + "!!</li>");
+                return true;
+            }
+        }
+
         #region These methods helps to bind data to Dynamic widgets
 
         private void BindDynamicTableWidgetData(StringBuilder pageContent, Page page, PageWidget widget, JObject searchParameter, DynamicWidget dynawidget, HttpClient httpClient)
@@ -3172,9 +3197,9 @@ namespace nIS
                 CustomerDetails += "<br><br> Cell:" + customer.Mask_Cell_No;
             }
 
-            if (page.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_PAGE_TYPE)
+            if (page.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_FOR_CIB_PAGE_TYPE || page.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_FOR_WEA_PAGE_TYPE)
             {
-                CustomerDetails += "<br><br><br> Vat no : " + vatNo;
+                CustomerDetails += "<br> Vat no : " + vatNo;
             }
 
             pageContent.Replace("{{CustomerDetails_" + page.Identifier + "_" + widget.Identifier + "}}", CustomerDetails);
@@ -3194,6 +3219,7 @@ namespace nIS
                         case "consumer banking":
                         case "ncb":
                         case "pbvcm":
+                        case "pml":
                             contactCenter = HtmlConstants.CONSUMER_BANKING;
                             break;
                         case "prb":
@@ -3215,10 +3241,26 @@ namespace nIS
 
                     StringBuilder BranchDetail = new StringBuilder();
                     BranchDetail.Append(HtmlConstants.BANK_DETAILS);
-                    BranchDetail.Replace("{{TodayDate}}", string.Empty);
+                    BranchDetail.Replace("{{TodayDate}}<br>", string.Empty);
+                    if (page.PageTypeName == HtmlConstants.MULTI_CURRENCY_FOR_WEA_PAGE_TYPE || page.PageTypeName == HtmlConstants.MULTI_CURRENCY_FOR_CIB_PAGE_TYPE)
+                    {
+                        if (page.PageTypeName == HtmlConstants.MULTI_CURRENCY_FOR_WEA_PAGE_TYPE)
+                        {
+                            contactCenter = "<p class='mca_text_custom_color-w'>" + HtmlConstants.CORPORATE_BANKING + "</p>";
+                        }
+                        else
+                        {
+                            contactCenter = "<p class='text-success'>" + HtmlConstants.CORPORATE_BANKING + "</p>";
+                        }
+                        BranchDetail.Append(contactCenter);
+                        pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+                    }
+                    else
+                    {
+                        pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", contactCenter);
+                    }
 
                     pageContent.Replace("{{BranchDetails_" + page.Identifier + "_" + widget.Identifier + "}}", BranchDetail.ToString());
-                    pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", contactCenter);
                 }
                 else
                 {
@@ -3597,7 +3639,7 @@ namespace nIS
 
         private void BindMarketingServiceWidgetData(StringBuilder pageContent, List<DM_MarketingMessage> Messages, Page page, PageWidget widget, int MarketingMessageCounter, DM_CustomerMaster customer)
         {
-            if (page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE)
+            if (page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE)
             {
                 var specialMsgTxtData = string.Empty;
                 switch (customer.Segment.ToLower())
@@ -3865,7 +3907,7 @@ namespace nIS
 
         private void BindSpecialMessageWidgetData(StringBuilder pageContent, SpecialMessage SpecialMessage, Page page, PageWidget widget, DM_CustomerMaster customer)
         {
-            if (page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE)
+            if (page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE)
             {
                 var htmlWidget = new StringBuilder(HtmlConstants.SPECIAL_MESSAGE_HTML);
                 var specialMsgTxtData = string.Empty;
@@ -4079,8 +4121,8 @@ namespace nIS
                                 {
                                     trans.OutstandingCapital = "-";
                                 }
-                                tableHTML.Append("<tr class='ht-20'><td class='w-13 text-center'>" + trans.PostingDate
-                                    + "</td><td class='w-13 text-center'>" + trans.EffectiveDate + "</td><td class='w-35'>"
+                                tableHTML.Append("<tr class='ht-20'><td class='w-13 text-center'>" + trans.PostingDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy)
+                                    + "</td><td class='w-13 text-center'>" + trans.EffectiveDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td><td class='w-35'>"
                                     + trans.Description + "</td><td class='w-12 text-right'>" + trans.Debit
                                     + "</td><td class='w-12 text-right'>" + trans.Credit + "</td><td class='w-15 text-right'>"
                                     + trans.OutstandingCapital + "</td></tr>");
@@ -4172,7 +4214,7 @@ namespace nIS
             }
         }
 
-        private void BindHomeLoanTotalAmountDetailWidgetData(StringBuilder pageContent, List<DM_HomeLoanMaster> HomeLoans, Page page, PageWidget widget)
+        private void BindHomeLoanTotalAmountDetailWidgetData(StringBuilder pageContent, List<DM_HomeLoanMaster> HomeLoans, Page page, PageWidget widget, DM_CustomerMaster customer)
         {
             try
             {
@@ -4201,7 +4243,7 @@ namespace nIS
                         TotalOutstandingAmt = 0.0m;
                     }
 
-                    var segmentType = HomeLoans.Select(it => it.SegmentType).FirstOrDefault();
+                    var segmentType = HomeLoans?[0].SegmentType;
 
                     switch (segmentType.ToLower())
                     {
@@ -4229,7 +4271,7 @@ namespace nIS
             }
         }
 
-        private void BindHomeLoanWealthTotalAmountDetailWidgetData(StringBuilder pageContent, List<DM_HomeLoanMaster> HomeLoans, Page page, PageWidget widget)
+        private void BindHomeLoanWealthTotalAmountDetailWidgetData(StringBuilder pageContent, List<DM_HomeLoanMaster> HomeLoans, Page page, PageWidget widget, DM_CustomerMaster customer)
         {
             try
             {
@@ -4258,7 +4300,7 @@ namespace nIS
                         TotalOutstandingAmt = 0.0m;
                     }
 
-                    var segmentType = HomeLoans.Select(it => it.SegmentType).FirstOrDefault();
+                    var segmentType = HomeLoans?[0].SegmentType;
 
                     switch (segmentType.ToLower())
                     {
@@ -4863,13 +4905,15 @@ namespace nIS
                     HomeLoans.ForEach(HomeLoan =>
                     {
                         var HomeLoanSummary = HomeLoan.LoanSummary;
-                        if (HomeLoanSummary != null && !string.IsNullOrEmpty(HomeLoanSummary.Total_Instalment) && HomeLoanSummary.Total_Instalment != "0" && HomeLoanSummary.Total_Instalment != "0.00")
+                        var res = 0.0m;
+                        decimal.TryParse(HomeLoanSummary.Total_Instalment, out res);
+                        if (HomeLoanSummary != null && !string.IsNullOrEmpty(HomeLoanSummary.Total_Instalment) && HomeLoanSummary.Total_Instalment != "0" && HomeLoanSummary.Total_Instalment != "0.00" && res > 0)
                         {
                             #region Installment details div
                             var htmlWidget = HtmlConstants.HOME_LOAN_INSTALMENT_DETAILS_HTML;
                             StringBuilder htmlForWidget = new StringBuilder();
                             htmlForWidget.Append(htmlWidget);
-                            var res = 0.0m;
+                            res = 0.0m;
                             if (!string.IsNullOrEmpty(HomeLoanSummary.Basic_Instalment) && decimal.TryParse(HomeLoanSummary.Basic_Instalment, out res))
                             {
                                 htmlForWidget.Replace("{{BasicInstalment}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
@@ -5597,13 +5641,13 @@ namespace nIS
                         }
 
                         tableHTML.Append("<tr class='ht-20'>" +
-                                         "<td class='w-15 text-center'>" + trans.Transaction_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
-                                         "<td class='w-35 text-left'>" + trans.Description + "</td>" +
-                                         "<td class='w-12 text-right'>" + debit + "</td>" +
-                                         "<td class='w-12 text-right'>" + credit + "</td>" +
-                                         "<td class='w-7 text-center'>" + (trans.Rate != null ? Math.Round(decimal.Parse(trans.Rate.ToString()), 2).ToString() : "") + "</td>" +
-                                         "<td class='w-7 text-center'>" + trans.Days + "</td>" +
-                                         "<td class='w-12 text-right'>" + (trans.AccuredInterest != null ? Math.Round(decimal.Parse(trans.AccuredInterest.ToString()), 2).ToString() : "") + "</td>" +
+                                         "<td class='w-20 text-center'>" + trans.Transaction_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
+                                         "<td class='w-40 text-left'>" + trans.Description + "</td>" +
+                                         "<td class='w-10 text-right'>" + debit + "</td>" +
+                                         "<td class='w-10 text-right'>" + credit + "</td>" +
+                                         "<td class='w-5 text-center'>" + (trans.Rate != null ? Math.Round(decimal.Parse(trans.Rate.ToString()), 2).ToString() : "") + "</td>" +
+                                         "<td class='w-5 text-center'>" + trans.Days + "</td>" +
+                                         "<td class='w-10 text-right'>" + (trans.AccuredInterest != null ? Math.Round(decimal.Parse(trans.AccuredInterest.ToString()), 2).ToString() : "") + "</td>" +
                                          "</tr>");
                     });
                 }

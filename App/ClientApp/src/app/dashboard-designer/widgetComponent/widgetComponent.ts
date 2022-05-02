@@ -1484,6 +1484,31 @@ export class CorporateSaverTableTotalComponent {
 }
 
 
+// Component Created for PageBreak Widget--
+@Component({
+  selector: 'page-break-widget',
+  template: `<div class="widget">
+    <div class="widget-header">
+      <span class="widget-header-title"> Page Break </span>
+    </div>
+    <div class="widget-area position-relative width100">
+      <div class="widget-indicator-inner text-center pt-2">
+        <div style="page-break-after:always">&nbsp;</div>
+      </div>
+    </div>
+  </div>`
+})
+export class PageBreakComponent {
+
+  constructor() {}
+
+  ngOnInit() {
+    
+  }
+
+}
+
+
 // Component Created for SegmentBasedContent Widget--
 @Component({
   selector: 'Segment-based-content-widget',
@@ -2124,7 +2149,7 @@ export class WealthBankDetailsComponent {
                           </div>
                       </div>
 
-                      <div class="pt-1 pb-2" style="background-color:#f3f3f3">
+                      <div class="pt-1 pb-2" style="background-color:#F2F2F2">
                           <table class="customTable mt-2" border="0" id="portfolio">
                               <tbody class="fnt-13">
                                   <tr>
@@ -2180,7 +2205,7 @@ export class InvestmentPortfolioStatementComponent {
                           </div>
                       </div>
 
-                      <div class="pt-1 pb-2" style="background-color:#f3f3f3">
+                      <div class="pt-1 pb-2" style="background-color:#F2F2F2">
                           <table class="customTable mt-2" border="0" id="portfolio">
                               <tbody class="fnt-13">
                                   <tr>
@@ -2294,7 +2319,7 @@ export class WealthInvestorPerformanceComponent {
               <div class="card-body-header pb-2">Breakdown of your investment accounts</div>
               
                   <div id='JustInvest-9929' class='tab-pane fade in active show'>
-                      <div style="background-color: #f3f3f3;padding:10px 0px">
+                      <div style="background-color: #F2F2F2;padding:10px 0px">
                           <h4 class="pl-25px"><span class='InvestmentProdDesc'>Product Desc</span></h4>
                           <table border="0" class="InvestmentDetail customTable">
                               <tbody>
@@ -2397,7 +2422,7 @@ export class WealthInvestorPerformanceComponent {
 
                       <br/><br/>
 
-                      <div style="background-color: #f3f3f3;padding:10px 0px">
+                      <div style="background-color: #F2F2F2;padding:10px 0px">
                           <h4 class="pl-25px"><span class="InvestmentProdDesc">Product Desc</span></h4>
                           <table border="0" class="InvestmentDetail customTable">
                               <tbody>
@@ -2520,7 +2545,7 @@ export class BreakdownOfInvestmentAccountsComponent {
               <div class="card-body-header-w pb-2">Breakdown of your investment accounts</div>
               
                   <div id='JustInvest-9929' class='tab-pane fade in active show'>
-                      <div style="background-color: #f3f3f3;padding:10px 0px">
+                      <div style="background-color: #F2F2F2;padding:10px 0px">
                           <h4 class="pl-25px"><span class='InvestmentProdDescW'>Product Desc</span></h4>
                           <table border="0" class="InvestmentDetailW customTable">
                               <tbody>
@@ -2623,7 +2648,7 @@ export class BreakdownOfInvestmentAccountsComponent {
 
                       <br/><br/>
 
-                      <div style="background-color: #f3f3f3;padding:10px 0px">
+                      <div style="background-color: #F2F2F2;padding:10px 0px">
                           <h4 class="pl-25px"><span class="InvestmentProdDescW">Product Desc</span></h4>
                           <table border="0" class="InvestmentDetailW customTable">
                               <tbody>
@@ -2851,7 +2876,7 @@ export class WealthNedbankServiceComponent {
                   </div>
               </div>
 
-              <div class="pt-2 pb-2" style="background-color:#f3f3f3">
+              <div class="pt-2 pb-2" style="background-color:#F2F2F2">
                   <h4 class="pl-25px"><span class="NedbankPersonalLoanTxt">Nedbank personal loan</span></h4>
                   <table class="customTable mt-2" border="0">
                       <tbody>
