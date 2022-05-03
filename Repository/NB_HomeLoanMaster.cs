@@ -32,5 +32,7 @@ namespace nIS
         public string RegisteredAmount { get; set; }
         public string TenantCode { get; set; }
         public string SegmentType { get; set; }
+        public string BondNo { get; set; }
+        public Nullable<System.DateTime> StatementDate { get; set; }
     }
 }

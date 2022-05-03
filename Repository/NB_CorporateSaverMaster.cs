@@ -15,9 +15,9 @@ namespace nIS
     public partial class NB_CorporateSaverMaster
     {
         public long Id { get; set; }
-        public Nullable<long> BatchId { get; set; }
-        public string CustomerId { get; set; }
-        public Nullable<long> InvestorId { get; set; }
+        public long BatchId { get; set; }
+        public long CustomerId { get; set; }
+        public long InvestorId { get; set; }
         public string AgentContactDetails { get; set; }
         public string AgentClientAddress1 { get; set; }
         public string AgentClientAddress2 { get; set; }

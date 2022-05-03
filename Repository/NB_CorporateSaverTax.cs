@@ -15,9 +15,9 @@ namespace nIS
     public partial class NB_CorporateSaverTax
     {
         public long Id { get; set; }
-        public Nullable<long> BatchId { get; set; }
-        public string CustomerId { get; set; }
-        public Nullable<long> InvestorId { get; set; }
+        public long BatchId { get; set; }
+        public long CustomerId { get; set; }
+        public long InvestorId { get; set; }
         public Nullable<decimal> CapitalBalance { get; set; }
         public string TenantCode { get; set; }
         public string InvestType { get; set; }

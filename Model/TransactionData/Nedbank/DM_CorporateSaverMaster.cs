@@ -16,9 +16,9 @@ namespace nIS
     public class DM_CorporateSaverMaster
     {
         public long Identifier { get; set; }
-        public Nullable<long> BatchId { get; set; }
-        public string CustomerId { get; set; }
-        public Nullable<long> InvestorId { get; set; }
+        public long BatchId { get; set; }
+        public long CustomerId { get; set; }
+        public long InvestorId { get; set; }
         public string AgentContactDetails { get; set; }
         public string AgentClientAddress1 { get; set; }
         public string AgentClientAddress2 { get; set; }
@@ -69,9 +69,10 @@ namespace nIS
     {
         public long Identifier { get; set; }
         public long Id { get; set; }
-        public Nullable<long> BatchId { get; set; }
-        public string CustomerId { get; set; }
-        public Nullable<long> InvestorId { get; set; }
+
+        public long BatchId { get; set; }
+        public long CustomerId { get; set; }
+        public long InvestorId { get; set; }
         public Nullable<System.DateTime> FromDate { get; set; }
         public Nullable<System.DateTime> ToDate { get; set; }
         public string PaymentDetails { get; set; }
@@ -86,9 +87,9 @@ namespace nIS
     {
         public long Identifier { get; set; }
         public long Id { get; set; }
-        public Nullable<long> BatchId { get; set; }
-        public string CustomerId { get; set; }
-        public Nullable<long> InvestorId { get; set; }
+        public long BatchId { get; set; }
+        public long CustomerId { get; set; }
+        public long InvestorId { get; set; }
         public Nullable<decimal> CapitalBalance { get; set; }
         public string TenantCode { get; set; }
         public string InvestType { get; set; }

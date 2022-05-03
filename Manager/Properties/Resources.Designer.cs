@@ -199,6 +199,16 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to en BTW word in Maart afgetrek
+        ///en.
+        /// </summary>
+        internal static string and_VAT_are_deducted_in_Maart_and {
+            get {
+                return ResourceManager.GetString("and VAT are deducted in Maart and", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Jaarlikse huisleningstaat.
         /// </summary>
         internal static string Annual_home_loan_statement {
@@ -237,9 +247,9 @@ namespace nIS.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Agterstallige bedrag.
         /// </summary>
-        internal static string Arreas {
+        internal static string Arrears {
             get {
-                return ResourceManager.GetString("Arreas", resourceCulture);
+                return ResourceManager.GetString("Arrears", resourceCulture);
             }
         }
         
@@ -258,6 +268,15 @@ namespace nIS.Properties {
         internal static string August {
             get {
                 return ResourceManager.GetString("August", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gemagtigde finansiële diens- en geregistreerde kredietverskaffer (NCRCP16).
+        /// </summary>
+        internal static string Authorised_financial_services_and_registered_credit_provider__NCRCP16_ {
+            get {
+                return ResourceManager.GetString("Authorised financial services and registered credit provider (NCRCP16)", resourceCulture);
             }
         }
         
@@ -451,20 +470,20 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kliënt.
+        /// </summary>
+        internal static string Client {
+            get {
+                return ResourceManager.GetString("Client", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kliëntkode.
         /// </summary>
         internal static string Client_code {
             get {
                 return ResourceManager.GetString("Client code", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Kliënt besonderhede.
-        /// </summary>
-        internal static string Client_details {
-            get {
-                return ResourceManager.GetString("Client details", resourceCulture);
             }
         }
         
@@ -631,6 +650,15 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to besonderhede.
+        /// </summary>
+        internal static string Details {
+            get {
+                return ResourceManager.GetString("Details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to As gevolg van versekeringsveranderings is u nuwe paaiementbesonderhede soos volg.
         /// </summary>
         internal static string Due_to_insurance_changes__your_new_instalment_details_are_as_follows {
@@ -667,7 +695,7 @@ namespace nIS.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to eStatements.
+        ///   Looks up a localized string similar to eState.
         /// </summary>
         internal static string eStatements {
             get {
@@ -938,6 +966,15 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to in ooreenstemming met die mandaat wat gehou word.
+        /// </summary>
+        internal static string in_accordance_with_the_mandate_held {
+            get {
+                return ResourceManager.GetString("in accordance with the mandate held", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Paaiement.
         /// </summary>
         internal static string Instalment {
@@ -1073,6 +1110,15 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to word in Maart op u rekening gekrediteer.
+        /// </summary>
+        internal static string is_credited_to_your_account_in_Maart {
+            get {
+                return ResourceManager.GetString("is credited to your account in Maart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Januarie.
         /// </summary>
         internal static string January {
@@ -1114,6 +1160,15 @@ namespace nIS.Properties {
         internal static string Legal_costs {
             get {
                 return ResourceManager.GetString("Legal costs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to min agentadministrasiegelde en BTW.
+        /// </summary>
+        internal static string less_agent_administration_fee_and_VAT {
+            get {
+                return ResourceManager.GetString("less agent administration fee and VAT", resourceCulture);
             }
         }
         
@@ -1273,7 +1328,7 @@ namespace nIS.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nedbank private welvaartdienssuite.
+        ///   Looks up a localized string similar to Nedbank private Wealth-dienssuite.
         /// </summary>
         internal static string Nedbank_Private_Wealth_Service_Suite {
             get {
@@ -1380,6 +1435,15 @@ namespace nIS.Properties {
             get {
                 return ResourceManager.GetString("Our revised pricing schedule applies from 1 January 2022. For more information go" +
                         " to", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to namens u aan u agent betaal.
+        /// </summary>
+        internal static string paid_on_your_behalf_to_your_agent {
+            get {
+                return ResourceManager.GetString("paid on your behalf to your agent", resourceCulture);
             }
         }
         
@@ -1586,6 +1650,15 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to staat.
+        /// </summary>
+        internal static string Statement {
+            get {
+                return ResourceManager.GetString("Statement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Staatdatum.
         /// </summary>
         internal static string Statement_date {
@@ -1628,15 +1701,6 @@ namespace nIS.Properties {
             get {
                 return ResourceManager.GetString("Stay in control of your finances and manage your home loan account at your conven" +
                         "ience. Download", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string String1 {
-            get {
-                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         
@@ -1704,6 +1768,26 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Die agentadministrasiegelde.
+        /// </summary>
+        internal static string The_agent_administration_fee {
+            get {
+                return ResourceManager.GetString("The agent administration fee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Die agentadministrasiegelde en BTW word in Maart afgetrek
+        ///en namens u aan u agent betaal.
+        /// </summary>
+        internal static string The_agent_administration_fee_and_VAT_are_deducted_in_Maart_and_paid_on_your_behalf_to_your_agent {
+            get {
+                return ResourceManager.GetString("The agent administration fee and VAT are deducted in Maart and paid on your behal" +
+                        "f to your agent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Die Nedbank Private Wealth-dienssuite is 24/7 beskikbaar vir enige navrae wat jy het. Bel ons by.
         /// </summary>
         internal static string The_Nedbank_Private_Wealth_Service_Suite_is_available_24_7_for_any_queries_you_may_have__Call_us_on {
@@ -1734,9 +1818,9 @@ namespace nIS.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Agentgelde afgetrek.
         /// </summary>
-        internal static string Total_agent_fee__deducted_ {
+        internal static string Total_agent_fee {
             get {
-                return ResourceManager.GetString("Total agent fee (deducted)", resourceCulture);
+                return ResourceManager.GetString("Total agent fee", resourceCulture);
             }
         }
         
@@ -1847,6 +1931,15 @@ namespace nIS.Properties {
             get {
                 return ResourceManager.GetString("Try the Nedbank Home-buying Toolkit on the Nedbank Money app today. Simply open t" +
                         "he app and click on", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BTW word in.
+        /// </summary>
+        internal static string VAT_are_deducted_in {
+            get {
+                return ResourceManager.GetString("VAT are deducted in", resourceCulture);
             }
         }
         

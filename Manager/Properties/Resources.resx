@@ -291,7 +291,7 @@
   <data name="Are you about to settle your home loan?" xml:space="preserve">
     <value>Is jy op die punt om jou huislening af te betaal?</value>
   </data>
-  <data name="Arreas" xml:space="preserve">
+  <data name="Arrears" xml:space="preserve">
     <value>Agterstallige bedrag</value>
   </data>
   <data name="as at" xml:space="preserve">
@@ -433,7 +433,7 @@
     <value>Nedbank Money-toep</value>
   </data>
   <data name="Nedbank Private Wealth Service Suite" xml:space="preserve">
-    <value>Nedbank private welvaartdienssuite</value>
+    <value>Nedbank private Wealth-dienssuite</value>
   </data>
   <data name="Nedbank Services" xml:space="preserve">
     <value>Nedbank-dienste</value>
@@ -541,7 +541,7 @@
     <value>Kontak jou verhoudingsbankier om aansoek te doen</value>
   </data>
   <data name="eStatements" xml:space="preserve">
-    <value>eStatements</value>
+    <value>eState</value>
   </data>
   <data name="For your convenience, you can now book an appointment with your banker online. Simply log in to the Money app or Online Banking, choose a time slot that suits you and specify whether you prefer to have the meeting over the phone or in person" xml:space="preserve">
     <value>Vir jou gerief, kan jy nou aanlyn 'n afspraak met jou bankier maak. Teken net in op die Money-toep of Aanlyn Banksake, kies 'n tyd wat jou pas en sê of jy jou bankier persoonlik wil ontmoet of oor die telefoon wil gesels</value>
@@ -624,9 +624,6 @@
   <data name="Your banker" xml:space="preserve">
     <value>Your banker</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
-  </data>
   <data name="Bond no:" xml:space="preserve">
     <value>Verbandno:</value>
   </data>
@@ -639,8 +636,8 @@
   <data name="Branch code" xml:space="preserve">
     <value>Takkode</value>
   </data>
-  <data name="Client details" xml:space="preserve">
-    <value>Kliënt besonderhede</value>
+  <data name="Client" xml:space="preserve">
+    <value>Kliënt</value>
   </data>
   <data name="Corporate Saver statement" xml:space="preserve">
     <value>Corporate Saver staat</value>
@@ -732,7 +729,7 @@
   <data name="Tax totals (year to date)" xml:space="preserve">
     <value>Belastingtotale (jaar tot op datum)</value>
   </data>
-  <data name="Total agent fee (deducted)" xml:space="preserve">
+  <data name="Total agent fee" xml:space="preserve">
     <value>Agentgelde afgetrek</value>
   </data>
   <data name="Total capital" xml:space="preserve">
@@ -746,5 +743,40 @@
   </data>
   <data name="VAT registration no" xml:space="preserve">
     <value>BTW-registrasie no</value>
+  </data>
+  <data name="Statement" xml:space="preserve">
+    <value>staat</value>
+  </data>
+  <data name="Authorised financial services and registered credit provider (NCRCP16)" xml:space="preserve">
+    <value>Gemagtigde finansiële diens- en geregistreerde kredietverskaffer (NCRCP16)</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>besonderhede</value>
+  </data>
+  <data name="and VAT are deducted in Maart and" xml:space="preserve">
+    <value>en BTW word in Maart afgetrek
+en</value>
+  </data>
+  <data name="in accordance with the mandate held" xml:space="preserve">
+    <value>in ooreenstemming met die mandaat wat gehou word</value>
+  </data>
+  <data name="is credited to your account in Maart" xml:space="preserve">
+    <value>word in Maart op u rekening gekrediteer</value>
+  </data>
+  <data name="less agent administration fee and VAT" xml:space="preserve">
+    <value>min agentadministrasiegelde en BTW</value>
+  </data>
+  <data name="paid on your behalf to your agent" xml:space="preserve">
+    <value>namens u aan u agent betaal</value>
+  </data>
+  <data name="The agent administration fee" xml:space="preserve">
+    <value>Die agentadministrasiegelde</value>
+  </data>
+  <data name="The agent administration fee and VAT are deducted in Maart and paid on your behalf to your agent" xml:space="preserve">
+    <value>Die agentadministrasiegelde en BTW word in Maart afgetrek
+en namens u aan u agent betaal</value>
+  </data>
+  <data name="VAT are deducted in" xml:space="preserve">
+    <value>BTW word in</value>
   </data>
 </root>

@@ -291,7 +291,7 @@
 }
 
 .CustomerDetails {
-    font-size: 8pt;
+    font-size: 9pt;
     text-align: left;
     font-family: 'Mark Pro Medium';
     height: 110px;
@@ -327,7 +327,7 @@
 .customTable td {
     padding: 0px 25px;
     font-family: 'Mark Pro Regular';
-    font-size: 8pt;
+    font-size: 9pt;
     height: 20px;
 }
 
@@ -378,9 +378,7 @@
     color: #fff;
     font-size: 8pt;
     font-family: 'Mark Pro Regular';
-    font-weight: normal;
-    padding: 0px 7px;
-    border-right: solid;
+    font-weight: normal !important;
 }
 
 .LoanTransactionTable-W th {
@@ -390,7 +388,7 @@
     font-family: 'Mark Pro Regular';
 }
 
-.LoanTransactionTable tbody, LoanTransactionTable-W tbody {
+.LoanTransactionTable tbody, .LoanTransactionTable-W tbody {
     font-size: 8pt;
     font-family: 'Mark Pro Regular';
 }
@@ -430,7 +428,7 @@
 
 .card-body-header {
     font-size: 14pt;
-    font-family: 'Mark Pro Bold';
+    font-family: 'Mark Pro Regular';
     color: rgb(0, 91, 0) !important;
 }
 
@@ -465,6 +463,13 @@
 .payment-due-header {
     font-size: 12pt;
     color: #005b00 !important;
+    font-family: 'Mark Pro Regular';
+    padding: 18px 25px;
+}
+
+.payment-due-header-w {
+    font-size: 12pt;
+    color: rgb(126, 84, 117) !important;
     font-family: 'Mark Pro Regular';
     padding: 18px 25px;
 }
@@ -644,9 +649,25 @@
     font-size: 8pt;
 }
 
-    .CScustomTable td {
-        padding: 0px 5px;
-    }
+.customTransactionTable {
+    width: 100%;
+    border-collapse: inherit;
+    font-family: 'Mark Pro Regular';
+    font-size: 8pt;
+}
+
+.customTransactionTable td {
+    padding: 0px 5px;
+    font-family: 'Mark Pro Regular';
+    font-size: 8pt;
+    height: 20px;
+}
+
+.customTransactionTable th {
+    padding: 0px 5px;
+    font-size: 8pt;
+}
+
 .pl-25px {
     padding-left: 25px !important;
 }
@@ -801,7 +822,7 @@
     font-size: 12pt !important;
 }
 
-.LoanTransactionTable tbody tr:nth-of-type(odd), LoanTransactionTable-W tbody tr:nth-of-type(odd) {
+.LoanTransactionTable tbody tr:nth-of-type(odd), .LoanTransactionTable-W tbody tr:nth-of-type(odd) {
     background-color: #F2F2F2 !important;
 }
 
@@ -1239,12 +1260,31 @@ hr {
 }
 
 .mca_custom_table th {
-    padding: 0px 25px;
+    padding: 0px 5px;
     font-family: 'Mark Pro Regular';
     color: rgb(0, 0, 0);
     font-size: 9pt;
-    padding-bottom: 10px !important;
 }
+
+.mca_transaction_table {
+    width: 100%;
+    border-collapse: inherit;
+    font-family: 'Mark Pro Regular';
+    font-size: 8pt;
+}
+
+    .mca_transaction_table td {
+        padding: 0px 5px;
+        font-family: 'Mark Pro Regular';
+        font-size: 8pt;
+    }
+
+    .mca_transaction_table th {
+        padding: 0px 5px;
+        font-family: 'Mark Pro Regular';
+        color: rgb(0, 0, 0);
+        font-size: 9pt;
+    }
 
 .mca_text_custom_color {
     color: rgb(0, 91, 0) !important;

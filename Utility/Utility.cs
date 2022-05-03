@@ -822,7 +822,7 @@
         /// <param name="batchId"> the batch identifier </param>
         /// <param name="customerId"> the customer identifier </param>
         /// <returns>true if deleted successfully, otherwise false.</returns>
-        public bool DeleteUnwantedDirectory(long batchId, long customerId, string baseURL)
+        public bool DeleteUnwantedDirectory(long batchId, long? customerId, string baseURL)
         {
             string deleteDirPath = baseURL + "\\Statements" + "\\" + batchId + "\\" + customerId;
             DirectoryInfo directoryInfo = new DirectoryInfo(deleteDirPath);
@@ -1296,10 +1296,10 @@
 
                 // create a new pdf document converting an url
                 PdfDocument doc = converter.ConvertUrl(url);
-
-                doc.Fonts.Add(@"C:\temp\MarkPro-Regular.ttf");
-                doc.Fonts.Add(@"C:\temp\Mark Pro.ttf");
-                doc.Fonts.Add(@"C:\temp\Mark Pro Bold.ttf");
+                
+                doc.Fonts.Add(@"C:\UserFiles\Fonts\MarkPro-Regular.ttf");
+                doc.Fonts.Add(@"C:\UserFiles\Fonts\Mark Pro.ttf");
+                doc.Fonts.Add(@"C:\UserFiles\Fonts\Mark Pro Bold.ttf");
 
                 // save pdf document
                 doc.Save(outPdfPath);

@@ -15,9 +15,9 @@ namespace nIS
     public partial class NB_CorporateSaverTransactions
     {
         public long Id { get; set; }
-        public Nullable<long> BatchId { get; set; }
-        public string CustomerId { get; set; }
-        public Nullable<long> InvestorId { get; set; }
+        public long BatchId { get; set; }
+        public long CustomerId { get; set; }
+        public long InvestorId { get; set; }
         public Nullable<System.DateTime> FromDate { get; set; }
         public Nullable<System.DateTime> ToDate { get; set; }
         public string PaymentDetails { get; set; }

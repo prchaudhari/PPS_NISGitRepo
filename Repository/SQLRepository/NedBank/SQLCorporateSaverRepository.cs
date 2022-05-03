@@ -61,9 +61,9 @@
                 string whereClause = this.WhereClauseGeneratorForCustomerCorporateSaver(searchParameter, tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    // var MCAMasterRecords = nISEntitiesDataContext.NB_CorporateSaverMaster.Where(whereClause).ToList();
+                    var MCAMasterRecords = nISEntitiesDataContext.NB_CorporateSaverMaster.Where(whereClause).ToList();
 
-                    var MCAMasterRecords = nISEntitiesDataContext.NB_CorporateSaverMaster.Where(x => x.BatchId == searchParameter.BatchId & x.TenantCode == tenantCode).ToList();
+                    // var MCAMasterRecords = nISEntitiesDataContext.NB_CorporateSaverMaster.Where(x => x.BatchId == searchParameter.BatchId & x.TenantCode == tenantCode).ToList();
 
                     if (MCAMasterRecords != null && MCAMasterRecords.Count > 0)
                     {
@@ -113,13 +113,13 @@
                                 },
                                     tenantCode)?.ToList(),
 
-                                    CorporateSaverTax = this.Get_DM_CorporateSaverTax(new CustomerCorporateSaverSearchParameter()
-                                    {
-                                        InvestorId = item.InvestorId,
-                                        BatchId = searchParameter.BatchId
-                                    },
+                                CorporateSaverTax = this.Get_DM_CorporateSaverTax(new CustomerCorporateSaverSearchParameter()
+                                {
+                                    InvestorId = item.InvestorId,
+                                    BatchId = searchParameter.BatchId
+                                },
                                     tenantCode)?.ToList()
-                            }) ;
+                            });
                         });
                     }
                 }
@@ -148,11 +148,10 @@
                 string whereClause = this.WhereClauseGeneratorForCustomerCorporateSaver(searchParameter, tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-
-                    var CorporateSaverTransactionRecords = nISEntitiesDataContext.NB_CorporateSaverTransactions.
-                        Where(x => x.BatchId == searchParameter.BatchId & x.InvestorId == searchParameter.InvestorId & x.TenantCode == tenantCode)?.
-                        OrderBy(it => it.FromDate)?.ToList();
-                    //      var CorporateSaverTransactionRecords = nISEntitiesDataContext.NB_CorporateSaverTransactions.Where(whereClause)?.OrderBy(it => it.FromDate)?.ToList();
+                    //var CorporateSaverTransactionRecords = nISEntitiesDataContext.NB_CorporateSaverTransactions.
+                    //    Where(x => x.BatchId == searchParameter.BatchId & x.InvestorId == searchParameter.InvestorId & x.TenantCode == tenantCode)?.
+                    //    OrderBy(it => it.FromDate)?.ToList();
+                    var CorporateSaverTransactionRecords = nISEntitiesDataContext.NB_CorporateSaverTransactions.Where(whereClause)?.OrderBy(it => it.FromDate)?.ToList();
                     if (CorporateSaverTransactionRecords != null && CorporateSaverTransactionRecords.Count > 0)
                     {
                         CorporateSaverTransactionRecords.ForEach(item =>
@@ -190,11 +189,10 @@
                 string whereClause = this.WhereClauseGeneratorForCustomerCorporateSaver(searchParameter, tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-
-                    var CorporateSaverTaxRecords = nISEntitiesDataContext.NB_CorporateSaverTax.
-                        Where(x => x.BatchId == searchParameter.BatchId & x.InvestorId == searchParameter.InvestorId & x.TenantCode == tenantCode)?.
-                        ToList();
-                    //      var CorporateSaverTransactionRecords = nISEntitiesDataContext.NB_CorporateSaverTransactions.Where(whereClause)?.OrderBy(it => it.FromDate)?.ToList();
+                    //var CorporateSaverTaxRecords = nISEntitiesDataContext.NB_CorporateSaverTax.
+                    //    Where(x => x.BatchId == searchParameter.BatchId & x.InvestorId == searchParameter.InvestorId & x.TenantCode == tenantCode)?.
+                    //    ToList();
+                    var CorporateSaverTaxRecords = nISEntitiesDataContext.NB_CorporateSaverTax.Where(whereClause).ToList();
                     if (CorporateSaverTaxRecords != null && CorporateSaverTaxRecords.Count > 0)
                     {
                         CorporateSaverTaxRecords.ForEach(item =>
@@ -221,7 +219,7 @@
                                 TotalAgentFeeMstr = item.TotalAgentFeeMstr,
                                 VatOnFeeMstr0 = item.VatOnFeeMstr0,
                                 InterestAgentFeeMstr = item.InterestAgentFeeMstr,
-                                InterestDescription=item.InterestDescription,
+                                InterestDescription = item.InterestDescription,
                                 TenantCode = item.TenantCode
                             });
                         });

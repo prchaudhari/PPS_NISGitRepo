@@ -183,7 +183,7 @@
         /// <param name="batchId"> the batch identifier </param>
         /// <param name="customerId"> the customer identifier </param>
         /// <returns>true if deleted successfully, otherwise false.</returns>
-        bool DeleteUnwantedDirectory(long batchId, long customerId, string baseURL);
+        bool DeleteUnwantedDirectory(long batchId, long? customerId, string baseURL);
 
         /// <summary>
         /// This method help to get string value of month
