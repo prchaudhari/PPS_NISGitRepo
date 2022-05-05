@@ -38,6 +38,7 @@ namespace nIS
         public string SegmentType { get; set; }
         public string BondNo { get; set; }
         public DateTime? StatementDate { get; set; }
+        public DateTime? EffectiveDate { get; set; }
     }
 
     public class DM_HomeLoanArrear

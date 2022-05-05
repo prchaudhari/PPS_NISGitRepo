@@ -2285,8 +2285,9 @@ a {
 
     .card-body-header {
         font-size: 18px;
-        font-family: 'Mark Pro Regular';
+        font-family: 'Mark Pro Bold';
         color: rgb(0, 91, 0) !important;
+        font-weight: bold;
     }
 
     .card-body-header-w {
@@ -2483,7 +2484,7 @@ a {
         float: right;
         margin-right: 35px;
         color: gray;
-        font-size: 12px;
+        font-size: 9px;
         font-family: 'Mark Pro Regular'
     }
 

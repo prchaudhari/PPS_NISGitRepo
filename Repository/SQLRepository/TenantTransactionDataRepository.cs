@@ -1092,6 +1092,7 @@ namespace nIS
                                 SegmentType = item.SegmentType,
                                 BondNo = item.BondNo,
                                 StatementDate = item.StatementDate,
+                                EffectiveDate = item.EffectiveDate,
                                 LoanTransactions = this.Get_DM_HomeLoanTransaction(new CustomerHomeLoanSearchParameter() { CustomerId = searchParameter.CustomerId, InvestorId = item.InvestorId, BatchId = searchParameter.BatchId }, tenantCode)?.ToList(),
                                 LoanArrear = this.Get_DM_HomeLoanArrears(new CustomerHomeLoanSearchParameter() { CustomerId = searchParameter.CustomerId, InvestorId = item.InvestorId, BatchId = searchParameter.BatchId }, tenantCode)?.ToList()?.FirstOrDefault(),
                                 LoanSummary = this.Get_DM_HomeLoanSummary(new CustomerHomeLoanSearchParameter() { CustomerId = searchParameter.CustomerId, InvestorId = item.InvestorId, BatchId = searchParameter.BatchId }, tenantCode)?.ToList()?.FirstOrDefault()

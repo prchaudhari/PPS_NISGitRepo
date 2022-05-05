@@ -34,5 +34,6 @@ namespace nIS
         public string SegmentType { get; set; }
         public string BondNo { get; set; }
         public Nullable<System.DateTime> StatementDate { get; set; }
+        public Nullable<System.DateTime> EffectiveDate { get; set; }
     }
 }

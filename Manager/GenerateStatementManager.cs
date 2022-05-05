@@ -239,7 +239,7 @@ namespace nIS
                     var logDetails = new List<ScheduleLogDetail>();
                     logDetailRecord.ScheduleLogId = statementRawData.ScheduleLog.Identifier;
                     logDetailRecord.CustomerId = customer.CustomerId;
-                    logDetailRecord.CustomerName = customer.FirstName.Trim() + " " + customer.SurName.Trim();
+                    logDetailRecord.CustomerName = customer.FirstName?.Trim() + " " + customer.SurName?.Trim();
                     logDetailRecord.ScheduleId = statementRawData.ScheduleLog.ScheduleId;
                     logDetailRecord.RenderEngineId = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.Identifier : 0;
                     logDetailRecord.RenderEngineName = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.RenderEngineName : "";
@@ -284,7 +284,7 @@ namespace nIS
                 {
                     ScheduleLogId = statementRawData.ScheduleLog.Identifier,
                     CustomerId = customer.CustomerId,
-                    CustomerName = customer.FirstName.Trim() + " " + customer.SurName.Trim(),
+                    CustomerName = customer.FirstName.Trim() + " " + customer.SurName?.Trim(),
                     ScheduleId = statementRawData.ScheduleLog.ScheduleId,
                     RenderEngineId = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.Identifier : 0,
                     RenderEngineName = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.RenderEngineName : "",
@@ -479,7 +479,7 @@ namespace nIS
                         //update schedule log detail
                         var scheduleLogDetails = new List<ScheduleLogDetail>();
                         scheduleLogDetail.CustomerId = customer.CustomerId;
-                        scheduleLogDetail.CustomerName = customer.FirstName.Trim() + " " + customer.SurName.Trim();
+                        scheduleLogDetail.CustomerName = customer.FirstName.Trim() + " " + customer.SurName?.Trim();
                         scheduleLogDetail.RenderEngineId = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.Identifier : 0;
                         scheduleLogDetail.RenderEngineName = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.RenderEngineName : string.Empty;
                         scheduleLogDetail.RenderEngineURL = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.URL : string.Empty;
@@ -574,7 +574,7 @@ namespace nIS
                 {
                     ScheduleLogId = statementRawData.ScheduleLog.Identifier,
                     CustomerId = statementRawData.DM_Customer.CustomerId,
-                    CustomerName = statementRawData.DM_Customer.FirstName.Trim() + " " + statementRawData.DM_Customer.SurName.Trim(),
+                    CustomerName = statementRawData.DM_Customer.FirstName.Trim() + " " + statementRawData.DM_Customer.SurName?.Trim(),
                     ScheduleId = statementRawData.ScheduleLog.ScheduleId,
                     RenderEngineId = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.Identifier : 0,
                     RenderEngineName = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.RenderEngineName : "",
@@ -2020,7 +2020,7 @@ namespace nIS
                                 AccountNumber = PersonalLoans.InvestorId.ToString(),
                                 AccountType = (!string.IsNullOrEmpty(PersonalLoans.ProductType) ? PersonalLoans.ProductType : HtmlConstants.PERSONAL_LOAN_PAGE_TYPE),
                                 CustomerId = customer.CustomerId,
-                                CustomerName = customer.FirstName.Trim() + " " + customer.SurName.Trim(),
+                                CustomerName = customer.FirstName.Trim() + " " + customer.SurName?.Trim(),
                                 StatementPeriod = PersonalLoans.FromDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + " - " + PersonalLoans.ToDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy),
                                 StatementId = statement.Identifier,
                             });
@@ -2035,7 +2035,7 @@ namespace nIS
                                 AccountNumber = HomeLoan.InvestorId.ToString(),
                                 AccountType = HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE,
                                 CustomerId = customer.CustomerId,
-                                CustomerName = customer.FirstName.Trim() + " " + customer.SurName.Trim(),
+                                CustomerName = customer.FirstName.Trim() + " " + customer.SurName?.Trim(),
                                 StatementPeriod = "Monthly",
                                 StatementId = statement.Identifier,
                             });
@@ -3662,6 +3662,20 @@ namespace nIS
                         pageContent.Replace("{{DueByDate_" + page.Identifier + "_" + widget.Identifier + "}}", PersonalLoan.DueDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
                     }
                 }
+                else
+                {
+                    pageContent.Replace("{{TotalLoanAmount_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+                    pageContent.Replace("{{OutstandingBalance_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+                    pageContent.Replace("{{DueAmount_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+                    pageContent.Replace("{{AccountNumber_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+                    pageContent.Replace("{{StatementDate_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+                    pageContent.Replace("{{StatementPeriod_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+                    pageContent.Replace("{{ArrearsAmount_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+                    pageContent.Replace("{{AnnualRate_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+                    pageContent.Replace("{{MonthlyInstallment_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+                    pageContent.Replace("{{Terms_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+                    pageContent.Replace("{{DueByDate_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+                }
             }
             catch (Exception)
             {
@@ -4113,7 +4127,7 @@ namespace nIS
                                 LoanArrearHtml.Replace("{{Current}}", "R0.00");
                             }
 
-                            if(is30 || is60 || is90 || is120)
+                            if (is30 || is60 || is90 || is120)
                             {
                                 LoanArrearHtml.Append("<p style='font-family:Mark Pro Regular; font-size: 9pt;'>Your Nedbank personal loan is in arrears. According to your loan agreement with Nedbank, you are required to make regular monthly payments. Failure to do so results in extra interest being charged, and your arrear status and payment history being reported to the credit bureaus. This may have a negative impact on your ability to obtain credit. </p>");
                                 LoanArrearHtml.Append("<p style='font-family:Mark Pro Regular; font-size: 9pt;'>Please settle the arrears by paying at any Nedbank Branch or by arranging a debit order through the Nedbank Contact Centre. If you cannot pay, please call 0860 103 117 urgently to discuss the options available to you.</p>");
@@ -4752,6 +4766,14 @@ namespace nIS
                     }
                 }
             }
+            else
+            {
+                pageContent.Replace("{{Interest_" + widget.Identifier + "}}", "R0.00");
+                pageContent.Replace("{{Insurance_" + widget.Identifier + "}}", "R0.00");
+                pageContent.Replace("{{Servicefee_" + widget.Identifier + "}}", "R0.00");
+                pageContent.Replace("{{Legalcosts_" + widget.Identifier + "}}", "R0.00");
+                pageContent.Replace("{{AmountReceived_" + widget.Identifier + "}}", "R0.00");
+            }
         }
 
         private void BindHomeLoanWealthSummaryTaxPurposeWidgetData(StringBuilder pageContent, List<DM_HomeLoanMaster> HomeLoans, PageWidget widget)
@@ -4811,6 +4833,14 @@ namespace nIS
                         pageContent.Replace("{{AmountReceived_" + widget.Identifier + "}}", "R0.00");
                     }
                 }
+            }
+            else
+            {
+                pageContent.Replace("{{Interest_" + widget.Identifier + "}}", "R0.00");
+                pageContent.Replace("{{Insurance_" + widget.Identifier + "}}", "R0.00");
+                pageContent.Replace("{{Servicefee_" + widget.Identifier + "}}", "R0.00");
+                pageContent.Replace("{{Legalcosts_" + widget.Identifier + "}}", "R0.00");
+                pageContent.Replace("{{AmountReceived_" + widget.Identifier + "}}", "R0.00");
             }
         }
 
@@ -4911,6 +4941,10 @@ namespace nIS
                             pageContent.Replace("{{Home_Loan_Instalment_Details_" + widget.Identifier + "}}", string.Empty);
                         }
                     });
+                }
+                else
+                {
+                    pageContent.Replace("{{Home_Loan_Instalment_Details_" + widget.Identifier + "}}", string.Empty);
                 }
                 return false;
             }
@@ -5031,7 +5065,7 @@ namespace nIS
                                 htmlForWidget.Replace("{{TotalInstalment}}", "R0.00");
                             }
 
-                            htmlForWidget.Replace("{{InstalmentDate}}", HomeLoan.LoanTransactions.Select(x => x.Posting_Date).OrderByDescending(x => x)?.FirstOrDefault().ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
+                            htmlForWidget.Replace("{{InstalmentDate}}", (HomeLoan.EffectiveDate == null ? "" : "(effective from " + Convert.ToDateTime(HomeLoan.EffectiveDate).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + ")"));
                             pageContent.Replace("{{Home_Loan_Instalment_Details_" + widget.Identifier + "}}", htmlForWidget.ToString());
 
                             #endregion
@@ -5041,6 +5075,10 @@ namespace nIS
                             pageContent.Replace("{{Home_Loan_Instalment_Details_" + widget.Identifier + "}}", string.Empty);
                         }
                     });
+                }
+                else
+                {
+                    pageContent.Replace("{{Home_Loan_Instalment_Details_" + widget.Identifier + "}}", string.Empty);
                 }
                 return false;
             }

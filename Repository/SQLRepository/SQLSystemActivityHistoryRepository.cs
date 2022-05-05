@@ -105,8 +105,7 @@ namespace nIS
                 }
                 return systemActivityHistories;
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex)            {
                 throw ex;
             }
         }

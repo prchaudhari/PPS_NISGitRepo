@@ -408,11 +408,11 @@ namespace nIS.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 24/7-kontaksentrum.
+        ///   Looks up a localized string similar to Kontaksentrum.
         /// </summary>
-        internal static string Contact_centre {
+        internal static string Contact_Centre {
             get {
-                return ResourceManager.GetString("Contact centre", resourceCulture);
+                return ResourceManager.GetString("Contact Centre", resourceCulture);
             }
         }
         
