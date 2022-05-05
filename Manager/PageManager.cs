@@ -2728,14 +2728,15 @@ namespace nIS
                                                 if (true)//jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                                 {
                                                     //var corporateSaverMaster = JsonConvert.DeserializeObject<DM_CorporateSaverMaster>(jsonstr);
+                                                    
                                                     var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_AGENT_MESSAGE_HTML);
-                                                   htmlWidget.Replace("{{AccountNo}}", "xxxxxxx");
-                                                    htmlWidget.Replace("{{StatementNo}}", "xxxxxxx");
-                                                    htmlWidget.Replace("{{OverdraftLimit}}", "xxxxxxx");
-                                                    htmlWidget.Replace("{{StatementDate}}", "xxxxxxx");
-                                                    htmlWidget.Replace("{{Currency}}", "xxxxxxx");
-                                                    htmlWidget.Replace("{{Statementfrequency}}", "xxxxxxx");
-                                                    htmlWidget.Replace("{{FreeBalance}}", "xxxxxxx");
+                                                   //htmlWidget.Replace("{{AccountNo}}", "xxxxxxx");
+                                                   // htmlWidget.Replace("{{StatementNo}}", "xxxxxxx");
+                                                   // htmlWidget.Replace("{{OverdraftLimit}}", "xxxxxxx");
+                                                   // htmlWidget.Replace("{{StatementDate}}", "xxxxxxx");
+                                                   // htmlWidget.Replace("{{Currency}}", "xxxxxxx");
+                                                   // htmlWidget.Replace("{{Statementfrequency}}", "xxxxxxx");
+                                                   // htmlWidget.Replace("{{FreeBalance}}", "xxxxxxx");
                                                     htmlString.Append(htmlWidget);
                                                 }
                                             }

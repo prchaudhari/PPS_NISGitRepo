@@ -163,6 +163,7 @@
                                 CustomerId = item.CustomerId,
                                 InvestorId = item.InvestorId,
                                 FromDate = item.FromDate,
+                                PaymentDetails=item.PaymentDetails,
                                 ToDate = item.ToDate,
                                 TransactionDescription = item.TransactionDescription,
                                 Rate = item.Rate,

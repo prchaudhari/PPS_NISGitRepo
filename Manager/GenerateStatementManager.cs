@@ -3292,7 +3292,7 @@ namespace nIS
             {
                 var branchDetails = this.tenantTransactionDataRepository.Get_DM_BranchMaster(BranchId, tenantCode)?.FirstOrDefault();
                 if (branchDetails != null)
-                {
+                {  
                     var contactCenter = string.Empty;
                     //switch (customer.Segment.ToLower())
                     //{
@@ -5631,7 +5631,7 @@ namespace nIS
                     pageContent.Replace("{{ClientCode_" + widget.Identifier + "}}", CorporateSaverMaster.ClientCode);
                     pageContent.Replace("{{RelationshipManager_" + widget.Identifier + "}}", CorporateSaverMaster.RelationshipManager);
                     pageContent.Replace("{{VATCalculation_" + widget.Identifier + "}}", CorporateSaverMaster.VATCalculation);
-                    pageContent.Replace("{{ClientVATNo_" + widget.Identifier + "}}", CorporateSaverMaster.ClientVatNo != null ? CorporateSaverMaster.ClientVatNo : "Not provided");
+                    pageContent.Replace("{{ClientVATNo_" + widget.Identifier + "}}", CorporateSaverMaster.ClientVatNo);
 
                 }
             }

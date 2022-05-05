@@ -5121,6 +5121,7 @@ namespace nIS
                                                     string jsonstr = HtmlConstants.CORPORATESAVER_ACCOUNT_SUMMARY_PREVIEW_JSON_STRING;
                                                     if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                                     {
+                                                        
                                                         var mcaMaster = JsonConvert.DeserializeObject<DM_MCAMaster>(jsonstr);
                                                         var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_AGENT_MESSAGE_HTML);
                                                         htmlWidget.Replace("{{AccountNo}}", mcaMaster.CustomerId);
