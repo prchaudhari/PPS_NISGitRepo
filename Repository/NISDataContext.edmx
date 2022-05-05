@@ -819,6 +819,95 @@
           <Property Name="ContactNo" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="NB_CorporateSaverMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="InvestorId" Type="bigint" Nullable="false" />
+          <Property Name="AgentContactDetails" Type="nvarchar" MaxLength="12" />
+          <Property Name="AgentClientAddress1" Type="nvarchar" MaxLength="500" />
+          <Property Name="AgentClientAddress2" Type="nvarchar" MaxLength="500" />
+          <Property Name="AgentClientAddress3" Type="nvarchar" MaxLength="500" />
+          <Property Name="AgentClientAddress4" Type="nvarchar" MaxLength="500" />
+          <Property Name="AgentClientAddress5" Type="nvarchar" MaxLength="500" />
+          <Property Name="AgentClientAddress6" Type="nvarchar" MaxLength="500" />
+          <Property Name="AgentProfile" Type="nvarchar" MaxLength="8" />
+          <Property Name="BranchCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="CIFNo" Type="nvarchar" MaxLength="10" />
+          <Property Name="ClientCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="RelationshipManager" Type="nvarchar" MaxLength="50" />
+          <Property Name="VATCalculation" Type="nvarchar" MaxLength="50" />
+          <Property Name="ClientVatNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="TaxInvoiceNo" Type="varchar" MaxLength="15" />
+          <Property Name="AgentContactPerson" Type="nvarchar" MaxLength="100" />
+          <Property Name="AgentEmailAddress" Type="varchar" MaxLength="80" />
+          <Property Name="AgentRegNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="AgentVATRegNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="AgentFSPLicNo" Type="varchar" MaxLength="10" />
+          <Property Name="AgentReference" Type="nvarchar" MaxLength="50" />
+          <Property Name="StatementNo" Type="varchar" MaxLength="10" />
+          <Property Name="TaxTotalsDescription" Type="nvarchar(max)" />
+          <Property Name="TotalInterest" Type="varchar" MaxLength="50" />
+          <Property Name="VatOnFee" Type="varchar" MaxLength="50" />
+          <Property Name="AgentFeeDeducted" Type="varchar" MaxLength="50" />
+          <Property Name="InvestmentDescription" Type="varchar" MaxLength="50" />
+          <Property Name="InterestInstruction" Type="nvarchar" MaxLength="100" />
+          <Property Name="InvestmentTotalInterest" Type="varchar" MaxLength="50" />
+          <Property Name="AgentFeeStructure1" Type="varchar" MaxLength="50" />
+          <Property Name="AgentFeeStructure2" Type="varchar" MaxLength="100" />
+          <Property Name="DateInvested" Type="datetime" />
+          <Property Name="InvestmentAgentFeeDeducted" Type="varchar" MaxLength="50" />
+          <Property Name="InvetsmentVATOnFee" Type="varchar" MaxLength="50" />
+          <Property Name="Interest" Type="varchar" MaxLength="50" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="NB_CorporateSaverTax">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="InvestorId" Type="bigint" Nullable="false" />
+          <Property Name="CapitalBalance" Type="money" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="InvestType" Type="nvarchar" MaxLength="50" />
+          <Property Name="InterestIntruction" Type="nvarchar" MaxLength="100" />
+          <Property Name="DateInvested" Type="datetime" />
+          <Property Name="CapitalMstr" Type="nvarchar" MaxLength="50" />
+          <Property Name="AgentFeeDeducted" Type="nvarchar" MaxLength="50" />
+          <Property Name="InterestMstr0" Type="nvarchar" MaxLength="50" />
+          <Property Name="VatOnFeeMstr" Type="nvarchar" MaxLength="50" />
+          <Property Name="AGENT_FEE_STRUCTURE_1" Type="nvarchar" MaxLength="50" />
+          <Property Name="AGENT_FEE_STRUCTURE_2" Type="nvarchar" MaxLength="50" />
+          <Property Name="InterestMstr" Type="nvarchar" MaxLength="50" />
+          <Property Name="TotalCapitalMstr" Type="nvarchar" MaxLength="50" />
+          <Property Name="TotalInterestMstr" Type="nvarchar" MaxLength="50" />
+          <Property Name="TotalAgentFeeMstr" Type="nvarchar" MaxLength="50" />
+          <Property Name="VatOnFeeMstr0" Type="nvarchar" MaxLength="50" />
+          <Property Name="InterestAgentFeeMstr" Type="nvarchar" MaxLength="50" />
+          <Property Name="InterestDescription" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="NB_CorporateSaverTransactions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="InvestorId" Type="bigint" Nullable="false" />
+          <Property Name="FromDate" Type="datetime" />
+          <Property Name="ToDate" Type="datetime" />
+          <Property Name="PaymentDetails" Type="nvarchar(max)" />
+          <Property Name="TransactionDescription" Type="nvarchar(max)" />
+          <Property Name="Amount" Type="nvarchar" MaxLength="500" />
+          <Property Name="Rate" Type="nvarchar" MaxLength="500" />
+          <Property Name="CapitalBalance" Type="nvarchar" MaxLength="500" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="NB_CustomerMaster">
           <Key>
             <PropertyRef Name="Id" />
@@ -2272,6 +2361,9 @@ warning 6002: The table/view 'NIS_DEV2.NIS.View_User' does not have a primary ke
           <EntitySet Name="NB_BatchMaster_Source" EntityType="Self.NB_BatchMaster_Source" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_BranchMaster" EntityType="Self.NB_BranchMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_BranchMaster_Old" EntityType="Self.NB_BranchMaster_Old" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="NB_CorporateSaverMaster" EntityType="Self.NB_CorporateSaverMaster" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="NB_CorporateSaverTax" EntityType="Self.NB_CorporateSaverTax" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="NB_CorporateSaverTransactions" EntityType="Self.NB_CorporateSaverTransactions" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_CustomerMaster" EntityType="Self.NB_CustomerMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_HomeLoanArrears" EntityType="Self.NB_HomeLoanArrears" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_HomeLoanMaster" EntityType="Self.NB_HomeLoanMaster" Schema="NIS" store:Type="Tables" />
@@ -2716,6 +2808,9 @@ warning 6002: The table/view 'NIS_DEV2.NIS.View_User' does not have a primary ke
           <EntitySet Name="NB_HomeLoanTransaction" EntityType="NISModel.NB_HomeLoanTransaction" />
           <EntitySet Name="NB_MCAMaster" EntityType="NISModel.NB_MCAMaster" />
           <EntitySet Name="NB_MCATransaction" EntityType="NISModel.NB_MCATransaction" />
+          <EntitySet Name="NB_CorporateSaverMaster" EntityType="NISModel.NB_CorporateSaverMaster" />
+          <EntitySet Name="NB_CorporateSaverTax" EntityType="NISModel.NB_CorporateSaverTax" />
+          <EntitySet Name="NB_CorporateSaverTransactions" EntityType="NISModel.NB_CorporateSaverTransactions" />
           </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -4888,6 +4983,95 @@ warning 6002: The table/view 'NIS_DEV2.NIS.View_User' does not have a primary ke
           <Property Name="AccuredInterest" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="NB_CorporateSaverMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="InvestorId" Type="Int64" Nullable="false" />
+          <Property Name="AgentContactDetails" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+          <Property Name="AgentClientAddress1" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AgentClientAddress2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AgentClientAddress3" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AgentClientAddress4" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AgentClientAddress5" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AgentClientAddress6" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AgentProfile" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="BranchCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CIFNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ClientCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="RelationshipManager" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VATCalculation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ClientVatNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TaxInvoiceNo" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="AgentContactPerson" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AgentEmailAddress" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="AgentRegNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AgentVATRegNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AgentFSPLicNo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="AgentReference" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StatementNo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="TaxTotalsDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TotalInterest" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VatOnFee" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AgentFeeDeducted" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="InvestmentDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="InterestInstruction" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="InvestmentTotalInterest" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AgentFeeStructure1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AgentFeeStructure2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DateInvested" Type="DateTime" Precision="3" />
+          <Property Name="InvestmentAgentFeeDeducted" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="InvetsmentVATOnFee" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Interest" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="NB_CorporateSaverTax">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="InvestorId" Type="Int64" Nullable="false" />
+          <Property Name="CapitalBalance" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InvestType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InterestIntruction" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DateInvested" Type="DateTime" Precision="3" />
+          <Property Name="CapitalMstr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AgentFeeDeducted" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InterestMstr0" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VatOnFeeMstr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AGENT_FEE_STRUCTURE_1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AGENT_FEE_STRUCTURE_2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InterestMstr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TotalCapitalMstr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TotalInterestMstr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TotalAgentFeeMstr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VatOnFeeMstr0" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InterestAgentFeeMstr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InterestDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="NB_CorporateSaverTransactions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="InvestorId" Type="Int64" Nullable="false" />
+          <Property Name="FromDate" Type="DateTime" Precision="3" />
+          <Property Name="ToDate" Type="DateTime" Precision="3" />
+          <Property Name="PaymentDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TransactionDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Amount" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Rate" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CapitalBalance" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7036,6 +7220,98 @@ warning 6002: The table/view 'NIS_DEV2.NIS.View_User' does not have a primary ke
                 <ScalarProperty Name="Debit" ColumnName="Debit" />
                 <ScalarProperty Name="TransactionDescription" ColumnName="TransactionDescription" />
                 <ScalarProperty Name="TransactionDate" ColumnName="TransactionDate" />
+                <ScalarProperty Name="InvestorId" ColumnName="InvestorId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NB_CorporateSaverMaster">
+            <EntityTypeMapping TypeName="NISModel.NB_CorporateSaverMaster">
+              <MappingFragment StoreEntitySet="NB_CorporateSaverMaster">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="Interest" ColumnName="Interest" />
+                <ScalarProperty Name="InvetsmentVATOnFee" ColumnName="InvetsmentVATOnFee" />
+                <ScalarProperty Name="InvestmentAgentFeeDeducted" ColumnName="InvestmentAgentFeeDeducted" />
+                <ScalarProperty Name="DateInvested" ColumnName="DateInvested" />
+                <ScalarProperty Name="AgentFeeStructure2" ColumnName="AgentFeeStructure2" />
+                <ScalarProperty Name="AgentFeeStructure1" ColumnName="AgentFeeStructure1" />
+                <ScalarProperty Name="InvestmentTotalInterest" ColumnName="InvestmentTotalInterest" />
+                <ScalarProperty Name="InterestInstruction" ColumnName="InterestInstruction" />
+                <ScalarProperty Name="InvestmentDescription" ColumnName="InvestmentDescription" />
+                <ScalarProperty Name="AgentFeeDeducted" ColumnName="AgentFeeDeducted" />
+                <ScalarProperty Name="VatOnFee" ColumnName="VatOnFee" />
+                <ScalarProperty Name="TotalInterest" ColumnName="TotalInterest" />
+                <ScalarProperty Name="TaxTotalsDescription" ColumnName="TaxTotalsDescription" />
+                <ScalarProperty Name="StatementNo" ColumnName="StatementNo" />
+                <ScalarProperty Name="AgentReference" ColumnName="AgentReference" />
+                <ScalarProperty Name="AgentFSPLicNo" ColumnName="AgentFSPLicNo" />
+                <ScalarProperty Name="AgentVATRegNo" ColumnName="AgentVATRegNo" />
+                <ScalarProperty Name="AgentRegNo" ColumnName="AgentRegNo" />
+                <ScalarProperty Name="AgentEmailAddress" ColumnName="AgentEmailAddress" />
+                <ScalarProperty Name="AgentContactPerson" ColumnName="AgentContactPerson" />
+                <ScalarProperty Name="TaxInvoiceNo" ColumnName="TaxInvoiceNo" />
+                <ScalarProperty Name="ClientVatNo" ColumnName="ClientVatNo" />
+                <ScalarProperty Name="VATCalculation" ColumnName="VATCalculation" />
+                <ScalarProperty Name="RelationshipManager" ColumnName="RelationshipManager" />
+                <ScalarProperty Name="ClientCode" ColumnName="ClientCode" />
+                <ScalarProperty Name="CIFNo" ColumnName="CIFNo" />
+                <ScalarProperty Name="BranchCode" ColumnName="BranchCode" />
+                <ScalarProperty Name="AgentProfile" ColumnName="AgentProfile" />
+                <ScalarProperty Name="AgentClientAddress6" ColumnName="AgentClientAddress6" />
+                <ScalarProperty Name="AgentClientAddress5" ColumnName="AgentClientAddress5" />
+                <ScalarProperty Name="AgentClientAddress4" ColumnName="AgentClientAddress4" />
+                <ScalarProperty Name="AgentClientAddress3" ColumnName="AgentClientAddress3" />
+                <ScalarProperty Name="AgentClientAddress2" ColumnName="AgentClientAddress2" />
+                <ScalarProperty Name="AgentClientAddress1" ColumnName="AgentClientAddress1" />
+                <ScalarProperty Name="AgentContactDetails" ColumnName="AgentContactDetails" />
+                <ScalarProperty Name="InvestorId" ColumnName="InvestorId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NB_CorporateSaverTax">
+            <EntityTypeMapping TypeName="NISModel.NB_CorporateSaverTax">
+              <MappingFragment StoreEntitySet="NB_CorporateSaverTax">
+                <ScalarProperty Name="InterestDescription" ColumnName="InterestDescription" />
+                <ScalarProperty Name="InterestAgentFeeMstr" ColumnName="InterestAgentFeeMstr" />
+                <ScalarProperty Name="VatOnFeeMstr0" ColumnName="VatOnFeeMstr0" />
+                <ScalarProperty Name="TotalAgentFeeMstr" ColumnName="TotalAgentFeeMstr" />
+                <ScalarProperty Name="TotalInterestMstr" ColumnName="TotalInterestMstr" />
+                <ScalarProperty Name="TotalCapitalMstr" ColumnName="TotalCapitalMstr" />
+                <ScalarProperty Name="InterestMstr" ColumnName="InterestMstr" />
+                <ScalarProperty Name="AGENT_FEE_STRUCTURE_2" ColumnName="AGENT_FEE_STRUCTURE_2" />
+                <ScalarProperty Name="AGENT_FEE_STRUCTURE_1" ColumnName="AGENT_FEE_STRUCTURE_1" />
+                <ScalarProperty Name="VatOnFeeMstr" ColumnName="VatOnFeeMstr" />
+                <ScalarProperty Name="InterestMstr0" ColumnName="InterestMstr0" />
+                <ScalarProperty Name="AgentFeeDeducted" ColumnName="AgentFeeDeducted" />
+                <ScalarProperty Name="CapitalMstr" ColumnName="CapitalMstr" />
+                <ScalarProperty Name="DateInvested" ColumnName="DateInvested" />
+                <ScalarProperty Name="InterestIntruction" ColumnName="InterestIntruction" />
+                <ScalarProperty Name="InvestType" ColumnName="InvestType" />
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="CapitalBalance" ColumnName="CapitalBalance" />
+                <ScalarProperty Name="InvestorId" ColumnName="InvestorId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NB_CorporateSaverTransactions">
+            <EntityTypeMapping TypeName="NISModel.NB_CorporateSaverTransactions">
+              <MappingFragment StoreEntitySet="NB_CorporateSaverTransactions">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="CapitalBalance" ColumnName="CapitalBalance" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="TransactionDescription" ColumnName="TransactionDescription" />
+                <ScalarProperty Name="PaymentDetails" ColumnName="PaymentDetails" />
+                <ScalarProperty Name="ToDate" ColumnName="ToDate" />
+                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
                 <ScalarProperty Name="InvestorId" ColumnName="InvestorId" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="BatchId" ColumnName="BatchId" />

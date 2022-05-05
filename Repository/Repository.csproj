@@ -242,6 +242,7 @@
     <Compile Include="IRepository\IRoleRepository.cs" />
     <Compile Include="IRepository\IUserRepository.cs" />
     <Compile Include="IRepository\NedBank\ICustomerRepository.cs" />
+    <Compile Include="IRepository\NedBank\ICorporateSaverRepository.cs" />
     <Compile Include="IRepository\NedBank\IMCARepository.cs" />
     <Compile Include="IRepository\NedBank\IInvestmentRepository.cs" />
     <Compile Include="Mappings\ScheduleLogDetailRecord.cs" />
@@ -256,6 +257,15 @@
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="NB_BranchMaster_Old.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NB_CorporateSaverMaster.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NB_CorporateSaverTax.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NB_CorporateSaverTransactions.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="NB_CustomerMaster.cs">
@@ -363,6 +373,7 @@
     </Compile>
     <Compile Include="SQLRepository\NedBank\SQLCustomerRepository.cs" />
     <Compile Include="SQLRepository\NedBank\SQLInvestmentRepository.cs" />
+    <Compile Include="SQLRepository\NedBank\SQLCorporateSaverRepository.cs" />
     <Compile Include="SQLRepository\NedBank\SQLMCARepository.cs" />
     <Compile Include="SQLRepository\SQLAnalyticsDataRepository.cs" />
     <Compile Include="SQLRepository\SQLArchivalProcessRepository.cs" />

@@ -129,6 +129,7 @@
     <Compile Include="ScheduleLogErrorDetail.cs" />
     <Compile Include="ScheduleRunHistory.cs" />
     <Compile Include="Search Parameter\CustomerHomeLoanSearchParameter - Copy.cs" />
+    <Compile Include="Search Parameter\CustomerCorporateSaverSearchParameter.cs" />
     <Compile Include="Search Parameter\CustomerMCASearchParameter.cs" />
     <Compile Include="Search Parameter\CustomerInvestmentSearchParameter.cs" />
     <Compile Include="Search Parameter\CustomerPersonalLoanSearchParameter.cs" />
@@ -185,6 +186,7 @@
     <Compile Include="TransactionData\Nedbank\DM_CustomerMaster.cs" />
     <Compile Include="TransactionData\Nedbank\DM_ExplanatoryNote.cs" />
     <Compile Include="TransactionData\Nedbank\DM_GreenbacksMaster.cs" />
+    <Compile Include="TransactionData\Nedbank\DM_CorporateSaverMaster.cs" />
     <Compile Include="TransactionData\Nedbank\DM_MCAMaster.cs" />
     <Compile Include="TransactionData\Nedbank\DM_HomeLoanMaster.cs" />
     <Compile Include="TransactionData\Nedbank\DM_InvestmentMaster.cs" />
