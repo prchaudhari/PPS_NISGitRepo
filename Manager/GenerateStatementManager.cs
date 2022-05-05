@@ -3185,23 +3185,35 @@ namespace nIS
 
         private void BindCustomerDetailsWidgetData(StringBuilder pageContent, DM_CustomerMaster customer, Page page, PageWidget widget, bool isShowCellNo = false, string vatNo = "")
         {
-
-
-            var CustomerDetails = (!string.IsNullOrEmpty(customer.Title) && customer.Title.ToLower() != "null" ? customer.Title + " " : string.Empty) + (!string.IsNullOrEmpty(customer.FirstName) && customer.FirstName.ToLower() != "null" ? customer.FirstName + " " : string.Empty) + (!string.IsNullOrEmpty(customer.SurName) && customer.SurName.ToLower() != "null" ? customer.SurName + " " : string.Empty) + "<br>" +
-            (!string.IsNullOrEmpty(customer.AddressLine0) ? (customer.AddressLine0) : string.Empty) + "<br>" +
-            (!string.IsNullOrEmpty(customer.AddressLine1) ? (customer.AddressLine1) : string.Empty) + "<br>" +
-            (!string.IsNullOrEmpty(customer.AddressLine2) ? (customer.AddressLine2) : string.Empty) + "<br>" +
-            (!string.IsNullOrEmpty(customer.AddressLine3) ? (customer.AddressLine3) : string.Empty) + "<br>" +
-            (!string.IsNullOrEmpty(customer.AddressLine4) ? customer.AddressLine4 : string.Empty) + "<br>";
-
-            if (isShowCellNo && !string.IsNullOrWhiteSpace(customer.Mask_Cell_No))
+            var CustomerDetails = "";
+            if (page.PageTypeName == HtmlConstants.CORPORATE_SAVER_PAGE_TYPE)
             {
-                CustomerDetails += "<br> Cell: " + customer.Mask_Cell_No;
+                CustomerDetails = "<br><br><br><br>" +
+                (!string.IsNullOrEmpty(customer.Title) && customer.Title.ToLower() != "null" ? customer.Title + " " : string.Empty) + (!string.IsNullOrEmpty(customer.FirstName) && customer.FirstName.ToLower() != "null" ? customer.FirstName + " " : string.Empty) + (!string.IsNullOrEmpty(customer.SurName) && customer.SurName.ToLower() != "null" ? customer.SurName + " " : string.Empty) + "<br>" +
+                (!string.IsNullOrEmpty(customer.AddressLine0) ? (customer.AddressLine0) : string.Empty) + "<br>" +
+                (!string.IsNullOrEmpty(customer.AddressLine1) ? (customer.AddressLine1) : string.Empty) + "<br>" +
+                (!string.IsNullOrEmpty(customer.AddressLine2) ? (customer.AddressLine2) : string.Empty) + "<br>" +
+                (!string.IsNullOrEmpty(customer.AddressLine3) ? (customer.AddressLine3) : string.Empty) + "<br>" +
+                (!string.IsNullOrEmpty(customer.AddressLine4) ? customer.AddressLine4 : string.Empty) + "<br>";
             }
-
-            if (page.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_FOR_CIB_PAGE_TYPE || page.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_FOR_WEA_PAGE_TYPE)
+            else
             {
-                CustomerDetails += "<br> Vat no : " + vatNo;
+                CustomerDetails = (!string.IsNullOrEmpty(customer.Title) && customer.Title.ToLower() != "null" ? customer.Title + " " : string.Empty) + (!string.IsNullOrEmpty(customer.FirstName) && customer.FirstName.ToLower() != "null" ? customer.FirstName + " " : string.Empty) + (!string.IsNullOrEmpty(customer.SurName) && customer.SurName.ToLower() != "null" ? customer.SurName + " " : string.Empty) + "<br>" +
+                (!string.IsNullOrEmpty(customer.AddressLine0) ? (customer.AddressLine0) : string.Empty) + "<br>" +
+                (!string.IsNullOrEmpty(customer.AddressLine1) ? (customer.AddressLine1) : string.Empty) + "<br>" +
+                (!string.IsNullOrEmpty(customer.AddressLine2) ? (customer.AddressLine2) : string.Empty) + "<br>" +
+                (!string.IsNullOrEmpty(customer.AddressLine3) ? (customer.AddressLine3) : string.Empty) + "<br>" +
+                (!string.IsNullOrEmpty(customer.AddressLine4) ? customer.AddressLine4 : string.Empty) + "<br>";
+
+                if (isShowCellNo && !string.IsNullOrWhiteSpace(customer.Mask_Cell_No))
+                {
+                    CustomerDetails += "<br> Cell: " + customer.Mask_Cell_No;
+                }
+
+                if (page.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_FOR_CIB_PAGE_TYPE || page.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_FOR_WEA_PAGE_TYPE)
+                {
+                    CustomerDetails += "<br> Vat no : " + vatNo;
+                }
             }
 
             pageContent.Replace("{{CustomerDetails_" + page.Identifier + "_" + widget.Identifier + "}}", CustomerDetails);
@@ -5702,12 +5714,12 @@ namespace nIS
 
                         tableHTML.Append("<table class= 'CScustomTable HomeLoanDetailDiv' border = '0' style = 'height: auto;margin-bottom:2%;' ><tbody>");
                         tableHTML.Append("<tr><td colspan='2' class='w-25' style='font-weight: bold;padding-bottom: 8px !important;padding-top: 8px !important;'>" + invest.InterestDescription + "</td></tr>");
-                        tableHTML.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Interest instruction</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + invest.InterestIntruction + "</td><td class='w-25' style='padding-bottom: 8px !important'>Date Invested</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + Convert.ToDateTime(invest.DateInvested).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy2) + "</td></tr>");
-                        tableHTML.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Capital</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>"
+                        tableHTML.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Interest instruction</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'>" + invest.InterestIntruction + "</td><td class='w-25' style='padding-bottom: 8px !important'>Date Invested</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + Convert.ToDateTime(invest.DateInvested).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy2) + "</td></tr>");
+                        tableHTML.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Capital</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'>"
                            + (invest.CapitalMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.CapitalMstr)) : "") +
                             "</td><td class='w-25' style='padding-bottom: 8px !important'>Agent fee deducted</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + (invest.AgentFeeDeducted != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.AgentFeeDeducted)) : "") + "</td></tr>");
-                        tableHTML.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Interest</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + (invest.InterestMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.InterestMstr)) : "") + "</td><td class='w-25' style='padding-bottom: 8px !important'>VAT on fee</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + (invest.VatOnFeeMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.VatOnFeeMstr)) : "") + "</td></tr>");
-                        tableHTML.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Agent fee structure</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" +
+                        tableHTML.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Interest</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'>" + (invest.InterestMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.InterestMstr)) : "") + "</td><td class='w-25' style='padding-bottom: 8px !important'>VAT on fee</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + (invest.VatOnFeeMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.VatOnFeeMstr)) : "") + "</td></tr>");
+                        tableHTML.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Agent fee structure</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'>" +
                             (invest.AGENT_FEE_STRUCTURE_1 != null ? String.Format("{0:0.00}", invest.AGENT_FEE_STRUCTURE_1) + "%" + " " + invest.AGENT_FEE_STRUCTURE_2 : String.Empty)
                             + "</td><td class='w-25' style='padding-bottom: 8px !important'>Interest (less agent fee and VAT)</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>" + (invest.VatOnFeeMstr0 != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.VatOnFeeMstr0)) : "") + "</td></tr>");
                         tableHTML.Append("</tbody></table>");
@@ -5778,11 +5790,11 @@ namespace nIS
                 // if (customerMaster.InvestorId == 9018933796)
                 if (customerMaster.InvestorId == 9018933796)
                 {
-                    pageContent.Replace("{{dynemicMsg}}", "<div class='card border-0'><div class='card-body text-left'style='padding: 0;'><div class='card-body-header mt-3-2' style='font-family: \"Arial\";font-weight: 700;'>Important information</div> <div class='' style='font-size: 8pt; font-family: \"Arial\";'><p>Rente (min agentadministrasiegelde en BTW) word in Maart op u rekening gekrediteer. Die agentadministrasiegelde en BTW word in Maart afgetrek en namens u aan u agent betaal, in ooreenstemming met die mandaat wat gehou word. </ p >< p > Artikel 86(4) - rekenings wat voor 1 November 2018 geopen is, is aan die bepalings van die Prokureurswet, 53 van 1979, onderworpe.Ingevolge artikel 86(4) van die Wet op Regspraktyk, 28 van 2014, is 5 % van die rente verdien vanaf 1 Maart 2019 aan die Getrouheidsfonds vir Regspraktisyns betaal.</ p ></div></div></div>");
+                    pageContent.Replace("{{dynemicMsg}}", "<div class='card border-0'><div class='card-body text-left'style='padding: 0;'><div class='card-body-header mt-3-2' style='font-family: \"Arial\";font-weight: 700;'>Important information</div> <div class='' style='font-size: 9pt; font-family: \"Arial\";'><p>Rente (min agentadministrasiegelde en BTW) word in Maart op u rekening gekrediteer. Die agentadministrasiegelde en BTW word in Maart afgetrek en namens u aan u agent betaal, in ooreenstemming met die mandaat wat gehou word. </p><p> Artikel 86(4) - rekenings wat voor 1 November 2018 geopen is, is aan die bepalings van die Prokureurswet, 53 van 1979, onderworpe.Ingevolge artikel 86(4) van die Wet op Regspraktyk, 28 van 2014, is 5 % van die rente verdien vanaf 1 Maart 2019 aan die Getrouheidsfonds vir Regspraktisyns betaal.</p></div></div></div>");
                 }
                 else
                 {
-                    pageContent.Replace("{{dynemicMsg}}", "<div class='card border-0'><div class='card-body text-left'style='padding: 0;'><div class='card-body-header mt-3-2' style='font-family: \"Arial\";font-weight: 700;'>Important information</div> <div class='' style='font-size: 8pt; font-family: \"Arial\";'>Interest(less agent administration fee and VAT) is credited to your account in March.The agent administration fee and VAT are deducted in March and paid on your behalf to your agent, in accordance with the mandate held.</div></div></div>");
+                    pageContent.Replace("{{dynemicMsg}}", "<div class='card border-0'><div class='card-body text-left'style='padding: 0;'><div class='card-body-header mt-3-2' style='font-family: \"Arial\";font-weight: 700;'>Important information</div> <div class='' style='font-size: 9pt; font-family: \"Arial\";'><p>Interest(less agent administration fee and VAT) is credited to your account in March.The agent administration fee and VAT are deducted in March and paid on your behalf to your agent, in accordance with the mandate held.</p></div></div></div>");
                 }
                 pageContent.Replace("{{dynemicTables_" + page.Identifier + "_" + widget.Identifier + "}}", tableHTML.ToString());
             }
@@ -5800,17 +5812,18 @@ namespace nIS
                 if (CorporateSaverMaster.CorporateSaverTransactions != null && CorporateSaverMaster.CorporateSaverTransactions.Count > 0)
                 {
                     var res = 0.0m;
+                    var firstTransaction = CorporateSaverMaster.CorporateSaverTransactions.OrderBy(m => m.FromDate).FirstOrDefault();
+                    var lastTransaction = CorporateSaverMaster.CorporateSaverTransactions.OrderByDescending(m => m.ToDate).FirstOrDefault();
+
                     CorporateSaverMaster.CorporateSaverTransactions.ForEach(trans =>
                     {
                         if (counter == 1)
                         {
-                            pageContent.Replace("{{FromDate}}", Convert.ToDateTime(trans.FromDate).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy2));
+                            pageContent.Replace("{{FromDate}}", Convert.ToDateTime(firstTransaction.FromDate).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy2));
+                            pageContent.Replace("{{ToDate}}", Convert.ToDateTime(lastTransaction.FromDate).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy2));
                         }
-                        if (counter == CorporateSaverMaster.CorporateSaverTransactions.Count)
-                        {
-                            pageContent.Replace("{{ToDate}}", Convert.ToDateTime(trans.ToDate).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy2));
-                        }
-                        tableHTML.Append("<tr class='ht-20'>");
+                        
+                        tableHTML.Append("<tr class='ht-20 CorporateSaverTable'>");
                         tableHTML.Append("<td class='w-12 text-center'>" + Convert.ToDateTime(trans.FromDate).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>");
                         tableHTML.Append("<td class='text-left'  style='width: 25%'>" + trans.PaymentDetails + "</td>");
                         tableHTML.Append("<td class='text-left'  style='width: 25%'>" + trans.TransactionDescription + "</td>");
@@ -5882,10 +5895,15 @@ namespace nIS
                 var CorporateSaverMaster = CorporateSaverMasterList[0];
                 if (CorporateSaverMaster != null)
                 {
-                    pageContent.Replace("{{Interest_" + page.Identifier + "_" + widget.Identifier + "}}", CorporateSaverMaster.Interest);
-                    pageContent.Replace("{{VATonfee_" + page.Identifier + "_" + widget.Identifier + "}}", CorporateSaverMaster.VatOnFee); 
-                    pageContent.Replace("{{Agentfeededucted_" + page.Identifier + "_" + widget.Identifier + "}}", CorporateSaverMaster.AgentFeeDeducted);
+                    decimal res;
+                    decimal.TryParse(CorporateSaverMaster.Interest, out res);
+                    pageContent.Replace("{{Interest_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
 
+                    decimal.TryParse(CorporateSaverMaster.VatOnFee, out res);
+                    pageContent.Replace("{{VATonfee_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+
+                    decimal.TryParse(CorporateSaverMaster.AgentFeeDeducted, out res);
+                    pageContent.Replace("{{Agentfeededucted_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
                 }
 
             }

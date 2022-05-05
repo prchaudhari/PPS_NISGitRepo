@@ -1282,7 +1282,15 @@
                 PdfHtmlSection headHtml = new PdfHtmlSection(@"C:\UserFiles\HeaderFooters\"+ segment +"_header.html");
                 //PdfHtmlSection headHtml = new PdfHtmlSection(@"C:\UserFiles\Statements\1163\header.html");//Wealth
                 converter.Header.Add(headHtml);
-                converter.Header.Height = 80;
+                
+                if(segment == "Corporate Saver")
+                {
+                    converter.Header.Height = 100;
+                }
+                else
+                {
+                    converter.Header.Height = 80;
+                }
                 //PdfHtmlSection footHtml = new PdfHtmlSection(footerHtml, Path.GetDirectoryName(htmlStatementPath));
                 PdfHtmlSection footHtml = new PdfHtmlSection(@"C:\UserFiles\HeaderFooters\" + segment + "_footer.html");
                 converter.Footer.Add(footHtml);
@@ -1296,7 +1304,6 @@
 
                 // create a new pdf document converting an url
                 PdfDocument doc = converter.ConvertUrl(url);
-                
                 doc.Fonts.Add(@"C:\UserFiles\Fonts\MarkPro-Regular.ttf");
                 doc.Fonts.Add(@"C:\UserFiles\Fonts\Mark Pro.ttf");
                 doc.Fonts.Add(@"C:\UserFiles\Fonts\Mark Pro Bold.ttf");

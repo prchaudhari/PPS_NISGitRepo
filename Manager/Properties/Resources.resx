@@ -705,6 +705,9 @@
   <data name="Interest (less agent fee and VAT)" xml:space="preserve">
     <value>Rente (min agentgelde en BTW)</value>
   </data>
+  <data name="less agent fee and VAT" xml:space="preserve">
+    <value>min agentgelde en BTW</value>
+  </data>
   <data name="Interest instruction" xml:space="preserve">
     <value>Renteopdrag</value>
   </data>
@@ -726,8 +729,8 @@
   <data name="Tax totals" xml:space="preserve">
     <value>Belastingtotale</value>
   </data>
-  <data name="Tax totals (year to date)" xml:space="preserve">
-    <value>Belastingtotale (jaar tot op datum)</value>
+  <data name="year to date" xml:space="preserve">
+    <value>jaar tot op datum</value>
   </data>
   <data name="Total agent fee" xml:space="preserve">
     <value>Agentgelde afgetrek</value>

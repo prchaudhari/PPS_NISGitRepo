@@ -607,6 +607,10 @@
     height: 150px;
 }
 
+.ht-190px {
+    height: 190px;
+}
+
 .ptb-10_plr-25 {
     padding: 10px 25px;
 }
@@ -646,7 +650,7 @@
     width: 100%;
     border-collapse: collapse;
     font-family: 'Arial';
-    font-size: 8pt;
+    font-size: 9pt;
 }
 
 .customTransactionTable {
@@ -1313,4 +1317,9 @@ hr {
     font-size: 8pt;
     font-family: 'Mark Pro Regular';
     font-weight: normal !important;
+}
+
+.CorporateSaverTable {
+    height: 23px !important;
+    font-size: 9p !important;
 }

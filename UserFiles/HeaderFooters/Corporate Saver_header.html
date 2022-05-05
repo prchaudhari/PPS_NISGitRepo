@@ -4,7 +4,7 @@
 
 .logo-date {
    color: #006341 !important;
-    font-size: 7px;
+    font-size: 9px;
 }
 
 </style>
@@ -16,7 +16,7 @@
 
 <div class="row">
 
-<div class="col-lg-6 col-sm-6" style="height:100px;"><div class="card border-0"><div class="card-body float-left py-2"><div class="eConfirm-logo-container"><img src="common/images/CorporateSaverConfirmLogo.png" alt="Corporate Saver Logo" height="120" style="padding-top: 15px;height: 118px;width: 114px;"><div class="logo-date text-center"></div></div></div></div></div>
+<div class="col-lg-6 col-sm-6" style="height:100px;"><div class="card border-0"><div class="card-body float-left py-2"><div class="eConfirm-logo-container"><img src="common/images/CorporateSaverConfirmLogo.png" alt="Corporate Saver Logo" height="120" style="padding-top: 15px;height: 134px;width: 121px;"><div class="logo-date text-center"></div></div></div></div></div>
 
 
 
@@ -31,7 +31,7 @@
 		var MyDate = new Date();
 		var MyDateString;
 
-		MyDateString = MyDate.getFullYear() + '-' + ('0' + (MyDate.getMonth()+1)).slice(-2)+ '-' + ('0' + (MyDate.getDate()+1)).slice(-2);
+		MyDateString = ('0' + (MyDate.getDate()+1)).slice(-2) + '/' + ('0' + (MyDate.getMonth()+1)).slice(-2) + '/' + MyDate.getFullYear();
 		return MyDateString;
 	}
 	

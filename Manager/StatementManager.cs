@@ -5576,7 +5576,15 @@ namespace nIS
         private string CustomerDetailsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
         {
             var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            var HtmlWidget = new StringBuilder(HtmlConstants.CUSTOMER_DETAILS_WIDGET_HTML_SMT);
+            StringBuilder HtmlWidget = new StringBuilder(HtmlConstants.CUSTOMER_DETAILS_WIDGET_HTML_SMT);
+            if(page.PageTypeName == HtmlConstants.CORPORATE_SAVER_PAGE_TYPE)
+            {
+                HtmlWidget = new StringBuilder(HtmlConstants.CUSTOMER_DETAILS_WIDGET_HTML_SMT_CORPORATE_SAVER);
+            }
+            else
+            {
+                HtmlWidget = new StringBuilder(HtmlConstants.CUSTOMER_DETAILS_WIDGET_HTML_SMT);
+            }
             HtmlWidget.Replace("{{CustomerDetails}}", "{{CustomerDetails_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
             //HtmlWidget.Replace("{{MaskCellNo}}", "{{MaskCellNo_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
             HtmlWidget.Replace("{{MaskCellNo}}", "");

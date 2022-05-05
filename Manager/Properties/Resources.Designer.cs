@@ -1173,6 +1173,15 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to min agentgelde en BTW.
+        /// </summary>
+        internal static string less_agent_fee_and_VAT {
+            get {
+                return ResourceManager.GetString("less agent fee and VAT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Leningstermyn.
         /// </summary>
         internal static string Loan_term {
@@ -1750,15 +1759,6 @@ namespace nIS.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Belastingtotale (jaar tot op datum).
-        /// </summary>
-        internal static string Tax_totals__year_to_date_ {
-            get {
-                return ResourceManager.GetString("Tax totals (year to date)", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Bepalings en voorwaardes geld.
         /// </summary>
         internal static string Terms_and_conditions_apply {
@@ -2030,6 +2030,15 @@ namespace nIS.Properties {
         internal static string With_the_Nedbank_Home_buying_Toolkit_you_can {
             get {
                 return ResourceManager.GetString("With the Nedbank Home-buying Toolkit you can", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to jaar tot op datum.
+        /// </summary>
+        internal static string year_to_date {
+            get {
+                return ResourceManager.GetString("year to date", resourceCulture);
             }
         }
         

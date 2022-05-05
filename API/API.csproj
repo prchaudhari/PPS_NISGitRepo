@@ -15,12 +15,16 @@
     <RootNamespace>nIS</RootNamespace>
     <AssemblyName>nIS.API</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort>44345</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>
+    </IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>
+    </IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>
+    </IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -314,6 +318,8 @@
     <Content Include="Resources\css\font-awesome.min.css" />
     <Content Include="Resources\css\ltr.css" />
     <Content Include="Resources\fonts\fontawesome-webfont.svg" />
+    <Content Include="Resources\images\CorporateSaverConfirmLogo.png" />
+    <Content Include="Resources\images\eConfirm-round.png" />
     <Content Include="Resources\images\eConfirm.png" />
     <Content Include="Resources\images\Footer_Image.png" />
     <Content Include="Resources\images\logo.png" />
