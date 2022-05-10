@@ -472,6 +472,7 @@ namespace nIS
                             {
                                 Identifier = item.Id,
                                 BatchId = item.BatchId,
+                                InvestorId = item.InvestorId,
                                 CustomerId = item.CustomerId != null ? long.Parse(item.CustomerId.ToString()) : 0,
                                 Title = item.Title,
                                 FirstName = item.FirstName,

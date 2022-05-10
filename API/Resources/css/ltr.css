@@ -324,13 +324,6 @@
     text-align: right;
 }
 
-.LoanTransactionTable td {
-    padding: 0px 25px;
-    font-family: 'Mark Pro Regular';
-    font-size: 8pt;
-    height: 23px !important;
-}
-
 .customTable td {
     padding: 0px 25px;
     font-family: 'Mark Pro Regular';
@@ -381,7 +374,7 @@
 }
 
 .LoanTransactionTable th {
-    background-color: #1c6a41 !important;
+    background-color: #006341 !important;
     color: #fff;
     font-size: 8pt;
     font-family: 'Mark Pro Regular';
@@ -398,6 +391,20 @@
 .LoanTransactionTable tbody, .LoanTransactionTable-W tbody {
     font-size: 8pt;
     font-family: 'Mark Pro Regular';
+}
+
+.LoanTransactionTable1 th {
+    background-color: #006341 !important;
+    color: #fff;
+    font-size: 8pt;
+    font-family: Arial;
+    font-weight: normal;
+    padding: 0px 7px;
+    border-right: solid;
+}
+.LoanTransactionTable1 tbody {
+    font-size: 8pt;
+    font-family: 'Arial';
 }
 
 .InvestmentBreakdown thead {
@@ -474,11 +481,22 @@
 }
 
 .TotalAmountDetailsDiv {
-    background-color: #1C6B40 !important;
+    background-color: #006341 !important;
     padding: 10px 25px;
     height: 60px;
     color: #fff !important;
     font-family: 'Mark Pro Regular';
+}
+.CSTotalAmountDetailsDiv {
+    background-color: #006341 !important;
+    /* padding: 10px 25px; */
+    height: 30px;
+    color: #fff !important;
+    font-family: 'arial';
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .InvestmentClosingBalanceDiv {
@@ -589,6 +607,10 @@
     height: 150px;
 }
 
+.ht-190px {
+    height: 190px;
+}
+
 .ptb-10_plr-25 {
     padding: 10px 25px;
 }
@@ -623,6 +645,12 @@
     border-collapse: collapse;
     font-family: 'Mark Pro Regular';
     font-size: 8pt;
+}
+.CScustomTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Arial';
+    font-size: 9pt;
 }
 
 .customTransactionTable {
@@ -718,6 +746,18 @@
     font-size: 8pt;
     font-family: 'Mark Pro Regular';
     line-height: 30px;
+}
+.paymentDueHeaderBlock1 {
+    background-color: #006341 !important;
+    text-align: center;
+    color: white;
+    width: 20%;
+    font-size: 8pt;
+    font-family: 'Arial';
+    justify-content: center;
+    align-items: center;
+    padding: 3px;
+    display:flex;
 }
 
 .paymentDueHeaderBlock-W {
@@ -843,6 +883,18 @@
     color: #005b00 !important;
     font-family: 'Mark Pro Bold' !important;
     font-size: 12pt !important;
+}
+.NedbankHomeLoanTxt1 {
+    color: #006341 !important;
+    font-family: Arial !important;
+    font-size: 12pt !important;
+    font-weight: 700;
+}
+.CS-header {
+    font-size: 14pt;
+    font-family: 'arial';
+    color: rgb(0, 91, 65) !important;
+    font-weight: 700;
 }
 
 .NedbankHomeLoanTxt-W {
@@ -1265,4 +1317,9 @@ hr {
     font-size: 8pt;
     font-family: 'Mark Pro Regular';
     font-weight: normal !important;
+}
+
+.CorporateSaverTable {
+    height: 23px !important;
+    font-size: 9p !important;
 }

@@ -1,0 +1,44 @@
+﻿<html><head><title>NIS Statement</title><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><link rel='stylesheet' href='common/css/bootstrap.min.css'><link rel='stylesheet' href='common/css/font-awesome.min.css'><script src='common/js/jquery.min.js'></script><script src='common/js/popper.min.js'></script><script src='common/js/bootstrap.min.js'></script><script src='common/js/highcharts.js'></script><script src='common/js/series-label.js'></script><script src='common/js/exporting.js'></script><script src='common/js/export-data.js'></script><script src='common/js/accessibility.js'></script><script src='common/js/script.js'></script><link rel='stylesheet' href='common/css/site.css'><link rel='stylesheet' href='common/css/ltr.css'>
+
+<style>
+
+.logo-date {
+   color: #006341 !important;
+    font-size: 9px;
+}
+
+</style>
+
+</head>
+
+<body style="zoom: 1.2;">
+
+
+<div class="row">
+
+<div class="col-lg-6 col-sm-6" style="height:100px;"><div class="card border-0"><div class="card-body float-left py-2"><div class="eConfirm-logo-container"><img src="common/images/CorporateSaverConfirmLogo.png" alt="Corporate Saver Logo" height="120" style="padding-top: 15px;height: 134px;width: 121px;"><div class="logo-date text-center"></div></div></div></div></div>
+
+
+
+<div class="col-lg-6 col-sm-6" style="height:100px;"><div class="card border-0"><div class="card-body py-2"><a class="navbar-brand float-right mr-0" href="javascript:void(0);"> <img src="common/images/NEDBANKLogo.png" height="130"></a></div></div></div>
+
+</div>
+
+<script>
+
+	function getDate()
+	{
+		var MyDate = new Date();
+		var MyDateString;
+
+		MyDateString = ('0' + (MyDate.getDate()+1)).slice(-2) + '/' + ('0' + (MyDate.getMonth()+1)).slice(-2) + '/' + MyDate.getFullYear();
+		return MyDateString;
+	}
+	
+	$(function() {
+		$('.logo-date').text(getDate());
+	});
+
+</script>
+
+</body></html>

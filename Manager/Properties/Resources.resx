@@ -624,98 +624,174 @@
   <data name="Your banker" xml:space="preserve">
     <value>Your banker</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
-  </data>
   <data name="Bond no:" xml:space="preserve">
     <value>Verbandno:</value>
   </data>
-  <data name="Cell" xml:space="preserve">
-    <value>Sel</value>
+  <data name="Account no" xml:space="preserve">
+    <value>Rekening no</value>
   </data>
-  <data name="a free money management tool available on the Nedbank Money app and via Online Banking. Want to track where your money is going? Contact your relationship banker or visit nedbank.co.za/moneytracker for more information" xml:space="preserve">
-    <value>'n gratis geldbestuurshulpmiddel op die Nedbank Money-toep en Aanlyn Banksake. Wil jy weet waarheen jou geld gaan? Kontak jou verhoudingsbankier of besoek nedbank.co.za/moneytracker vir meer inligting</value>
+  <data name="Agent contact details" xml:space="preserve">
+    <value>Agent kontak no</value>
   </data>
-  <data name="Apply via Online Banking, the Money app or visit https://apply.nedbank.co.za" xml:space="preserve">
-    <value>Doen via Aanlyn Banksake of die Money-toep aansoek of besoek https://apply.nedbank.co.za</value>
+  <data name="Branch code" xml:space="preserve">
+    <value>Takkode</value>
   </data>
-  <data name="building" xml:space="preserve">
-    <value>geboue</value>
+  <data name="Client" xml:space="preserve">
+    <value>Kliënt</value>
   </data>
-  <data name="Choose from homeowner&amp;aposs" xml:space="preserve">
-    <value>Kies uit dekking vir huiseienaars</value>
+  <data name="Corporate Saver statement" xml:space="preserve">
+    <value>Corporate Saver staat</value>
   </data>
-  <data name="Contact your dedicated relationship banker or visit private-clients.nedbank.co.za for more information" xml:space="preserve">
-    <value>Kontak jou toegewyde verhoudingsbankier of besoek private-clients.nedbank.co.za vir meer inligting</value>
+  <data name="Agent's profile" xml:space="preserve">
+    <value>Agent se profiel</value>
   </data>
-  <data name="contents" xml:space="preserve">
-    <value>inhoud</value>
+  <data name="CIF no" xml:space="preserve">
+    <value>Kliënt-CIF no</value>
   </data>
-  <data name="Get a framework with universal financial principles to guide you on the different aspects of managing your money wisely to support your financial well-being. Develop more awareness of the financial choices, opportunities and pitfalls you are likely to be facing at various points during your life. Visit nedbank.co.za/moneymanagement for more information" xml:space="preserve">
-    <value>Kry 'n raamwerk met universele finansiële beginsels
-oor hoe om jou geld slim te bestuur en jou finansiële welstand te verseker. Kry meer inligting oor die finansiële keuses, geleenthede en slaggate wat jy op die een of ander stadium van jou finansiële reis gaan teëkom. Besoek nedbank.co.za/moneymanagement vir meer inligting</value>
+  <data name="Client code" xml:space="preserve">
+    <value>Kliëntkode</value>
   </data>
-  <data name="household" xml:space="preserve">
-    <value>huishoudings</value>
+  <data name="Client VAT no" xml:space="preserve">
+    <value>Kliënt-BTW no</value>
   </data>
-  <data name="If you have any questions, contact your dedicated banker. You also have round-the-clock access to our private consultants on 0860 555 222 or at privateclients@nedbank.co.za" xml:space="preserve">
-    <value>As jy enige vrae het, kontak jou toegewyde bankier. Jy het ook elke dag, heeldag, toegang tot ons privaat konsultante by 0860 555 222 of privateclients@nedbank.co.za</value>
+  <data name="Contact person" xml:space="preserve">
+    <value>Kontak persoon</value>
   </data>
-  <data name="Make use of your 2022 tax-free allowance from 1 March this year. Take advantage of the compound growth benefits of investing tax-free for yourself, your spouse and your children" xml:space="preserve">
-    <value>Maak vanaf 1 Maart vanjaar gebruik van jou 2022- belastingvrye toelae. Benut die voordele van saamgestelde groei om belastingvry vir jou, jou gade en jou kinders te belê</value>
+  <data name="Relationship manager" xml:space="preserve">
+    <value>Verhoudingsbestuurder</value>
   </data>
-  <data name="Money Tracker" xml:space="preserve">
-    <value>MoneyTracker</value>
+  <data name="Tax invoice no" xml:space="preserve">
+    <value>Belastingfaktuur no</value>
   </data>
-  <data name="MyCover insurance" xml:space="preserve">
-    <value>MyCover-versekering</value>
+  <data name="VAT Calculation" xml:space="preserve">
+    <value>BTW-berekening</value>
   </data>
-  <data name="Or let us help you with a full risk assessment. With our risk consultants working alongside your relationship banker, we offer a seamless experience, from onboarding to handling claims. Contact your dedicated relationship banker or visit private-clients.nedbank.co.za for more information" xml:space="preserve">
-    <value>Of laat ons jou met 'n volledige risikobepaling help. Terwyl ons risikokonsultante saam met jou verhoudingsbankier werk, bied ons 'n moeitelose ervaring, vandat jy die polis uitneem totdat jy moet eis. Kontak jou verhoudingsbankier of besoek nedbank.co.za/professionals vir meer inligting.</value>
+  <data name="Agent fee deducted" xml:space="preserve">
+    <value>Agentgelde afgetrek</value>
   </data>
-  <data name="Our new and exciting MyCover insurance range offers comprehensive cover for you and your family." xml:space="preserve">
-    <value>Ons nuwe en opwindende MyCover-versekeringsreeks bied omvattende dekking vir jou en jou gesin</value>
+  <data name="Agent fee structure" xml:space="preserve">
+    <value>Agentgeldestruktuur</value>
   </data>
-  <data name="Our Professional Banking offer has changed to Private Clients." xml:space="preserve">
-    <value>Ons Professionele Bankdiens-aanbod het na Privaat Kliënte verander.</value>
+  <data name="Agent reference" xml:space="preserve">
+    <value>Agent verwysing</value>
   </data>
-  <data name="Private Clients" xml:space="preserve">
-    <value>Privaat Kliënte</value>
+  <data name="Call transaction details for the period" xml:space="preserve">
+    <value>Daggeldtransaksies vir die tydperk</value>
   </data>
-  <data name="Switch to eStatements today" xml:space="preserve">
-    <value>Skakel vandag nog oor na eState</value>
+  <data name="Capital" xml:space="preserve">
+    <value>Kapitaal</value>
   </data>
-  <data name="Tax-free investments" xml:space="preserve">
-    <value>Belastingvrye beleggings</value>
+  <data name="Capital balance" xml:space="preserve">
+    <value>Kapitaalsaldo</value>
   </data>
-  <data name="The Essential Guide to Money Management" xml:space="preserve">
-    <value>Die Essential Guide vir geldbestuur</value>
+  <data name="Current investment details" xml:space="preserve">
+    <value>Huidige belegging</value>
   </data>
-  <data name="Tired of waiting for the post to arrive" xml:space="preserve">
-    <value>Moeg vir die pos gewag</value>
+  <data name="Date" xml:space="preserve">
+    <value>Datum</value>
   </data>
-  <data name="Track your finances, create budgets and more with MoneyTracker" xml:space="preserve">
-    <value>Hou jou geld dop, skep begrotings en meer met MoneyTracker</value>
+  <data name="Date Invested" xml:space="preserve">
+    <value>Belê op</value>
   </data>
-  <data name="Travel benefits for Private Clients" xml:space="preserve">
-    <value>Reisvoordele vir Privaat Kliënte</value>
+  <data name="Email address" xml:space="preserve">
+    <value>Epos</value>
   </data>
-  <data name="vehicle and personal-liability cover to create the insurance bundle you need" xml:space="preserve">
-    <value>voertuie en persoonlike aanspreeklikheid om die versekeringsopsie wat jy nodig het, te skep</value>
+  <data name="FSP license no" xml:space="preserve">
+    <value>FDV- lisensie no</value>
   </data>
-  <data name="We offer tax-free investment solutions in the form of notice period, fixed-term and unit trust accounts" xml:space="preserve">
-    <value>Ons bied belastingvrye beleggingsoplossings in die vorm van kennistydperk-, vastetermyn- en effektetrustrekenings</value>
+  <data name="Important information" xml:space="preserve">
+    <value>Aantekening</value>
   </data>
-  <data name="With travel restrictions easing in South Africa and around the world, we would like to remind you of the travel perks you can enjoy with Private Clients offerings" xml:space="preserve">
-    <value>Noudat reisbeperkings in Suid-Afrika en regoor die wêreld afneem, wil ons jou graag aan die Privaat Kliënte-aanbiedings wat jy kan geniet, herinner</value>
+  <data name="Interest (less agent fee and VAT)" xml:space="preserve">
+    <value>Rente (min agentgelde en BTW)</value>
   </data>
-  <data name="You get unlimited visits to Bidvest airport lounges and automatic basic travel insurance at South African airports for you and secondary cardholders. You also get four airport lounge visits for your children per calendar year and 10 international airport lounge visits to LoungeKey member lounges for you and a guest" xml:space="preserve">
-    <value>Jy kry onbeperkte besoeke aan Bidvest-lughawesitkamers en outomatiese basiese reisversekering by Suid-Afrikaanse lughawens vir jou en sekondêre kaarthouers. Jy kry ook vier lughawesitkamerbesoeke vir jou kinders per kalenderjaar en jy en 'n gas kry 10 internasionale lughawe-sitkamerbesoeke aan LoungeKey-ledesitkamers</value>
+  <data name="less agent fee and VAT" xml:space="preserve">
+    <value>min agentgelde en BTW</value>
   </data>
-  <data name="You will still enjoy the same private banking experience packed with exclusive banking, travel and lifestyle benefits." xml:space="preserve">
-    <value>Jy sal steeds dieselfde privaat bankervaring geniet, propvol eksklusiewe bank-, reis-en-leefstylvoordele.</value>
+  <data name="Interest instruction" xml:space="preserve">
+    <value>Renteopdrag</value>
   </data>
-  <data name="Your dedicated relationship banker is equipped to understand your needs, resolve your queries, manage your credit applications efficiently, give relevant financial advice, or introduce you to a specialist wealth advisor." xml:space="preserve">
-    <value>Jou toegewyde verhoudingsbankier is toegerus om jou behoeftes te verstaan, jou navrae te hanteer, jou kredietaansoeke doeltreffend te bestuur, toepaslike finansiële advies te gee, of jou aan 'n spesialis-welvaartadviseur bekend te stel.</value>
+  <data name="Investment portfolio at" xml:space="preserve">
+    <value>Beleggingsportefeulje soos op</value>
+  </data>
+  <data name="Payment details" xml:space="preserve">
+    <value>Betalingsbesonderhede</value>
+  </data>
+  <data name="Rate" xml:space="preserve">
+    <value>Koers</value>
+  </data>
+  <data name="Registration no" xml:space="preserve">
+    <value>Registrasie no</value>
+  </data>
+  <data name="Statement" xml:space="preserve">
+    <value>Staat</value>
+  </data>
+  <data name="Tax totals" xml:space="preserve">
+    <value>Belastingtotale</value>
+  </data>
+  <data name="year to date" xml:space="preserve">
+    <value>jaar tot op datum</value>
+  </data>
+  <data name="Total agent fee" xml:space="preserve">
+    <value>Agentgelde afgetrek</value>
+  </data>
+  <data name="Total capital" xml:space="preserve">
+    <value>Kapitaaltotaal</value>
+  </data>
+  <data name="Total interest" xml:space="preserve">
+    <value>Rente totaal</value>
+  </data>
+  <data name="VAT on fee" xml:space="preserve">
+    <value>BTW op gelde</value>
+  </data>
+  <data name="VAT registration no" xml:space="preserve">
+    <value>BTW-registrasie no</value>
+  </data>
+  <data name="Authorised financial services and registered credit provider (NCRCP16)" xml:space="preserve">
+    <value>Gemagtigde finansiële diens- en geregistreerde kredietverskaffer (NCRCP16)</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>besonderhede</value>
+  </data>
+  <data name="and VAT are deducted in Maart and" xml:space="preserve">
+    <value>en BTW word in Maart afgetrek
+en</value>
+  </data>
+  <data name="in accordance with the mandate held" xml:space="preserve">
+    <value>in ooreenstemming met die mandaat wat gehou word</value>
+  </data>
+  <data name="is credited to your" xml:space="preserve">
+    <value>word in Maart op u rekening gekrediteer</value>
+  </data>
+  <data name="less agent administration fee and VAT" xml:space="preserve">
+    <value>min agentadministrasiegelde en BTW</value>
+  </data>
+  <data name="paid on your behalf to your agent" xml:space="preserve">
+    <value>namens u aan u agent betaal</value>
+  </data>
+  <data name="The agent administration fee" xml:space="preserve">
+    <value>Die agentadministrasiegelde</value>
+  </data>
+  <data name="The agent administration fee and VAT are deducted in Maart and paid on your behalf to your agent" xml:space="preserve">
+    <value>Die agentadministrasiegelde en BTW word in Maart afgetrek
+en namens u aan u agent betaal</value>
+  </data>
+  <data name="VAT are deducted in" xml:space="preserve">
+    <value>BTW word in</value>
+  </data>
+  <data name="Agent details" xml:space="preserve">
+    <value>Agent besonderhede</value>
+  </data>
+  <data name="Client details" xml:space="preserve">
+    <value>Kliënt besonderhede</value>
+  </data>
+  <data name="Interest (less agent fee &amp; VAT)" xml:space="preserve">
+    <value>Rente (min agentgelde en BTW)</value>
+  </data>
+  <data name="Total agent fee (deducted)" xml:space="preserve">
+    <value>Agentgelde afgetrek</value>
+  </data>
+  <data name="to" xml:space="preserve">
+    <value>tot</value>
   </data>
 </root>

@@ -15,14 +15,14 @@ import {
   CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
   SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
   SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
-  DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, PageBreakComponent, SegmentBasedContentComponent, CustomerDetailsComponent, BankDetailsComponent, WealthBankDetailsComponent,
+  DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent, CustomerDetailsComponent,CorporateSaverAgentAddressComponent, BankDetailsComponent, WealthBankDetailsComponent,
   InvestmentPortfolioStatementComponent, InvestmentWealthPortfolioStatementComponent, InvestorPerformanceComponent, WealthInvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, WealthExplanatoryNotesComponent, NedbankServiceComponent, WealthNedbankServiceComponent,
   PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
   PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent, HomeLoanTotalAmountDetailComponent, HomeLoanAccountsBreakdownComponent, HomeLoanPaymentDueSpecialMsgComponent,
   HomeLoanInstalmentDetailComponent, PortfolioCustomerDetailsComponent, PortfolioCustomerAddressDetailsComponent, PortfolioClientContactDetailsComponent, PortfolioAccountSummaryDetailsComponent,
   PortfolioAccountAnalysisComponent, PortfolioRemindersComponent, PortfolioNewsAlertsComponent, GreenbacksContactUsComponent, YTDRewardPointsComponent, PointsRedeemedYTDComponent, ProductRelatedPointsEarnedComponent, CategorySpendRewardsComponent, GreenbacksTotalRewardPointsComponent, WealthBreakdownOfInvestmentAccountsComponent, HomeLoanSummaryTaxPurposeComponent,
   HomeLoanInstalmentComponent, WealthHomeLoanTotalAmountDetailComponent, WealthHomeLoanAccountsBreakdownComponent, WealthHomeLoanSummaryTaxPurposeComponent, WealthHomeLoanInstalmentComponent, WealthHomeLoanBankDetailsComponent,
-  MCAAccountSummaryComponent, MCATransactionComponent, MCAVATAnalysisComponent, WealthMCAVATAnalysisComponent, WealthMCATransactionComponent, WealthMCAAccountSummaryComponent, WealthMCABranchDetailsComponent
+  MCAAccountSummaryComponent, MCATransactionComponent, MCAVATAnalysisComponent, WealthMCAVATAnalysisComponent, WealthMCATransactionComponent, WealthMCAAccountSummaryComponent, WealthMCABranchDetailsComponent,CorporateSaverAgentMessageComponent,CorporateSaverTransactionComponent,CorporateSaverClientDetailsComponent,CorporateSaverTableTotalComponent,CorporateAgentDetailsComponent, CSAgentLogoComponent
 } from '../widgetComponent/widgetComponent';
 import { AssetLibraryService } from '../../layout/asset-libraries/asset-library.service';
 import { AssetSearchParameter } from '../../layout/asset-libraries/asset-library';
@@ -51,6 +51,13 @@ export class AddDashboardDesignerComponent implements OnInit {
   public isImageConfig: boolean = false;
   public isVideoConfig: boolean = false;
   public isStaticHtmlConfig: boolean = false;
+  public isCSAgentLogoConfig: boolean = false;   
+  public isCorporateSaverAgentMessageConfig: boolean = false;   
+  public isCorporateSaverClientandAgentDetailsConfig: boolean = false;    
+  public isCorporateSaverTransactionConfig: boolean = false;    
+  public isCorporateSaverAgentAddressConfig: boolean = false;    
+  public isCorporateSaverTableTotalConfig: boolean = false;    
+  public isCorporateAgentDetailsConfig: boolean = false;   
   public issegmentBasedContentConfig: boolean = false;
   public isWidgetSidebar: boolean = false;
   public isEmbedded: boolean = false;
@@ -480,6 +487,162 @@ export class AddDashboardDesignerComponent implements OnInit {
         if (videoDiv.hasChildNodes()) {
           videoDiv.removeChild(document.getElementById('videoConfigPreviewSrc'));
         }
+      }
+    }
+  }
+
+  isCSAgentLogoConfigForm(widgetId, widgetItemCount) {
+    this.isMasterSaveBtnDisabled = true;
+    this.isCSAgentLogoConfig = true;
+    this.staticHtmlWidgetId = widgetId;
+    this.selectedWidgetItemCount = widgetItemCount;
+    const records = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.staticHtmlWidgetId &&
+       x.widgetItemCount == this.selectedWidgetItemCount);
+    if (records.length != 0) {
+      const widgetSetting = records[0].WidgetSetting;
+      if (widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
+        const widgetConfigObj = JSON.parse(widgetSetting);
+        this.StaticConfigForm.patchValue({
+          staticHtml: widgetConfigObj.html
+        });
+      } else {
+        this.StaticConfigForm.patchValue({
+          staticHtml: ''
+        });
+        this.markFormGroupUnTouched(this.StaticConfigForm);
+      }
+    }
+  }
+  isCorporateSaverAgentMessageConfigForm(widgetId, widgetItemCount) {
+    this.isMasterSaveBtnDisabled = true;
+    this.isCorporateSaverAgentMessageConfig = true;
+    this.staticHtmlWidgetId = widgetId;
+    this.selectedWidgetItemCount = widgetItemCount;
+    const records = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.staticHtmlWidgetId &&
+       x.widgetItemCount == this.selectedWidgetItemCount);
+    if (records.length != 0) {
+      const widgetSetting = records[0].WidgetSetting;
+      if (widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
+        const widgetConfigObj = JSON.parse(widgetSetting);
+        this.StaticConfigForm.patchValue({
+          staticHtml: widgetConfigObj.html
+        });
+      } else {
+        this.StaticConfigForm.patchValue({
+          staticHtml: ''
+        });
+        this.markFormGroupUnTouched(this.StaticConfigForm);
+      }
+    }
+  }
+  isCorporateSaverAgentAddressConfigForm(widgetId, widgetItemCount) {
+    this.isMasterSaveBtnDisabled = true;
+    this.isCorporateSaverAgentAddressConfig = true;
+    this.staticHtmlWidgetId = widgetId;
+    this.selectedWidgetItemCount = widgetItemCount;
+    const records = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.staticHtmlWidgetId &&
+       x.widgetItemCount == this.selectedWidgetItemCount);
+    if (records.length != 0) {
+      const widgetSetting = records[0].WidgetSetting;
+      if (widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
+        const widgetConfigObj = JSON.parse(widgetSetting);
+        this.StaticConfigForm.patchValue({
+          staticHtml: widgetConfigObj.html
+        });
+      } else {
+        this.StaticConfigForm.patchValue({
+          staticHtml: ''
+        });
+        this.markFormGroupUnTouched(this.StaticConfigForm);
+      }
+    }
+  }
+ 
+  isCorporateSaverTransactionConfigForm(widgetId, widgetItemCount) {
+    this.isMasterSaveBtnDisabled = true;
+    this.isCorporateSaverTransactionConfig = true;
+    this.staticHtmlWidgetId = widgetId;
+    this.selectedWidgetItemCount = widgetItemCount;
+    const records = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.staticHtmlWidgetId &&
+       x.widgetItemCount == this.selectedWidgetItemCount);
+    if (records.length != 0) {
+      const widgetSetting = records[0].WidgetSetting;
+      if (widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
+        const widgetConfigObj = JSON.parse(widgetSetting);
+        this.StaticConfigForm.patchValue({
+          staticHtml: widgetConfigObj.html
+        });
+      } else {
+        this.StaticConfigForm.patchValue({
+          staticHtml: ''
+        });
+        this.markFormGroupUnTouched(this.StaticConfigForm);
+      }
+    }
+  }
+  isCorporateSaverClientandAgentDetailsConfigForm(widgetId, widgetItemCount) {
+    this.isMasterSaveBtnDisabled = true;
+    this.isCorporateSaverClientandAgentDetailsConfig = true;
+    this.staticHtmlWidgetId = widgetId;
+    this.selectedWidgetItemCount = widgetItemCount;
+    const records = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.staticHtmlWidgetId &&
+       x.widgetItemCount == this.selectedWidgetItemCount);
+    if (records.length != 0) {
+      const widgetSetting = records[0].WidgetSetting;
+      if (widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
+        const widgetConfigObj = JSON.parse(widgetSetting);
+        this.StaticConfigForm.patchValue({
+          staticHtml: widgetConfigObj.html
+        });
+      } else {
+        this.StaticConfigForm.patchValue({
+          staticHtml: ''
+        });
+        this.markFormGroupUnTouched(this.StaticConfigForm);
+      }
+    }
+  }
+  isCorporateSaverTableTotalConfigForm(widgetId, widgetItemCount) {
+    this.isMasterSaveBtnDisabled = true;
+    this.isCorporateSaverTableTotalConfig = true;
+    this.staticHtmlWidgetId = widgetId;
+    this.selectedWidgetItemCount = widgetItemCount;
+    const records = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.staticHtmlWidgetId &&
+       x.widgetItemCount == this.selectedWidgetItemCount);
+    if (records.length != 0) {
+      const widgetSetting = records[0].WidgetSetting;
+      if (widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
+        const widgetConfigObj = JSON.parse(widgetSetting);
+        this.StaticConfigForm.patchValue({
+          staticHtml: widgetConfigObj.html
+        });
+      } else {
+        this.StaticConfigForm.patchValue({
+          staticHtml: ''
+        });
+        this.markFormGroupUnTouched(this.StaticConfigForm);
+      }
+    }
+  }
+  isCorporateAgentDetailsConfigForm(widgetId, widgetItemCount) {
+    this.isMasterSaveBtnDisabled = true;
+    this.isCorporateAgentDetailsConfig = true;
+    this.staticHtmlWidgetId = widgetId;
+    this.selectedWidgetItemCount = widgetItemCount;
+    const records = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.staticHtmlWidgetId &&
+       x.widgetItemCount == this.selectedWidgetItemCount);
+    if (records.length != 0) {
+      const widgetSetting = records[0].WidgetSetting;
+      if (widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
+        const widgetConfigObj = JSON.parse(widgetSetting);
+        this.StaticConfigForm.patchValue({
+          staticHtml: widgetConfigObj.html
+        });
+      } else {
+        this.StaticConfigForm.patchValue({
+          staticHtml: ''
+        });
+        this.markFormGroupUnTouched(this.StaticConfigForm);
       }
     }
   }
@@ -990,6 +1153,21 @@ export class AddDashboardDesignerComponent implements OnInit {
               y: 0,
               x: 0,
               component: CustomerDetailsComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "CorporateSaverAgentAddress") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 6,
+              rows: 2,
+              y: 0,
+              x: 0,
+              component: CorporateSaverAgentAddressComponent,
               value: widget.WidgetName,
               WidgetId: widget.Identifier,
               widgetItemCount: this.widgetItemCount,
@@ -1554,13 +1732,93 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: false
             })
           }
-          else if (widget.WidgetName == "PageBreak") {
+          else if (widget.WidgetName == "CSAgentLogo") {
             return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 1,
+              cols: 4,
+              rows: 3,
               y: 0,
               x: 0,
-              component: PageBreakComponent,
+              component: CSAgentLogoComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "CorporateSaverAgentMessage") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 4,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: CorporateSaverAgentMessageComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "CorporateSaverTransaction") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 4,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: CorporateSaverTransactionComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "CorporateSaverTableTotal") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 4,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: CorporateSaverTableTotalComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "CorporateSaverClientandAgentDetails") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 4,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: CorporateSaverClientDetailsComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "CorporateAgentDetails") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 4,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: CorporateAgentDetailsComponent,
               value: widget.WidgetName,
               WidgetId: widget.Identifier,
               widgetItemCount: this.widgetItemCount,
@@ -2010,6 +2268,9 @@ export class AddDashboardDesignerComponent implements OnInit {
       else if (widgetName == 'CustomerDetails') {
         gridObj.component = CustomerDetailsComponent;
       }
+      else if (widgetName == 'CorporateSaverAgentAdderss') {
+        gridObj.component = CorporateSaverAgentAddressComponent;
+      }
       else if (widgetName == 'BranchDetails') {
         gridObj.component = BankDetailsComponent;
       }
@@ -2118,8 +2379,23 @@ export class AddDashboardDesignerComponent implements OnInit {
       else if (widget.WidgetName == "StaticHtml") {
         gridObj.component = StaticHtmlComponent
       }
-      else if (widget.WidgetName == "PageBreak") {
-        gridObj.component = PageBreakComponent
+      else if (widget.WidgetName == "CSAgentLogo") {
+        gridObj.component = CSAgentLogoComponent
+      }
+      else if (widget.WidgetName == "CorporateSaverAgentMessage") {
+        gridObj.component = CorporateSaverAgentMessageComponent
+      }
+      else if (widget.WidgetName == "CorporateSaverTransaction") {
+        gridObj.component = CorporateSaverTransactionComponent
+      }
+      else if (widget.WidgetName == "CorporateSaverClientandAgentDetails") {
+        gridObj.component = CorporateSaverClientDetailsComponent
+      }
+      else if (widget.WidgetName == "CorporateSaverTableTotal") {
+        gridObj.component = CorporateSaverTableTotalComponent
+      }
+      else if (widget.WidgetName == "CorporateAgentDetails") {
+        gridObj.component = CorporateAgentDetailsComponent
       }
       else if (widget.WidgetName == "SegmentBasedContent") {
         gridObj.component = SegmentBasedContentComponent

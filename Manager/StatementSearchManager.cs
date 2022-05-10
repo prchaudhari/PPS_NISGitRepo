@@ -792,7 +792,7 @@ namespace nIS
                                     case HtmlConstants.CUSTOMER_DETAILS_WIDGET_NAME:
                                         if (statement.Pages.Count == 1)
                                         {
-                                            this.BindCustomerDetailsWidgetData(pageContent, customer, page, widget);
+                                                this.BindCustomerDetailsWidgetData(pageContent, customer, page, widget);
                                         }
                                         break;
 
@@ -2027,6 +2027,17 @@ namespace nIS
         #region These methods helps to bind data to static widgets of Nedbank HTML statment
 
         private void BindCustomerDetailsWidgetData(StringBuilder pageContent, DM_CustomerMaster customer, Page page, PageWidget widget)
+        {
+            var CustomerDetails = customer.Title + " " + customer.FirstName + " " + customer.SurName + "<br>" +
+                (!string.IsNullOrEmpty(customer.AddressLine0) ? (customer.AddressLine0 + "<br>") : string.Empty) +
+                (!string.IsNullOrEmpty(customer.AddressLine1) ? (customer.AddressLine1 + "<br>") : string.Empty) +
+                (!string.IsNullOrEmpty(customer.AddressLine2) ? (customer.AddressLine2 + "<br>") : string.Empty) +
+                (!string.IsNullOrEmpty(customer.AddressLine3) ? (customer.AddressLine3 + "<br>") : string.Empty) +
+                (!string.IsNullOrEmpty(customer.AddressLine4) ? customer.AddressLine4 : string.Empty);
+            pageContent.Replace("{{CustomerDetails_" + page.Identifier + "_" + widget.Identifier + "}}", CustomerDetails);
+            //pageContent.Replace("{{MaskCellNo_" + page.Identifier + "_" + widget.Identifier + "}}", customer.Mask_Cell_No != string.Empty ? "Cell: " + customer.Mask_Cell_No : string.Empty);
+        }
+        private void BindCorporateSaverCustomerDetailsWidgetData(StringBuilder pageContent, DM_CustomerMaster customer, Page page, PageWidget widget)
         {
             var CustomerDetails = customer.Title + " " + customer.FirstName + " " + customer.SurName + "<br>" +
                 (!string.IsNullOrEmpty(customer.AddressLine0) ? (customer.AddressLine0 + "<br>") : string.Empty) +

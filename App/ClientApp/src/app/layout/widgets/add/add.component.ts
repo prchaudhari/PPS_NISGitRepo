@@ -320,9 +320,33 @@ export class AddComponent implements OnInit {
           this.widgetList[i].ImageSource = "assets/images/StaticHtml.JPG";
           this.widgetList[i].WidgetIcon = "fa fa-html5";
         }
-        else if (this.widgetList[i].WidgetName == "PageBreak") {
-          this.widgetList[i].ImageSource = "assets/images/PageBreak.JPG";
-          this.widgetList[i].WidgetIcon = "fa fa-scissors";
+        else if (this.widgetList[i].WidgetName == "CSAgentLogo") {
+          this.widgetList[i].ImageSource = "assets/images/StaticHtml.JPG";
+          this.widgetList[i].WidgetIcon = "fa fa-html5";
+        }
+        else if (this.widgetList[i].WidgetName == "CorporateSaverAgentMessage") {
+          this.widgetList[i].ImageSource = "assets/images/StaticHtml.JPG";
+          this.widgetList[i].WidgetIcon = "fa fa-html5";
+        }
+        else if (this.widgetList[i].WidgetName == "CorporateSaverAgentAddress") {
+          this.widgetList[i].ImageSource = "assets/images/StaticHtml.JPG";
+          this.widgetList[i].WidgetIcon = "fa fa-html5";
+        }
+        else if (this.widgetList[i].WidgetName == "CorporateSaverTransaction") {
+          this.widgetList[i].ImageSource = "assets/images/StaticHtml.JPG";
+          this.widgetList[i].WidgetIcon = "fa fa-html5";
+        }
+        else if (this.widgetList[i].WidgetName == "CorporateSaverClientandAgentDetails") {
+          this.widgetList[i].ImageSource = "assets/images/StaticHtml.JPG";
+          this.widgetList[i].WidgetIcon = "fa fa-html5";
+        }
+        else if (this.widgetList[i].WidgetName == "CorporateSaverTableTotal") {
+          this.widgetList[i].ImageSource = "assets/images/StaticHtml.JPG";
+          this.widgetList[i].WidgetIcon = "fa fa-html5";
+        }
+        else if (this.widgetList[i].WidgetName == "CorporateAgentDetailsComponent") {
+          this.widgetList[i].ImageSource = "assets/images/StaticHtml.JPG";
+          this.widgetList[i].WidgetIcon = "fa fa-html5";
         }
         else if (this.widgetList[i].WidgetName == "SegmentBasedContent") {
           this.widgetList[i].ImageSource = "assets/images/SegmentBasedContent.JPG";

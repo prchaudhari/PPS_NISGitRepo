@@ -604,6 +604,10 @@
     height: 150px;
 }
 
+.ht-190px {
+    height: 190px;
+}
+
 .ptb-10_plr-25 {
     padding: 10px 25px;
 }
@@ -639,6 +643,32 @@
     font-family: 'Mark Pro Regular';
     font-size: 8pt;
 }
+
+.CScustomTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Arial';
+    font-size: 9pt;
+}
+
+.customTransactionTable {
+    width: 100%;
+    border-collapse: inherit;
+    font-family: 'Mark Pro Regular';
+    font-size: 8pt;
+}
+
+    .customTransactionTable td {
+        padding: 0px 5px;
+        font-family: 'Mark Pro Regular';
+        font-size: 8pt;
+        height: 20px;
+    }
+
+    .customTransactionTable th {
+        padding: 0px 5px;
+        font-size: 8pt;
+    }
 
 .pl-25px {
     padding-left: 25px !important;
@@ -1250,4 +1280,9 @@ hr {
     font-size: 8pt;
     font-family: 'Mark Pro Regular';
     font-weight: normal !important;
+}
+
+.CorporateSaverTable {
+    height: 23px !important;
+    font-size: 9p !important;
 }
