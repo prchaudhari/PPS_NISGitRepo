@@ -154,6 +154,15 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Agent besonderhede.
+        /// </summary>
+        internal static string Agent_details {
+            get {
+                return ResourceManager.GetString("Agent details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Agentgelde afgetrek.
         /// </summary>
         internal static string Agent_fee_deducted {
@@ -488,6 +497,15 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kliënt besonderhede.
+        /// </summary>
+        internal static string Client_details {
+            get {
+                return ResourceManager.GetString("Client details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kliënt-BTW no.
         /// </summary>
         internal static string Client_VAT_no {
@@ -607,9 +625,9 @@ namespace nIS.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Belê op.
         /// </summary>
-        internal static string Date_invested {
+        internal static string Date_Invested {
             get {
-                return ResourceManager.GetString("Date invested", resourceCulture);
+                return ResourceManager.GetString("Date Invested", resourceCulture);
             }
         }
         
@@ -1007,6 +1025,15 @@ namespace nIS.Properties {
         internal static string Interest {
             get {
                 return ResourceManager.GetString("Interest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rente (min agentgelde en BTW).
+        /// </summary>
+        internal static string Interest__less_agent_fee___VAT_ {
+            get {
+                return ResourceManager.GetString("Interest (less agent fee & VAT)", resourceCulture);
             }
         }
         
@@ -1816,11 +1843,29 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to tot.
+        /// </summary>
+        internal static string to {
+            get {
+                return ResourceManager.GetString("to", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Agentgelde afgetrek.
         /// </summary>
         internal static string Total_agent_fee {
             get {
                 return ResourceManager.GetString("Total agent fee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Agentgelde afgetrek.
+        /// </summary>
+        internal static string Total_agent_fee__deducted_ {
+            get {
+                return ResourceManager.GetString("Total agent fee (deducted)", resourceCulture);
             }
         }
         
@@ -1946,9 +1991,9 @@ namespace nIS.Properties {
         /// <summary>
         ///   Looks up a localized string similar to BTW-berekening.
         /// </summary>
-        internal static string VAT_calculation {
+        internal static string VAT_Calculation {
             get {
-                return ResourceManager.GetString("VAT calculation", resourceCulture);
+                return ResourceManager.GetString("VAT Calculation", resourceCulture);
             }
         }
         

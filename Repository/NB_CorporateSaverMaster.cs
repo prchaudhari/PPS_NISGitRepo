@@ -54,5 +54,13 @@ namespace nIS
         public string InvetsmentVATOnFee { get; set; }
         public string Interest { get; set; }
         public string TenantCode { get; set; }
+        public string AGENT_MESSAGE_ENGLISH { get; set; }
+        public string AGENT_MESSAGE_AFRIKAANS { get; set; }
+        public bool SHOWMESSAGE { get; set; }
+        public string SECTION86_MESSAGE { get; set; }
+        public bool MESSAGE_INDICATOR { get; set; }
+        public string AGENT_NAME { get; set; }
+        public string AGENT_LOGO { get; set; }
+
     }
 }

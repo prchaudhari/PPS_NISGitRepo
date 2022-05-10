@@ -103,6 +103,13 @@
                                 DateInvested = item.DateInvested,
                                 AgentFeeDeducted = item.AgentFeeDeducted,
                                 VatOnFee = item.VatOnFee,
+                                AGENT_MESSAGE_AFRIKAANS = item.AGENT_MESSAGE_AFRIKAANS,
+                                AGENT_MESSAGE_ENGLISH = item.AGENT_MESSAGE_ENGLISH,
+                                SECTION86_MESSAGE = item.SECTION86_MESSAGE,
+                                SHOWMESSAGE = item.SHOWMESSAGE,
+                                MESSAGE_INDICATOR = item.MESSAGE_INDICATOR,
+                                AGENT_NAME = item.AGENT_NAME,
+                                AGENT_LOGO = item.AGENT_LOGO,
 
 
 
@@ -164,6 +171,7 @@
                                 InvestorId = item.InvestorId,
                                 FromDate = item.FromDate,
                                 ToDate = item.ToDate,
+                                PaymentDetails = item.PaymentDetails,
                                 TransactionDescription = item.TransactionDescription,
                                 Rate = item.Rate,
                                 Amount = item.Amount,

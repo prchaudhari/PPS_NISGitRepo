@@ -5577,7 +5577,7 @@ namespace nIS
         {
             var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
             StringBuilder HtmlWidget = new StringBuilder(HtmlConstants.CUSTOMER_DETAILS_WIDGET_HTML_SMT);
-            if(page.PageTypeName == HtmlConstants.CORPORATE_SAVER_PAGE_TYPE)
+            if(page.PageTypeName == HtmlConstants.CORPORATE_SAVER_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.CORPORATE_SAVER_AFR_PAGE_TYPE)
             {
                 HtmlWidget = new StringBuilder(HtmlConstants.CUSTOMER_DETAILS_WIDGET_HTML_SMT_CORPORATE_SAVER);
             }
@@ -6057,6 +6057,7 @@ namespace nIS
         {
             var htmlWidget = new StringBuilder(HtmlConstants.NEDBANK_CORPORATESAVER_TRANSACTION_WIDGET_HTML);
             htmlWidget.Replace("{{CorporateSaverTransactions}}", "{{CorporateSaverTransactions_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{AgentMessage}}", "{{AgentMessage_" + pageWidget.Identifier + "}}");
             return htmlWidget.ToString();
         }
         private string CorporateSaverAgentAddressFormatting(PageWidget pageWidget, Page page)

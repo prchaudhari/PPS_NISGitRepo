@@ -863,6 +863,13 @@
           <Property Name="InvetsmentVATOnFee" Type="varchar" MaxLength="50" />
           <Property Name="Interest" Type="varchar" MaxLength="50" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
+			<Property Name="AGENT_MESSAGE_ENGLISH" Type="nvarchar(max)" />
+			<Property Name="AGENT_MESSAGE_AFRIKAANS" Type="nvarchar(max)" />
+			<Property Name="SHOWMESSAGE" Type="bit" Nullable="false" />
+			<Property Name="SECTION86_MESSAGE" Type="nvarchar(max)" />
+			<Property Name="MESSAGE_INDICATOR" Type="bit" Nullable="false" />
+			<Property Name="AGENT_NAME" Type="nvarchar(max)" />
+			<Property Name="AGENT_LOGO" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="NB_CorporateSaverTax">
           <Key>
@@ -5025,6 +5032,13 @@ warning 6002: The table/view 'NIS_DEV2.NIS.View_User' does not have a primary ke
           <Property Name="InvetsmentVATOnFee" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Interest" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+			<Property Name="AGENT_MESSAGE_ENGLISH" Type="String" MaxLength="Max" />
+			<Property Name="AGENT_MESSAGE_AFRIKAANS" Type="String" MaxLength="Max" />
+			<Property Name="SHOWMESSAGE" Type="Boolean" Nullable="false" />
+			<Property Name="SECTION86_MESSAGE" Type="String" MaxLength="Max" />
+			<Property Name="MESSAGE_INDICATOR" Type="Boolean" Nullable="false" />
+			<Property Name="AGENT_NAME" Type="String" MaxLength="Max" />
+			<Property Name="AGENT_LOGO" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="NB_CorporateSaverTax">
           <Key>
@@ -7267,6 +7281,13 @@ warning 6002: The table/view 'NIS_DEV2.NIS.View_User' does not have a primary ke
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="BatchId" ColumnName="BatchId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+				<ScalarProperty Name="AGENT_MESSAGE_ENGLISH" ColumnName="AGENT_MESSAGE_ENGLISH" />
+				<ScalarProperty Name="AGENT_MESSAGE_AFRIKAANS" ColumnName="AGENT_MESSAGE_AFRIKAANS" />
+				<ScalarProperty Name="SHOWMESSAGE" ColumnName="SHOWMESSAGE" />
+				<ScalarProperty Name="SECTION86_MESSAGE" ColumnName="SECTION86_MESSAGE" />
+				<ScalarProperty Name="MESSAGE_INDICATOR" ColumnName="MESSAGE_INDICATOR" />
+				<ScalarProperty Name="AGENT_NAME" ColumnName="AGENT_NAME" />
+				  <ScalarProperty Name="AGENT_LOGO" ColumnName="AGENT_LOGO" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

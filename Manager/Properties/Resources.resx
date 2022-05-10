@@ -663,7 +663,7 @@
   <data name="Tax invoice no" xml:space="preserve">
     <value>Belastingfaktuur no</value>
   </data>
-  <data name="VAT calculation" xml:space="preserve">
+  <data name="VAT Calculation" xml:space="preserve">
     <value>BTW-berekening</value>
   </data>
   <data name="Agent fee deducted" xml:space="preserve">
@@ -690,7 +690,7 @@
   <data name="Date" xml:space="preserve">
     <value>Datum</value>
   </data>
-  <data name="Date invested" xml:space="preserve">
+  <data name="Date Invested" xml:space="preserve">
     <value>Belê op</value>
   </data>
   <data name="Email address" xml:space="preserve">
@@ -781,5 +781,20 @@ en namens u aan u agent betaal</value>
   </data>
   <data name="VAT are deducted in" xml:space="preserve">
     <value>BTW word in</value>
+  </data>
+  <data name="Agent details" xml:space="preserve">
+    <value>Agent besonderhede</value>
+  </data>
+  <data name="Client details" xml:space="preserve">
+    <value>Kliënt besonderhede</value>
+  </data>
+  <data name="Interest (less agent fee &amp; VAT)" xml:space="preserve">
+    <value>Rente (min agentgelde en BTW)</value>
+  </data>
+  <data name="Total agent fee (deducted)" xml:space="preserve">
+    <value>Agentgelde afgetrek</value>
+  </data>
+  <data name="to" xml:space="preserve">
+    <value>tot</value>
   </data>
 </root>

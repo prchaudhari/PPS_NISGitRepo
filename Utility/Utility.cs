@@ -1283,7 +1283,7 @@
                 //PdfHtmlSection headHtml = new PdfHtmlSection(@"C:\UserFiles\Statements\1163\header.html");//Wealth
                 converter.Header.Add(headHtml);
                 
-                if(segment == "Corporate Saver")
+                if(segment.Contains("Corporate Saver"))
                 {
                     converter.Header.Height = 100;
                 }

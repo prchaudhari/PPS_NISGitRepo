@@ -1542,7 +1542,7 @@ namespace nIS
                     var IsHomeLoanPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE).ToList().Count > 0;
                     var IsRewardPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.GREENBACKS_PAGE_TYPE).ToList().Count > 0;
                     var IsMCAPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_PAGE_TYPE).ToList().Count > 0;
-                    var IsCorporateSaverPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == HtmlConstants.CORPORATE_SAVER_PAGE_TYPE).ToList().Count > 0;
+                    var IsCorporateSaverPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == HtmlConstants.CORPORATE_SAVER_ENG_PAGE_TYPE || it.PageTypeName.Trim() == HtmlConstants.CORPORATE_SAVER_AFR_PAGE_TYPE).ToList().Count > 0;
                     // var IsMCAPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == "").ToList().Count > 0;
                     // var IsCorporateSaverPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == "").ToList().Count > 0;
                     if (IsPortFolioPageTypePresent)
@@ -1705,7 +1705,7 @@ namespace nIS
                                                     vatNo = MCA[0].VatNo;
                                                 }
                                             }
-                                            this.BindCustomerDetailsWidgetData(pageContent, customer, page, widget, isShowCellNo, vatNo);
+                                            this.BindCustomerDetailsWidgetData(pageContent, customer, CorporateSaver, page, widget, isShowCellNo, vatNo);
                                         }
                                         break;
 
@@ -1924,7 +1924,7 @@ namespace nIS
                                         break;
 
                                     case HtmlConstants.NEDBANK_CORPORATESAVER_TRANSACTION_WIDGET_NAME:
-                                        this.BindCorporateSaverTransactionDetailWidgetData(pageContent, CorporateSaver, widget, page);
+                                        this.BindCorporateSaverTransactionDetailWidgetData(pageContent, CorporateSaver, widget, page, customer);
                                         break;
 
                                     case HtmlConstants.NETBANK_CORPORATESAVER_AGENTDETAILS_NAME:
@@ -3183,12 +3183,13 @@ namespace nIS
 
         #region These methods helps to bind data to static widgets of Nedbank HTML statment
 
-        private void BindCustomerDetailsWidgetData(StringBuilder pageContent, DM_CustomerMaster customer, Page page, PageWidget widget, bool isShowCellNo = false, string vatNo = "")
+        private void BindCustomerDetailsWidgetData(StringBuilder pageContent, DM_CustomerMaster customer, List<DM_CorporateSaverMaster> corporateSaverList, Page page, PageWidget widget, bool isShowCellNo = false, string vatNo = "")
         {
             var CustomerDetails = "";
-            if (page.PageTypeName == HtmlConstants.CORPORATE_SAVER_PAGE_TYPE)
+            if (page.PageTypeName == HtmlConstants.CORPORATE_SAVER_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.CORPORATE_SAVER_AFR_PAGE_TYPE)
             {
-                CustomerDetails = "<br><br><br><br>" +
+                //CustomerDetails = "<br><br><br><br>" +
+                CustomerDetails = "<img src=\"" + corporateSaverList.FirstOrDefault().AGENT_LOGO + "\" style=\"height: 60px;\" /><br>" +
                 (!string.IsNullOrEmpty(customer.Title) && customer.Title.ToLower() != "null" ? customer.Title + " " : string.Empty) + (!string.IsNullOrEmpty(customer.FirstName) && customer.FirstName.ToLower() != "null" ? customer.FirstName + " " : string.Empty) + (!string.IsNullOrEmpty(customer.SurName) && customer.SurName.ToLower() != "null" ? customer.SurName + " " : string.Empty) + "<br>" +
                 (!string.IsNullOrEmpty(customer.AddressLine0) ? (customer.AddressLine0) : string.Empty) + "<br>" +
                 (!string.IsNullOrEmpty(customer.AddressLine1) ? (customer.AddressLine1) : string.Empty) + "<br>" +
@@ -5730,9 +5731,9 @@ namespace nIS
                             tableHTML.Append("<div class='d-flex flex-row' style='margin-top: -1.5%;'>");
                             tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='font-weight: bold;margin-right:3px; margin-bottom:1px; '>Total capital</div>");
                             tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='font-weight: bold;margin-right:3px; margin-bottom:1px; '>Total interest</div>");
-                            tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='font-weight: bold;margin-right:3px; margin-bottom:1px; '>Total agent fee </br>(deducted)</div>");
+                            tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='font-weight: bold;margin-right:3px; margin-bottom:1px; '>Total agent fee (deducted)</div>");
                             tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='font-weight: bold;margin-right:3px; margin-bottom:1px; '>VAT on fee</div>");
-                            tableHTML.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold;margin-bottom:1px'>Interest</br>(less agent fee & VAT)</div>");
+                            tableHTML.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold;margin-bottom:1px'>Interest (less agent fee & VAT)</div>");
                             tableHTML.Append("</div>");
                             tableHTML.Append("<div class='d-flex flex-row' style='margin-top: 2px !important;margin-bottom: 1%;'>");
                             tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='margin-right:3px; margin-bottom:1px; '>" + (invest.TotalCapitalMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.TotalCapitalMstr)) : "") + "</div>");
@@ -5770,9 +5771,9 @@ namespace nIS
                             tableHTML2.Append("<div class='d-flex flex-row' style='margin-top: -1.5%;'>");
                             tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold;margin-right:3px; margin-bottom:1px;'>Total capital</div>");
                             tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold;margin-right:3px; margin-bottom:1px;'>Total interest</div>");
-                            tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold;margin-right:3px; margin-bottom:1px;'>Total agent fee </br>(deducted)</div>");
+                            tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold;margin-right:3px; margin-bottom:1px;'>Total agent fee (deducted)</div>");
                             tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold;margin-right:3px; margin-bottom:1px;'>VAT on fee</div>");
-                            tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold; margin-bottom:1px'>Interest</br>(less agent fee & VAT)</div>");
+                            tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold; margin-bottom:1px'>Interest (less agent fee & VAT)</div>");
                             tableHTML2.Append("</div>");
                             tableHTML2.Append("<div class='d-flex flex-row' style='margin-top: 2px !important;margin-bottom: 1%;'>");
                             tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='margin-right:3px; margin-bottom:1px;'>" + (invest.TotalCapitalMstr != null ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(invest.TotalCapitalMstr)) : "") + "</div>");
@@ -5788,21 +5789,37 @@ namespace nIS
                 });
                 tableHTML.Append(tableHTML2);
                 // if (customerMaster.InvestorId == 9018933796)
-                if (customerMaster.InvestorId == 9018933796)
+                string importantMsg = "";
+                importantMsg += "<div class='card border-0'><div class='card-body text-left'style='padding: 0;'><div class='card-body-header mt-3-2' style='font-family: \"Arial\";font-weight: 700;'>Important information</div> <div class='' style='font-size: 9pt; font-family: \"Arial\";'>";
+
+                if (customerMaster.Language == "ENG")
                 {
-                    pageContent.Replace("{{dynemicMsg}}", "<div class='card border-0'><div class='card-body text-left'style='padding: 0;'><div class='card-body-header mt-3-2' style='font-family: \"Arial\";font-weight: 700;'>Important information</div> <div class='' style='font-size: 9pt; font-family: \"Arial\";'><p>Rente (min agentadministrasiegelde en BTW) word in Maart op u rekening gekrediteer. Die agentadministrasiegelde en BTW word in Maart afgetrek en namens u aan u agent betaal, in ooreenstemming met die mandaat wat gehou word. </p><p> Artikel 86(4) - rekenings wat voor 1 November 2018 geopen is, is aan die bepalings van die Prokureurswet, 53 van 1979, onderworpe.Ingevolge artikel 86(4) van die Wet op Regspraktyk, 28 van 2014, is 5 % van die rente verdien vanaf 1 Maart 2019 aan die Getrouheidsfonds vir Regspraktisyns betaal.</p></div></div></div>");
+                    importantMsg += "<p>Interest(less agent administration fee and VAT) is credited to your account in March.The agent administration fee and VAT are deducted in March and paid on your behalf to your agent, in accordance with the mandate held.</p>";
                 }
                 else
                 {
-                    pageContent.Replace("{{dynemicMsg}}", "<div class='card border-0'><div class='card-body text-left'style='padding: 0;'><div class='card-body-header mt-3-2' style='font-family: \"Arial\";font-weight: 700;'>Important information</div> <div class='' style='font-size: 9pt; font-family: \"Arial\";'><p>Interest(less agent administration fee and VAT) is credited to your account in March.The agent administration fee and VAT are deducted in March and paid on your behalf to your agent, in accordance with the mandate held.</p></div></div></div>");
+                    importantMsg += "<p>Rente (min agentadministrasiegelde en BTW) word in Maart op u rekening gekrediteer. Die agentadministrasiegelde en BTW word in Maart afgetrek en namens u aan u agent betaal, in ooreenstemming met die mandaat wat gehou word.</p>";
                 }
+
+
+                if (DM_CorporateSaverMasterList.FirstOrDefault().MESSAGE_INDICATOR)
+                {
+                    if (DM_CorporateSaverMasterList.FirstOrDefault().MESSAGE_INDICATOR && !string.IsNullOrEmpty(DM_CorporateSaverMasterList.FirstOrDefault().SECTION86_MESSAGE))
+                    {
+                        importantMsg += "<p>" + DM_CorporateSaverMasterList.FirstOrDefault().SECTION86_MESSAGE + "</p>";
+                    }
+                }
+                importantMsg += "</div></div></div>";
+                pageContent.Replace("{{dynamicMsg}}", importantMsg);
+
+
                 pageContent.Replace("{{dynemicTables_" + page.Identifier + "_" + widget.Identifier + "}}", tableHTML.ToString());
             }
 
         }
 
 
-        private void BindCorporateSaverTransactionDetailWidgetData(StringBuilder pageContent, List<DM_CorporateSaverMaster> CorporateSaverMasterList, PageWidget widget, Page page)
+        private void BindCorporateSaverTransactionDetailWidgetData(StringBuilder pageContent, List<DM_CorporateSaverMaster> CorporateSaverMasterList, PageWidget widget, Page page, DM_CustomerMaster customer)
         {
             StringBuilder tableHTML = new StringBuilder();
             if (CorporateSaverMasterList != null && CorporateSaverMasterList.Count > 0)
@@ -5822,7 +5839,7 @@ namespace nIS
                             pageContent.Replace("{{FromDate}}", Convert.ToDateTime(firstTransaction.FromDate).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy2));
                             pageContent.Replace("{{ToDate}}", Convert.ToDateTime(lastTransaction.FromDate).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy2));
                         }
-                        
+
                         tableHTML.Append("<tr class='ht-20 CorporateSaverTable'>");
                         tableHTML.Append("<td class='w-12 text-center'>" + Convert.ToDateTime(trans.FromDate).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>");
                         tableHTML.Append("<td class='text-left'  style='width: 25%'>" + trans.PaymentDetails + "</td>");
@@ -5838,9 +5855,9 @@ namespace nIS
                         }
                         if (decimal.TryParse(trans.Rate, out res))
                         {
-                            // (res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-" + "%</td>");
+                        // (res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-" + "%</td>");
 
-                            tableHTML.Append("<td class='w-8 text-right'>" + (res != 0 ? String.Format("{0:0.00}", res) + "%" :" ") + "</td>");
+                        tableHTML.Append("<td class='w-8 text-right'>" + (res != 0 ? String.Format("{0:0.00}", res) + "%" : " ") + "</td>");
                         }
                         else
                         {
@@ -5862,6 +5879,25 @@ namespace nIS
                     });
                 }
                 pageContent.Replace("{{CorporateSaverTransactions_" + widget.Identifier + "}}", tableHTML.ToString());
+                if (CorporateSaverMasterList.FirstOrDefault().SHOWMESSAGE)
+                {
+                    if (customer.Language == "ENG")
+                    {
+                        var msg = HtmlConstants.CORPORATESAVER_TRANS_DETAIL_MSG.Replace("{{TransMessageHeading}}", CorporateSaverMasterList.FirstOrDefault().AGENT_NAME);
+                        msg = msg.Replace("{{TransMessage}}", CorporateSaverMasterList.FirstOrDefault().AGENT_MESSAGE_ENGLISH);
+                        pageContent.Replace("{{AgentMessage_" + widget.Identifier + "}}", msg);
+                    }
+                    else
+                    {
+                        var msg = HtmlConstants.CORPORATESAVER_TRANS_DETAIL_MSG.Replace("{{TransMessageHeading}}", CorporateSaverMasterList.FirstOrDefault().AGENT_NAME);
+                        msg = msg.Replace("{{TransMessage}}", CorporateSaverMasterList.FirstOrDefault().AGENT_MESSAGE_AFRIKAANS);
+                        pageContent.Replace("{{AgentMessage_" + widget.Identifier + "}}", msg);
+                    }
+                }
+                else
+                {
+                    pageContent.Replace("{{AgentMessage_" + widget.Identifier + "}}", "");
+                }
             }
         }
 
@@ -5925,9 +5961,16 @@ namespace nIS
                 var replaced = inputStr.ToString();
                 foreach (var item in list.OrderByDescending(m => m.StringLength))
                 {
-                    string pattern = @"\b(" + item.Eng + @")\b";
-
-                    replaced = Regex.Replace(replaced, pattern, item.Translated);
+                    if (item.Eng.Contains('('))
+                    {
+                        replaced = replaced.Replace(item.Eng, item.Translated);
+                    }
+                    else
+                    {
+                        string pattern = @"\b(" + item.Eng + @")\b";
+                        replaced = Regex.Replace(replaced, pattern, item.Translated, RegexOptions.IgnoreCase);
+                    }
+                    //replaced = Regex.Replace(replaced, item.Eng, item.Translated, RegexOptions.IgnoreCase);
                 }
 
                 inputStr = new StringBuilder();
