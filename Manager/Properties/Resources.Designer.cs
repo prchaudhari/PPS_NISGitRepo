@@ -1139,9 +1139,9 @@ namespace nIS.Properties {
         /// <summary>
         ///   Looks up a localized string similar to word in Maart op u rekening gekrediteer.
         /// </summary>
-        internal static string is_credited_to_your_account_in_Maart {
+        internal static string is_credited_to_your {
             get {
-                return ResourceManager.GetString("is credited to your account in Maart", resourceCulture);
+                return ResourceManager.GetString("is credited to your", resourceCulture);
             }
         }
         
@@ -1196,6 +1196,15 @@ namespace nIS.Properties {
         internal static string less_agent_administration_fee_and_VAT {
             get {
                 return ResourceManager.GetString("less agent administration fee and VAT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to min agentgelde.
+        /// </summary>
+        internal static string less_agent_fee {
+            get {
+                return ResourceManager.GetString("less agent fee", resourceCulture);
             }
         }
         
@@ -1391,6 +1400,15 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nie verskaf nie.
+        /// </summary>
+        internal static string Not_provided {
+            get {
+                return ResourceManager.GetString("Not provided", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kennis deposito&apos;s.
         /// </summary>
         internal static string Notice_deposits {
@@ -1423,6 +1441,15 @@ namespace nIS.Properties {
         internal static string October {
             get {
                 return ResourceManager.GetString("October", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Van rente.
+        /// </summary>
+        internal static string on_capital {
+            get {
+                return ResourceManager.GetString("on capital", resourceCulture);
             }
         }
         
@@ -1686,7 +1713,7 @@ namespace nIS.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to staat.
+        ///   Looks up a localized string similar to Staat.
         /// </summary>
         internal static string Statement {
             get {
@@ -1709,15 +1736,6 @@ namespace nIS.Properties {
         internal static string Statement_Day {
             get {
                 return ResourceManager.GetString("Statement Day", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Staat no.
-        /// </summary>
-        internal static string Statement_no {
-            get {
-                return ResourceManager.GetString("Statement no", resourceCulture);
             }
         }
         
@@ -1976,6 +1994,15 @@ namespace nIS.Properties {
             get {
                 return ResourceManager.GetString("Try the Nedbank Home-buying Toolkit on the Nedbank Money app today. Simply open t" +
                         "he app and click on", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BTW.
+        /// </summary>
+        internal static string VAT {
+            get {
+                return ResourceManager.GetString("VAT", resourceCulture);
             }
         }
         
