@@ -2180,6 +2180,10 @@ a {
         height: 23px !important;
     }
 
+    .custom-bold-font {
+        font-family: 'Mark Pro Bold' !important;
+    }
+
     .customTable td {
         padding: 0px 25px;
         font-family: 'Mark Pro Regular';
@@ -2268,6 +2272,11 @@ a {
         color: #fff;
         font-size: 8pt;
         font-family: 'Mark Pro Regular';
+        font-weight: normal !important;
+    }
+
+    .custom-paragraph {
+        line-height: 28px !important;
     }
 
     .LoanTransactionTable tbody, .LoanTransactionTable-W tbody {

@@ -782,4 +782,10 @@ en namens u aan u agent betaal</value>
   <data name="VAT are deducted in" xml:space="preserve">
     <value>BTW word in</value>
   </data>
+  <data name="24/7-contact centre" xml:space="preserve">
+    <value>Small Business Services 24/7 Kontaksentrum</value>
+  </data>
+  <data name="Bank VAT Reg No" xml:space="preserve">
+    <value>Bank-BTW-reg-no</value>
+  </data>
 </root>

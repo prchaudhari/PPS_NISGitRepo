@@ -453,7 +453,12 @@ namespace nIS
         public const string DATE_FORMAT_dd_MMMM_yyyy = "dd MMMM yyyy";
 
         public const string DATE_FORMAT_yyyy_MM_dd = "yyyy-MM-dd";
-        public const string DATE_FORMAT_dd_MM_yyyy2 = "dd-MM-yyyy"; 
+
+        public const string DATE_FORMAT_dd_MM_yyyy2 = "dd-MM-yyyy";
+
+        public const string DATE_FORMAT_dd_MM_yyyy3 = "dd MM yyyy";
+
+        public const string TIME_FORMAT_HH_MM_SS = "HH:mm:ss.sss";
         #endregion
     }
 }

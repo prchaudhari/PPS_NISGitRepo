@@ -19,7 +19,7 @@ namespace nIS.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -57,6 +57,15 @@ namespace nIS.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Small Business Services 24/7 Kontaksentrum.
+        /// </summary>
+        internal static string _24_7_contact_centre {
+            get {
+                return ResourceManager.GetString("24/7-contact centre", resourceCulture);
             }
         }
         
@@ -322,6 +331,15 @@ namespace nIS.Properties {
         internal static string Balance_outstanding {
             get {
                 return ResourceManager.GetString("Balance outstanding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bank-BTW-reg-no.
+        /// </summary>
+        internal static string Bank_VAT_Reg_No {
+            get {
+                return ResourceManager.GetString("Bank VAT Reg No", resourceCulture);
             }
         }
         
