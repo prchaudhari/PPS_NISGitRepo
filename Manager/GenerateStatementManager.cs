@@ -2175,13 +2175,13 @@ namespace nIS
                             documentName = "MCA Statement";
                             statementDate = MCA?.FirstOrDefault().StatementDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy3);
                         }
-                        else if (statement.Pages.Where(x => x.PageTypeName == HtmlConstants.CORPORATE_SAVER_PAGE_TYPE).Count() > 0)
+                        else if (statement.Pages.Where(x => x.PageTypeName == HtmlConstants.CORPORATE_SAVER_AFR_PAGE_TYPE || x.PageTypeName == HtmlConstants.CORPORATE_SAVER_ENG_PAGE_TYPE).Count() > 0)
                         {
                             productPrefix = "C";
                             documentName = "Corporate Saver Statement";
                         }
 
-                        string fileName = productPrefix + customer.Identifier + " _ " + documentName + "  " + customer.Segment + " " + customer.Language + " " + statementDate + " " + DateTime.Now.ToString(ModelConstant.TIME_FORMAT_HH_MM_SS).Replace(".", " ").Replace(":", " ") + ".html";
+                        string fileName = productPrefix + customer.CustomerId + " _ " + documentName + "  " + customer.Segment + " " + customer.Language + " " + statementDate + " " + DateTime.Now.ToString(ModelConstant.TIME_FORMAT_HH_MM_SS).Replace(".", " ").Replace(":", " ") + ".html";
                         //string fileName = "Statement_" + customer.Identifier + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
                         string headerHtml = statement.Pages[0].HeaderHTML;
                         string footerHtml = statement.Pages[0].FooterHTML;
