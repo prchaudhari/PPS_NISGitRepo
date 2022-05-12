@@ -30,7 +30,7 @@ namespace nIS
         /// <value>
         /// The customer identifier.
         /// </value>
-        public string CustomerId { get; set; }
+        public long CustomerId { get; set; }
         /// <summary>
         /// Gets or sets the investor identifier.
         /// </summary>

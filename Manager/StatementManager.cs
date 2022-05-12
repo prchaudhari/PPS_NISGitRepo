@@ -4938,7 +4938,7 @@ namespace nIS
                                                     {
                                                         var mcaMaster = JsonConvert.DeserializeObject<DM_MCAMaster>(jsonstr);
                                                         var htmlWidget = new StringBuilder(HtmlConstants.MCA_ACCOUNT_SUMMARY_DETAILS_WIDGET_HTML);
-                                                        htmlWidget.Replace("{{AccountNo}}", mcaMaster.CustomerId);
+                                                        htmlWidget.Replace("{{AccountNo}}", mcaMaster.CustomerId.ToString());
                                                         htmlWidget.Replace("{{StatementNo}}", mcaMaster.StatementNo);
                                                         htmlWidget.Replace("{{OverdraftLimit}}", mcaMaster.OverdraftLimit != null ? mcaMaster.OverdraftLimit.ToString() : "0.00");
                                                         htmlWidget.Replace("{{StatementDate}}", mcaMaster.StatementDate != null ? mcaMaster.StatementDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) : DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
@@ -5048,7 +5048,7 @@ namespace nIS
                                                     {
                                                         var mcaMaster = JsonConvert.DeserializeObject<DM_MCAMaster>(jsonstr);
                                                         var htmlWidget = new StringBuilder(HtmlConstants.MCA_WEALTH_ACCOUNT_SUMMARY_DETAILS_WIDGET_HTML);
-                                                        htmlWidget.Replace("{{AccountNo}}", mcaMaster.CustomerId);
+                                                        htmlWidget.Replace("{{AccountNo}}", mcaMaster.CustomerId.ToString());
                                                         htmlWidget.Replace("{{StatementNo}}", mcaMaster.StatementNo);
                                                         htmlWidget.Replace("{{OverdraftLimit}}", mcaMaster.OverdraftLimit != null ? mcaMaster.OverdraftLimit.ToString() : "0.00");
                                                         htmlWidget.Replace("{{StatementDate}}", mcaMaster.StatementDate != null ? mcaMaster.StatementDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) : DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
@@ -5124,7 +5124,7 @@ namespace nIS
                                                         
                                                         var mcaMaster = JsonConvert.DeserializeObject<DM_MCAMaster>(jsonstr);
                                                         var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_AGENT_MESSAGE_HTML);
-                                                        htmlWidget.Replace("{{AccountNo}}", mcaMaster.CustomerId);
+                                                        htmlWidget.Replace("{{AccountNo}}", mcaMaster.CustomerId.ToString());
                                                         htmlWidget.Replace("{{StatementNo}}", mcaMaster.StatementNo);
                                                         htmlWidget.Replace("{{OverdraftLimit}}", mcaMaster.OverdraftLimit != null ? mcaMaster.OverdraftLimit.ToString() : "0.00");
                                                         htmlWidget.Replace("{{StatementDate}}", mcaMaster.StatementDate != null ? mcaMaster.StatementDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) : DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
@@ -5234,7 +5234,7 @@ namespace nIS
                                                     {
                                                         var mcaMaster = JsonConvert.DeserializeObject<DM_MCAMaster>(jsonstr);
                                                         var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_CLIENT_DETAILS_HTML);
-                                                        htmlWidget.Replace("{{AccountNo}}", mcaMaster.CustomerId);
+                                                        htmlWidget.Replace("{{AccountNo}}", mcaMaster.CustomerId.ToString());
                                                         htmlWidget.Replace("{{StatementNo}}", mcaMaster.StatementNo);
                                                         htmlWidget.Replace("{{OverdraftLimit}}", mcaMaster.OverdraftLimit != null ? mcaMaster.OverdraftLimit.ToString() : "0.00");
                                                         htmlWidget.Replace("{{StatementDate}}", mcaMaster.StatementDate != null ? mcaMaster.StatementDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) : DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));

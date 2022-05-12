@@ -22,19 +22,17 @@ namespace nIS
         public string TenantCode { get; set; }
         public string InvestType { get; set; }
         public string InterestIntruction { get; set; }
-        public Nullable<System.DateTime> DateInvested { get; set; }
-        public string CapitalMstr { get; set; }
-        public string AgentFeeDeducted { get; set; }
-        public string InterestMstr0 { get; set; }
-        public string VatOnFeeMstr { get; set; }
-        public string AGENT_FEE_STRUCTURE_1 { get; set; }
-        public string AGENT_FEE_STRUCTURE_2 { get; set; }
-        public string InterestMstr { get; set; }
-        public string TotalCapitalMstr { get; set; }
-        public string TotalInterestMstr { get; set; }
-        public string TotalAgentFeeMstr { get; set; }
-        public string VatOnFeeMstr0 { get; set; }
-        public string InterestAgentFeeMstr { get; set; }
-        public string InterestDescription { get; set; }
+        public Nullable<System.DateTime> InvestedDate { get; set; }
+        public string CapitalMaster { get; set; }
+        public string InterestMaster1 { get; set; }
+        public string VatOnFeeMaster1 { get; set; }
+        public string AgentFeeStructure1 { get; set; }
+        public string AgentFeeStructure2 { get; set; }
+        public string InterestMaster2 { get; set; }
+        public string TotalCapitalMaster { get; set; }
+        public string TotalInterestMaster { get; set; }
+        public string TotalAgentFeeMaster { get; set; }
+        public string VatOnFeeMaster2 { get; set; }
+        public string InterestAgentFeeMaster { get; set; }
     }
 }

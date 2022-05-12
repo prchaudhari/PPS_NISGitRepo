@@ -79,7 +79,7 @@
                                 StatementNo = item.StatementNo,
                                 StatementDate = item.StatementDate,
                                 StatementFrequency = item.StatementFrequency,
-                                MCATransactions = this.Get_DM_MCATransaction(new CustomerMCASearchParameter() { InvestorId = item.InvestorId, BatchId = searchParameter.BatchId }, tenantCode)?.ToList()
+                                MCATransactions = this.Get_DM_MCATransaction(new CustomerMCASearchParameter() { InvestorId = item.InvestorId, BatchId = searchParameter.BatchId, CustomerId = item.CustomerId }, tenantCode)?.ToList()
                             });
                         });
                     }
@@ -175,10 +175,10 @@
                 queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
             }
 
-            //if (validationEngine.IsValidLong(searchParameter.CustomerId))
-            //{
-            //    queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") and ");
-            //}
+            if (validationEngine.IsValidLong(searchParameter.CustomerId))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") and ");
+            }
 
             if (validationEngine.IsValidLong(searchParameter.InvestorId))
             {

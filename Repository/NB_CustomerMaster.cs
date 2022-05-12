@@ -16,7 +16,7 @@ namespace nIS
     {
         public long Id { get; set; }
         public Nullable<long> BatchId { get; set; }
-        public string CustomerId { get; set; }
+        public long CustomerId { get; set; }
         public long InvestorId { get; set; }
         public Nullable<long> BranchId { get; set; }
         public string Title { get; set; }
@@ -31,7 +31,10 @@ namespace nIS
         public string MaskCellNo { get; set; }
         public string Barcode { get; set; }
         public string TenantCode { get; set; }
+        public string DS_Investor_Name { get; set; }
         public string Language { get; set; }
         public string Segment { get; set; }
+        public string AddressLine5 { get; set; }
+        public string AddressLine6 { get; set; }
     }
 }

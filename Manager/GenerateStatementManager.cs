@@ -1541,7 +1541,7 @@ namespace nIS
                     var IsPersonalLoanPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == HtmlConstants.PERSONAL_LOAN_PAGE_TYPE).ToList().Count > 0;
                     var IsHomeLoanPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE).ToList().Count > 0;
                     var IsRewardPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.GREENBACKS_PAGE_TYPE).ToList().Count > 0;
-                    var IsMCAPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_PAGE_TYPE).ToList().Count > 0;
+                    var IsMCAPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_FOR_CIB_PAGE_TYPE || it.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_FOR_WEA_PAGE_TYPE).ToList().Count > 0;
                     var IsCorporateSaverPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == HtmlConstants.CORPORATE_SAVER_ENG_PAGE_TYPE || it.PageTypeName.Trim() == HtmlConstants.CORPORATE_SAVER_AFR_PAGE_TYPE).ToList().Count > 0;
                     // var IsMCAPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == "").ToList().Count > 0;
                     // var IsCorporateSaverPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == "").ToList().Count > 0;
@@ -1601,7 +1601,7 @@ namespace nIS
                     }
                     if (IsMCAPageTypePresent)
                     {
-                        MCA = this.mcaDataRepository.Get_DM_MCAMaster(new CustomerMCASearchParameter() { BatchId = batchMaster.Identifier, InvestorId = customer.InvestorId }, tenantCode)?.ToList();
+                        MCA = this.mcaDataRepository.Get_DM_MCAMaster(new CustomerMCASearchParameter() { BatchId = batchMaster.Identifier, InvestorId = customer.InvestorId, CustomerId = customer.CustomerId }, tenantCode)?.ToList();
                     }
                     if (IsCorporateSaverPageTypePresent)
                     {
@@ -5597,7 +5597,7 @@ namespace nIS
                 if (MCAMasterList != null && MCAMasterList.Count > 0)
                 {
                     var mcaMaster = MCAMasterList[0];
-                    pageContent.Replace("{{AccountNo_" + widget.Identifier + "}}", mcaMaster.CustomerId);
+                    pageContent.Replace("{{AccountNo_" + widget.Identifier + "}}", mcaMaster.CustomerId.ToString());
                     pageContent.Replace("{{StatementNo_" + widget.Identifier + "}}", mcaMaster.StatementNo);
                     pageContent.Replace("{{OverdraftLimit_" + widget.Identifier + "}}", (mcaMaster.OverdraftLimit != null ? Math.Round(decimal.Parse(mcaMaster.OverdraftLimit.ToString()), 2).ToString() : ""));
                     pageContent.Replace("{{StatementDate_" + widget.Identifier + "}}", mcaMaster.StatementDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));

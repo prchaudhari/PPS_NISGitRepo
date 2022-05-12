@@ -27,6 +27,7 @@ namespace nIS
         public long Identifier { get; set; }
         public long BatchId { get; set; }
         public long InvestorId { get; set; }
+        public long CustomerId { get; set; }
         public string WidgetFilterSetting { get; set; }
 
         /// <summary>
@@ -42,10 +43,10 @@ namespace nIS
                 {
                     exception.Data.Add(this.utility.GetDescription("Batch Id", typeof(State)), ModelConstant.TRANSACTION_DATA_MODEL_SECTION + "~" + ModelConstant.INVALID_BATCH_ID);
                 }
-                //if (validationEngine.IsValidLong(this.CustomerId))
-                //{
-                //    exception.Data.Add(this.utility.GetDescription("Customer Id", typeof(State)), ModelConstant.TRANSACTION_DATA_MODEL_SECTION + "~" + ModelConstant.INVALID_CUSTOMER_ID);
-                //}
+                if (validationEngine.IsValidLong(this.CustomerId))
+                {
+                    exception.Data.Add(this.utility.GetDescription("Customer Id", typeof(State)), ModelConstant.TRANSACTION_DATA_MODEL_SECTION + "~" + ModelConstant.INVALID_CUSTOMER_ID);
+                }
             }
             catch (Exception ex)
             {
