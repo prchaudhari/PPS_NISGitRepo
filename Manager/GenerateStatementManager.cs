@@ -1797,7 +1797,7 @@ namespace nIS
                                         break;
 
                                     case HtmlConstants.HOME_LOAN_ACCOUNTS_BREAKDOWN_WIDGET_NAME:
-                                        this.BindHomeLoanAccountsBreakdownWidgetData(pageContent, HomeLoanAccounts, page, widget);
+                                        this.BindHomeLoanAccountsBreakdownWidgetData(pageContent, HomeLoanAccounts, page, widget, customer);
                                         break;
 
                                     case HtmlConstants.HOME_LOAN_SUMMARY_TAX_PURPOSE_WIDGET_NAME:
@@ -2144,8 +2144,45 @@ namespace nIS
                     }
                     else
                     {
-                        string fileName = "Statement_" + customer.CustomerId + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
+                        string productPrefix = string.Empty;
+                        string documentName = string.Empty;
+                        string statementDate = string.Empty;
+                        string endDate = string.Empty;
+                        if (statement.Pages.Where(x => x.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE || x.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE ||
+                                                       x.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || x.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE ||
+                                                       x.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE || x.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE).Count() > 0)
+                        {
+                            productPrefix = "H";
+                            documentName = "Home Loan Statement";
+                            statementDate = HomeLoanAccounts?.FirstOrDefault().StatementDate?.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy3);
+                        }
+                        else if (statement.Pages.Where(x => x.PageTypeName == HtmlConstants.PERSONAL_LOAN_PAGE_TYPE).Count() > 0)
+                        {
+                            productPrefix = "P";
+                            documentName = "Personal Loan Statement";
+                            statementDate = PersonalLoanAccounts?.FirstOrDefault().ToDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy3);
+                        }
+                        else if (statement.Pages.Where(x => x.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_ENGLISH || x.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_AFRICAN ||
+                                                            x.PageTypeName == HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_ENGLISH || x.PageTypeName == HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_AFRICAN).Count() > 0)
+                        {
+                            productPrefix = "I";
+                            documentName = "Investment Statement";
+                            statementDate = investmentMasters?.FirstOrDefault().StatementDate?.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy3);
+                        }
+                        else if (statement.Pages.Where(x => x.PageTypeName == HtmlConstants.MULTI_CURRENCY_FOR_CIB_PAGE_TYPE || x.PageTypeName == HtmlConstants.MULTI_CURRENCY_FOR_WEA_PAGE_TYPE).Count() > 0)
+                        {
+                            productPrefix = "M";
+                            documentName = "MCA Statement";
+                            statementDate = MCA?.FirstOrDefault().StatementDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy3);
+                        }
+                        else if (statement.Pages.Where(x => x.PageTypeName == HtmlConstants.CORPORATE_SAVER_PAGE_TYPE).Count() > 0)
+                        {
+                            productPrefix = "C";
+                            documentName = "Corporate Saver Statement";
+                        }
 
+                        string fileName = productPrefix + customer.Identifier + " _ " + documentName + "  " + customer.Segment + " " + customer.Language + " " + statementDate + " " + DateTime.Now.ToString(ModelConstant.TIME_FORMAT_HH_MM_SS).Replace(".", " ").Replace(":", " ") + ".html";
+                        //string fileName = "Statement_" + customer.Identifier + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
                         string headerHtml = statement.Pages[0].HeaderHTML;
                         string footerHtml = statement.Pages[0].FooterHTML;
 
@@ -4388,7 +4425,7 @@ namespace nIS
             }
         }
 
-        private void BindHomeLoanAccountsBreakdownWidgetData(StringBuilder pageContent, List<DM_HomeLoanMaster> HomeLoans, Page page, PageWidget widget)
+        private void BindHomeLoanAccountsBreakdownWidgetData(StringBuilder pageContent, List<DM_HomeLoanMaster> HomeLoans, Page page, PageWidget widget, DM_CustomerMaster customer)
         {
             try
             {
@@ -4509,7 +4546,21 @@ namespace nIS
                         #region Loan arrears
                         var paddingClass = HomeLoan.LoanTransactions.Count > 10 ? "pb-2 pt-5" : "py-2";
                         var LoanArrearHtml = new StringBuilder(HtmlConstants.HOME_LOAN_STATEMENT_OVERVIEW_AND_PAYMENT_DUE_DIV_HTML).Replace("{{PaddingClass}}", paddingClass);
-                        LoanArrearHtml.Replace("{{StatementDate}}", (HomeLoan?.StatementDate != null ? Convert.ToDateTime(HomeLoan?.StatementDate).ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd) : ""));
+                        string statementDate = string.Empty;
+
+                        if (HomeLoan?.StatementDate != null)
+                        {
+                            if (customer.Language == "AFR" && page.PageTypeName != HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE && page.PageTypeName != HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE)
+                            {
+                                statementDate = Convert.ToDateTime(HomeLoan?.StatementDate).ToString(ModelConstant.DATE_FORMAT_dd_MMMM_yyyy);
+                            }
+                            else
+                            {
+                                statementDate = Convert.ToDateTime(HomeLoan?.StatementDate).ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd);
+                            }
+                        }
+
+                        LoanArrearHtml.Replace("{{StatementDate}}", statementDate);
                         res = 0.0m;
                         if (decimal.TryParse(HomeLoan.Balance, out res))
                         {
@@ -4722,7 +4773,7 @@ namespace nIS
                         #region Loan arrears
                         var paddingClass = HomeLoan.LoanTransactions.Count > 10 ? "pb-2 pt-5" : "py-2";
                         var LoanArrearHtml = new StringBuilder(HtmlConstants.HOME_LOAN_WEALTH_STATEMENT_OVERVIEW_AND_PAYMENT_DUE_DIV_HTML).Replace("{{PaddingClass}}", paddingClass);
-                        LoanArrearHtml.Replace("{{StatementDate}}", (HomeLoan?.StatementDate != null ? Convert.ToDateTime(HomeLoan?.StatementDate).ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd) : ""));
+                        LoanArrearHtml.Replace("{{StatementDate}}", (HomeLoan?.StatementDate != null ? Convert.ToDateTime(HomeLoan?.StatementDate).ToString(ModelConstant.DATE_FORMAT_dd_MMMM_yyyy) : ""));
                         res = 0.0m;
                         if (decimal.TryParse(HomeLoan.Balance, out res))
                         {
@@ -5039,7 +5090,7 @@ namespace nIS
                                 htmlForWidget.Replace("{{TotalInstalment}}", "R0.00");
                             }
 
-                            htmlForWidget.Replace("{{InstalmentDate}}", HomeLoan.LoanTransactions.Select(x => x.Posting_Date).OrderByDescending(x => x)?.FirstOrDefault().ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
+                            htmlForWidget.Replace("{{InstalmentDate}}", (HomeLoan.EffectiveDate == null ? "" : "(effective from " + Convert.ToDateTime(HomeLoan.EffectiveDate).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + ")"));
                             pageContent.Replace("{{Home_Loan_Instalment_Details_" + widget.Identifier + "}}", htmlForWidget.ToString());
 
                             #endregion
@@ -5715,12 +5766,12 @@ namespace nIS
                         }
 
                         tableHTML.Append("<tr class='ht-20'>" +
-                                         "<td class='w-20 text-center'>" + trans.Transaction_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
+                                         "<td class='w-7 text-center'>" + trans.Transaction_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
                                          "<td class='w-40 text-left'>" + trans.Description + "</td>" +
-                                         "<td class='w-10 text-right'>" + (debit == "0" ? "" : debit) + "</td>" +
-                                         "<td class='w-10 text-right'>" + (credit == "0" ? "" : credit) + "</td>" +
-                                         "<td class='w-5 text-center'>" + (trans.Rate != null ? Math.Round(decimal.Parse(trans.Rate.ToString()), 2).ToString() : "") + "</td>" +
-                                         "<td class='w-5 text-center'>" + trans.Days + "</td>" +
+                                         "<td class='w-12 text-right'>" + (debit == "0" || debit == "0.00" ? "" : debit) + "</td>" +
+                                         "<td class='w-12 text-right'>" + (credit == "0" || credit == "0.00" ? "" : credit) + "</td>" +
+                                         "<td class='w-7 text-center'>" + (trans.Rate != null ? Math.Round(decimal.Parse(trans.Rate.ToString()), 2).ToString() : "") + "</td>" +
+                                         "<td class='w-5 text-center'>" + (trans.Days != null && trans.Days != 0 ? trans.Days.ToString() : "") + "</td>" +
                                          "<td class='w-10 text-right'>" + (trans.AccuredInterest != null ? Math.Round(decimal.Parse(trans.AccuredInterest.ToString()), 2).ToString() : "") + "</td>" +
                                          "</tr>");
                     });
@@ -5947,15 +5998,15 @@ namespace nIS
                 var MCAMaster = MCAMasterList[0];
                 if (MCAMaster.MCATransactions != null && MCAMaster.MCATransactions.Count > 0)
                 {
-                    MCAMaster.MCATransactions.ForEach(trans =>
-                    {
-                        tableHTML.Append("<tr class='ht-20'>" +
-                                         "<td class='ip-w-25 text-left'>" + DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
-                                         "<td class='ip-w-25 text-left'>" + DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
-                                         "<td class='ip-w-25 text-right'>" + (trans.Rate != null ? Math.Round(decimal.Parse(trans.Rate.ToString()), 2).ToString() : "0.00") + "</td>" +
-                                         "<td class='ip-w-25 text-right'>" + (trans.Credit != null ? Math.Round(decimal.Parse(trans.Credit.ToString()), 2).ToString() : "0.00") + "</td>" +
-                                             "</tr>");
-                    });
+                    //MCAMaster.MCATransactions.ForEach(trans =>
+                    //{
+                    //    tableHTML.Append("<tr class='ht-20'>" +
+                    //                     "<td class='ip-w-25 text-left'>" + DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
+                    //                     "<td class='ip-w-25 text-left'>" + DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
+                    //                     "<td class='ip-w-25 text-right'>" + (trans.Rate != null ? Math.Round(decimal.Parse(trans.Rate.ToString()), 2).ToString() : "0.00") + "</td>" +
+                    //                     "<td class='ip-w-25 text-right'>" + (trans.Credit != null ? Math.Round(decimal.Parse(trans.Credit.ToString()), 2).ToString() : "0.00") + "</td>" +
+                    //                         "</tr>");
+                    //});
                 }
                 pageContent.Replace("{{MCAVATTable_" + page.Identifier + "_" + widget.Identifier + "}}", tableHTML.ToString());
             }

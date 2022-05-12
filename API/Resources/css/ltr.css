@@ -291,7 +291,7 @@
 }
 
 .CustomerDetails {
-    font-size: 9pt;
+    font-size: 8pt;
     text-align: left;
     font-family: 'Mark Pro Medium';
     height: 110px;
@@ -386,6 +386,7 @@
     color: #fff;
     font-size: 8pt;
     font-family: 'Mark Pro Regular';
+    font-weight: normal !important;
 }
 
 .LoanTransactionTable tbody, .LoanTransactionTable-W tbody {
@@ -405,6 +406,10 @@
 .LoanTransactionTable1 tbody {
     font-size: 8pt;
     font-family: 'Arial';
+}
+
+.custom-bold-font {
+    font-family: 'Mark Pro Bold' !important;
 }
 
 .InvestmentBreakdown thead {
@@ -1322,4 +1327,8 @@ hr {
 .CorporateSaverTable {
     height: 23px !important;
     font-size: 9p !important;
+}
+
+.custom-paragraph {
+    line-height: 28px !important;
 }

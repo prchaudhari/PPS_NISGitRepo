@@ -291,7 +291,7 @@
   }
 
   .CustomerDetails {
-    font-size: 9pt;
+    font-size: 8pt;
     text-align: left;
     font-family: 'Mark Pro Medium';
     height: 110px;
@@ -300,6 +300,7 @@
   .CustomerDetails p {
     margin-bottom: 0.25rem !important;
   }
+
   .AgentAddress {
     font-size: 8pt;
     text-align: right;
@@ -341,6 +342,10 @@
     font-family: 'Mark Pro Regular';
     font-size: 8pt;
     height: 23px !important;
+  }
+
+  .custom-bold-font {
+    font-family: 'Mark Pro Bold' !important;
   }
 
   .customTable td {
@@ -419,11 +424,16 @@
     font-weight: normal !important;
   }
 
+  .custom-paragraph {
+    line-height: 28px !important;
+  }
+
   .LoanTransactionTable-W th {
     background-color: black !important;
     color: #fff;
     font-size: 8pt;
     font-family: 'Mark Pro Regular';
+    font-weight: normal !important;
   }
 
   .LoanTransactionTable tbody, .LoanTransactionTable-W tbody {
