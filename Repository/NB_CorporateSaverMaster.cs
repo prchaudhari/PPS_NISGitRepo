@@ -40,27 +40,16 @@ namespace nIS
         public string AgentFSPLicNo { get; set; }
         public string AgentReference { get; set; }
         public string StatementNo { get; set; }
-        public string TaxTotalsDescription { get; set; }
-        public string TotalInterest { get; set; }
         public string VatOnFee { get; set; }
         public string AgentFeeDeducted { get; set; }
-        public string InvestmentDescription { get; set; }
-        public string InterestInstruction { get; set; }
-        public string InvestmentTotalInterest { get; set; }
-        public string AgentFeeStructure1 { get; set; }
-        public string AgentFeeStructure2 { get; set; }
-        public Nullable<System.DateTime> DateInvested { get; set; }
-        public string InvestmentAgentFeeDeducted { get; set; }
-        public string InvetsmentVATOnFee { get; set; }
         public string Interest { get; set; }
         public string TenantCode { get; set; }
-        public string AGENT_MESSAGE_ENGLISH { get; set; }
-        public string AGENT_MESSAGE_AFRIKAANS { get; set; }
-        public bool SHOWMESSAGE { get; set; }
-        public string SECTION86_MESSAGE { get; set; }
-        public bool MESSAGE_INDICATOR { get; set; }
-        public string AGENT_NAME { get; set; }
-        public string AGENT_LOGO { get; set; }
-
+        public string AgentMessageEnglish { get; set; }
+        public string AgentMessageAfrikan { get; set; }
+        public bool ShowMessage { get; set; }
+        public string Section86Message { get; set; }
+        public bool MessageIndicator { get; set; }
+        public string AgentName { get; set; }
+        public string AgentLogo { get; set; }
     }
 }

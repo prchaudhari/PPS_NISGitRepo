@@ -16,7 +16,7 @@ namespace nIS
     {
         public long Id { get; set; }
         public long BatchId { get; set; }
-        public string CustomerId { get; set; }
+        public long CustomerId { get; set; }
         public long InvestorId { get; set; }
         public Nullable<System.DateTime> TransactionDate { get; set; }
         public string TransactionDescription { get; set; }

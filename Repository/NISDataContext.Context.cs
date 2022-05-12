@@ -125,7 +125,6 @@ namespace nIS
         public virtual DbSet<NB_BatchMaster_Source> NB_BatchMaster_Source { get; set; }
         public virtual DbSet<NB_BranchMaster> NB_BranchMaster { get; set; }
         public virtual DbSet<NB_BranchMaster_Old> NB_BranchMaster_Old { get; set; }
-        public virtual DbSet<NB_CustomerMaster> NB_CustomerMaster { get; set; }
         public virtual DbSet<NB_Investment_Source> NB_Investment_Source { get; set; }
         public virtual DbSet<NB_InvestmentMaster> NB_InvestmentMaster { get; set; }
         public virtual DbSet<NB_InvestmentMaster_Old> NB_InvestmentMaster_Old { get; set; }
@@ -138,11 +137,12 @@ namespace nIS
         public virtual DbSet<NB_HomeLoanMaster> NB_HomeLoanMaster { get; set; }
         public virtual DbSet<NB_HomeLoanSummary> NB_HomeLoanSummary { get; set; }
         public virtual DbSet<NB_HomeLoanTransaction> NB_HomeLoanTransaction { get; set; }
-        public virtual DbSet<NB_MCAMaster> NB_MCAMaster { get; set; }
-        public virtual DbSet<NB_MCATransaction> NB_MCATransaction { get; set; }
         public virtual DbSet<NB_CorporateSaverMaster> NB_CorporateSaverMaster { get; set; }
         public virtual DbSet<NB_CorporateSaverTax> NB_CorporateSaverTax { get; set; }
         public virtual DbSet<NB_CorporateSaverTransactions> NB_CorporateSaverTransactions { get; set; }
+        public virtual DbSet<NB_MCATransaction> NB_MCATransaction { get; set; }
+        public virtual DbSet<NB_MCAMaster> NB_MCAMaster { get; set; }
+        public virtual DbSet<NB_CustomerMaster> NB_CustomerMaster { get; set; }
     
         [DbFunction("NISEntities", "FnUserTenant")]
         public virtual IQueryable<FnUserTenant_Result> FnUserTenant(Nullable<int> userId)

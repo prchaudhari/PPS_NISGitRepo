@@ -17,7 +17,7 @@ namespace nIS
     {
         public long Identifier { get; set; }
         public long BatchId { get; set; }
-        public string CustomerId { get; set; }
+        public long CustomerId { get; set; }
         public long InvestorId { get; set; }
         public string VatNo { get; set; }
         public decimal? OverdraftLimit { get; set; }
@@ -34,7 +34,7 @@ namespace nIS
     {
         public long Identifier { get; set; }
         public long BatchId { get; set; }
-        public string CustomerId { get; set; }
+        public long CustomerId { get; set; }
         public long InvestorId { get; set; }
         public DateTime Transaction_Date { get; set; }
         public string Description { get; set; }
