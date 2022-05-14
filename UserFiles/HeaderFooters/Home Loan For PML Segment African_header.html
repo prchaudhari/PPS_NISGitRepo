@@ -5,8 +5,8 @@
 .logo-date {
     position: absolute;
     top: 79px;
-    left: 52px;
-    font-size: 9px;
+    left: 48px;
+    font-size: 12px;
 }
 
 </style>
@@ -18,7 +18,7 @@
 
 <div class="row">
 
-<div class="col-lg-6 col-sm-6" style="height:100px;"><div class="card border-0"><div class="card-body float-left py-2"><div class="eConfirm-logo-container"><img src="common/images/eConfirm.png" alt="eConfirm Logo" height="120" style="padding-top: 15px;height: 95px;width: 114px;"></div></div></div></div>
+<div class="col-lg-6 col-sm-6" style="height:100px;"><div class="card border-0"><div class="card-body float-left py-2"><div class="eConfirm-logo-container"><img src="common/images/eConfirm.png" alt="eConfirm Logo" height="120" style="padding-top: 15px;height: 100px;width: 120px;"></div></div></div></div>
 
 <div class="logo-date"></div>
 
@@ -33,7 +33,7 @@
 		var MyDate = new Date();
 		var MyDateString;
 
-		MyDateString = MyDate.getFullYear() + '-' + ('0' + (MyDate.getMonth()+1)).slice(-2)+ '-' + ('0' + (MyDate.getDate()+1)).slice(-2);
+		MyDateString = MyDate.getFullYear() + '-' + ('0' + (MyDate.getMonth()+1)).slice(-2)+ '-' + ('0' + (MyDate.getDate())).slice(-2);
 		return MyDateString;
 	}
 	

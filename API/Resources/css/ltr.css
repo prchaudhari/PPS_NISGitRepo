@@ -445,9 +445,8 @@
 }
 
 .card-body-header-name-dear {
-    font-size: 11pt;
-    color: #000000 !important;
-    font-weight: bolder;
+    font-size: 10pt;
+    color: black !important;
     font-family: 'Mark Pro Bold';
 }
 

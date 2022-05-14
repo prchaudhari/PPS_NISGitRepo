@@ -14,19 +14,11 @@ namespace nIS
     
     public partial class NB_SegmentMaster
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public NB_SegmentMaster()
-        {
-            this.NB_InvestmentMaster = new HashSet<NB_InvestmentMaster>();
-        }
-    
         public long Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public long SegmentTypeId { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NB_InvestmentMaster> NB_InvestmentMaster { get; set; }
         public virtual NB_SegmentTypeMaster NB_SegmentTypeMaster { get; set; }
     }
 }
