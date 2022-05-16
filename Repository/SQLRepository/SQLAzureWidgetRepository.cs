@@ -222,8 +222,8 @@ namespace nIS
 
                             List<PageTypeRecord> pageTypeRecords = new List<PageTypeRecord>();
                             queryString = new StringBuilder();
-                            // queryString.Append("(" + string.Join("or ", pageWidgetMapRecords.Select(item => string.Format("Id.Equals({0}) ", item.PageTypeId))) + ")");
-                            queryString.Append("Id.Equals(54) ");
+                            var pagetypeids = pageWidgetMapRecords.Select(m => m.PageTypeId).Distinct().ToList();
+                            queryString.Append("(" + string.Join("or ", pagetypeids.Select(item => string.Format("Id.Equals({0}) ", item))) + ")");
                             queryString.Append(" and IsDeleted.Equals(false)");
                             queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
                             pageTypeRecords = nISEntitiesDataContext.PageTypeRecords.Where(queryString.ToString()).ToList();
