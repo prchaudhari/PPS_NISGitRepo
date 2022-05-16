@@ -2883,9 +2883,8 @@ namespace nIS
                                                 pageContent.Replace("{{Interest}}", "R1 397.51");
 
                                                 pageContent.Replace("{{VATonfee}}", "R84.33");
-
-
                                                 pageContent.Replace("{{Agentfeededucted}}", "R562.14");
+                                                pageContent.Replace("min-height: 66px;", "min-height: 74px;");
 
 
                                                 htmlString.Append(pageContent);
@@ -2939,10 +2938,10 @@ namespace nIS
 
                                                 tableHTML2.Append("<table class= 'CScustomTable HomeLoanDetailDiv' border = '0' style = 'height: auto;margin-bottom:2%;' ><tbody>");
                                                 tableHTML2.Append("<tr><td colspan='2' class='w-25' style='font-weight: bold;padding-bottom: 8px !important;padding-top: 8px !important;'>10 month fixed deposit @ 3,91% per annum</td></tr>");
-                                                tableHTML2.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Interest instruction</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>Capitalised</td><td class='w-25' style='padding-bottom: 8px !important'>Date Invested</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>03-05-2021</td></tr>");
-                                                tableHTML2.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Capital</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>R861 100.49</td><td class='w-25' style='padding-bottom: 8px !important'>Agent fee deducted</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>R477.73</td></tr>");
-                                                tableHTML2.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Interest</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>R2 489.95</td><td class='w-25' style='padding-bottom: 8px !important'>VAT on fee</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>R71.66</td></tr>");
-                                                tableHTML2.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Agent fee structure</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>0.75% on capital</td><td class='w-25' style='padding-bottom: 8px !important'>Interest (less agent fee and VAT)</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>R71.66</td></tr>");
+                                                tableHTML2.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Interest instruction</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'> Capitalised</td><td class='w-25' style='padding-bottom: 8px !important'>Date Invested</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>03-05-2021</td></tr>");
+                                                tableHTML2.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Capital</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'>R861 100.49</td><td class='w-25' style='padding-bottom: 8px !important'>Agent fee deducted</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>R477.73</td></tr>");
+                                                tableHTML2.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Interest</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'>R2 489.95</td><td class='w-25' style='padding-bottom: 8px !important'>VAT on fee</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>R71.66</td></tr>");
+                                                tableHTML2.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Agent fee structure</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'>0.75% on capital</td><td class='w-25' style='padding-bottom: 8px !important'>Interest (less agent fee and VAT)</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>R71.66</td></tr>");
                                                 tableHTML2.Append("</tbody></table>");
 
 
