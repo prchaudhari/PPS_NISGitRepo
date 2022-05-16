@@ -67,8 +67,8 @@
               <div class="action-btns btn-tbl-action">
                 <button type="button" title="View" id="btnDelete" (click)="viewLodMessage(element)"><span class="fa fa-file-text-o"></span></button>
                 <button type="button" title="Retry" id="btnUpdate" *ngIf="element.Status=='Failed' && BatchStatus != 'Approved'" (click)="reTryLog(element)"><span class="fa fa-repeat"></span></button>
-                <button (click)="ViewHTML(element)" type="button" title="Download Html" *ngIf="element.Status=='Completed'"><span class="fa fa-download"></span></button>
-                <button (click)="ExportToPDF(element)" type="button" *ngIf="element.Status=='Completed'" title="Export to PDF"><span class="fa fa-file-pdf-o"></span></button>
+                <!-- <button (click)="ViewHTML(element)" type="button" title="Download Html" *ngIf="element.Status=='Completed'"><span class="fa fa-download"></span></button> -->
+                <button (click)="ExportToPDF(element)" type="button" *ngIf="element.Status=='Completed'" title="Download PDF"><span class="fa fa-file-pdf-o"></span></button>
               </div>
             </td>
           </ng-container>

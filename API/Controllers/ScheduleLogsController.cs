@@ -343,50 +343,63 @@ namespace nIS
         [Route("ScheduleLogDetail/ExportToPDF")]
         public HttpResponseMessage ExportHtmlStatementToPDF(ScheduleLogDetail logDetail)
         {
+            HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
+            httpResponseMessage.StatusCode = HttpStatusCode.BadRequest;
             try
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
 
-                var metadataRecord = this.StatementSearchManager.GetStatementSearchs(new StatementSearchSearchParameter()
+                if (logDetail != null)
                 {
-                    CustomerId = logDetail.CustomerId.ToString(),
-                    ScheduleLogId = logDetail.ScheduleLogId.ToString(),
-                    IsPasswordRequired = false,
-                    PagingParameter = new PagingParameter
+                    var scheduleLogs = scheduleLogManager.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter() 
                     {
-                        PageIndex = 0,
-                        PageSize = 0,
-                    },
-                    SortParameter = new SortParameter()
+                        ScheduleLogDetailId = logDetail.Identifier.ToString(),
+                        PagingParameter = new PagingParameter
+                        {
+                            PageIndex = 0,
+                            PageSize = 0,
+                        },
+                        SortParameter = new SortParameter()
+                        {
+                            SortOrder = SortOrder.Ascending,
+                            SortColumn = "Id",
+                        },
+                        SearchMode = SearchMode.Equals
+                    }, tenantCode);
+                    if(scheduleLogs != null)
                     {
-                        SortOrder = SortOrder.Ascending,
-                        SortColumn = "Id",
-                    },
-                    SearchMode = SearchMode.Equals
-                }, tenantCode)?.ToList()?.FirstOrDefault();
-                if (metadataRecord != null)
-                {
-                    string BaseUrl = ConfigurationManager.AppSettings[ModelConstant.WEB_API_BASE_URL].ToString();
-                    var apiName = "StatementSearch/ExportToPDF?identifier=" + metadataRecord.Identifier;
+                        var scheduleLog = scheduleLogs.FirstOrDefault();
 
-                    HttpClient client = new HttpClient();
-                    client.BaseAddress = new Uri(BaseUrl);
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ModelConstant.APPLICATION_JSON_MEDIA_TYPE));
-                    client.DefaultRequestHeaders.Add(ModelConstant.TENANT_CODE_KEY, tenantCode);
-                    client.DefaultRequestHeaders.Authorization = Request.Headers.Authorization;
-                    return client.GetAsync(apiName)?.Result;
-                }
-                else
-                {
-                    HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
-                    httpResponseMessage.StatusCode = HttpStatusCode.BadRequest;
-                    return httpResponseMessage;
+                        var pdfFileName = Path.GetFileNameWithoutExtension(scheduleLog.StatementFilePath) + ".pdf";
+                        var pdfFilePath = Path.Combine(Path.GetDirectoryName(scheduleLog.StatementFilePath), pdfFileName);
+
+                        byte[] fileBytes = System.IO.File.ReadAllBytes(pdfFilePath);
+                        //return FileR(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+
+                        using (MemoryStream ms = new MemoryStream())
+                        {
+                            using (FileStream file = new FileStream(pdfFilePath, FileMode.Open, FileAccess.Read))
+                            {
+                                byte[] bytes = new byte[file.Length];
+                                file.Read(bytes, 0, (int)file.Length);
+                                ms.Write(bytes, 0, (int)file.Length);
+                                httpResponseMessage.Content = new ByteArrayContent(bytes.ToArray());
+                                httpResponseMessage.Content.Headers.Add("x-filename", pdfFileName);
+                                httpResponseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
+                                httpResponseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+                                httpResponseMessage.Content.Headers.ContentDisposition.FileName = pdfFileName;
+                                httpResponseMessage.StatusCode = HttpStatusCode.OK;
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)
             {
                 throw ex;
             }
+
+            return httpResponseMessage;
         }
 
 

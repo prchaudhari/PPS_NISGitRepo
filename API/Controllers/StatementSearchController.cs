@@ -254,6 +254,8 @@ namespace nIS
 
             try
             {
+                
+
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 StatementSearch statement = this.StatementSearchManager.GetStatementSearchs(new StatementSearchSearchParameter()
                 {
