@@ -1430,20 +1430,40 @@ export class CorporateSaverTransactionComponent {
 @Component({
   selector: 'corporate-agent-details',
   template: `<div class='widget'>
-  <div class='CS-header col-lg-12 col-sm-12' style='padding: 0 1.5%;'>Tax totals</div>
-  <div class='CS-header col-lg-12 col-sm-12 row' style='padding: 0 1.6% 0 1%;margin-left: 0;'>
-  <div class='' style='background-color: #f3f3f3;width: 100%;margin-left: 0.5%;'>
-  <h4 class='pl-1' style='margin: .2%;'><span class='NedbankHomeLoanTxt1'>Tax totals (year to date)</span></h4>
-  </div>
-  <div class='col-lg-6 col-sm-6' style='padding-right:0;padding-left: 0.5%;/* padding-top: 0.25%; */'>
-  <div id='WidgetId' class='card border-0' style='padding-top: 0.5%;'>
-  <div class='text-left py-0' style='padding-right: 0;/* padding-left: 1.5%; */'>
-  <div class='HomeLoanDetailDiv' style='width: 100%;'>
-  <table class='CScustomTable' border='0' style='height: auto;'><tbody><tr><td class='w-25' style='padding-bottom: 8px !important;'>Interest</td><td class='w-25 text-right pr-1' style=' padding-bottom: 8px !important'>R1 397.51</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>VAT on fee</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>R84.33</td></tr></tbody></table>
-  </div>
-  </div>
-  </div>
-  </div><div class='col-lg-6 col-sm-6' style='padding-left: .25%;padding-top: 0.25%;padding-right: 0;'><div id='WidgetId' class='card border-0'><div class='card-body text-left py-0' style='padding-left: 0;padding-right: 0;'><div class='card-body-header'></div><div class='HomeLoanDetailDiv' style='width: 100%;min-height: 74px;'><table class='CScustomTable' border='0' style='height: auto;'><tbody><tr><td class='w-25' style='padding-bottom: 8px !important;'>Agent fee deducted</td><td class='w-25 text-right pr-1' style=' padding-bottom: 8px !important'>R562.14</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important;'></td><td class='w-25 text-right pr-1' style=' padding-bottom: 8px !important'> </td></tr></tbody></table></div></div></div></div></div>`})
+    <div class='CS-header col-lg-12 col-sm-12' style='padding: 0 1.5%;'>Tax totals</div>
+        <div class="col-lg-12 col-sm-12 row" style="padding: 0 1.6% 0 1%;margin-left: 0;">
+          <div class="" style="background-color: #f3f3f3;width: 100%;margin-left: 0.5%;">
+          <h4 class="pl-1" style="text-align:left;">
+          <span class="NedbankHomeLoanTxt1">Tax totals (year to date)</span></h4>
+          </div>
+          <div class="col-lg-6 col-sm-6" style="padding-right:0;padding-left: 0.5%;/* padding-top: 0.25%; */">
+            <div id="WidgetId" class="card border-0" style="padding-top: 0.5%;">
+              <div class="text-left py-0" style="padding-right: 0;/* padding-left: 1.5%; */">
+                <div class="HomeLoanDetailDiv" style="width: 100%;">
+                <table class="CScustomTable" border="0" style="height: auto;"><tbody>
+                  <tr><td class="w-25" style="padding-bottom: 8px !important;">Interest</td>
+                  <td class="w-25 text-right pr-1" style=" padding-bottom: 8px !important">R1&nbsp;018.29</td></tr>
+                  <tr><td class="w-25" style="padding-bottom: 8px !important">VAT on fee</td>
+                  <td class="w-25 text-right pr-1" style="padding-bottom: 8px !important">R0.00</td></tr>
+                </tbody></table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-sm-6" style="padding-left: .25%;padding-top: 0.25%;padding-right: 0;">
+        <div id="WidgetId" class="card border-0">
+        <div class="card-body text-left py-0" style="padding-left: 0;padding-right: 0;">
+        <div class="card-body-header"></div><div class="HomeLoanDetailDiv" style="width: 100%;min-height: 74px;">
+        <table class="CScustomTable" border="0" style="height: auto;"><tbody>
+          <tr><td class="w-25" style="padding-bottom: 8px !important;">Agent fee deducted</td>
+          <td class="w-25 text-right pr-1" style=" padding-bottom: 8px !important">R551.53</td></tr>
+          <tr><td class="w-25" style="padding-bottom: 8px !important;"></td>
+          <td class="w-25 text-right pr-1" style=" padding-bottom: 8px !important"> </td></tr></tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>`})
 export class CorporateAgentDetailsComponent {
 }
 @Component({
@@ -2045,7 +2065,7 @@ export class CustomerDetailsComponent {
 }
 @Component({
   selector: 'corporate-saver-agent-address',
-  template: `<div class='widget'><div class='card border-0' style='padding-right: 2%;'><div class='card-body py-1' style='font-size: 8pt;text-align: right; font-family: "arial";'>Address Line1<br>Address Line1<br>Address Line1<br>Address Line1<br>Address Line1<br>Address Line1<br><p style='color:rgb(0, 91, 65) !important;'>Agent contact details | 0331243213</p></div></div></div>`
+  template: `<div class='widget'><div class='card border-0' style='padding-right: 2%;'><div class='card-body py-1' style='font-size: 8pt;text-align: right; font-family: "arial";'><br><br>Wanderers Office park<br>52 Corlett Drive<br>Illovo<br>2196<br>Address Line1<br><br><p style='color:rgb(0, 91, 65) !important;'>Agent contact details | 0331243213</p></div></div></div>`
 })
 export class CorporateSaverAgentAddressComponent {
 }
