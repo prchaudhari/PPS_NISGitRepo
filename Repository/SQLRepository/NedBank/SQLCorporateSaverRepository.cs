@@ -217,6 +217,7 @@
                                 InterestIntruction = item.InterestIntruction,
                                 DateInvested = item.InvestedDate,
                                 CapitalMstr = item.CapitalMaster,
+                                //AgentFeeDeducted = item.AgentFeeDeducted,
                                 InterestMstr0 = item.InterestMaster2,
                                 VatOnFeeMstr = item.VatOnFeeMaster1,
                                 AGENT_FEE_STRUCTURE_1 = item.AgentFeeStructure1,
@@ -227,6 +228,7 @@
                                 TotalAgentFeeMstr = item.InterestAgentFeeMaster,
                                 VatOnFeeMstr0 = item.VatOnFeeMaster2,
                                 InterestAgentFeeMstr = item.InterestAgentFeeMaster,
+                               // InterestDescription = item.InterestDescription,
                                 TenantCode = item.TenantCode
                             });
                         });
