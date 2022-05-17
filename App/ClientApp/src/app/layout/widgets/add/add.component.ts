@@ -334,7 +334,7 @@ export class AddComponent implements OnInit {
         }
         else if (this.widgetList[i].WidgetName == "CorporateSaverTransaction") {
           this.widgetList[i].ImageSource = "assets/images/CorporateSavertransaction.png";
-          this.widgetList[i].WidgetIcon = "icon-widget-single-column2";
+          this.widgetList[i].WidgetIcon = "fa icon-widget-multi-column2";
         }
         else if (this.widgetList[i].WidgetName == "CorporateSaverClientandAgentDetails") {
           this.widgetList[i].ImageSource = "assets/images/CorporateSaveragentandclientdetails.png";
@@ -342,11 +342,11 @@ export class AddComponent implements OnInit {
         }
         else if (this.widgetList[i].WidgetName == "CorporateSaverTableTotal") {
           this.widgetList[i].ImageSource = "assets/images/CorporateSaverlasttotal.png";
-          this.widgetList[i].WidgetIcon = "fa fa-table";
+          this.widgetList[i].WidgetIcon = "fa icon-widget-single-column2";
         }
         else if (this.widgetList[i].WidgetName == "CorporateAgentDetails") {
           this.widgetList[i].ImageSource = "assets/images/CorporateSavertaxtotal.png";
-          this.widgetList[i].WidgetIcon = "fa fa-list";
+          this.widgetList[i].WidgetIcon = "fa fa-tags";
         }
         else if (this.widgetList[i].WidgetName == "SegmentBasedContent") {
           this.widgetList[i].ImageSource = "assets/images/SegmentBasedContent.JPG";
