@@ -3329,11 +3329,11 @@ namespace nIS
                 {
                     if (page.PageTypeName == HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_AFRICAN || page.PageTypeName == HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_ENGLISH)
                     {
-                        contactCenter = "<p class='text-success-w'>" + HtmlConstants.WEA_BANKING + "</p>";
+                        contactCenter = "<br><br><p class='text-success-w'>" + contactCenter + "</p>";
                     }
                     else
                     {
-                        contactCenter = "<p class='text-success'>" + HtmlConstants.CORPORATE_BANKING + "</p>";
+                        contactCenter = "<br><br><p class='text-success'>" + contactCenter + "</p>";
                     }
 
                     BranchDetail.Append(contactCenter);

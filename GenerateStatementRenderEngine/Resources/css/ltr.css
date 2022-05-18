@@ -349,6 +349,7 @@
 .customTable th {
     padding: 0px 25px;
     font-size: 8pt;
+    font-weight: normal !important;
 }
 
 .customTransactionTable {

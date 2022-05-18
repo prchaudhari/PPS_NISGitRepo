@@ -2194,6 +2194,7 @@
     .customTable th {
         padding: 0px 25px;
         font-size: 14px;
+        font-weight: normal !important;
     }
 
     .customTransactionTable {
