@@ -1417,72 +1417,68 @@ export class CSAgentLogoComponent {
 //Component Created for StaticHtml Widget--
 @Component({
   selector: 'corporate-saver-agent-message',
-  template: `<div id=WidgetId class='card border-0' style='height:100%;'>
-    <div class='card-body text-left py-0'>
-      <div class='pb-2' style='font-size: 14pt; font-family: "Mark Pro Bold";'>BDO Wealth Advisers (Pty) Ltd</div>
-      <div class='pb-2'  style='font-size: 8pt; font-family: "Mark Pro Regular";'>As a valued client, you are enjoying the benefits of Bonus Call, Should your weighted average balance (WAB) for the following month drop below 85% of your opening balance, you will earn interest at 3,80% pa.If your WAB meets or exceeds the 85% threshold, you will earn an additional 25 basis points, ie 4,05% interest pa.</div>
-      </div>
-      </div>`
+  template: `<div  class='card border-0 widget'><div class='text-left' style='margin:0 1.5%;'><div class='mt-3 HomeLoanDetailDiv' style='font-size: 8pt; color: #4d4e4d !important;padding:0;font-weight: 700; font-family: \"Arial\";'>BDO Wealth Advisers (Pty) Ltd</div><div class='HomeLoanDetailDiv'  style='font-size: 8pt;margin-top:2px;padding:2px; font-family: "Arial";'>As a valued client, you are enjoying the benefits of Bonus Call, Should your weighted average balance (WAB) for the following month drop below 85% of your opening balance, you will earn interest at 3,80% pa.If your WAB meets or exceeds the 85% threshold, you will earn an additional 25 basis points, ie 4,05% interest pa.</div></div></div>`
 })
 export class CorporateSaverAgentMessageComponent {
 }
 @Component({
   selector: 'corporate-saver-transaction',
-  template: `<div class="widget">
-  <div class="widget-header">
-    <span class="widget-header-title"></span>
-  </div>
-  <div class="widget-area position-relative width100">
-    <div class="widget-indicator-inner pt-2">
-      <i class="fa fa-lg fa-code" aria-hidden="true" style='font-size:2em;'><p>I am CS Agent</p></i>
-    </div>
-  </div>
-</div>`})
+  template: `<div id='WidgetId' class='card border-0'><div class='card-body text-left'><div class='CS-header'>Call transaction details for the period 01-02-2022 to 28-02-2022 </div><div id='HomeLoan-0101'><div class='' style='/* padding-right: 1.2%; */'><table class='LoanTransactionTable1 CScustomTable'><thead><tr class='ht-30'><th class='w-12 text-center' style='border-right: 2px solid white;'>Date</th><th class='text-center' style='width: 25%;border-right: 2px solid white;'>Payment details</th><th style='width: 25%;border-right: 2px solid white;' class='text-center'>Description</th><th class='w-15 text-center' style='border-right: 2px solid white;'>Amount</th><th class='w-8 text-center' style='border-right: 2px solid white;'>Rate</th><th class='w-15 text-center' style='border:none;'>Capital Balance</th></tr></thead></table><div class='pt-0 overflow-auto'><table id='HomeLoanTransactionTable' class='LoanTransactionTable CScustomTable'><tbody style='font-family: "arial";'><tr class='ht-20 CorporateSaverTable'><td class='w-12 text-center'>01/02/2022</td><td class='text-left'  style='width: 25%'>CASH-SOLD FRIDGE</td><td class='text-left'  style='width: 25%'>Balance brought forward</td><td class='w-15 text-right'></td><td class='w-8 text-center'>2.30%</td><td class='w-15 text-center'>R100 602.32</td></tr><tr class='ht-20 CorporateSaverTable'><td class='w-12 text-center'>12/02/2022</td><td class='text-left'  style='width: 25%'></td><td class='text-left'  style='width: 25%'>Agent fee paid</td><td class='w-15 text-right'>-R65.96</td><td class='w-8 text-center'></td><td class='w-15 text-center'>R100 738.56</td></tr><tr class='ht-20 CorporateSaverTable'><td class='w-12 text-center'>27/02/2022</td><td class='text-left'  style='width: 25%'></td><td class='text-left'  style='width: 25%'>Comprop - Lezmin</td><td class='w-15 text-right'>R8 998.26</td><td class='w-8 text-center'></td><td class='w-15 text-center'>R100 738.56</td></tr></tbody></table></div></div></div></div></div>`
+})
 export class CorporateSaverTransactionComponent {
 }
 @Component({
   selector: 'corporate-agent-details',
-  template: `<div class="widget">
-  <div class="widget-header">
-    <span class="widget-header-title"></span>
-  </div>
-  <div class="widget-area position-relative width100">
-    <div class="widget-indicator-inner pt-2">
-      <i class="fa fa-lg fa-code" aria-hidden="true" style='font-size:2em;'><p>I am CS Agent</p></i>
-    </div>
-  </div>
-</div>`})
+  template: `<div class='widget'>
+    <div class='CS-header col-lg-12 col-sm-12' style='padding: 0 1.5%;'>Tax totals</div>
+        <div class="col-lg-12 col-sm-12 row" style="padding: 0 1.6% 0 1%;margin-left: 0;">
+          <div class="" style="background-color: #f3f3f3;width: 100%;margin-left: 0.5%;">
+          <h4 class="pl-1" style="text-align:left;">
+          <span class="NedbankHomeLoanTxt1">Tax totals (year to date)</span></h4>
+          </div>
+          <div class="col-lg-6 col-sm-6" style="padding-right:0;padding-left: 0.5%;/* padding-top: 0.25%; */">
+            <div id="WidgetId" class="card border-0" style="padding-top: 0.5%;">
+              <div class="text-left py-0" style="padding-right: 0;/* padding-left: 1.5%; */">
+                <div class="HomeLoanDetailDiv" style="width: 100%;">
+                <table class="CScustomTable" border="0" style="height: auto;"><tbody>
+                  <tr><td class="w-25" style="padding-bottom: 8px !important;">Interest</td>
+                  <td class="w-25 text-right pr-1" style=" padding-bottom: 8px !important">R1&nbsp;018.29</td></tr>
+                  <tr><td class="w-25" style="padding-bottom: 8px !important">VAT on fee</td>
+                  <td class="w-25 text-right pr-1" style="padding-bottom: 8px !important">R0.00</td></tr>
+                </tbody></table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-sm-6" style="padding-left: .25%;padding-top: 0.25%;padding-right: 0;">
+        <div id="WidgetId" class="card border-0">
+        <div class="card-body text-left py-0" style="padding-left: 0;padding-right: 0;">
+        <div class="card-body-header"></div><div class="HomeLoanDetailDiv" style="width: 100%;min-height: 74px;">
+        <table class="CScustomTable" border="0" style="height: auto;"><tbody>
+          <tr><td class="w-25" style="padding-bottom: 8px !important;">Agent fee deducted</td>
+          <td class="w-25 text-right pr-1" style=" padding-bottom: 8px !important">R551.53</td></tr>
+          <tr><td class="w-25" style="padding-bottom: 8px !important;"></td>
+          <td class="w-25 text-right pr-1" style=" padding-bottom: 8px !important"> </td></tr></tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>`})
 export class CorporateAgentDetailsComponent {
 }
 @Component({
   selector: 'corporate-saver-client-details',
-  template: `<div class="widget">
-  <div class="widget-header">
-    <span class="widget-header-title"></span>
-  </div>
-  <div class="widget-area position-relative width100">
-    <div class="widget-indicator-inner pt-2">
-      <i class="fa fa-lg fa-code" aria-hidden="true" style='font-size:2em;'><p>I am CS Agent</p></i>
-    </div>
-  </div>
-</div>`})
+  // tslint:disable-next-line:max-line-length
+  template: `<div class='card-body text-left widget'><div class='CS-header'>Corporate Saver statement</div><div class='col-lg-12 col-sm-12 row' style='padding: initial;margin: 0px 0px 0px 0px;padding-right: 0px;'><div class='col-lg-6 col-sm-6' style='padding-right: 0.25%;padding: 0px 3px 0px 0px;'><div id='WidgetId' class='card border-0'><div class='card-body text-left py-0' style='padding-right: 0;padding-left: 0px;'><div class='' style='background-color: #f3f3f3;width: 100%;'><h4 class='pl-1' style='line-height: 1.8 !important;margin-bottom: 1%;'><span class='NedbankHomeLoanTxt1'>Client details</span></h4></div><div class='HomeLoanDetailDiv' style='width: 100%;'><table class='CScustomTable mt-2' border='0' style='height: auto;'><tbody><tr><td class='w-25' style='font-weight: bold;padding-bottom: 8px !important;'>Account no</td><td class='w-25 text-right pr-1' style='font-weight: bold; padding-bottom: 8px !important'>9000082385</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Branch code</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>198765</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Agent's profile:</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>PRO315</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>CIF no</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>5786407</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Client code</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>292598</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Relationship manager</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>Umhlali Agencies CC</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>VAT Calculation</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>VAT inclusive</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Client VAT no</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>Not provided</td></tr></tbody></table></div></div></div></div><div class='col-lg-6 col-sm-6' style='padding-left: .25%;padding-right: inherit;'><div id='WidgetId' class='card border-0'><div class='text-left py-0' style='padding-left: 0;'><div class='card-body-header'></div><div class='' style='background-color: #f3f3f3;width: 100%;'><h4 class='pl-1' style='line-height: 1.8 !important;margin-bottom: 1%;'><span class='NedbankHomeLoanTxt1'>Agent details</span></h4></div><div class='HomeLoanDetailDiv' style='width: 100%;'><table class='CScustomTable mt-2' border='0' style='height: auto;'><tbody><tr><td class='w-25' style='font-weight: bold;padding-bottom: 8px !important;'>Tax invoice no</td><td class='w-25 text-right pr-1' style='font-weight: bold; padding-bottom: 8px !important'>3563136</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Contact person</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>Louise Taylor</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Email address</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>louise@robchap.co.za</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Registration no</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>1986/012848/23</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>VAT registration no</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>4900153653</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>FSP license no</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>16616</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Agent reference</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>WALLI</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important;font-weight: 700;color:#006341 !important;'>Statement No</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important;font-weight: 700;color:#006341 !important;'>184</td></tr></tbody></table></div></div></div></div></div></div>`
+})
 export class CorporateSaverClientDetailsComponent {
 }
 @Component({
   selector: 'corporate-saver-table-total',
-  template: `<div class="widget">
-  <div class="widget-header">
-    <span class="widget-header-title"></span>
-  </div>
-  <div class="widget-area position-relative width100">
-    <div class="widget-indicator-inner pt-2">
-      <i class="fa fa-lg fa-code" aria-hidden="true" style='font-size:2em;'><p>I am CS Agent</p></i>
-    </div>
-  </div>
-</div>`})
+  template: `<div class="widget"><div class="CS-header col-lg-12 col-sm-12 mt-3" style="margin-left: 0.5%;">Investment portfolio at 28-02-2022</div><div id="WidgetId" class="card border-0" style="margin: 0 1.5%;"><div class="CSTotalAmountDetailsDiv" style="height: 40px !important; text-align: center; padding: 6px !important;"><span class="fnt-14pt">Current investment details
+  </span></div><table class="CScustomTable HomeLoanDetailDiv" border="0" style="height: auto;margin-bottom:2%;"><tbody><tr><td colspan="2" class="w-25" style="font-weight: bold;padding-bottom: 8px !important;padding-top: 8px !important;">Call account @ 2,30% per annum</td></tr><tr><td class="w-25" style="padding-bottom: 8px !important">Interest instruction</td><td class="w-25 text-right" style="padding-bottom: 8px !important;padding-right: 15px;">Capitalised</td><td class="w-25" style="padding-bottom: 8px !important">Date Invested</td><td class="w-25 text-right pr-1" style="padding-bottom: 8px !important">08-10-2006</td></tr><tr><td class="w-25" style="padding-bottom: 8px !important">Capital</td><td class="w-25 text-right" style="padding-bottom: 8px !important;padding-right: 15px;">R89&nbsp;030.44</td><td class="w-25" style="padding-bottom: 8px !important">Agent fee deducted</td><td class="w-25 text-right pr-1" style="padding-bottom: 8px !important">R59.17</td></tr><tr><td class="w-25" style="padding-bottom: 8px !important">Interest</td><td class="w-25 text-right" style="padding-bottom: 8px !important;padding-right: 15px;">R122.63</td><td class="w-25" style="padding-bottom: 8px !important">VAT on fee</td><td class="w-25 text-right pr-1" style="padding-bottom: 8px !important">R8.88</td></tr><tr><td class="w-25" style="padding-bottom: 8px !important">Agent fee structure</td><td class="w-25 text-right" style="padding-bottom: 8px !important;padding-right: 15px;">1.18%  on capital</td><td class="w-25" style="padding-bottom: 8px !important">Interest (less agent fee and VAT)</td><td class="w-25 text-right pr-1" style="padding-bottom: 8px !important">R8.88</td></tr></tbody></table><div class="d-flex flex-row" style="margin-top: -1.5%;"><div class="paymentDueHeaderBlock1 " style="font-weight: bold;margin-right:3px; margin-bottom:1px; ">Total capital</div><div class="paymentDueHeaderBlock1 " style="font-weight: bold;margin-right:3px; margin-bottom:1px; ">Total interest</div><div class="paymentDueHeaderBlock1 " style="font-weight: bold;margin-right:3px; margin-bottom:1px; ">Total agent fee <br>(deducted)</div><div class="paymentDueHeaderBlock1 " style="font-weight: bold;margin-right:3px; margin-bottom:1px; ">VAT on fee</div><div class="paymentDueHeaderBlock1" style="font-weight: bold;margin-bottom:1px">Interest<br>(less agent fee &amp; VAT)</div></div><div class="d-flex flex-row" style="margin-top: 2px !important;margin-bottom: 1%;"><div class="paymentDueHeaderBlock1 " style="margin-right:3px; margin-bottom:1px; ">R89&nbsp;030.44</div><div class="paymentDueHeaderBlock1 " style="margin-right:3px; margin-bottom:1px; ">R190.68</div><div class="paymentDueHeaderBlock1" style="margin-right:3px; margin-bottom:1px; ">R59.17</div><div class="paymentDueHeaderBlock1 " style="margin-right:3px; margin-bottom:1px; ">R8.88</div><div class="paymentDueHeaderBlock1" style="margin-bottom:1px; ">R122.63</div></div><div class="card border-0"><div class="card-body text-left" style="padding: 0;"><div class="card-body-header mt-3-2" style="font-family: &quot;Arial&quot;;font-weight: 700;">Important information</div> <div class="" style="font-size: 9pt; font-family: &quot;Arial&quot;;"><p>Interest(less agent administration fee and VAT) is credited to your account in March.The agent administration fee and VAT are deducted in March and paid on your behalf to your agent, in accordance with the mandate held.</p></div></div></div></div></div>`})
 export class CorporateSaverTableTotalComponent {
 }
-
 
 // Component Created for PageBreak Widget--
 @Component({
@@ -1500,10 +1496,10 @@ export class CorporateSaverTableTotalComponent {
 })
 export class PageBreakComponent {
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit() {
-    
+
   }
 
 }
@@ -2068,16 +2064,8 @@ export class CustomerDetailsComponent {
   widgetsGridsterItemArray: any[] = [];
 }
 @Component({
-  selector: 'Corporate-Saver-Agent-Address',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-       <div class='card border-0'>
-          <div class="card-body AgentAddress">
-          Address 1 <br>Address 2 <br>Address 3 <br>Address 4 <br><br><p style="color:green;">Agent contact details | 0219187800</p>
-          </div>
-      </div>
-    </div>
-  </div>`
+  selector: 'corporate-saver-agent-address',
+  template: `<div class='widget'><div class='card border-0' style='padding-right: 2%;'><div class='card-body py-1' style='font-size: 8pt;text-align: right; font-family: "arial";'><br><br>Wanderers Office park<br>52 Corlett Drive<br>Illovo<br>2196<br>Address Line1<br><br><p style='color:rgb(0, 91, 65) !important;'>Agent contact details | 0331243213</p></div></div></div>`
 })
 export class CorporateSaverAgentAddressComponent {
 }
