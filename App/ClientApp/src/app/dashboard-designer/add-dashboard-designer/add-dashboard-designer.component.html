@@ -55,7 +55,7 @@
                   'fa-line-chart fa-lg': widget.WidgetType == 'LineGraph',
                   'fa-pie-chart fa-lg': widget.WidgetType == 'PieChart' || widget.WidgetName == 'CategorySpendRewards',
                   'fa-code fa-code': widget.WidgetName == 'StaticHtml',
-                  'fa-scissors': widget.WidgetName == 'PageBreak',
+                  'fa fa-scissors': widget.WidgetName == 'PageBreak',
                   'fa-ravelry fa-ravelry':  widget.WidgetName == 'CSAgentLogo',
                   
                   'fa-address-card fa-address-card':  widget.WidgetName == 'CorporateSaverAgentAddress',
@@ -72,7 +72,7 @@
         </a>
       </li>
     </ul>
-  </div>
+  </div>  
   <div class="overlay" [ngClass]="isWidgetSidebar? 'show' : 'hide'"></div>
   <div class="dashboard-inner-container">
     <div class="widget-container">

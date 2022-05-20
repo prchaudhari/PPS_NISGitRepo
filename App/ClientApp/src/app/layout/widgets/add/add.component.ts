@@ -204,6 +204,9 @@ export class AddComponent implements OnInit {
           this.widgetList[i].ImageSource = "assets/images/PaymentDue.JPG"
           this.widgetList[i].WidgetIcon = "icon-AvailableBalanceWidget";
         }
+        else if (this.widgetList[i].WidgetName == "PageBreak") {
+          this.widgetList[i].WidgetIcon = "fa fa-scissors";
+        }
         else if (this.widgetList[i].WidgetName == "SpecialMessage") {
           this.widgetList[i].ImageSource = "assets/images/SpecialMessage.JPG"
           this.widgetList[i].WidgetIcon = "fa fa-bell-o";
@@ -318,7 +321,7 @@ export class AddComponent implements OnInit {
         }
         else if (this.widgetList[i].WidgetName == "StaticHtml") {
           this.widgetList[i].ImageSource = "assets/images/StaticHtml.JPG";
-          this.widgetList[i].WidgetIcon = "fa fa-html5";
+          this.widgetList[i].WidgetIcon = "fa fa-code";
         }
         else if (this.widgetList[i].WidgetName == "CSAgentLogo") {
           this.widgetList[i].ImageSource = "assets/images/StaticHtml.JPG";

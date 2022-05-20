@@ -1,4 +1,4 @@
-import { Component, ViewChild, Output, Input, EventEmitter, SecurityContext } from '@angular/core';
+import { Component, ViewChild, Output, Input,OnInit, EventEmitter, SecurityContext, Directive } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { MatSort } from '@angular/material/sort';
@@ -11,6 +11,8 @@ import { map } from 'rxjs/operators';
 import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 import { Pipe, PipeTransform } from '@angular/core';
 import { AppSettings } from '../../appsettings';
+
+// import {AddDashboardDesignerComponent} from '../add-dashboard-designer/add-dashboard-designer.component';
 
 declare var require: any;
 let Boost = require('highcharts/modules/boost');
@@ -1366,7 +1368,7 @@ export class DynamicBarChartWidgetComponent {
 export class DynamicHhtmlComponent {
 
   constructor() { }
-
+  
   ngOnInit() {
   }
 
@@ -1383,17 +1385,29 @@ export class DynamicHhtmlComponent {
       <div class="widget-indicator-inner text-center pt-2">
         <i class="fa fa-lg fa-code" aria-hidden="true" style='font-size:18em;'></i>
       </div>
+      <h1>hello world static</h1>
+      <div [innerHTML]="WidgetHTML"></div>
     </div>
   </div>`
 })
 export class StaticHtmlComponent {
-
-  constructor() { }
-
-  ngOnInit() {
-
+  public staticHtmlContent: string = "";
+  WidgetHTML:string;
+  // constructor(private addDashboardDesignerComponent: AddDashboardDesignerComponent) {
+  //  }
+  ngOnInit(){
+    // debugger;
+    // console.log(this.addDashboardDesignerComponent.staticHtmlContent);
+    // console.log( this.addDashboardDesignerComponent.StaticConfigForm.value['staticHtml']);
+    // this.WidgetHTML= this.addDashboardDesignerComponent.staticHtmlContent;
   }
 
+  ngONDestroy(){
+    // debugger;
+    // console.log(this.addDashboardDesignerComponent.staticHtmlContent);
+    // console.log( this.addDashboardDesignerComponent.StaticConfigForm.value['staticHtml']);
+    // this.WidgetHTML= this.addDashboardDesignerComponent.staticHtmlContent;
+  }
 }
 
 // Component Created for StaticHtml Widget--
