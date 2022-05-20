@@ -83,8 +83,6 @@
           <button class='fa fa-gear mr-3 widget-action' (click)="isVideoConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='Video'"></button>
           <button class='fa fa-gear mr-3 widget-action' (click)="isStaticHtmlConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='StaticHtml'"></button>
           <button class='fa fa-gear mr-3 widget-action' (click)="isSegmentBasedContentConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='SegmentBasedContent'"></button>
-          
-         
           <vidyo-widget [vdoItem]='item' *ngIf="item.value=='Video'"></vidyo-widget>
           <image-widget [imgItem]='item' *ngIf="item.value=='Image'"></image-widget>
           <Segment-based-content-widget [SegmentBasedContentItem]='item' *ngIf="item.value=='SegmentBasedContent'"></Segment-based-content-widget>
