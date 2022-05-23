@@ -1295,3 +1295,7 @@ hr {
     height: 23px !important;
     font-size: 9p !important;
 }
+
+.LoanTransactionTable1 tbody tr:nth-of-type(odd), .LoanTransactionTable1-W tbody tr:nth-of-type(odd) {
+    background-color: #F2F2F2 !important;
+}

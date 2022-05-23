@@ -122,7 +122,7 @@ namespace nIS
         public long Identifier
         {
             get
-            {
+                {
                 return this.identifier;
             }
 
