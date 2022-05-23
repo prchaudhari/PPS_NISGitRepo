@@ -110,6 +110,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HeaderFooters", "HeaderFoot
 		HeaderFooters\Wealth_header.html = HeaderFooters\Wealth_header.html
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SelectPDF", "SelectPDF", "{8D88A9B8-659C-4DE7-95D1-6CB820EC46D0}"
+	ProjectSection(SolutionItems) = preProject
+		References\SelectPDF\readme.txt = References\SelectPDF\readme.txt
+		References\SelectPDF\Select.Html.dep = References\SelectPDF\Select.Html.dep
+		References\SelectPDF\Select.Pdf.dll = References\SelectPDF\Select.Pdf.dll
+		References\SelectPDF\Select.Pdf.xml = References\SelectPDF\Select.Pdf.xml
+		References\SelectPDF\Select.Tools.dep = References\SelectPDF\Select.Tools.dep
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -277,6 +286,7 @@ Global
 		{33C4BC59-7894-4178-A5F1-357B346C8CF5} = {B5B42337-A14B-44FE-BDFE-82C9D1D73980}
 		{8F106082-6B72-4D09-8396-0F3C177B304A} = {B5B42337-A14B-44FE-BDFE-82C9D1D73980}
 		{8137012A-3267-40D3-9113-89D6A93F5A32} = {94432251-4CE7-4325-AC9A-E765FC0CE3CA}
+		{8D88A9B8-659C-4DE7-95D1-6CB820EC46D0} = {B5B42337-A14B-44FE-BDFE-82C9D1D73980}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FE2FF880-80B7-4CAC-ABF3-0464E99CA78C}
