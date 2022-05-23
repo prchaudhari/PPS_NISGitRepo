@@ -15,14 +15,14 @@ import {
   CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
   SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
   SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
-  DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent, CustomerDetailsComponent,CorporateSaverAgentAddressComponent, BankDetailsComponent, WealthBankDetailsComponent,
+  DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent, CustomerDetailsComponent, CorporateSaverAgentAddressComponent, BankDetailsComponent, WealthBankDetailsComponent,
   InvestmentPortfolioStatementComponent, InvestmentWealthPortfolioStatementComponent, InvestorPerformanceComponent, WealthInvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, WealthExplanatoryNotesComponent, NedbankServiceComponent, WealthNedbankServiceComponent,
   PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
   PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent, HomeLoanTotalAmountDetailComponent, HomeLoanAccountsBreakdownComponent, HomeLoanPaymentDueSpecialMsgComponent,
   HomeLoanInstalmentDetailComponent, PortfolioCustomerDetailsComponent, PortfolioCustomerAddressDetailsComponent, PortfolioClientContactDetailsComponent, PortfolioAccountSummaryDetailsComponent,
   PortfolioAccountAnalysisComponent, PortfolioRemindersComponent, PortfolioNewsAlertsComponent, GreenbacksContactUsComponent, YTDRewardPointsComponent, PointsRedeemedYTDComponent, ProductRelatedPointsEarnedComponent, CategorySpendRewardsComponent, GreenbacksTotalRewardPointsComponent, WealthBreakdownOfInvestmentAccountsComponent, HomeLoanSummaryTaxPurposeComponent,
   HomeLoanInstalmentComponent, WealthHomeLoanTotalAmountDetailComponent, WealthHomeLoanAccountsBreakdownComponent, WealthHomeLoanSummaryTaxPurposeComponent, WealthHomeLoanInstalmentComponent, WealthHomeLoanBankDetailsComponent,
-  MCAAccountSummaryComponent, MCATransactionComponent, MCAVATAnalysisComponent, WealthMCAVATAnalysisComponent, WealthMCATransactionComponent, WealthMCAAccountSummaryComponent, WealthMCABranchDetailsComponent,CorporateSaverAgentMessageComponent,CorporateSaverTransactionComponent,CorporateSaverClientDetailsComponent,CorporateSaverTableTotalComponent,CorporateAgentDetailsComponent, CSAgentLogoComponent
+  MCAAccountSummaryComponent, MCATransactionComponent, MCAVATAnalysisComponent, WealthMCAVATAnalysisComponent, WealthMCATransactionComponent, WealthMCAAccountSummaryComponent, WealthMCABranchDetailsComponent, CorporateSaverAgentMessageComponent, CorporateSaverTransactionComponent, CorporateSaverClientDetailsComponent, CorporateSaverTableTotalComponent, CorporateAgentDetailsComponent, CSAgentLogoComponent
 } from '../widgetComponent/widgetComponent';
 import { AssetLibraryService } from '../../layout/asset-libraries/asset-library.service';
 import { AssetSearchParameter } from '../../layout/asset-libraries/asset-library';
@@ -51,13 +51,13 @@ export class AddDashboardDesignerComponent implements OnInit {
   public isImageConfig: boolean = false;
   public isVideoConfig: boolean = false;
   public isStaticHtmlConfig: boolean = false;
-  public isCSAgentLogoConfig: boolean = false;   
-  public isCorporateSaverAgentMessageConfig: boolean = false;   
-  public isCorporateSaverClientandAgentDetailsConfig: boolean = false;    
-  public isCorporateSaverTransactionConfig: boolean = false;    
-  public isCorporateSaverAgentAddressConfig: boolean = false;    
-  public isCorporateSaverTableTotalConfig: boolean = false;    
-  public isCorporateAgentDetailsConfig: boolean = false;   
+  public isCSAgentLogoConfig: boolean = false;
+  public isCorporateSaverAgentMessageConfig: boolean = false;
+  public isCorporateSaverClientandAgentDetailsConfig: boolean = false;
+  public isCorporateSaverTransactionConfig: boolean = false;
+  public isCorporateSaverAgentAddressConfig: boolean = false;
+  public isCorporateSaverTableTotalConfig: boolean = false;
+  public isCorporateAgentDetailsConfig: boolean = false;
   public issegmentBasedContentConfig: boolean = false;
   public isWidgetSidebar: boolean = false;
   public isEmbedded: boolean = false;
@@ -158,6 +158,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     private assetLibraryService: AssetLibraryService,
     private _http: HttpClient,
     private sanitizer: DomSanitizer,
+   // private staticHtmlComponent: StaticHtmlComponent,
     private router: Router) {
     router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
@@ -497,7 +498,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     this.staticHtmlWidgetId = widgetId;
     this.selectedWidgetItemCount = widgetItemCount;
     const records = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.staticHtmlWidgetId &&
-       x.widgetItemCount == this.selectedWidgetItemCount);
+      x.widgetItemCount == this.selectedWidgetItemCount);
     if (records.length != 0) {
       const widgetSetting = records[0].WidgetSetting;
       if (widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
@@ -519,7 +520,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     this.staticHtmlWidgetId = widgetId;
     this.selectedWidgetItemCount = widgetItemCount;
     const records = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.staticHtmlWidgetId &&
-       x.widgetItemCount == this.selectedWidgetItemCount);
+      x.widgetItemCount == this.selectedWidgetItemCount);
     if (records.length != 0) {
       const widgetSetting = records[0].WidgetSetting;
       if (widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
@@ -541,7 +542,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     this.staticHtmlWidgetId = widgetId;
     this.selectedWidgetItemCount = widgetItemCount;
     const records = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.staticHtmlWidgetId &&
-       x.widgetItemCount == this.selectedWidgetItemCount);
+      x.widgetItemCount == this.selectedWidgetItemCount);
     if (records.length != 0) {
       const widgetSetting = records[0].WidgetSetting;
       if (widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
@@ -557,14 +558,14 @@ export class AddDashboardDesignerComponent implements OnInit {
       }
     }
   }
- 
+
   isCorporateSaverTransactionConfigForm(widgetId, widgetItemCount) {
     this.isMasterSaveBtnDisabled = true;
     this.isCorporateSaverTransactionConfig = true;
     this.staticHtmlWidgetId = widgetId;
     this.selectedWidgetItemCount = widgetItemCount;
     const records = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.staticHtmlWidgetId &&
-       x.widgetItemCount == this.selectedWidgetItemCount);
+      x.widgetItemCount == this.selectedWidgetItemCount);
     if (records.length != 0) {
       const widgetSetting = records[0].WidgetSetting;
       if (widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
@@ -586,7 +587,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     this.staticHtmlWidgetId = widgetId;
     this.selectedWidgetItemCount = widgetItemCount;
     const records = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.staticHtmlWidgetId &&
-       x.widgetItemCount == this.selectedWidgetItemCount);
+      x.widgetItemCount == this.selectedWidgetItemCount);
     if (records.length != 0) {
       const widgetSetting = records[0].WidgetSetting;
       if (widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
@@ -608,7 +609,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     this.staticHtmlWidgetId = widgetId;
     this.selectedWidgetItemCount = widgetItemCount;
     const records = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.staticHtmlWidgetId &&
-       x.widgetItemCount == this.selectedWidgetItemCount);
+      x.widgetItemCount == this.selectedWidgetItemCount);
     if (records.length != 0) {
       const widgetSetting = records[0].WidgetSetting;
       if (widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
@@ -630,7 +631,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     this.staticHtmlWidgetId = widgetId;
     this.selectedWidgetItemCount = widgetItemCount;
     const records = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.staticHtmlWidgetId &&
-       x.widgetItemCount == this.selectedWidgetItemCount);
+      x.widgetItemCount == this.selectedWidgetItemCount);
     if (records.length != 0) {
       const widgetSetting = records[0].WidgetSetting;
       if (widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
@@ -648,6 +649,7 @@ export class AddDashboardDesignerComponent implements OnInit {
   }
 
   isStaticHtmlConfigForm(widgetId, widgetItemCount) {
+    debugger;
     this.isMasterSaveBtnDisabled = true;
     this.isStaticHtmlConfig = true;
     this.staticHtmlWidgetId = widgetId;
@@ -824,6 +826,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     searchParameter.SearchMode = Constants.Contains;
     searchParameter.PageTypeId = this.PageTypeId;
     searchParameter.IsPageTypeDetailsRequired = false;
+    debugger;
     this._http.post(this.baseURL + URLConfiguration.widgetGetUrl, searchParameter).subscribe(
       data => {
         this.widgetsArray = <any[]>data;
@@ -1716,6 +1719,7 @@ export class AddDashboardDesignerComponent implements OnInit {
             })
           }
           else if (widget.WidgetName == "StaticHtml") {
+            debugger;
             return this.widgetsGridsterItemArray.push({
               cols: 4,
               rows: 3,
@@ -2149,7 +2153,7 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: true
             })
           }
-          
+
         }
       }
     }
@@ -2491,6 +2495,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     if (!this.pageEditModeOn) {
       this.uiLoader.start();
     }
+    debugger;
     this._http.post(this.baseURL + URLConfiguration.assetLibraryGetUrl, searchParameter).subscribe(
       data => {
         if (!this.pageEditModeOn) {
@@ -2655,6 +2660,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     assetSearchParameter.SearchMode = Constants.Contains;
     let assets: any[];
     this.uiLoader.start();
+    debugger;
     this._http.post(this.baseURL + URLConfiguration.assetGetUrl, assetSearchParameter).subscribe(
       data => {
         this.uiLoader.stop();
@@ -2730,13 +2736,12 @@ export class AddDashboardDesignerComponent implements OnInit {
   }
 
   OnStaticHtmlConfigBtnClicked(actionFor) {
+    debugger;
     if (actionFor == 'submit') {
       let staticHtmlContent = this.StaticConfigForm.value['staticHtml'];
       let staticHtmlConfig: any = {};
       staticHtmlConfig.WidgetId = this.staticHtmlWidgetId;
       staticHtmlConfig.html = staticHtmlContent;
-
-
       let oldItem = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.staticHtmlWidgetId && x.widgetItemCount == this.selectedWidgetItemCount)[0];
       let newItem = Object.assign({}, oldItem)
       newItem.WidgetSetting = JSON.stringify(staticHtmlConfig);
@@ -2761,16 +2766,13 @@ export class AddDashboardDesignerComponent implements OnInit {
 
       let oldItem = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.segmentBasedContentWidgetId && x.widgetItemCount == this.selectedWidgetItemCount)[0];
       let newItem = Object.assign({}, oldItem)
-      if(newItem.WidgetSetting === '')
-        newItem.WidgetSetting = '['+ JSON.stringify(segmentBasedContentConfig) +']';
-      else
-      {
+      if (newItem.WidgetSetting === '')
+        newItem.WidgetSetting = '[' + JSON.stringify(segmentBasedContentConfig) + ']';
+      else {
         var setting = JSON.parse(newItem.WidgetSetting);
         var indexToRemove = 0;
-        for(var i=0;i< setting.length; i++)
-        {
-          if(segmentBasedContentConfig.SegmentId == setting[i].SegmentId)
-          {
+        for (var i = 0; i < setting.length; i++) {
+          if (segmentBasedContentConfig.SegmentId == setting[i].SegmentId) {
             indexToRemove = i;
             break;
           }
@@ -2803,24 +2805,22 @@ export class AddDashboardDesignerComponent implements OnInit {
       var widgetSetting = records[0].WidgetSetting;
       if (widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
         var widgetConfigObj = JSON.parse(widgetSetting);
-        var selectedItemVal = widgetConfigObj.filter(m=> m.SegmentId == selectedSegmentId);
-        if(selectedItemVal.length > 0)
-        {
+        var selectedItemVal = widgetConfigObj.filter(m => m.SegmentId == selectedSegmentId);
+        if (selectedItemVal.length > 0) {
           this.SegmentBasedContentForm.patchValue({
             SegmentBasedContent: selectedItemVal[0].Html
           });
         }
-        else
-        {
+        else {
           this.SegmentBasedContentForm.patchValue({
             SegmentBasedContent: ''
           });
         }
       } else {
-          this.SegmentBasedContentForm.patchValue({
-            SegmentBasedContent: ''
-          });
-          this.markFormGroupUnTouched(this.SegmentBasedContentForm);
+        this.SegmentBasedContentForm.patchValue({
+          SegmentBasedContent: ''
+        });
+        this.markFormGroupUnTouched(this.SegmentBasedContentForm);
       }
     }
   }
