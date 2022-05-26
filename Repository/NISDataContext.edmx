@@ -869,7 +869,7 @@
           <Property Name="BatchId" Type="bigint" Nullable="false" />
           <Property Name="CustomerId" Type="bigint" Nullable="false" />
           <Property Name="InvestorId" Type="bigint" Nullable="false" />
-          <Property Name="CapitalBalance" Type="money" />
+          <Property Name="CapitalBalance" Type="nvarchar" MaxLength="50" />
           <Property Name="TenantCode" Type="varchar" MaxLength="50" />
           <Property Name="InvestType" Type="nvarchar" MaxLength="50" />
           <Property Name="InterestIntruction" Type="nvarchar" MaxLength="100" />
@@ -5005,7 +5005,7 @@ warning 6002: The table/view 'NIS_DEV2.NIS.View_User' does not have a primary ke
           <Property Name="BatchId" Type="Int64" Nullable="false" />
           <Property Name="CustomerId" Type="Int64" Nullable="false" />
           <Property Name="InvestorId" Type="Int64" Nullable="false" />
-          <Property Name="CapitalBalance" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="CapitalBalance" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="InvestType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="InterestIntruction" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />

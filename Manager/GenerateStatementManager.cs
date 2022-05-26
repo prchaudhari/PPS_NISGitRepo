@@ -5866,7 +5866,7 @@ namespace nIS
 
                         if (decimal.TryParse(trans.CapitalBalance, out res))
                         {
-                            tableHTML.Append("<td class='w-15 text-right'> " + (res != 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + "</td>");
+                            tableHTML.Append("<td class='w-15 text-right'> " + (res != 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : String.Empty) + "</td>");
                         }
                         else
                         {

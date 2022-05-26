@@ -18,7 +18,7 @@ namespace nIS
         public long BatchId { get; set; }
         public long CustomerId { get; set; }
         public long InvestorId { get; set; }
-        public Nullable<decimal> CapitalBalance { get; set; }
+        public string CapitalBalance { get; set; }
         public string TenantCode { get; set; }
         public string InvestType { get; set; }
         public string InterestIntruction { get; set; }
