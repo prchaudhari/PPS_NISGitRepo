@@ -589,7 +589,7 @@
         /// <param name="fileName"> the file name </param>
         /// <param name="batchId"> the batch identifier </param>
         /// <param name="customerId"> the customer identifier </param>
-        public string WriteToFile(string Message, string fileName, long batchId, long customerId, string baseURL, string outputLocation, bool printPdf = false, string headerHtml = "", string footerHtml = "", string segment = "")
+        public string WriteToFile(string Message, string fileName, long batchId, long customerId, string baseURL, string outputLocation, bool printPdf = false, string headerHtml = "", string footerHtml = "", string segment = "", string language = "")
         {
             //string resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
             string statementDestPath = outputLocation + "\\Statements" + "\\" + batchId;
@@ -627,7 +627,7 @@
             if (printPdf)
             {
                 var outputPdfPath = Path.Combine(path, Path.GetFileNameWithoutExtension(fileName) + ".pdf");
-                if (GeneratePdf(filepath, outputPdfPath, headerHtml, footerHtml, "", customerId, segment))
+                if (GeneratePdf(filepath, outputPdfPath, headerHtml, footerHtml, "", customerId, segment, language))
                 {
                     File.Delete(filepath);
                 }
@@ -1246,7 +1246,7 @@
             }
         }
 
-        public bool GeneratePdf(string htmlStatementPath, string outPdfPath, string headerHtml, string footerHtml, string password, long customerId, string segment)
+        public bool GeneratePdf(string htmlStatementPath, string outPdfPath, string headerHtml, string footerHtml, string password, long customerId, string segment, string language)
         {
             try
             {
@@ -2331,6 +2331,21 @@
                 doc.Fonts.Add(@"C:\UserFiles\Fonts\MarkPro-Regular.ttf");
                 doc.Fonts.Add(@"C:\UserFiles\Fonts\Mark Pro.ttf");
                 doc.Fonts.Add(@"C:\UserFiles\Fonts\Mark Pro Bold.ttf");
+
+                if (segment.Contains("Corporate Saver"))
+                {
+                    PdfFont font = doc.AddFont(PdfStandardFont.Helvetica);
+                    font.Size = 7;
+
+                    PdfTextElement text1 = new PdfTextElement(447, 75, "Page {page_number} of {total_pages}", font);
+                    if(language == "AFR")
+                    {
+                        text1 = new PdfTextElement(447, 75, "Bladsy {page_number} van {total_pages}", font);
+                    }
+                    text1.ForeColor = System.Drawing.Color.Black;
+
+                    doc.Header.Add(text1);
+                }
 
                 // save pdf document
                 doc.Save(outPdfPath);

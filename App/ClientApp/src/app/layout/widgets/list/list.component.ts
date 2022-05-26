@@ -39,6 +39,7 @@ export class ListComponent implements OnInit {
     closeFilter() {
         this.isFilter = !this.isFilter;
     }
+    
     displayedColumns: string[] = ['name', 'page','widgettype', 'actions'];
     dataSource = new MatTableDataSource<any>();
 

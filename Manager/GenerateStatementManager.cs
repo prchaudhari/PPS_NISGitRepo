@@ -2186,7 +2186,7 @@ namespace nIS
                         string headerHtml = statement.Pages[0].HeaderHTML;
                         string footerHtml = statement.Pages[0].FooterHTML;
 
-                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, batchMaster.Identifier, customer.CustomerId, statementRawData.BaseURL, statementRawData.OutputLocation, printPdf: true, headerHtml: headerHtml, footerHtml: footerHtml, segment: statement.Pages[0].PageTypeName);
+                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, batchMaster.Identifier, customer.CustomerId, statementRawData.BaseURL, statementRawData.OutputLocation, printPdf: true, headerHtml: headerHtml, footerHtml: footerHtml, segment: statement.Pages[0].PageTypeName, language: customer.Language);
 
                         logDetailRecord.StatementFilePath = filePath;
                         logDetailRecord.Status = ScheduleLogStatus.Completed.ToString();
@@ -5955,7 +5955,7 @@ namespace nIS
 
                         if (decimal.TryParse(trans.CapitalBalance, out res))
                         {
-                            tableHTML.Append("<td class='w-15 text-right'> " + (res != 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + "</td>");
+                            tableHTML.Append("<td class='w-15 text-right'> " + (res != 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : String.Empty) + "</td>");
                         }
                         else
                         {

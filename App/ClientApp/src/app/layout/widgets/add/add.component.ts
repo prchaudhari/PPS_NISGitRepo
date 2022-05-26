@@ -204,6 +204,9 @@ export class AddComponent implements OnInit {
           this.widgetList[i].ImageSource = "assets/images/PaymentDue.JPG"
           this.widgetList[i].WidgetIcon = "icon-AvailableBalanceWidget";
         }
+        else if (this.widgetList[i].WidgetName == "PageBreak") {
+          this.widgetList[i].WidgetIcon = "fa fa-scissors";
+        }
         else if (this.widgetList[i].WidgetName == "SpecialMessage") {
           this.widgetList[i].ImageSource = "assets/images/SpecialMessage.JPG"
           this.widgetList[i].WidgetIcon = "fa fa-bell-o";
@@ -318,35 +321,35 @@ export class AddComponent implements OnInit {
         }
         else if (this.widgetList[i].WidgetName == "StaticHtml") {
           this.widgetList[i].ImageSource = "assets/images/StaticHtml.JPG";
-          this.widgetList[i].WidgetIcon = "fa fa-html5";
+          this.widgetList[i].WidgetIcon = "fa fa-code";
         }
         else if (this.widgetList[i].WidgetName == "CSAgentLogo") {
           this.widgetList[i].ImageSource = "assets/images/StaticHtml.JPG";
           this.widgetList[i].WidgetIcon = "fa fa-html5";
         }
         else if (this.widgetList[i].WidgetName == "CorporateSaverAgentMessage") {
-          this.widgetList[i].ImageSource = "assets/images/StaticHtml.JPG";
-          this.widgetList[i].WidgetIcon = "fa fa-html5";
+          this.widgetList[i].ImageSource = "assets/images/corporatesaveragentmessage.png";
+          this.widgetList[i].WidgetIcon = "fa fa-exclamation-circle";
         }
         else if (this.widgetList[i].WidgetName == "CorporateSaverAgentAddress") {
-          this.widgetList[i].ImageSource = "assets/images/StaticHtml.JPG";
-          this.widgetList[i].WidgetIcon = "fa fa-html5";
+          this.widgetList[i].ImageSource = "assets/images/CorporateSaveragentAddress.png";
+          this.widgetList[i].WidgetIcon = "fa fa-address-card";
         }
         else if (this.widgetList[i].WidgetName == "CorporateSaverTransaction") {
-          this.widgetList[i].ImageSource = "assets/images/StaticHtml.JPG";
-          this.widgetList[i].WidgetIcon = "fa fa-html5";
+          this.widgetList[i].ImageSource = "assets/images/CorporateSavertransaction.png";
+          this.widgetList[i].WidgetIcon = "fa icon-widget-multi-column2";
         }
         else if (this.widgetList[i].WidgetName == "CorporateSaverClientandAgentDetails") {
-          this.widgetList[i].ImageSource = "assets/images/StaticHtml.JPG";
-          this.widgetList[i].WidgetIcon = "fa fa-html5";
+          this.widgetList[i].ImageSource = "assets/images/CorporateSaveragentandclientdetails.png";
+          this.widgetList[i].WidgetIcon = "fa fa-vcard-o";
         }
         else if (this.widgetList[i].WidgetName == "CorporateSaverTableTotal") {
-          this.widgetList[i].ImageSource = "assets/images/StaticHtml.JPG";
-          this.widgetList[i].WidgetIcon = "fa fa-html5";
+          this.widgetList[i].ImageSource = "assets/images/CorporateSaverlasttotal.png";
+          this.widgetList[i].WidgetIcon = "fa icon-widget-single-column2";
         }
-        else if (this.widgetList[i].WidgetName == "CorporateAgentDetailsComponent") {
-          this.widgetList[i].ImageSource = "assets/images/StaticHtml.JPG";
-          this.widgetList[i].WidgetIcon = "fa fa-html5";
+        else if (this.widgetList[i].WidgetName == "CorporateAgentDetails") {
+          this.widgetList[i].ImageSource = "assets/images/CorporateSavertaxtotal.png";
+          this.widgetList[i].WidgetIcon = "fa fa-tags";
         }
         else if (this.widgetList[i].WidgetName == "SegmentBasedContent") {
           this.widgetList[i].ImageSource = "assets/images/SegmentBasedContent.JPG";

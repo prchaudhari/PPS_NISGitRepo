@@ -33,7 +33,9 @@
                     <h6 class="mb-1" *ngIf='selectedLink!=undefined'>{{selectedLink.DisplayName}}</h6>
 
                     <div *ngIf='selectedLink!=undefined'><label class="mb-0">Description : </label><span class="ml-1">{{selectedLink.WidgetDescription}}</span></div>
-                    <div *ngIf='selectedLink!=undefined'><label class="mb-0">Page Types :</label> <h6 class="badge badge-secondary p-1 ml-1 mb-0">{{selectedLink.PageTypeNames}}</h6></div>
+                    <div *ngIf='selectedLink!=undefined'><label class="mb-0">Page Types :</label> 
+                      <h6 class="badge badge-secondary p-1 ml-1 mb-0" *ngFor="let pageTypeName of selectedLink.PageTypeNames.split(',')">{{pageTypeName}}</h6>
+                  </div>
                   </div>
                   <div class="card card-shadow preview-container float-right width100" style="position:initial;right:0;">
                     <div class="card-body d-flex justify-content-center align-items-center" *ngIf='selectedLink!=undefined'>

@@ -351,7 +351,7 @@ export class ViewDashboardDesignerComponent implements OnInit {
       else if (widgetName == 'CustomerDetails') {
         gridObj.component = CustomerDetailsComponent;
       }
-      else if (widgetName == 'CorporateSaverAgentAdderss') {
+      else if (widgetName == 'CorporateSaverAgentAddress') {
         gridObj.component = CorporateSaverAgentAddressComponent;
       }
       else if (widgetName == 'BranchDetails') {

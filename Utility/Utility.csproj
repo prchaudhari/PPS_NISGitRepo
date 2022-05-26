@@ -70,8 +70,8 @@
     <Reference Include="pdfcrowd, Version=4.12.0.0, Culture=neutral, PublicKeyToken=747913b00a4ba166, processorArchitecture=MSIL">
       <HintPath>..\packages\Pdfcrowd.Official.4.12.0\lib\net20\pdfcrowd.dll</HintPath>
     </Reference>
-    <Reference Include="Select.HtmlToPdf, Version=22.1.0.0, Culture=neutral, PublicKeyToken=e0ae9f6e27a97018, processorArchitecture=MSIL">
-      <HintPath>..\packages\Select.HtmlToPdf.22.1.0\lib\net40\Select.HtmlToPdf.dll</HintPath>
+    <Reference Include="Select.Pdf">
+      <HintPath>..\References\SelectPDF\Select.Pdf.dll</HintPath>
     </Reference>
     <Reference Include="SuperSocket.ClientEngine, Version=0.10.0.0, Culture=neutral, PublicKeyToken=ee9af13f57f00acc, processorArchitecture=MSIL">
       <HintPath>..\packages\SuperSocket.ClientEngine.Core.0.10.0\lib\net45\SuperSocket.ClientEngine.dll</HintPath>
