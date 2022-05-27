@@ -35,9 +35,6 @@ namespace nIS
         /// </summary>
         private ScheduleManager scheduleManager = null;
 
-        private IProductRepository productRepository = null;
-
-
         /// <summary>
         /// The unity container
         /// </summary>
@@ -62,7 +59,6 @@ namespace nIS
             this.unityContainer = unityContainer;
             this.tenantConfigurationManager = new TenantConfigurationManager(unityContainer);
             this.scheduleManager = new ScheduleManager(this.unityContainer);
-            this.productRepository = this.unityContainer.Resolve<IProductRepository>();
         }
 
         #endregion
@@ -348,11 +344,6 @@ namespace nIS
                     return false;
                 }
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
-
-                var products = productRepository.Get_Products(tenantCode);
-                var productA = productRepository.Get_ProductById(products.FirstOrDefault().Id, tenantCode);
-                var mappings = productRepository.Get_ProductPageTypeMappingByProductId(1, tenantCode);
-
 
                 var baseURL = Url.Content("~/");
                 var outputLocation = AppDomain.CurrentDomain.BaseDirectory;
