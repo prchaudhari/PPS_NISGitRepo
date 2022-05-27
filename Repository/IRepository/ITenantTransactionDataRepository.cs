@@ -127,7 +127,7 @@ namespace nIS
         /// <returns>
         /// Returns the list of customer investment master
         /// </returns>
-        IList<DM_InvestmentMaster> Get_NB_InvestmasterMaster(CustomerInvestmentSearchParameter searchParameter, string tenantCode);
+        IList<DM_InvestmentMaster> Get_NB_InvestmentMaster(CustomerInvestmentSearchParameter searchParameter, string tenantCode);
 
         /// <summary>
         /// This method gets the specified list of customer investment transaction from Investment transaction repository.

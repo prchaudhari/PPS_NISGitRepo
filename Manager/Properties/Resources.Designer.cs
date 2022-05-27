@@ -118,11 +118,11 @@ namespace nIS.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ná 120+ dae.
+        ///   Looks up a localized string similar to Ná 120 dae.
         /// </summary>
-        internal static string After_120__days {
+        internal static string After_120_days {
             get {
-                return ResourceManager.GetString("After 120+ days", resourceCulture);
+                return ResourceManager.GetString("After 120 days", resourceCulture);
             }
         }
         
@@ -337,9 +337,9 @@ namespace nIS.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Uitstaande saldo.
         /// </summary>
-        internal static string Balance_outstanding {
+        internal static string Balance_Outstanding {
             get {
-                return ResourceManager.GetString("Balance outstanding", resourceCulture);
+                return ResourceManager.GetString("Balance Outstanding", resourceCulture);
             }
         }
         
@@ -475,6 +475,15 @@ namespace nIS.Properties {
         internal static string Capital_balance {
             get {
                 return ResourceManager.GetString("Capital balance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sel.
+        /// </summary>
+        internal static string Cell {
+            get {
+                return ResourceManager.GetString("Cell", resourceCulture);
             }
         }
         
@@ -704,7 +713,7 @@ namespace nIS.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Effektiewedatum.
+        ///   Looks up a localized string similar to Effektiewe datum.
         /// </summary>
         internal static string Effective_date {
             get {
@@ -1218,15 +1227,6 @@ namespace nIS.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to min agentgelde.
-        /// </summary>
-        internal static string less_agent_fee {
-            get {
-                return ResourceManager.GetString("less agent fee", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to min agentgelde en BTW.
         /// </summary>
         internal static string less_agent_fee_and_VAT {
@@ -1418,15 +1418,6 @@ namespace nIS.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nie verskaf nie.
-        /// </summary>
-        internal static string Not_provided {
-            get {
-                return ResourceManager.GetString("Not provided", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Kennis deposito&apos;s.
         /// </summary>
         internal static string Notice_deposits {
@@ -1459,15 +1450,6 @@ namespace nIS.Properties {
         internal static string October {
             get {
                 return ResourceManager.GetString("October", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Van rente.
-        /// </summary>
-        internal static string on_capital {
-            get {
-                return ResourceManager.GetString("on capital", resourceCulture);
             }
         }
         
@@ -2012,15 +1994,6 @@ namespace nIS.Properties {
             get {
                 return ResourceManager.GetString("Try the Nedbank Home-buying Toolkit on the Nedbank Money app today. Simply open t" +
                         "he app and click on", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to BTW.
-        /// </summary>
-        internal static string VAT {
-            get {
-                return ResourceManager.GetString("VAT", resourceCulture);
             }
         }
         

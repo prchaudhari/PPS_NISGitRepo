@@ -267,8 +267,8 @@
   <data name="Address" xml:space="preserve">
     <value>Adres</value>
   </data>
-  <data name="After 120+ days" xml:space="preserve">
-    <value>Ná 120+ dae</value>
+  <data name="After 120 days" xml:space="preserve">
+    <value>Ná 120 dae</value>
   </data>
   <data name="After 30 days" xml:space="preserve">
     <value>Ná 30 dae</value>
@@ -303,7 +303,7 @@
   <data name="Avo Business" xml:space="preserve">
     <value>Avo-sake</value>
   </data>
-  <data name="Balance outstanding" xml:space="preserve">
+  <data name="Balance Outstanding" xml:space="preserve">
     <value>Uitstaande saldo</value>
   </data>
   <data name="Basic instalment" xml:space="preserve">
@@ -328,7 +328,7 @@
     <value>As gevolg van versekeringsveranderings is u nuwe paaiementbesonderhede soos volg</value>
   </data>
   <data name="Effective date" xml:space="preserve">
-    <value>Effektiewedatum</value>
+    <value>Effektiewe datum</value>
   </data>
   <data name="effective from" xml:space="preserve">
     <value>effektief vanaf</value>
@@ -799,5 +799,8 @@ en namens u aan u agent betaal</value>
   </data>
   <data name="Bank VAT Reg No" xml:space="preserve">
     <value>Bank-BTW-reg-no</value>
+  </data>
+  <data name="Cell" xml:space="preserve">
+    <value>Sel</value>
   </data>
 </root>

@@ -334,6 +334,7 @@
 .customTable th {
     padding: 0px 25px;
     font-size: 8pt;
+    font-weight: normal !important;
 }
 
 .InvestorPermanaceTable td {
@@ -445,9 +446,8 @@
 }
 
 .card-body-header-name-dear {
-    font-size: 11pt;
-    color: #000000 !important;
-    font-weight: bolder;
+    font-size: 10pt;
+    color: black !important;
     font-family: 'Mark Pro Bold';
 }
 
@@ -1329,9 +1329,12 @@ hr {
     font-size: 9p !important;
 }
 
+.LoanTransactionTable1 tbody tr:nth-of-type(odd), .LoanTransactionTable1-W tbody tr:nth-of-type(odd) {
+    background-color: #F2F2F2 !important;
+}
+
 .custom-paragraph {
     line-height: 28px !important;
-}
 }
 
 .LoanTransactionTable1 tbody tr:nth-of-type(odd), .LoanTransactionTable1-W tbody tr:nth-of-type(odd) {

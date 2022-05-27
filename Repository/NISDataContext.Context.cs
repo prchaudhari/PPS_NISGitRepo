@@ -126,9 +126,7 @@ namespace nIS
         public virtual DbSet<NB_BranchMaster> NB_BranchMaster { get; set; }
         public virtual DbSet<NB_BranchMaster_Old> NB_BranchMaster_Old { get; set; }
         public virtual DbSet<NB_Investment_Source> NB_Investment_Source { get; set; }
-        public virtual DbSet<NB_InvestmentMaster> NB_InvestmentMaster { get; set; }
         public virtual DbSet<NB_InvestmentMaster_Old> NB_InvestmentMaster_Old { get; set; }
-        public virtual DbSet<NB_InvestmentTransaction> NB_InvestmentTransaction { get; set; }
         public virtual DbSet<NB_InvestmentTransaction_Old> NB_InvestmentTransaction_Old { get; set; }
         public virtual DbSet<NB_SegmentMaster> NB_SegmentMaster { get; set; }
         public virtual DbSet<NB_SegmentTypeMaster> NB_SegmentTypeMaster { get; set; }
@@ -143,6 +141,8 @@ namespace nIS
         public virtual DbSet<NB_MCATransaction> NB_MCATransaction { get; set; }
         public virtual DbSet<NB_MCAMaster> NB_MCAMaster { get; set; }
         public virtual DbSet<NB_CustomerMaster> NB_CustomerMaster { get; set; }
+        public virtual DbSet<NB_InvestmentMaster> NB_InvestmentMaster { get; set; }
+        public virtual DbSet<NB_InvestmentTransaction> NB_InvestmentTransaction { get; set; }
     
         [DbFunction("NISEntities", "FnUserTenant")]
         public virtual IQueryable<FnUserTenant_Result> FnUserTenant(Nullable<int> userId)
