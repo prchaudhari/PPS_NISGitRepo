@@ -245,6 +245,7 @@
     <Compile Include="IRepository\NedBank\ICorporateSaverRepository.cs" />
     <Compile Include="IRepository\NedBank\IMCARepository.cs" />
     <Compile Include="IRepository\NedBank\IInvestmentRepository.cs" />
+    <Compile Include="IRepository\NedBank\IProductRepository.cs" />
     <Compile Include="Mappings\ScheduleLogDetailRecord.cs" />
     <Compile Include="Mappings\View_PageRecord.cs" />
     <Compile Include="MultiTenantUserAccessMapRecord.cs">
@@ -337,6 +338,12 @@
     <Compile Include="PageWidgetMapRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Product.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductPageTypeMapping.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReminderAndRecommendationRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
@@ -371,6 +378,7 @@
     <Compile Include="ScheduleRunHistoryRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="SQLRepository\NedBank\SQLProductRepository.cs" />
     <Compile Include="SQLRepository\NedBank\SQLCustomerRepository.cs" />
     <Compile Include="SQLRepository\NedBank\SQLInvestmentRepository.cs" />
     <Compile Include="SQLRepository\NedBank\SQLCorporateSaverRepository.cs" />

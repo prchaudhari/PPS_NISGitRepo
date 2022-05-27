@@ -28,6 +28,11 @@ namespace nIS
         private string name;
 
         /// <summary>
+        /// This ProductBatchName
+        /// </summary>
+        private string productBatchName;
+
+        /// <summary>
         /// The Schdeule description
         /// </summary>
         private string description;
@@ -122,6 +127,25 @@ namespace nIS
             set
             {
                 this.identifier = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets Product Batch Name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        [Description("ProductBatchName")]
+        public string ProductBatchName
+        {
+            get
+            {
+                return this.ProductBatchName;
+            }
+            set
+            {
+                this.ProductBatchName = value;
             }
         }
 

@@ -109,6 +109,8 @@
     <Compile Include="NedBank\InvestmentPottfolio.cs" />
     <Compile Include="NedBank\InvestmentTransaction.cs" />
     <Compile Include="NedBank\InvestorPerformance.cs" />
+    <Compile Include="NedBank\ProductViewModel.cs" />
+    <Compile Include="NedBank\ProductPageTypeMappingViewModel.cs" />
     <Compile Include="Page.cs" />
     <Compile Include="PageWidget.cs" />
     <Compile Include="PageWidgetVistorData.cs" />
@@ -128,6 +130,8 @@
     <Compile Include="ScheduleLogDetailSearchParameter.cs" />
     <Compile Include="ScheduleLogErrorDetail.cs" />
     <Compile Include="ScheduleRunHistory.cs" />
+    <Compile Include="Search Parameter\ProductPageTypeSearchParameter.cs" />
+    <Compile Include="Search Parameter\ProductSearchParameter.cs" />
     <Compile Include="Search Parameter\CustomerHomeLoanSearchParameter - Copy.cs" />
     <Compile Include="Search Parameter\CustomerCorporateSaverSearchParameter.cs" />
     <Compile Include="Search Parameter\CustomerMCASearchParameter.cs" />

@@ -16,13 +16,12 @@ namespace nIS
     {
         public long Id { get; set; }
         public Nullable<long> BatchId { get; set; }
-        public string CustomerId { get; set; }
+        public long CustomerId { get; set; }
         public Nullable<long> InvestorId { get; set; }
         public Nullable<long> InvestmentId { get; set; }
         public Nullable<long> BranchId { get; set; }
         public Nullable<long> ProductId { get; set; }
         public string ProductType { get; set; }
-        public string Currency { get; set; }
         public string ProductDesc { get; set; }
         public Nullable<System.DateTime> AccountOpenDate { get; set; }
         public string CurrentInterestRate { get; set; }
@@ -35,12 +34,7 @@ namespace nIS
         public Nullable<System.DateTime> StatementDate { get; set; }
         public long DayOfStatement { get; set; }
         public string StatementPeriod { get; set; }
-        public string ClosingBalance { get; set; }
         public string TenantCode { get; set; }
-        public string OpeningBalance { get; set; }
-        public Nullable<long> SegmentMasterId { get; set; }
         public string BonusInterest { get; set; }
-    
-        public virtual NB_SegmentMaster NB_SegmentMaster { get; set; }
     }
 }

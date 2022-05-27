@@ -601,7 +601,7 @@ namespace nIS
                                 AccountOpenDate = item.AccountOpenDate,
                                 AccuredInterest = item.AccuredInterest,
                                 BranchId = item.BranchId.Value,
-                                ClosingBalance = item.ClosingBalance,
+                                //ClosingBalance = item.ClosingBalance,
                                 CurrentInterestRate = item.CurrentInterestRate,
                                 DayOfStatement = item.DayOfStatement.ToString(),
                                 ExpiryDate = item.ExpiryDate,
@@ -612,7 +612,7 @@ namespace nIS
                                 ProductType = item.ProductType,
                                 StatementDate = item.StatementDate,
                                 StatementPeriod = item.StatementPeriod,
-                                Currenacy = item.Currency,
+                                //Currenacy = item.Currency,
                                 BonusInterest = item.BonusInterest,
                                 TenantCode = item.TenantCode
                             });

@@ -16,7 +16,7 @@ namespace nIS
     {
         public long Id { get; set; }
         public long BatchId { get; set; }
-        public string CustomerId { get; set; }
+        public long CustomerId { get; set; }
         public long InvestorId { get; set; }
         public long InvestmentId { get; set; }
         public long ProductId { get; set; }

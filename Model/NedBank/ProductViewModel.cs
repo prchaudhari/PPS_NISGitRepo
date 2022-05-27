@@ -12,13 +12,9 @@ namespace nIS
     using System;
     using System.Collections.Generic;
     
-    public partial class NB_SegmentMaster
+    public partial class ProductViewModel
     {
-        public long Id { get; set; }
-        public string Code { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
-        public long SegmentTypeId { get; set; }
-    
-        public virtual NB_SegmentTypeMaster NB_SegmentTypeMaster { get; set; }
     }
 }

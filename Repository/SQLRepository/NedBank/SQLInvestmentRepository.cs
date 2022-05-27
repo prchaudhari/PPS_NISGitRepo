@@ -88,8 +88,8 @@
                         StatementDate = investmentRecord.StatementDate,
                         DayOfStatement = investmentRecord.DayOfStatement,
                         StatementPeriod = investmentRecord.StatementPeriod,
-                        ClosingBalance = investmentRecord.ClosingBalance,
-                        Currency = investmentRecord.Currency,
+                        //ClosingBalance = investmentRecord.ClosingBalance,
+                        //Currency = investmentRecord.Currency,
                     });
                 });
                 investments = tempInvestments;
@@ -130,10 +130,10 @@
                 {
                     tempInvestments.Add(new InvestorPerformance()
                     {
-                        ClosingBalance = investmentRecord.ClosingBalance,
-                        OpeningBalance = investmentRecord.OpeningBalance,
+                        //ClosingBalance = investmentRecord.ClosingBalance,
+                        //OpeningBalance = investmentRecord.OpeningBalance,
                         ProductType = investmentRecord.ProductType,
-                        Currency = investmentRecord.Currency,
+                        //Currency = investmentRecord.Currency,
                     });
                 });
                 investors = tempInvestments;
@@ -226,7 +226,7 @@
                         InvestmentTransaction = tempInvestmentTransactions.Where(a => a.ProductId == investmentRecord.ProductId).ToList(),
                         InvestorId = investmentRecord.InvestorId,
                         ProductDescription = investmentRecord.ProductDesc,
-                        Currency = investmentRecord.Currency,
+                        //Currency = investmentRecord.Currency,
                         AccuredInterest = investmentRecord.AccuredInterest
                     });
                 });
