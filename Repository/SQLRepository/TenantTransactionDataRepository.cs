@@ -566,7 +566,7 @@ namespace nIS
         /// <returns>
         /// Returns the list of customer investment master
         /// </returns>
-        public IList<DM_InvestmentMaster> Get_NB_InvestmasterMaster(CustomerInvestmentSearchParameter searchParameter, string tenantCode)
+        public IList<DM_InvestmentMaster> Get_NB_InvestmentMaster(CustomerInvestmentSearchParameter searchParameter, string tenantCode)
         {
             IList<DM_InvestmentMaster> InvestmentMasters = new List<DM_InvestmentMaster>();
             try
@@ -595,7 +595,7 @@ namespace nIS
                             {
                                 Identifier = item.Id,
                                 BatchId = item.BatchId.Value,
-                                CustomerId = item.InvestorId.Value,
+                                CustomerId = item.CustomerId,
                                 InvestmentId = item.InvestmentId.Value,
                                 InvestorId = item.InvestorId.Value,
                                 AccountOpenDate = item.AccountOpenDate,
@@ -669,7 +669,7 @@ namespace nIS
                             {
                                 Identifier = item.Id,
                                 BatchId = item.BatchId,
-                                CustomerId = item.InvestorId,
+                                CustomerId = item.CustomerId,
                                 ProductId = item.ProductId,
                                 InvestmentId = item.InvestmentId,
                                 InvestorId = item.InvestorId,

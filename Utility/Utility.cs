@@ -2314,8 +2314,10 @@
                 PdfHtmlSection footHtml = new PdfHtmlSection(@"C:\UserFiles\HeaderFooters\" + segment + "_footer.html");
                 converter.Footer.Add(footHtml);
                 converter.Footer.Height = 80;
-                if (segment == "Home Loan For Other Segment English" || segment == "Home Loan For Other Segment African" || segment == "Home Loan For PML Segment English"
-                    || segment == "Home Loan For PML Segment African" || segment == "Multi Currency For CIB")
+                if (segment == "Home Loan For Other Segment English" || segment == "Home Loan For Other Segment African" 
+                    || segment == "Home Loan For PML Segment English" || segment == "Home Loan For PML Segment African" 
+                    || segment == "Multi Currency For CIB"
+                    || segment == "Investment Other Segment For English" || segment == "Investment Other Segment For African")
                 {
                     converter.Footer.Height = 50;
                 }

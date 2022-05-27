@@ -7295,6 +7295,54 @@ warning 6002: The table/view 'NIS_DEV2.NIS.View_User' does not have a primary ke
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="NB_InvestmentMaster">
+            <EntityTypeMapping TypeName="NISModel.NB_InvestmentMaster">
+              <MappingFragment StoreEntitySet="NB_InvestmentMaster">
+                <ScalarProperty Name="BonusInterest" ColumnName="BonusInterest" />
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="StatementPeriod" ColumnName="StatementPeriod" />
+                <ScalarProperty Name="DayOfStatement" ColumnName="DayOfStatement" />
+                <ScalarProperty Name="StatementDate" ColumnName="StatementDate" />
+                <ScalarProperty Name="AccuredInterest" ColumnName="AccuredInterest" />
+                <ScalarProperty Name="NoticePeriod" ColumnName="NoticePeriod" />
+                <ScalarProperty Name="InterestDisposalDesc" ColumnName="InterestDisposalDesc" />
+                <ScalarProperty Name="InterestDisposalId" ColumnName="InterestDisposalId" />
+                <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
+                <ScalarProperty Name="ArchiveDate" ColumnName="ArchiveDate" />
+                <ScalarProperty Name="CurrentInterestRate" ColumnName="CurrentInterestRate" />
+                <ScalarProperty Name="AccountOpenDate" ColumnName="AccountOpenDate" />
+                <ScalarProperty Name="ProductDesc" ColumnName="ProductDesc" />
+                <ScalarProperty Name="ProductType" ColumnName="ProductType" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+                <ScalarProperty Name="InvestmentId" ColumnName="InvestmentId" />
+                <ScalarProperty Name="InvestorId" ColumnName="InvestorId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NB_InvestmentTransaction">
+            <EntityTypeMapping TypeName="NISModel.NB_InvestmentTransaction">
+              <MappingFragment StoreEntitySet="NB_InvestmentTransaction">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="WJXBFS5_TransId" ColumnName="WJXBFS5_TransId" />
+                <ScalarProperty Name="WJXBFS4_Balance" ColumnName="WJXBFS4_Balance" />
+                <ScalarProperty Name="WJXBFS3_Credit" ColumnName="WJXBFS3_Credit" />
+                <ScalarProperty Name="WJXBFS2_Debit" ColumnName="WJXBFS2_Debit" />
+                <ScalarProperty Name="WJXBFS1" ColumnName="WJXBFS1" />
+                <ScalarProperty Name="TransactionDesc" ColumnName="TransactionDesc" />
+                <ScalarProperty Name="TransactionDate" ColumnName="TransactionDate" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="InvestmentId" ColumnName="InvestmentId" />
+                <ScalarProperty Name="InvestorId" ColumnName="InvestorId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="ProductPageTypeMappings">
             <EntityTypeMapping TypeName="NISModel.ProductPageTypeMapping">
               <MappingFragment StoreEntitySet="ProductPageTypeMapping">

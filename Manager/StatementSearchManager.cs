@@ -167,7 +167,7 @@ namespace nIS
                 {
                     throw invalidSearchParameterException;
                 }
-               
+
                 return this.StatementSearchRepository.GetStatementSearchs(StatementSearchSearchParameter, tenantCode);
             }
             catch (Exception exception)
@@ -792,7 +792,7 @@ namespace nIS
                                     case HtmlConstants.CUSTOMER_DETAILS_WIDGET_NAME:
                                         if (statement.Pages.Count == 1)
                                         {
-                                                this.BindCustomerDetailsWidgetData(pageContent, customer, page, widget);
+                                            this.BindCustomerDetailsWidgetData(pageContent, customer, page, widget);
                                         }
                                         break;
 
@@ -1204,7 +1204,7 @@ namespace nIS
                         css = css.Replace("../fonts/", "./");
                         File.WriteAllText(cssFIlePath, css);
                     }
-                    
+
                     this.GenerateNedbankHtmlStatementForPdfGeneration(customer, statement, statementPageContents, batch, BatchDetails, tenantCode, outputlocation, tenantConfiguration);
                 }
 
@@ -2176,8 +2176,8 @@ namespace nIS
 
 
                 pageContent.Replace("{{ProductType_" + page.Identifier + "_" + widget.Identifier + "}}", investmentMasters[0].ProductType);
-                pageContent.Replace("{{OpeningBalanceAmount_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting("en-ZA", ".", "C", TotalOpeningBalance));
-                pageContent.Replace("{{ClosingBalanceAmount_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting("en-ZA", ".", "C", TotalClosingBalance));
+                pageContent.Replace("{{OpeningBalanceAmount_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, TotalOpeningBalance));
+                pageContent.Replace("{{ClosingBalanceAmount_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, TotalClosingBalance));
             }
         }
 
@@ -2211,16 +2211,24 @@ namespace nIS
                     InvestmentAccountDetailHtml.Replace("{{MaturityDate}}", acc.ExpiryDate != null ? acc.ExpiryDate?.ToString("dd'/'MM'/'yyyy") : string.Empty);
                     InvestmentAccountDetailHtml.Replace("{{InterestDisposal}}", acc.InterestDisposalDesc != null ? acc.InterestDisposalDesc : string.Empty);
                     InvestmentAccountDetailHtml.Replace("{{NoticePeriod}}", acc.NoticePeriod != null ? acc.NoticePeriod : string.Empty);
-                    InvestmentAccountDetailHtml.Replace("{{InterestDue}}", acc.AccuredInterest != null ? (acc.Currenacy + acc.AccuredInterest) : string.Empty);
-
                     var res = 0.0m;
+                    if (acc.AccuredInterest != null && decimal.TryParse(acc.AccuredInterest, out res))
+                    {
+                        InvestmentAccountDetailHtml.Replace("{{InterestDue}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                    }
+                    else
+                    {
+                        InvestmentAccountDetailHtml.Replace("{{InterestDue}}", string.Empty);
+                    }
+
+                    res = 0.0m;
                     var LastInvestmentTransaction = acc.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains("balance carried forward")).OrderByDescending(it => it.TransactionDate)?.ToList()?.FirstOrDefault();
                     if (LastInvestmentTransaction != null)
                     {
                         InvestmentAccountDetailHtml.Replace("{{LastTransactionDate}}", LastInvestmentTransaction.TransactionDate.ToString("dd MMMM yyyy"));
                         if (decimal.TryParse(LastInvestmentTransaction.WJXBFS4_Balance, out res))
                         {
-                            InvestmentAccountDetailHtml.Replace("{{BalanceOfLastTransactionDate}}", (LastInvestmentTransaction.WJXBFS4_Balance == "0" ? "-" : (decimal.TryParse(LastInvestmentTransaction.WJXBFS4_Balance, out res) ? utility.CurrencyFormatting("en-ZA", ".", "C", (Convert.ToDecimal(LastInvestmentTransaction.WJXBFS4_Balance))) : "0")));
+                            InvestmentAccountDetailHtml.Replace("{{BalanceOfLastTransactionDate}}", (LastInvestmentTransaction.WJXBFS4_Balance == "0" ? "-" : (decimal.TryParse(LastInvestmentTransaction.WJXBFS4_Balance, out res) ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, (Convert.ToDecimal(LastInvestmentTransaction.WJXBFS4_Balance))) : "0")));
                         }
                         else
                         {
@@ -2244,7 +2252,7 @@ namespace nIS
                         res = 0.0m;
                         if (decimal.TryParse(trans.WJXBFS2_Debit, out res))
                         {
-                            tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS2_Debit == "0" ? "-" : utility.CurrencyFormatting("en-ZA", ".", "C", (Convert.ToDecimal(trans.WJXBFS2_Debit)))) + "</td>");
+                            tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS2_Debit == "0" ? "-" : utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, (Convert.ToDecimal(trans.WJXBFS2_Debit)))) + "</td>");
                         }
                         else
                         {
@@ -2254,7 +2262,7 @@ namespace nIS
                         res = 0.0m;
                         if (decimal.TryParse(trans.WJXBFS3_Credit, out res))
                         {
-                            tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS3_Credit == "0" ? "-" : utility.CurrencyFormatting("en-ZA", ".", "C", (Convert.ToDecimal(trans.WJXBFS3_Credit)))) + "</td>");
+                            tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS3_Credit == "0" ? "-" : utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, (Convert.ToDecimal(trans.WJXBFS3_Credit)))) + "</td>");
                         }
                         else
                         {
@@ -2264,7 +2272,7 @@ namespace nIS
                         res = 0.0m;
                         if (decimal.TryParse(trans.WJXBFS4_Balance, out res))
                         {
-                            tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS4_Balance == "0" ? "-" : utility.CurrencyFormatting("en-ZA", ".", "C", (Convert.ToDecimal(trans.WJXBFS4_Balance)))) + "</td>");
+                            tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS4_Balance == "0" ? "-" : utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, (Convert.ToDecimal(trans.WJXBFS4_Balance)))) + "</td>");
                         }
                         else
                         {
@@ -3045,162 +3053,162 @@ namespace nIS
                             }
                         }
 
-                        //var LoanSummaryForTaxPurposesHtml = new StringBuilder(HtmlConstants.HOME_LOAN_SERVICE_FOR_TAX_PURPOSES_DIV_HTML);
-                        //var LoanInstalmentHtml = new StringBuilder(HtmlConstants.HOME_LOAN_INSTALMENT_DETAILS_DIV_HTML);
-                        //var HomeLoanSummary = HomeLoan.LoanSummary;
-                        //if (HomeLoanSummary != null)
-                        //{
-                        //    #region Summary for Tax purposes div
-                        //    res = 0.0m;
-                        //    if (!string.IsNullOrEmpty(HomeLoanSummary.Annual_Interest) && decimal.TryParse(HomeLoanSummary.Annual_Interest, out res))
-                        //    {
-                        //        LoanSummaryForTaxPurposesHtml.Replace("{{AnnualInterest}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
-                        //    }
-                        //    else
-                        //    {
-                        //        LoanSummaryForTaxPurposesHtml.Replace("{{AnnualInterest}}", "R0.00");
-                        //    }
+                //var LoanSummaryForTaxPurposesHtml = new StringBuilder(HtmlConstants.HOME_LOAN_SERVICE_FOR_TAX_PURPOSES_DIV_HTML);
+                //var LoanInstalmentHtml = new StringBuilder(HtmlConstants.HOME_LOAN_INSTALMENT_DETAILS_DIV_HTML);
+                //var HomeLoanSummary = HomeLoan.LoanSummary;
+                //if (HomeLoanSummary != null)
+                //{
+                //    #region Summary for Tax purposes div
+                //    res = 0.0m;
+                //    if (!string.IsNullOrEmpty(HomeLoanSummary.Annual_Interest) && decimal.TryParse(HomeLoanSummary.Annual_Interest, out res))
+                //    {
+                //        LoanSummaryForTaxPurposesHtml.Replace("{{AnnualInterest}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                //    }
+                //    else
+                //    {
+                //        LoanSummaryForTaxPurposesHtml.Replace("{{AnnualInterest}}", "R0.00");
+                //    }
 
-                        //    res = 0.0m;
-                        //    if (!string.IsNullOrEmpty(HomeLoanSummary.Annual_Insurance) && decimal.TryParse(HomeLoanSummary.Annual_Insurance, out res))
-                        //    {
-                        //        LoanSummaryForTaxPurposesHtml.Replace("{{AnnualInsurance}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
-                        //    }
-                        //    else
-                        //    {
-                        //        LoanSummaryForTaxPurposesHtml.Replace("{{AnnualInsurance}}", "R0.00");
-                        //    }
+                //    res = 0.0m;
+                //    if (!string.IsNullOrEmpty(HomeLoanSummary.Annual_Insurance) && decimal.TryParse(HomeLoanSummary.Annual_Insurance, out res))
+                //    {
+                //        LoanSummaryForTaxPurposesHtml.Replace("{{AnnualInsurance}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                //    }
+                //    else
+                //    {
+                //        LoanSummaryForTaxPurposesHtml.Replace("{{AnnualInsurance}}", "R0.00");
+                //    }
 
-                        //    res = 0.0m;
-                        //    if (!string.IsNullOrEmpty(HomeLoanSummary.Annual_Service_Fee) && decimal.TryParse(HomeLoanSummary.Annual_Service_Fee, out res))
-                        //    {
-                        //        LoanSummaryForTaxPurposesHtml.Replace("{{AnnualServiceFee}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
-                        //    }
-                        //    else
-                        //    {
-                        //        LoanSummaryForTaxPurposesHtml.Replace("{{AnnualServiceFee}}", "R0.00");
-                        //    }
+                //    res = 0.0m;
+                //    if (!string.IsNullOrEmpty(HomeLoanSummary.Annual_Service_Fee) && decimal.TryParse(HomeLoanSummary.Annual_Service_Fee, out res))
+                //    {
+                //        LoanSummaryForTaxPurposesHtml.Replace("{{AnnualServiceFee}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                //    }
+                //    else
+                //    {
+                //        LoanSummaryForTaxPurposesHtml.Replace("{{AnnualServiceFee}}", "R0.00");
+                //    }
 
-                        //    res = 0.0m;
-                        //    if (!string.IsNullOrEmpty(HomeLoanSummary.Annual_Legal_Costs) && decimal.TryParse(HomeLoanSummary.Annual_Legal_Costs, out res))
-                        //    {
-                        //        LoanSummaryForTaxPurposesHtml.Replace("{{AnnualLegalCosts}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
-                        //    }
-                        //    else
-                        //    {
-                        //        LoanSummaryForTaxPurposesHtml.Replace("{{AnnualLegalCosts}}", "R0.00");
-                        //    }
+                //    res = 0.0m;
+                //    if (!string.IsNullOrEmpty(HomeLoanSummary.Annual_Legal_Costs) && decimal.TryParse(HomeLoanSummary.Annual_Legal_Costs, out res))
+                //    {
+                //        LoanSummaryForTaxPurposesHtml.Replace("{{AnnualLegalCosts}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                //    }
+                //    else
+                //    {
+                //        LoanSummaryForTaxPurposesHtml.Replace("{{AnnualLegalCosts}}", "R0.00");
+                //    }
 
-                        //    res = 0.0m;
-                        //    if (!string.IsNullOrEmpty(HomeLoanSummary.Annual_Total_Recvd) && decimal.TryParse(HomeLoanSummary.Annual_Total_Recvd, out res))
-                        //    {
-                        //        LoanSummaryForTaxPurposesHtml.Replace("{{AnnualTotalAmountReceived}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
-                        //    }
-                        //    else
-                        //    {
-                        //        LoanSummaryForTaxPurposesHtml.Replace("{{AnnualTotalAmountReceived}}", "R0.00");
-                        //    }
+                //    res = 0.0m;
+                //    if (!string.IsNullOrEmpty(HomeLoanSummary.Annual_Total_Recvd) && decimal.TryParse(HomeLoanSummary.Annual_Total_Recvd, out res))
+                //    {
+                //        LoanSummaryForTaxPurposesHtml.Replace("{{AnnualTotalAmountReceived}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                //    }
+                //    else
+                //    {
+                //        LoanSummaryForTaxPurposesHtml.Replace("{{AnnualTotalAmountReceived}}", "R0.00");
+                //    }
 
-                        //    #endregion
+                //    #endregion
 
-                        //    #region Installment details div
+                //    #region Installment details div
 
-                        //    res = 0.0m;
-                        //    if (!string.IsNullOrEmpty(HomeLoanSummary.Basic_Instalment) && decimal.TryParse(HomeLoanSummary.Basic_Instalment, out res))
-                        //    {
-                        //        LoanInstalmentHtml.Replace("{{BasicInstalment}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
-                        //    }
-                        //    else
-                        //    {
-                        //        LoanInstalmentHtml.Replace("{{BasicInstalment}}", "R0.00");
-                        //    }
+                //    res = 0.0m;
+                //    if (!string.IsNullOrEmpty(HomeLoanSummary.Basic_Instalment) && decimal.TryParse(HomeLoanSummary.Basic_Instalment, out res))
+                //    {
+                //        LoanInstalmentHtml.Replace("{{BasicInstalment}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                //    }
+                //    else
+                //    {
+                //        LoanInstalmentHtml.Replace("{{BasicInstalment}}", "R0.00");
+                //    }
 
-                        //    res = 0.0m;
-                        //    if (!string.IsNullOrEmpty(HomeLoanSummary.Houseowner_Ins) && decimal.TryParse(HomeLoanSummary.Houseowner_Ins, out res))
-                        //    {
-                        //        LoanInstalmentHtml.Replace("{{HouseownerInsurance}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
-                        //    }
-                        //    else
-                        //    {
-                        //        LoanInstalmentHtml.Replace("{{HouseownerInsurance}}", "R0.00");
-                        //    }
+                //    res = 0.0m;
+                //    if (!string.IsNullOrEmpty(HomeLoanSummary.Houseowner_Ins) && decimal.TryParse(HomeLoanSummary.Houseowner_Ins, out res))
+                //    {
+                //        LoanInstalmentHtml.Replace("{{HouseownerInsurance}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                //    }
+                //    else
+                //    {
+                //        LoanInstalmentHtml.Replace("{{HouseownerInsurance}}", "R0.00");
+                //    }
 
-                        //    res = 0.0m;
-                        //    if (!string.IsNullOrEmpty(HomeLoanSummary.Loan_Protection) && decimal.TryParse(HomeLoanSummary.Loan_Protection, out res))
-                        //    {
-                        //        LoanInstalmentHtml.Replace("{{LoanProtectionAssurance}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
-                        //    }
-                        //    else
-                        //    {
-                        //        LoanInstalmentHtml.Replace("{{LoanProtectionAssurance}}", "R0.00");
-                        //    }
+                //    res = 0.0m;
+                //    if (!string.IsNullOrEmpty(HomeLoanSummary.Loan_Protection) && decimal.TryParse(HomeLoanSummary.Loan_Protection, out res))
+                //    {
+                //        LoanInstalmentHtml.Replace("{{LoanProtectionAssurance}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                //    }
+                //    else
+                //    {
+                //        LoanInstalmentHtml.Replace("{{LoanProtectionAssurance}}", "R0.00");
+                //    }
 
-                        //    res = 0.0m;
-                        //    if (!string.IsNullOrEmpty(HomeLoanSummary.Recovery_Fee_Debit) && decimal.TryParse(HomeLoanSummary.Recovery_Fee_Debit, out res))
-                        //    {
-                        //        LoanInstalmentHtml.Replace("{{RecoveryOfFeeDebits}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
-                        //    }
-                        //    else
-                        //    {
-                        //        LoanInstalmentHtml.Replace("{{RecoveryOfFeeDebits}}", "R0.00");
-                        //    }
+                //    res = 0.0m;
+                //    if (!string.IsNullOrEmpty(HomeLoanSummary.Recovery_Fee_Debit) && decimal.TryParse(HomeLoanSummary.Recovery_Fee_Debit, out res))
+                //    {
+                //        LoanInstalmentHtml.Replace("{{RecoveryOfFeeDebits}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                //    }
+                //    else
+                //    {
+                //        LoanInstalmentHtml.Replace("{{RecoveryOfFeeDebits}}", "R0.00");
+                //    }
 
-                        //    res = 0.0m;
-                        //    if (!string.IsNullOrEmpty(HomeLoanSummary.Capital_Redemption) && decimal.TryParse(HomeLoanSummary.Capital_Redemption, out res))
-                        //    {
-                        //        LoanInstalmentHtml.Replace("{{CapitalRedemption}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
-                        //    }
-                        //    else
-                        //    {
-                        //        LoanInstalmentHtml.Replace("{{CapitalRedemption}}", "R0.00");
-                        //    }
+                //    res = 0.0m;
+                //    if (!string.IsNullOrEmpty(HomeLoanSummary.Capital_Redemption) && decimal.TryParse(HomeLoanSummary.Capital_Redemption, out res))
+                //    {
+                //        LoanInstalmentHtml.Replace("{{CapitalRedemption}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                //    }
+                //    else
+                //    {
+                //        LoanInstalmentHtml.Replace("{{CapitalRedemption}}", "R0.00");
+                //    }
 
-                        //    res = 0.0m;
-                        //    if (!string.IsNullOrEmpty(HomeLoanSummary.Service_Fee) && decimal.TryParse(HomeLoanSummary.Service_Fee, out res))
-                        //    {
-                        //        LoanInstalmentHtml.Replace("{{ServiceFee}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
-                        //    }
-                        //    else
-                        //    {
-                        //        LoanInstalmentHtml.Replace("{{ServiceFee}}", "R0.00");
-                        //    }
+                //    res = 0.0m;
+                //    if (!string.IsNullOrEmpty(HomeLoanSummary.Service_Fee) && decimal.TryParse(HomeLoanSummary.Service_Fee, out res))
+                //    {
+                //        LoanInstalmentHtml.Replace("{{ServiceFee}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                //    }
+                //    else
+                //    {
+                //        LoanInstalmentHtml.Replace("{{ServiceFee}}", "R0.00");
+                //    }
 
-                        //    res = 0.0m;
-                        //    if (!string.IsNullOrEmpty(HomeLoanSummary.Total_Instalment) && decimal.TryParse(HomeLoanSummary.Total_Instalment, out res))
-                        //    {
-                        //        LoanInstalmentHtml.Replace("{{TotalInstalment}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
-                        //    }
-                        //    else
-                        //    {
-                        //        LoanInstalmentHtml.Replace("{{TotalInstalment}}", "R0.00");
-                        //    }
+                //    res = 0.0m;
+                //    if (!string.IsNullOrEmpty(HomeLoanSummary.Total_Instalment) && decimal.TryParse(HomeLoanSummary.Total_Instalment, out res))
+                //    {
+                //        LoanInstalmentHtml.Replace("{{TotalInstalment}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                //    }
+                //    else
+                //    {
+                //        LoanInstalmentHtml.Replace("{{TotalInstalment}}", "R0.00");
+                //    }
 
-                        //    LoanInstalmentHtml.Replace("{{InstalmentDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
+                //    LoanInstalmentHtml.Replace("{{InstalmentDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
 
-                        //    #endregion
-                        //}
-                        //else
-                        //{
-                        //    LoanSummaryForTaxPurposesHtml.Replace("{{AnnualInterest}}", "R0.00");
-                        //    LoanSummaryForTaxPurposesHtml.Replace("{{AnnualInsurance}}", "R0.00");
-                        //    LoanSummaryForTaxPurposesHtml.Replace("{{AnnualServiceFee}}", "R0.00");
-                        //    LoanSummaryForTaxPurposesHtml.Replace("{{AnnualLegalCosts}}", "R0.00");
-                        //    LoanSummaryForTaxPurposesHtml.Replace("{{AnnualTotalAmountReceived}}", "R0.00");
+                //    #endregion
+                //}
+                //else
+                //{
+                //    LoanSummaryForTaxPurposesHtml.Replace("{{AnnualInterest}}", "R0.00");
+                //    LoanSummaryForTaxPurposesHtml.Replace("{{AnnualInsurance}}", "R0.00");
+                //    LoanSummaryForTaxPurposesHtml.Replace("{{AnnualServiceFee}}", "R0.00");
+                //    LoanSummaryForTaxPurposesHtml.Replace("{{AnnualLegalCosts}}", "R0.00");
+                //    LoanSummaryForTaxPurposesHtml.Replace("{{AnnualTotalAmountReceived}}", "R0.00");
 
-                        //    LoanInstalmentHtml.Replace("{{BasicInstalment}}", "R0.00");
-                        //    LoanInstalmentHtml.Replace("{{HouseownerInsurance}}", "R0.00");
-                        //    LoanInstalmentHtml.Replace("{{LoanProtectionAssurance}}", "R0.00");
-                        //    LoanInstalmentHtml.Replace("{{RecoveryOfFeeDebits}}", "R0.00");
-                        //    LoanInstalmentHtml.Replace("{{CapitalRedemption}}", "R0.00");
-                        //    LoanInstalmentHtml.Replace("{{ServiceFee}}", "R0.00");
-                        //    LoanInstalmentHtml.Replace("{{TotalInstalment}}", "R0.00");
-                        //    LoanInstalmentHtml.Replace("{{InstalmentDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
-                        //}
+                //    LoanInstalmentHtml.Replace("{{BasicInstalment}}", "R0.00");
+                //    LoanInstalmentHtml.Replace("{{HouseownerInsurance}}", "R0.00");
+                //    LoanInstalmentHtml.Replace("{{LoanProtectionAssurance}}", "R0.00");
+                //    LoanInstalmentHtml.Replace("{{RecoveryOfFeeDebits}}", "R0.00");
+                //    LoanInstalmentHtml.Replace("{{CapitalRedemption}}", "R0.00");
+                //    LoanInstalmentHtml.Replace("{{ServiceFee}}", "R0.00");
+                //    LoanInstalmentHtml.Replace("{{TotalInstalment}}", "R0.00");
+                //    LoanInstalmentHtml.Replace("{{InstalmentDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
+                //}
 
-                        //TabContentHtml.Append(LoanSummaryForTaxPurposesHtml.ToString());
-                        //TabContentHtml.Append(LoanInstalmentHtml.ToString());
+                //TabContentHtml.Append(LoanSummaryForTaxPurposesHtml.ToString());
+                //TabContentHtml.Append(LoanInstalmentHtml.ToString());
 
-                        TabContentHtml.Append(HtmlConstants.END_DIV_TAG);
+                TabContentHtml.Append(HtmlConstants.END_DIV_TAG);
                         counter++;
                     });
 
