@@ -95,7 +95,7 @@
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    return nISEntitiesDataContext.ProductPageTypeMappings.Join(nISEntitiesDataContext.PageTypeRecords, ppt => ppt.ProductId, pt => pt.Id, 
+                    return nISEntitiesDataContext.ProductPageTypeMappings.Join(nISEntitiesDataContext.PageTypeRecords, ppt => ppt.PageTypeId, pt => pt.Id, 
                         (ppt, pt) => new ProductPageTypeMappingViewModel()
                         {
                             ProductId = ppt.ProductId,

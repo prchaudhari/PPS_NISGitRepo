@@ -157,6 +157,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="ProductManager.cs" />
     <Compile Include="StateManager.cs" />
     <Compile Include="StatementSearchManager.cs" />
     <Compile Include="SystemActivityHistoryManager.cs" />
