@@ -74,6 +74,8 @@ namespace nIS
         /// </summary>
         private readonly ICryptoManager cryptoManager;
 
+        private IProductRepository productRepository = null;
+
         #endregion
 
         #region Constructor
@@ -92,6 +94,7 @@ namespace nIS
             this.tenantConfigurationRepository = this.unityContainer.Resolve<ITenantConfigurationRepository>();
             this.dynamicWidgetRepository = this.unityContainer.Resolve<IDynamicWidgetRepository>();
             this.cryptoManager = this.unityContainer.Resolve<ICryptoManager>();
+            this.productRepository = this.unityContainer.Resolve<IProductRepository>();
         }
 
         #endregion
@@ -132,10 +135,12 @@ namespace nIS
 
                     var startDateTime = schedule.StartDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
                     var endDateTime = schedule.EndDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
+                    var productType = productRepository.Get_ProductById(schedule.ProductId, tenantCode);
+                    var randomNumber = Guid.NewGuid().ToString().Split('-')[0];
 
                     scheduleRecords.Add(new ScheduleRecord()
                     {
-                        ProductBatchName = schedule.ProductBatchName,
+                        ProductBatchName = $"{schedule.Name}_{productType}_{randomNumber}",
                         Name = schedule.Name,
                         Description = schedule.Description,
                         DayOfMonth = schedule.DayOfMonth,
@@ -258,10 +263,12 @@ namespace nIS
 
                     var startDateTime = schedule.StartDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
                     var endDateTime = schedule.EndDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
+                    var productType = productRepository.Get_ProductById(schedule.ProductId, tenantCode);
+                    var randomNumber = Guid.NewGuid().ToString().Split('-')[0];
 
                     scheduleRecords.Add(new ScheduleRecord()
                     {
-                        ProductBatchName = schedule.ProductBatchName,
+                        ProductBatchName = $"{schedule.Name}_{productType}_{randomNumber}",
                         Name = schedule.Name,
                         Description = schedule.Description,
                         DayOfMonth = schedule.DayOfMonth,
@@ -401,7 +408,6 @@ namespace nIS
                         var endDateTime = item.EndDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
 
                         ScheduleRecord scheduleRecord = scheduleRecords.FirstOrDefault(data => data.Id == item.Identifier && data.TenantCode == tenantCode && data.IsDeleted == false);
-                        scheduleRecord.ProductBatchName = item.ProductBatchName;
                         scheduleRecord.Name = item.Name;
                         scheduleRecord.Description = item.Description;
                         scheduleRecord.DayOfMonth = item.DayOfMonth;
@@ -560,7 +566,6 @@ namespace nIS
                         var startDateTime = item.StartDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
                         var endDateTime = item.EndDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
                         ScheduleRecord scheduleRecord = scheduleRecords.FirstOrDefault(data => data.Id == item.Identifier && data.TenantCode == tenantCode && data.IsDeleted == false);
-                        scheduleRecord.ProductBatchName = item.ProductBatchName;
                         scheduleRecord.Name = item.Name;
                         scheduleRecord.Description = item.Description;
                         scheduleRecord.DayOfMonth = item.DayOfMonth;

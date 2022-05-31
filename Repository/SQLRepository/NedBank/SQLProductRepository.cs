@@ -2,6 +2,7 @@
 {
     #region References
     using Newtonsoft.Json;
+    using nIS.NedBank;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -60,10 +61,11 @@
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    return nISEntitiesDataContext.Products.Select(x=> new ProductViewModel() { 
+                    return nISEntitiesDataContext.Products.Select(x => new ProductViewModel()
+                    {
                         Id = x.Id,
                         Name = x.Name
-                    }).OrderBy(m => m.Name).ToList();                    
+                    }).OrderBy(m => m.Name).ToList();
                 }
             }
             catch (Exception ex)
@@ -79,7 +81,7 @@
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    return nISEntitiesDataContext.Products.Where(m=>m.Id == id).Select(x=> new ProductViewModel() { Id = x.Id, Name=x.Name }).FirstOrDefault();
+                    return nISEntitiesDataContext.Products.Where(m => m.Id == id).Select(x => new ProductViewModel() { Id = x.Id, Name = x.Name }).FirstOrDefault();
                 }
             }
             catch (Exception ex)
@@ -95,14 +97,30 @@
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    return nISEntitiesDataContext.ProductPageTypeMappings.Join(nISEntitiesDataContext.PageTypeRecords, ppt => ppt.PageTypeId, pt => pt.Id, 
+                    var result = nISEntitiesDataContext.ProductPageTypeMappings.Join(nISEntitiesDataContext.PageTypeRecords, ppt => ppt.PageTypeId, pt => pt.Id,
                         (ppt, pt) => new ProductPageTypeMappingViewModel()
                         {
                             ProductId = ppt.ProductId,
                             PageTypeId = ppt.PageTypeId,
                             PageTypeName = pt.Name
                         }
-                    ).Where(m=>m.ProductId == productId).ToList();
+                    ).Where(m => m.ProductId == productId).ToList();
+
+                    foreach (var item in result)
+                    {
+                        var statementViewModel = (from spm in nISEntitiesDataContext.StatementPageMapRecords
+                                                  join pr in nISEntitiesDataContext.PageRecords on spm.ReferencePageId equals pr.Id
+                                                  join ppt in nISEntitiesDataContext.ProductPageTypeMappings on pr.PageTypeId equals ppt.PageTypeId
+                                                  join st in nISEntitiesDataContext.StatementRecords on spm.StatementId equals st.Id
+                                                  where ppt.PageTypeId == item.PageTypeId && st.IsDeleted == false && st.IsActive == true
+                                                  select new StatementViewModel
+                                                  {
+                                                      Id = st.Id,
+                                                      StatementName = st.Name
+                                                  }).ToList();
+                        item.StatementViewModel = statementViewModel;
+                    }
+                    return result;
                 }
             }
             catch (Exception ex)

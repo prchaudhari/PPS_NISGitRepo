@@ -107,6 +107,11 @@ namespace nIS
         /// </summary>
         private IValidationEngine validationEngine = new ValidationEngine();
 
+        /// <summary>
+        /// The product id
+        /// </summary>
+        private int productId;
+
         #endregion
 
         #region public members
@@ -471,6 +476,25 @@ namespace nIS
         /// The tenant code.
         /// </value>
         public string TenantCode { get; set; }
+
+        /// <summary>
+        /// Gets or sets user Product Id.
+        /// </summary>
+        /// <value>
+        /// The product id.
+        /// </value>
+        [Description("Product Id")]
+        public int ProductId
+        {
+            get
+            {
+                return this.productId;
+            }
+            set
+            {
+                this.productId = value;
+            }
+        }
         #endregion
 
         #region Public Methods
