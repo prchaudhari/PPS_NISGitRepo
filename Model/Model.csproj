@@ -111,6 +111,7 @@
     <Compile Include="NedBank\InvestorPerformance.cs" />
     <Compile Include="NedBank\ProductViewModel.cs" />
     <Compile Include="NedBank\ProductPageTypeMappingViewModel.cs" />
+    <Compile Include="NedBank\StatementViewModel.cs" />
     <Compile Include="Page.cs" />
     <Compile Include="PageWidget.cs" />
     <Compile Include="PageWidgetVistorData.cs" />

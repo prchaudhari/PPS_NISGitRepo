@@ -9,6 +9,7 @@
 
 namespace nIS
 {
+    using nIS.NedBank;
     using System;
     using System.Collections.Generic;
     
@@ -17,5 +18,6 @@ namespace nIS
         public int ProductId { get; set; }
         public int PageTypeId { get; set; }
         public string PageTypeName { get; set; }
+        public IList<StatementViewModel> StatementViewModel { get; set; }
     }
 }
