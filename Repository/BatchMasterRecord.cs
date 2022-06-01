@@ -25,5 +25,6 @@ namespace nIS
         public System.DateTime DataExtractionDate { get; set; }
         public System.DateTime BatchExecutionDate { get; set; }
         public string Status { get; set; }
+        public string LanguageCode { get; set; }
     }
 }

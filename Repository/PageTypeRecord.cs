@@ -20,5 +20,7 @@ namespace nIS
         public string TenantCode { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsActive { get; set; }
+        public string HeaderHTML { get; set; }
+        public string FooterHTML { get; set; }
     }
 }

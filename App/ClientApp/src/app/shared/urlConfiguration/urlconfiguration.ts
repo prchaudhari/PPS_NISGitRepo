@@ -89,6 +89,9 @@ export class URLConfiguration {
   //Logout user--
   public static get logoutUrl(): string { return "Login/Logout" };
 
+  // Products
+    public static get productGetUrl(): string { return "Product/GetProducts" };
+    
   public static get assetLibraryGetUrl(): string { return "AssetLibrary/List" };
   public static get assetLibraryAddUrl(): string { return "AssetLibrary/Add" };
   public static get assetLibraryUpdateUrl(): string { return "AssetLibrary/Update" };
@@ -96,6 +99,8 @@ export class URLConfiguration {
   public static get assetLibraryCheckIsDependencyUrl(): string { return "AssetLibrary/IsDeleteDependency" };
 
   public static get assetGetUrl(): string { return "assetlibrary/asset/list" };
+
+  public static get segmentGetUrl(): string { return "NB_SegmentMaster/GetNB_SegmentMaster?tenantCode=94461633-b316-42c3-a188-db8d78075ef4" };
 
   //Page Url Method
   public static get pageGetUrl(): string { return "Page/List" };

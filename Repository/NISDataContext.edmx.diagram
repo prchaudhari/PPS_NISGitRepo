@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="c1069f61c65f4122baff73cf7aa4c8bb" Name="Diagram1" >
+      <Diagram DiagramId="c1069f61c65f4122baff73cf7aa4c8bb" Name="Diagram1" ZoomLevel="71" >
         <EntityTypeShape EntityType="NISModel.UserRecord" Width="1.625" PointX="0.75" PointY="0.75" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.UserCredentialHistoryRecord" Width="1.625" PointX="0.75" PointY="1.375" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.UserLoginRecord" Width="1.625" PointX="0.75" PointY="2" IsExpanded="false" />
@@ -17,9 +17,9 @@
         <EntityTypeShape EntityType="NISModel.PageRecord" Width="1.75" PointX="2.75" PointY="3.25" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.PageTypeRecord" Width="1.75" PointX="4.875" PointY="1.375" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.PageWidgetMapRecord" Width="1.75" PointX="4.875" PointY="2" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.ScheduleRecord" Width="1.75" PointX="7" PointY="2" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.ScheduleRecord" Width="1.75" PointX="11.875" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NISModel.StatementRecord" Width="1.75" PointX="7" PointY="0.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.StatementPageMapRecord" Width="1.75" PointX="7" PointY="1.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.StatementPageMapRecord" Width="1.75" PointX="11.375" PointY="11.75" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.TenantRecord" Width="1.75" PointX="7" PointY="2.625" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.RoleRecord" Width="1.75" PointX="2.75" PointY="0.75" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.CityRecord" Width="1.625" PointX="0.75" PointY="3.875" IsExpanded="false" />
@@ -38,11 +38,9 @@
         <EntityTypeShape EntityType="NISModel.Top4IncomeSourcesRecord" Width="1.5" PointX="4.875" PointY="6" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.TransactionDetailRecord" Width="1.5" PointX="4.875" PointY="4.5" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.AccountMasterRecord" Width="1.5" PointX="2.75" PointY="5.25" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.TenantConfigurationRecord" Width="1.5" PointX="0.75" PointY="6.5" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.BatchMasterRecord" Width="1.5" PointX="9" PointY="4.5" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.AnalyticsDataRecord" Width="1.5" PointX="6.75" PointY="6.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.View_ScheduleRecord" Width="1.5" PointX="2.75" PointY="7.375" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.View_UserRecord" Width="1.5" PointX="8.625" PointY="6" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.View_ScheduleRecord" Width="1.5" PointX="14.5" PointY="3.875" IsExpanded="true" />
         <EntityTypeShape EntityType="NISModel.View_PageRecord" PointX="0.75" PointY="7.375" Width="1.625" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.View_StatementDefinitionRecord" Width="1.5" PointX="6.75" PointY="7.375" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.View_SourceDataRecord" Width="1.5" PointX="4.875" PointY="7.375" IsExpanded="false" />
@@ -69,7 +67,59 @@
         <EntityTypeShape EntityType="NISModel.TenantSecurityCodeFormatRecord" Width="1.5" PointX="6.875" PointY="5.25" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.View_StatementMetadataRecord" Width="1.5" PointX="9" PointY="1.875" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.View_ScheduleLog" Width="1.5" PointX="0.75" PointY="8.125" IsExpanded="false" />
-      </Diagram>
+        <EntityTypeShape EntityType="NISModel.View_UserRecord" Width="1.5" PointX="8.75" PointY="5.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.TenantConfigurationRecord" Width="1.5" PointX="0.875" PointY="6.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_BranchMasterRecord" Width="1.5" PointX="0.75" PointY="10.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_CustomerMasterRecord" Width="1.5" PointX="4.5" PointY="13.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NISModel.DM_ExplanatoryNotesRecord" Width="1.5" PointX="4.75" PointY="10.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_InvestmentMasterRecord" Width="1.5" PointX="6.75" PointY="10.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_InvestmentTransactionRecord" Width="1.5" PointX="8.625" PointY="10.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_PersonalLoanArrearsRecord" Width="1.5" PointX="2.75" PointY="9.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_PersonalLoanMasterRecord" Width="1.5" PointX="6.75" PointY="9.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_PersonalLoanTransactionRecord" Width="1.5" PointX="8.625" PointY="9.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_SpecialMessagesRecord" Width="1.5" PointX="4.875" PointY="9.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_HomeLoanArrearsRecord" Width="1.5" PointX="6.75" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NISModel.DM_HomeLoanMasterRecord" Width="1.5" PointX="0.75" PointY="11.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_HomeLoanSummaryRecord" Width="1.5" PointX="2.75" PointY="11.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_HomeLoanTransactionRecord" Width="1.5" PointX="4.75" PointY="11.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_MarketingMessagesRecord" Width="1.5" PointX="0.75" PointY="9.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_AccountAnalysisRecord" Width="1.5" PointX="8.625" PointY="11.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_AccountSummaryRecord" Width="1.5" PointX="0.75" PointY="12.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_CustomerNewsAndAlertsRecord" Width="1.5" PointX="2.75" PointY="12.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_CustomerProductWiseRewardPointsRecord" Width="1.5" PointX="4.75" PointY="12.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_CustomerReminderRecosRecord" Width="1.5" PointX="6.75" PointY="12.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_CustomerRewardPointsRecord" Width="1.5" PointX="8.75" PointY="12.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_CustomerRewardPointsRedeemedRecord" Width="1.5" PointX="0.75" PointY="11.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_CustomerRewardSpendByCategoryRecord" Width="1.5" PointX="2.75" PointY="11.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_GreenbacksMasterRecord" Width="1.5" PointX="8.75" PointY="11.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_NewsAndAlertsRecord" Width="1.5" PointX="4.75" PointY="11.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_ReminderRecosRecord" Width="1.5" PointX="6.75" PointY="11.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.SystemActivityHistoryRecord" Width="1.5" PointX="9.125" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.NB_BatchMaster_Source" Width="1.5" PointX="11.75" PointY="7.75" />
+        <EntityTypeShape EntityType="NISModel.NB_BranchMaster" Width="1.5" PointX="0.75" PointY="14.75" />
+        <EntityTypeShape EntityType="NISModel.NB_BranchMaster_Old" Width="1.5" PointX="7.75" PointY="14.75" />
+        <EntityTypeShape EntityType="NISModel.NB_Investment_Source" Width="1.5" PointX="18.75" PointY="0.75" />
+        <EntityTypeShape EntityType="NISModel.NB_InvestmentMaster_Old" Width="1.5" PointX="0.75" PointY="18.75" />
+        <EntityTypeShape EntityType="NISModel.NB_InvestmentTransaction_Old" Width="1.5" PointX="13.75" PointY="18.75" />
+        <EntityTypeShape EntityType="NISModel.NB_SegmentMaster" Width="1.5" PointX="14" PointY="13" />
+        <EntityTypeShape EntityType="NISModel.NB_SegmentTypeMaster" Width="1.5" PointX="11.75" PointY="13.375" />
+        <EntityTypeShape EntityType="NISModel.NB_ServiceMessagesAndContacts" Width="1.5" PointX="15.75" PointY="18.75" />
+        <AssociationConnector Association="NISModel.FK__NB_Segmen__Segme__28D80438" />
+        <EntityTypeShape EntityType="NISModel.NB_HomeLoanArrears" Width="1.5" PointX="7.375" PointY="18.75" />
+        <EntityTypeShape EntityType="NISModel.NB_HomeLoanMaster" Width="1.5" PointX="18.375" PointY="18.75" />
+        <EntityTypeShape EntityType="NISModel.NB_HomeLoanSummary" Width="1.5" PointX="3.375" PointY="19.75" />
+        <EntityTypeShape EntityType="NISModel.NB_HomeLoanTransaction" Width="1.5" PointX="20.375" PointY="18.75" />
+        <EntityTypeShape EntityType="NISModel.NB_CorporateSaverMaster" Width="6.625" PointX="9.375" PointY="21.75" />
+        <EntityTypeShape EntityType="NISModel.NB_CorporateSaverTax" Width="1.5" PointX="21.375" PointY="10.75" />
+        <EntityTypeShape EntityType="NISModel.NB_CorporateSaverTransactions" Width="1.5" PointX="5.375" PointY="22.75" />
+        <EntityTypeShape EntityType="NISModel.NB_MCATransaction" Width="1.5" PointX="21.375" PointY="5.75" />
+        <EntityTypeShape EntityType="NISModel.NB_MCAMaster" Width="1.5" PointX="21.375" PointY="0.75" />
+        <EntityTypeShape EntityType="NISModel.NB_CustomerMaster" Width="1.5" PointX="10.375" PointY="15.75" />
+        <EntityTypeShape EntityType="NISModel.ProductPageTypeMapping" Width="1.5" PointX="14.375" PointY="0.75" />
+        <EntityTypeShape EntityType="NISModel.Product" Width="1.5" PointX="22.375" PointY="16.75" />
+        <EntityTypeShape EntityType="NISModel.NB_InvestmentMaster" Width="1.5" PointX="22.375" PointY="19.75" />
+        <EntityTypeShape EntityType="NISModel.NB_InvestmentTransaction" Width="1.5" PointX="16.375" PointY="13.75" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

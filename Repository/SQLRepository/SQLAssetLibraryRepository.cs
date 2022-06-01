@@ -15,6 +15,7 @@ namespace nIS
     using System.IO;
     using System.Linq;
     using System.Linq.Dynamic;
+    using System.Security.Claims;
     using System.Text;
     using Unity;
 
@@ -85,6 +86,11 @@ namespace nIS
             bool result = false;
             try
             {
+                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                int userId;
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+                var userFullName = claims?.FirstOrDefault(x => x.Type.Equals("UserFullName", StringComparison.OrdinalIgnoreCase)).Value;
+
                 this.SetAndValidateConnectionString(tenantCode);
 
                 if (this.IsDuplicateAssetLibraries(assetLibraries, "AddOperation", tenantCode))
@@ -92,6 +98,7 @@ namespace nIS
                     throw new DuplicateAssetLibraryException(tenantCode);
                 }
                 IList<AssetLibraryRecord> assetLibraryRecords = new List<AssetLibraryRecord>();
+                IList<SystemActivityHistoryRecord> Records = new List<SystemActivityHistoryRecord>();
 
                 assetLibraries.ToList().ForEach(assetLibrary =>
                 {
@@ -109,16 +116,34 @@ namespace nIS
                 {
                     nISEntitiesDataContext.AssetLibraryRecords.AddRange(assetLibraryRecords);
                     nISEntitiesDataContext.SaveChanges();
-                    result = true;
+
+                    assetLibraryRecords.ToList().ForEach(it =>
+                    {
+                        Records.Add(new SystemActivityHistoryRecord()
+                        {
+                            Module = ModelConstant.ASSETLIBRARY,
+                            EntityId = it.Id,
+                            EntityName = it.Name,
+                            SubEntityId = null,
+                            SubEntityName = null,
+                            ActionTaken = "Add",
+                            ActionTakenBy = userId,
+                            ActionTakenByUserName = userFullName,
+                            ActionTakenDate = DateTime.Now,
+                            TenantCode = tenantCode
+                        });
+                    });
+
+                    nISEntitiesDataContext.SystemActivityHistoryRecords.AddRange(Records);
+                    nISEntitiesDataContext.SaveChanges();
                 }
 
+                result = true;
             }
-
             catch
             {
                 throw;
             }
-
             return result;
         }
 
@@ -133,6 +158,11 @@ namespace nIS
             bool result = false;
             try
             {
+                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                int userId;
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+                var userFullName = claims?.FirstOrDefault(x => x.Type.Equals("UserFullName", StringComparison.OrdinalIgnoreCase)).Value;
+
                 this.SetAndValidateConnectionString(tenantCode);
 
                 if (this.IsDuplicateAssetLibraries(assetLibraries, "UpdateOperation", tenantCode))
@@ -152,14 +182,30 @@ namespace nIS
                         throw new AssetLibraryNotFoundException(tenantCode);
                     }
 
+                    IList<SystemActivityHistoryRecord> Records = new List<SystemActivityHistoryRecord>();
                     assetLibraries.ToList().ForEach(item =>
                     {
                         AssetLibraryRecord assetLibraryRecord = assetLibraryRecords.FirstOrDefault(data => data.Id == item.Identifier && data.TenantCode == tenantCode && data.IsDeleted == false);
                         assetLibraryRecord.Name = item.Name;
                         assetLibraryRecord.Description = item.Description;
                         assetLibraryRecord.TenantCode = tenantCode;
+
+                        Records.Add(new SystemActivityHistoryRecord()
+                        {
+                            Module = ModelConstant.ASSETLIBRARY,
+                            EntityId = assetLibraryRecord.Id,
+                            EntityName = assetLibraryRecord.Name,
+                            SubEntityId = null,
+                            SubEntityName = null,
+                            ActionTaken = "Update",
+                            ActionTakenBy = userId,
+                            ActionTakenByUserName = userFullName,
+                            ActionTakenDate = DateTime.Now,
+                            TenantCode = tenantCode
+                        });
                     });
 
+                    nISEntitiesDataContext.SystemActivityHistoryRecords.AddRange(Records);
                     nISEntitiesDataContext.SaveChanges();
                     result = true;
                 }
@@ -184,6 +230,11 @@ namespace nIS
             bool result = false;
             try
             {
+                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                int userId;
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+                var userFullName = claims?.FirstOrDefault(x => x.Type.Equals("UserFullName", StringComparison.OrdinalIgnoreCase)).Value;
+
                 this.SetAndValidateConnectionString(tenantCode);
 
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
@@ -216,26 +267,47 @@ namespace nIS
                     assetLibraryIdentifiers.Clear();
                     assetLibraryIdentifiers.Append("(" + string.Join(" or ", assetLibraryRecords.Select(item => string.Format("AssetLibraryId.Equals({0})", item.Id))) + ")");
 
-                    //IList<SceneAssetLibraryMapRecord> sceneAssetLibraryMapRecord = null;
-                    //sceneAssetLibraryMapRecord = nISEntitiesDataContext.SceneAssetLibraryMapRecords.Where(assetLibraryIdentifiers.ToString()).ToList();
-
-                    //if (sceneAssetLibraryMapRecord?.Count > 0)
-                    //{
-                    //    throw new SceneLibraryReferenceException(tenantCode);
-                    //}
-
                     #endregion
 
+                    IList<SystemActivityHistoryRecord> Records = new List<SystemActivityHistoryRecord>();
                     assetLibraryRecords.ToList().ForEach(item =>
                     {
                         item.IsDeleted = true;
+                        Records.Add(new SystemActivityHistoryRecord()
+                        {
+                            Module = ModelConstant.ASSETLIBRARY,
+                            EntityId = item.Id,
+                            EntityName = item.Name,
+                            SubEntityId = null,
+                            SubEntityName = null,
+                            ActionTaken = "Delete",
+                            ActionTakenBy = userId,
+                            ActionTakenByUserName = userFullName,
+                            ActionTakenDate = DateTime.Now,
+                            TenantCode = tenantCode
+                        });
                     });
 
                     assetRecords.ToList().ForEach(item =>
                     {
                         item.IsDeleted = true;
+                        var assetLibRecord = assetLibraryRecords.Where(it => it.Id == item.AssetLibraryId).ToList().FirstOrDefault();
+                        Records.Add(new SystemActivityHistoryRecord()
+                        {
+                            Module = ModelConstant.ASSETS,
+                            EntityId = assetLibRecord.Id,
+                            EntityName = assetLibRecord.Name,
+                            SubEntityId = item.Id,
+                            SubEntityName = item.Name,
+                            ActionTaken = "Delete",
+                            ActionTakenBy = userId,
+                            ActionTakenByUserName = userFullName,
+                            ActionTakenDate = DateTime.Now,
+                            TenantCode = tenantCode
+                        });
                     });
 
+                    nISEntitiesDataContext.SystemActivityHistoryRecords.AddRange(Records);
                     nISEntitiesDataContext.SaveChanges();
                 }
                 result = true;
@@ -387,30 +459,51 @@ namespace nIS
             bool result = false;
             try
             {
-                this.SetAndValidateConnectionString(tenantCode);
+                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                int userId;
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+                var userFullName = claims?.FirstOrDefault(x => x.Type.Equals("UserFullName", StringComparison.OrdinalIgnoreCase)).Value;
 
+                this.SetAndValidateConnectionString(tenantCode);
                 if (this.IsDuplicateAssets(assets, "AddOperation", tenantCode))
                 {
                     throw new DuplicateAssetException(tenantCode);
                 }
                 IList<AssetRecord> assetRecords = new List<AssetRecord>();
-
-                assets.ToList().ForEach(asset =>
-                {
-                    assetRecords.Add(new AssetRecord()
-                    {
-                        Name = asset.Name,
-                        FilePath = asset.FilePath,
-                        AssetLibraryId = asset.AssetLibraryIdentifier,
-                        IsDeleted = false,
-                        LastUpdatedDate = asset.LastUpdatedDate,
-                        LastUpdatedBy = asset.LastUpdatedBy.Identifier
-                    });
-                });
-
+                var Records = new List<SystemActivityHistoryRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    nISEntitiesDataContext.AssetRecords.AddRange(assetRecords);
+                    assets.ToList().ForEach(asset =>
+                    {
+                        var assetrec = new AssetRecord()
+                        {
+                            Name = asset.Name,
+                            FilePath = asset.FilePath,
+                            AssetLibraryId = asset.AssetLibraryIdentifier,
+                            IsDeleted = false,
+                            LastUpdatedDate = asset.LastUpdatedDate,
+                            LastUpdatedBy = asset.LastUpdatedBy.Identifier
+                        };
+                        nISEntitiesDataContext.AssetRecords.Add(assetrec);
+                        nISEntitiesDataContext.SaveChanges();
+
+                        var assetLibRecord = nISEntitiesDataContext.AssetLibraryRecords.Where(it => it.Id == assetrec.AssetLibraryId).ToList().FirstOrDefault();
+                        Records.Add(new SystemActivityHistoryRecord()
+                        {
+                            Module = ModelConstant.ASSETS,
+                            EntityId = assetLibRecord.Id,
+                            EntityName = assetLibRecord.Name,
+                            SubEntityId = assetrec.Id,
+                            SubEntityName = assetrec.Name,
+                            ActionTaken = "AssetUpload",
+                            ActionTakenBy = userId,
+                            ActionTakenByUserName = userFullName,
+                            ActionTakenDate = DateTime.Now,
+                            TenantCode = tenantCode
+                        });
+                    });
+
+                    nISEntitiesDataContext.SystemActivityHistoryRecords.AddRange(Records);
                     nISEntitiesDataContext.SaveChanges();
                     result = true;
                 }
@@ -436,8 +529,12 @@ namespace nIS
             bool result = false;
             try
             {
-                this.SetAndValidateConnectionString(tenantCode);
+                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                int userId;
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+                var userFullName = claims?.FirstOrDefault(x => x.Type.Equals("UserFullName", StringComparison.OrdinalIgnoreCase)).Value;
 
+                this.SetAndValidateConnectionString(tenantCode);
                 if (this.IsDuplicateAssets(assets, "UpdateOperation", tenantCode))
                 {
                     throw new DuplicateAssetException(tenantCode);
@@ -455,6 +552,7 @@ namespace nIS
                         throw new AssetNotFoundException(tenantCode);
                     }
 
+                    var Records = new List<SystemActivityHistoryRecord>();
                     assets.ToList().ForEach(item =>
                     {
                         AssetRecord assetRecord = assetRecords.FirstOrDefault(data => data.Id == item.Identifier && data.IsDeleted == false);
@@ -463,8 +561,24 @@ namespace nIS
                         assetRecord.AssetLibraryId = item.AssetLibraryIdentifier;
                         assetRecord.LastUpdatedDate = item.LastUpdatedDate;
                         assetRecord.LastUpdatedBy = item.LastUpdatedBy.Identifier;
+
+                        var assetLibRecord = nISEntitiesDataContext.AssetLibraryRecords.Where(it => it.Id == assetRecord.AssetLibraryId).ToList().FirstOrDefault();
+                        Records.Add(new SystemActivityHistoryRecord()
+                        {
+                            Module = ModelConstant.ASSETS,
+                            EntityId = assetLibRecord.Id,
+                            EntityName = assetLibRecord.Name,
+                            SubEntityId = assetRecord.Id,
+                            SubEntityName = assetRecord.Name,
+                            ActionTaken = "AssetOverride",
+                            ActionTakenBy = userId,
+                            ActionTakenByUserName = userFullName,
+                            ActionTakenDate = DateTime.Now,
+                            TenantCode = tenantCode
+                        });
                     });
 
+                    nISEntitiesDataContext.SystemActivityHistoryRecords.AddRange(Records);
                     nISEntitiesDataContext.SaveChanges();
                     result = true;
                 }
@@ -489,25 +603,30 @@ namespace nIS
             bool result = false;
             try
             {
+                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                int userId;
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+                var userFullName = claims?.FirstOrDefault(x => x.Type.Equals("UserFullName", StringComparison.OrdinalIgnoreCase)).Value;
+
                 this.SetAndValidateConnectionString(tenantCode);
 
-                using (NISEntities nVidYoEntitiesDataContext = new NISEntities(this.connectionString))
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
                     StringBuilder query = new StringBuilder();
                     query.Append("(" + string.Join("or ", string.Join(",", assets.Select(item => item.Identifier).Distinct()).ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") ");
                     query.Append("and IsDeleted.Equals(false)");
-                    IList<AssetRecord> assetRecords = nVidYoEntitiesDataContext.AssetRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
+                    var assetRecords = nISEntitiesDataContext.AssetRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
                     if (assetRecords == null || assetRecords.Count <= 0 || assetRecords.Count() != string.Join(",", assetRecords.Select(item => item.Id).Distinct()).ToString().Split(',').Length)
                     {
                         throw new AssetNotFoundException(tenantCode);
                     }
                     IList<PageRecord> pageRecords = new List<PageRecord>();
-                    pageRecords = nVidYoEntitiesDataContext.PageRecords.Where(item => item.IsDeleted == false).ToList();
+                    pageRecords = nISEntitiesDataContext.PageRecords.Where(item => item.IsDeleted == false).ToList();
 
                     StringBuilder pageId = new StringBuilder();
                     pageId.Append("(" + string.Join(" or ", pageRecords.Select(item => string.Format("PageId.Equals({0})", item.Id))) + ")");
 
-                    IList<PageWidgetMapRecord> pageWidgetMapRecords = nVidYoEntitiesDataContext.PageWidgetMapRecords.Where(pageId.ToString()).ToList();
+                    IList<PageWidgetMapRecord> pageWidgetMapRecords = nISEntitiesDataContext.PageWidgetMapRecords.Where(pageId.ToString()).ToList();
                     pageWidgetMapRecords = pageWidgetMapRecords.Where(item => item.WidgetSetting != string.Empty).ToList();
                     if (pageWidgetMapRecords?.Count > 0)
                     {
@@ -540,12 +659,29 @@ namespace nIS
                         }
                     });
 
+                    IList<SystemActivityHistoryRecord> Records = new List<SystemActivityHistoryRecord>();
                     assetRecords.ToList().ForEach(item =>
                     {
                         item.IsDeleted = true;
+
+                        var assetLibRecord = nISEntitiesDataContext.AssetLibraryRecords.Where(it => it.Id == item.AssetLibraryId).ToList().FirstOrDefault();
+                        Records.Add(new SystemActivityHistoryRecord()
+                        {
+                            Module = ModelConstant.ASSETS,
+                            EntityId = assetLibRecord.Id,
+                            EntityName = assetLibRecord.Name,
+                            SubEntityId = item.Id,
+                            SubEntityName = item.Name,
+                            ActionTaken = "AssetDelete",
+                            ActionTakenBy = userId,
+                            ActionTakenByUserName = userFullName,
+                            ActionTakenDate = DateTime.Now,
+                            TenantCode = tenantCode
+                        });
                     });
 
-                    nVidYoEntitiesDataContext.SaveChanges();
+                    nISEntitiesDataContext.SystemActivityHistoryRecords.AddRange(Records);
+                    nISEntitiesDataContext.SaveChanges();
                 }
                 result = true;
                 return result;

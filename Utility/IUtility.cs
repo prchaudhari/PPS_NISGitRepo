@@ -148,7 +148,8 @@
         /// <param name="fileName"> the file name </param>
         /// <param name="batchId"> the batch identifier </param>
         /// <param name="customerId"> the customer identifier </param>
-        string WriteToFile(string Message, string fileName, long batchId, long customerId, string baseURL, string outputLocation);
+        /// <param name="printPdf"> specify if pdf need to be printed.</param>
+        string WriteToFile(string Message, string fileName, long batchId, long customerId, string baseURL, string outputLocation, bool printPdf = false, string headerHtml = "", string footerHtml = "", string segment = "", string language = "");
 
         /// <summary>
         /// This method help to write json stringin to actual file
@@ -182,7 +183,7 @@
         /// <param name="batchId"> the batch identifier </param>
         /// <param name="customerId"> the customer identifier </param>
         /// <returns>true if deleted successfully, otherwise false.</returns>
-        bool DeleteUnwantedDirectory(long batchId, long customerId, string baseURL);
+        bool DeleteUnwantedDirectory(long batchId, long? customerId, string baseURL);
 
         /// <summary>
         /// This method help to get string value of month
@@ -247,7 +248,37 @@
         /// </returns>
         string ExecuteWebTenantRequest(string instanceURL, string controller, string action, string objectData, string tenantKey, string tenantCode, bool isThirdPartyEnabled = false, bool toBeSerailzied = false);
 
+        /// <summary>
+        /// This method executes pdf crowd tool web request to convert HTML file to PDF.
+        /// </summary>
+        /// <param name="htmlStatementPath">The statement statement path.</param>
+        /// <param name="outPdfPath">The output pdf path.</param>
+        /// <param name="password">The password to protect PDF.</param>
+        /// <returns>
+        /// Returns the true if pdf generated successfully, otherwise false
+        /// </returns>
         bool HtmlStatementToPdf(string htmlStatementPath, string outPdfPath, string password);
+
+        /// <summary>
+        /// This method helps to format nedbank tenant amount value
+        /// </summary>
+        /// <param name="amount">The value.</param>
+        /// <returns>
+        /// Returns the the formatted amount value string
+        /// </returns>
+        string NedbankClientAmountFormatter(double amount);
+
+        /// <summary>
+        /// This method helps to format currency as per provided country currency details amount value
+        /// </summary>
+        /// <param name="CountryCultureInfoCode">The country currency cultureInfo code value.</param>
+        /// <param name="CurrencyDecimalSeparator">Defines the string that separates integral and decimal digits.</param>
+        /// <param name="currencyFormat">The currency format value.</param>
+        /// <param name="amount">The amount value.</param>
+        /// <returns>
+        /// Returns the the formatted amount value in string
+        /// </returns>
+        string CurrencyFormatting(string CountryCultureInfoCode, string CurrencyDecimalSeparator, string currencyFormat, decimal amount);
 
     }
 }

@@ -252,6 +252,7 @@ namespace nIS
                         ScheduleId = logDetail.ScheduleId,
                         ScheduleLogId = logDetail.ScheduleLogId,
                         Status = logDetail.Status,
+                        StatementFilePath = logDetail.StatementFilePath,
                         //CreateDate = logDetail.CreationDate
                         CreateDate = DateTime.SpecifyKind((DateTime)logDetail.CreationDate, DateTimeKind.Utc)
 
@@ -466,7 +467,8 @@ namespace nIS
                                              CustomerId = sld.CustomerId,
                                              CustomerName = sld.CustomerName,
                                              ErrorLogMessage = sld.LogMessage,
-                                             ExecutionDate = sld.CreationDate
+                                             ExecutionDate = sld.CreationDate,
+                                             StatementFilePath = sld.StatementFilePath
                                          }).ToList();
                 }
             }
@@ -666,6 +668,7 @@ namespace nIS
                         scheduleLogDetailRecord.LogMessage = item.LogMessage;
                         scheduleLogDetailRecord.CreationDate = DateTime.UtcNow;
                         scheduleLogDetailRecord.TenantCode = tenantCode;
+                        scheduleLogDetailRecord.StatementFilePath = item.StatementFilePath;
                         scheduleLogDetailRecord.StatementFilePath = item.StatementFilePath;
                         nISEntitiesDataContext.SaveChanges();
                     });
@@ -1050,6 +1053,7 @@ namespace nIS
                                 scheduleLogDetailRecord.NumberOfRetry++;
                                 scheduleLogDetailRecord.StatementFilePath = logDetailRecord.StatementFilePath;
                                 scheduleLogDetailRecord.CreationDate = DateTime.UtcNow;
+                                scheduleLogDetailRecord.StatementFilePath = logDetailRecord.StatementFilePath;
 
                                 if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Completed.ToString().ToLower()) && logDetailRecord.StatementMetadataRecords.Count > 0)
                                 {

@@ -344,9 +344,10 @@ export class LogsComponent implements OnInit {
     });
   }
 
+  //function written to error logs for failed customer records
   DownloadErrorLog(log: ScheduleLog): void {
     this.uiLoader.start();
-    this._http.get(this.baseURL + 'ScheduleLog/ScheduleLog/DownloadErrorLogs?ScheduleLogIndentifier=' + log.Identifier , { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
+    this._http.get(this.baseURL + 'ScheduleLog/DownloadErrorLogs?ScheduleLogIndentifier=' + log.Identifier , { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
       .subscribe(
         data => {
           this.uiLoader.stop();
@@ -371,20 +372,10 @@ export class LogsComponent implements OnInit {
         });
   }
 
+  //function written to view error log of failed customer records
   ViewErrorLog(log: ScheduleLog) {
     let previewservice = this.injector.get(PreviewDialogService);
     previewservice.openErrorLogDialogBox(log.Identifier, log.ScheduleName);
   }
 }
 
-function compare(a: number, b: number, isAsc: boolean) {
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
-}
-
-function compareStr(a: string, b: string, isAsc: boolean) {
-  return (a.toLowerCase() < b.toLowerCase() ? -1 : 1) * (isAsc ? 1 : -1);
-}
-
-function compareDate(a: Date, b: Date, isAsc: boolean) {
-  return (Date.parse("" + a) < Date.parse("" + b) ? -1 : 1) * (isAsc ? 1 : -1);
-}

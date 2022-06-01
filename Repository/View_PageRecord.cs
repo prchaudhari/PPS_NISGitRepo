@@ -34,6 +34,7 @@ namespace nIS
         public Nullable<long> BackgroundImageAssetId { get; set; }
         public string BackgroundImageURL { get; set; }
         public Nullable<long> BackgroundImageAssetLibraryId { get; set; }
-        public IList<View_PageWidgetMapRecord> PageWidgetMapRecords { get; set; }
+        public string HeaderHTML { get; set; }
+        public string FooterHTML { get; set; }
     }
 }

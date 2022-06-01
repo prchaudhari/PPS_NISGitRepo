@@ -37,5 +37,7 @@ namespace nIS
         public string MonthOfYear { get; set; }
         public Nullable<bool> IsEndsAfterNoOfOccurrences { get; set; }
         public Nullable<long> NoOfOccurrences { get; set; }
+        public string Languages { get; set; }
+        public string ProductBatchName { get; set; }
     }
 }

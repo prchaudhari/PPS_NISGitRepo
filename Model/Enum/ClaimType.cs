@@ -17,6 +17,7 @@ namespace nIS
         OrganizationUnitTimeZone,
         StorageAccount,
         IsAssetConneted,
-        UserId
+        UserId,
+        UserFullName
     }
 }

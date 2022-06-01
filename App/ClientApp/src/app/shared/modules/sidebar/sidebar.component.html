@@ -88,7 +88,7 @@
       </li>
 
       <li [ngClass]="(URL=='/dynamicwidget')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToDynamicWidgets()"
-          *ngIf="IsMainMenu && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Dynamic Widget','Operation' : 'View'}))">
+          *ngIf="false && IsMainMenu && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Dynamic Widget','Operation' : 'View'}))">
         <a> <span class='nav-icon icon-line-dashboard2' title="Dynamic Widgets"></span><span class='nav-title'>Dynamic Widgets</span>  </a>
       </li>
 

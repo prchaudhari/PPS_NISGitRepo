@@ -45,11 +45,6 @@
             <td mat-cell *matCellDef="let element">{{element.RenderEngineName}}</td>
           </ng-container>
 
-          <!--<ng-container matColumnDef="renderEngineUrl">
-            <th class="width30" mat-header-cell *matHeaderCellDef mat-sort-header> Render Engine Url </th>
-            <td mat-cell *matCellDef="let element">{{element.RenderEngineURL}}</td>
-          </ng-container>-->
-
           <ng-container matColumnDef="status">
             <th class="width20" mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
             <td mat-cell *matCellDef="let element">
@@ -60,19 +55,20 @@
           </ng-container>
 
           <ng-container matColumnDef="date">
-            <th class="width20" mat-header-cell *matHeaderCellDef mat-sort-header> Last Execution Date </th>
+            <th class="width15" mat-header-cell *matHeaderCellDef mat-sort-header> Last Execution Date </th>
             <!--<td mat-cell *matCellDef="let element">{{element.CreateDate | date : "dd/MM/yyyy  h:mm a" }} </td>-->
             <td mat-cell *matCellDef="let element"> <span>{{element.CreateDate | date:DataFormat}}</span> {{element.CreateDate | date:"h:mm a"}}</td>
 
           </ng-container>
 
           <ng-container matColumnDef="actions">
-            <th class="width10" mat-header-cell *matHeaderCellDef> Actions </th>
+            <th class="width15" mat-header-cell *matHeaderCellDef> Actions </th>
             <td mat-cell *matCellDef="let element">
               <div class="action-btns btn-tbl-action">
                 <button type="button" title="View" id="btnDelete" (click)="viewLodMessage(element)"><span class="fa fa-file-text-o"></span></button>
-                <!--<button type="button" title="Export" id="btnDelete"><span class="fa fa-download"></span></button>-->
                 <button type="button" title="Retry" id="btnUpdate" *ngIf="element.Status=='Failed' && BatchStatus != 'Approved'" (click)="reTryLog(element)"><span class="fa fa-repeat"></span></button>
+                <!-- <button (click)="ViewHTML(element)" type="button" title="Download Html" *ngIf="element.Status=='Completed'"><span class="fa fa-download"></span></button> -->
+                <button (click)="ExportToPDF(element)" type="button" *ngIf="element.Status=='Completed'" title="Download PDF"><span class="fa fa-file-pdf-o"></span></button>
               </div>
             </td>
           </ng-container>

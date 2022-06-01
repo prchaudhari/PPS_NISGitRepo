@@ -14,6 +14,8 @@ import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.serv
 import { FormBuilder } from '@angular/forms';
 import { ScheduleService } from '../schedule.service';
 import { ConfigConstants } from '../../../shared/constants/configConstants';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view',

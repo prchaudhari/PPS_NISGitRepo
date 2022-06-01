@@ -262,3 +262,5 @@ __pycache__/
 /API/Statements
 /API/Logs
 /API/assets
+/NedbankAPI/Properties/PublishProfiles
+/API/StatementGenerationLogs

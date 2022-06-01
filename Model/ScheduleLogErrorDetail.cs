@@ -25,5 +25,6 @@ namespace nIS
         public string CustomerName { get; set; }
         public DateTime ExecutionDate { get; set; }
         public string ErrorLogMessage { get; set; }
+        public string StatementFilePath { get; set; }
     }
 }

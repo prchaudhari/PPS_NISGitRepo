@@ -321,8 +321,32 @@ namespace nIS
                         if (statements.Count > 0)
                         {
                             var statement = statements.FirstOrDefault();
+                            
+                            //TO Do - Nedbank
                             var BatchDetails = this.tenantTransactionDataManager.GetBatchDetails(batch.Identifier, statement.Identifier, tenantCode);
-                            var statementPageContents = this.statementManager.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
+
+                            IList<StatementPageContent> statementPageContents = new List<StatementPageContent>();
+                            var functionName = string.Empty;
+                            if (tenantConfiguration != null && !string.IsNullOrEmpty(tenantConfiguration.GenerateHtmlFormatForStatementFunctionName))
+                            {
+                                functionName = tenantConfiguration.GenerateHtmlFormatForStatementFunctionName;
+                            }
+
+                            switch (functionName)
+                            {
+                                case ModelConstant.GENERATE_HTML_FORMAT_OF_FINANCIAL_TENANT_STATEMENT:
+                                    statementPageContents = this.statementManager.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
+                                    break;
+
+                                case ModelConstant.GENERATE_HTML_FORMAT_OF_NEDBANK_TENANT_STATEMENT:
+                                    statementPageContents = this.statementManager.GenerateHtmlFormatOfNedbankStatement(statement, tenantCode, tenantConfiguration);
+                                    break;
+
+                                default:
+                                    statementPageContents = this.statementManager.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
+                                    break;
+                            }
+
                             var tenantEntities = this.dynamicWidgetManager.GetTenantEntities(tenantCode);
                             var statementRawData = new GenerateStatementRawData()
                             {
@@ -707,6 +731,13 @@ namespace nIS
                 ParallelOptions parallelOptions = new ParallelOptions();
                 parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
 
+                var tenantConfiguration = statementRawData.TenantConfiguration;
+                var apiName = ModelConstant.RETRY_TO_CREATE_FAILED_CUSTOMER_STATEMENTS_API_URL;
+                if (tenantConfiguration != null && !string.IsNullOrEmpty(tenantConfiguration.RetryFailedCustomerStatementApiName))
+                {
+                    apiName = tenantConfiguration.RetryFailedCustomerStatementApiName;
+                }
+
                 Parallel.ForEach(parallelRequest.ScheduleLogDetails, parallelOptions, logDetail =>
                 {
                     var newStatementRawData = new GenerateStatementRawData()
@@ -724,12 +755,11 @@ namespace nIS
                         TenantEntities = statementRawData.TenantEntities,
                         RenderEngine = parallelRequest.RenderEngine
                     };
-
                     HttpClient client = new HttpClient();
                     client.BaseAddress = new Uri(RenderEngineBaseUrl);
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ModelConstant.APPLICATION_JSON_MEDIA_TYPE));
                     client.DefaultRequestHeaders.Add(ModelConstant.TENANT_CODE_KEY, TenantCode);
-                    var response = client.PostAsync(ModelConstant.RETRY_TO_CREATE_FAILED_CUSTOMER_STATEMENTS_API_URL, new StringContent(JsonConvert.SerializeObject(newStatementRawData), Encoding.UTF8, ModelConstant.APPLICATION_JSON_MEDIA_TYPE)).Result;
+                    var response = client.PostAsync(apiName, new StringContent(JsonConvert.SerializeObject(newStatementRawData), Encoding.UTF8, ModelConstant.APPLICATION_JSON_MEDIA_TYPE)).Result;
                 });
             }
             catch (Exception ex)

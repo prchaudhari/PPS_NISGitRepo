@@ -74,6 +74,7 @@ namespace nIS
                 var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
                 int userId;
                 int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+                var userFullName = claims?.FirstOrDefault(x => x.Type.Equals("UserFullName", StringComparison.OrdinalIgnoreCase)).Value;
 
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
@@ -89,7 +90,23 @@ namespace nIS
                         item.PublishedBy = userId;
                         item.PublishedOn = DateTime.UtcNow;
                         item.Status = PageStatus.Published.ToString();
+
+                        SystemActivityHistoryRecord record = new SystemActivityHistoryRecord()
+                        {
+                            Module = ModelConstant.PAGE_SECTION,
+                            EntityId = item.Id,
+                            EntityName = item.DisplayName,
+                            SubEntityId = null,
+                            SubEntityName = null,
+                            ActionTaken = "Publish",
+                            ActionTakenBy = userId,
+                            ActionTakenByUserName = userFullName,
+                            ActionTakenDate = DateTime.Now,
+                            TenantCode = tenantCode
+                        };
+                        nISEntitiesDataContext.SystemActivityHistoryRecords.Add(record);
                     });
+
 
                     nISEntitiesDataContext.SaveChanges();
                 }
@@ -118,6 +135,7 @@ namespace nIS
                 var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
                 int userId;
                 int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+                var userFullName = claims?.FirstOrDefault(x => x.Type.Equals("UserFullName", StringComparison.OrdinalIgnoreCase)).Value;
 
                 this.SetAndValidateConnectionString(tenantCode);
                 if (this.IsDuplicatePage(pages, "AddOperation", tenantCode))
@@ -151,6 +169,7 @@ namespace nIS
                     nISEntitiesDataContext.SaveChanges();
                 }
 
+                IList<SystemActivityHistoryRecord> Records = new List<SystemActivityHistoryRecord>();
                 pages.ToList().ForEach(page =>
                 {
                     page.Identifier = pageRecords.Where(p => p.DisplayName == page.DisplayName && p.PageTypeId == page.PageTypeId && p.Version == "1").Single().Id;
@@ -160,7 +179,31 @@ namespace nIS
                     {
                         this.AddPageWidgets(page.PageWidgets, page.Identifier, tenantCode);
                     }
+
+                    Records.Add(new SystemActivityHistoryRecord()
+                    {
+                        Module = ModelConstant.PAGE_SECTION,
+                        EntityId = page.Identifier,
+                        EntityName = page.DisplayName,
+                        SubEntityId = null,
+                        SubEntityName = null,
+                        ActionTaken = "Add",
+                        ActionTakenBy = userId,
+                        ActionTakenByUserName = userFullName,
+                        ActionTakenDate = DateTime.Now,
+                        TenantCode = tenantCode
+                    });
                 });
+
+                if (Records.Count > 0)
+                {
+                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                    {
+                        nISEntitiesDataContext.SystemActivityHistoryRecords.AddRange(Records);
+                        nISEntitiesDataContext.SaveChanges();
+                    }
+                }
+
                 result = true;
             }
             catch(Exception ex)
@@ -198,6 +241,7 @@ namespace nIS
                 var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
                 int userId;
                 int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+                var userFullName = claims?.FirstOrDefault(x => x.Type.Equals("UserFullName", StringComparison.OrdinalIgnoreCase)).Value;
 
                 this.SetAndValidateConnectionString(tenantCode);
 
@@ -223,6 +267,21 @@ namespace nIS
                         item.IsDeleted = true;
                         item.UpdateBy = userId;
                         item.LastUpdatedDate = DateTime.Now;
+
+                        SystemActivityHistoryRecord record = new SystemActivityHistoryRecord()
+                        {
+                            Module = ModelConstant.PAGE_SECTION,
+                            EntityId = item.Id,
+                            EntityName = item.DisplayName,
+                            SubEntityId = null,
+                            SubEntityName = null,
+                            ActionTaken = "Delete",
+                            ActionTakenBy = userId,
+                            ActionTakenByUserName = userFullName,
+                            ActionTakenDate = DateTime.Now,
+                            TenantCode = tenantCode
+                        };
+                        nISEntitiesDataContext.SystemActivityHistoryRecords.Add(record);
                     });
 
                     nISEntitiesDataContext.SaveChanges();
@@ -330,7 +389,9 @@ namespace nIS
                             UpdatedBy = pageRecord.UpdateBy ?? 0,
                             BackgroundImageAssetLibraryId = pageRecord.BackgroundImageAssetLibraryId ?? 0,
                             BackgroundImageAssetId = pageRecord.BackgroundImageAssetId ?? 0,
-                            BackgroundImageURL = pageRecord.BackgroundImageURL
+                            BackgroundImageURL = pageRecord.BackgroundImageURL,
+                            HeaderHTML = pageRecord.HeaderHTML,
+                            FooterHTML = pageRecord.FooterHTML,
                         });
                     });
                 }
@@ -496,6 +557,7 @@ namespace nIS
                 var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
                 int userId;
                 int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+                var userFullName = claims?.FirstOrDefault(x => x.Type.Equals("UserFullName", StringComparison.OrdinalIgnoreCase)).Value;
 
                 this.SetAndValidateConnectionString(tenantCode);
                 if (this.IsDuplicatePage(pages, "UpdateOperation", tenantCode))
@@ -529,6 +591,7 @@ namespace nIS
                     nISEntitiesDataContext.SaveChanges();
                 }
 
+                IList<SystemActivityHistoryRecord> Records = new List<SystemActivityHistoryRecord>();
                 pages.ToList().ForEach(item =>
                 {
                     item.Identifier = pageRecords.ToList().Where(pageRec => pageRec.DisplayName == item.DisplayName && pageRec.PageTypeId == item.PageTypeId).FirstOrDefault().Id;
@@ -543,8 +606,27 @@ namespace nIS
                         }
                         this.AddPageWidgets(item.PageWidgets, item.Identifier, tenantCode);
                     }
+
+                    Records.Add(new SystemActivityHistoryRecord()
+                    {
+                        Module = ModelConstant.PAGE_SECTION,
+                        EntityId = item.Identifier,
+                        EntityName = item.DisplayName,
+                        SubEntityId = null,
+                        SubEntityName = null,
+                        ActionTaken = "Update",
+                        ActionTakenBy = userId,
+                        ActionTakenByUserName = userFullName,
+                        ActionTakenDate = DateTime.Now,
+                        TenantCode = tenantCode
+                    });
                 });
 
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    nISEntitiesDataContext.SystemActivityHistoryRecords.AddRange(Records);
+                    nISEntitiesDataContext.SaveChanges();
+                }
                 result = true;
             }
             catch (Exception ex)
@@ -569,6 +651,7 @@ namespace nIS
                 var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
                 int userId;
                 int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+                var userFullName = claims?.FirstOrDefault(x => x.Type.Equals("UserFullName", StringComparison.OrdinalIgnoreCase)).Value;
 
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
@@ -626,6 +709,22 @@ namespace nIS
                     });
 
                     nISEntitiesDataContext.PageWidgetMapRecords.AddRange(pageWidgetRecordsForClone);
+
+                    SystemActivityHistoryRecord record = new SystemActivityHistoryRecord()
+                    {
+                        Module = ModelConstant.PAGE_SECTION,
+                        EntityId = lastPageRecord.Id,
+                        EntityName = lastPageRecord.DisplayName,
+                        SubEntityId = null,
+                        SubEntityName = null,
+                        ActionTaken = "Clone",
+                        ActionTakenBy = userId,
+                        ActionTakenByUserName = userFullName,
+                        ActionTakenDate = DateTime.Now,
+                        TenantCode = tenantCode
+                    };
+                    nISEntitiesDataContext.SystemActivityHistoryRecords.Add(record);
+
                     nISEntitiesDataContext.SaveChanges();
                 }
 

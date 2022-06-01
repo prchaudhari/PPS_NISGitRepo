@@ -107,6 +107,8 @@ namespace nIS
 
         public const string TENANT_SELF_MANAGE_TYPE = "Self";
 
+        public const string WEB_API_BASE_URL = "WebApiBaseUrl";
+
         #endregion
 
         #region Operations
@@ -380,6 +382,8 @@ namespace nIS
 
         public const string CREATE_CUSTOMER_STATEMENT_API_URL = "GenerateStatement/CreateCustomerStatement";
 
+        public const string CREATE_NEDBANK_CUSTOMER_STATEMENT_API_URL = "GenerateStatement/CreateNedbankCustomerStatement";
+
         public const string RETRY_TO_CREATE_FAILED_CUSTOMER_STATEMENTS_API_URL = "GenerateStatement/RetryToCreateFailedCustomerStatements";
 
         public const string RUN_ARCHIVAL_PROCESS_FOR_CUSTOMER_RECORD = "GenerateStatement/RunArchivalForCustomerRecord";
@@ -398,6 +402,63 @@ namespace nIS
 
         public const string IS_WANT_TO_USE_NIS_ENGINES = "IsWantToUseNisEngines";
 
+        public const string PREVIEW_FINANCIAL_STATEMENT_FUNCTION_NAME = "PreviewFinancialStatement";
+        
+        public const string PREVIEW_NEDBANK_STATEMENT_FUNCTION_NAME = "PreviewNedbankStatement";
+
+        public const string GENERATE_FINANCIAL_CUSTOEMR_STATEMENT_BY_SCHEDULE_RUN_NOW = "GenerateFinancialTenantCustomerStatementsByScheduleRunNow";
+
+        public const string GENERATE_FINANCIAL_CUSTOEMR_STATEMENT_BY_SCHEDULE_TIME = "GenerateFinancialTenantCustomerStatementsByScheduleRunTime";
+
+        public const string GENERATE_NEDBANK_CUSTOEMR_STATEMENT_BY_SCHEDULE_RUN_NOW = "GenerateNedbankCustomerStatementsByScheduleRunNow";
+
+        public const string GENERATE_NEDBANK_CUSTOEMR_STATEMENT_BY_SCHEDULE_TIME = "GenerateNedbankCustomerStatementsByScheduleRunTime";
+
+        public const string GENERATE_HTML_FORMAT_OF_FINANCIAL_TENANT_STATEMENT = "GenerateHtmlFormatOfStatement";
+
+        public const string GENERATE_HTML_FORMAT_OF_NEDBANK_TENANT_STATEMENT = "GenerateHtmlFormatOfNedbankStatement";
+
+        public const string RETRY_FAILED_FINANCIAL_TENANT_CUSTOMER_STATEMENT_API_NAME = "RetryToCreateFailedCustomerStatements";
+
+        public const string FINANCIAL_TENANT_ARCHIVAL_PROCESS_API_NAME = "RunArchivalForCustomerRecord";
+
+        public const string RETRY_FAILED_NEDBANK_TENANT_CUSTOMER_STATEMENT_API_NAME = "RetryToCreateFailedNedbankCustomerStatements";
+
+        public const string NEDBANK_TENANT_ARCHIVAL_PROCESS_API_NAME = "RunArchivalForNedbankCustomerRecord";
+
+        #endregion
+
+        #region Statement constants
+
+        public const string SA_COUNTRY_CULTURE_INFO_CODE = "en-ZA";
+
+        public const string DOT_AS_CURERNCY_DECIMAL_SEPARATOR = ".";
+
+        public const string CURRENCY_FORMAT_VALUE = "C";
+
+        public const string BALANCE_CARRIED_FORWARD_TRANSACTION_DESC = "balance carried forward";
+
+        public const string BALANCE_BROUGHT_FORWARD_TRANSACTION_DESC = "balance brought forward";
+
+        public const string BALANCE_CARRIED_FORWARD_TRANSACTION_DESC_AFR = "saldo oorgedra";
+
+        public const string BALANCE_BROUGHT_FORWARD_TRANSACTION_DESC_AFR = "saldo oorgebring";
+
+        public const string PAYMENT_THANK_YOU_TRANSACTION_DESC = "Payment - Thank you";
+
+        public const string DATE_FORMAT_dd_MM_yyyy = "dd'/'MM'/'yyyy";
+
+        public const string DATE_FORMAT_dd_MMM_yyyy = "dd MMM yyyy";
+
+        public const string DATE_FORMAT_dd_MMMM_yyyy = "dd MMMM yyyy";
+
+        public const string DATE_FORMAT_yyyy_MM_dd = "yyyy-MM-dd";
+
+        public const string DATE_FORMAT_dd_MM_yyyy2 = "dd-MM-yyyy";
+
+        public const string DATE_FORMAT_dd_MM_yyyy3 = "dd MM yyyy";
+
+        public const string TIME_FORMAT_HH_MM_SS = "HH:mm:ss.sss";
         #endregion
     }
 }

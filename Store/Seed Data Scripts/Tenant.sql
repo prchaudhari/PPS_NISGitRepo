@@ -2,8 +2,8 @@
 Declare @DefaultTenantIdentifier nvarchar(max) = N'0285D9B8-51F0-49E5-93E4-EF930182D246';
 
 --For PRD Deployment
-Declare @StorageAccount as nvarchar(max) = N'Data Source=nis.database.windows.net;Initial Catalog=NIS;User ID=websym;Password=Admin@123'
-Declare @ConnectionString as nvarchar(max) = N'Data Source=nis.database.windows.net;Initial Catalog=NIS;User ID=websym;Password=Admin@123'
+Declare @StorageAccount as nvarchar(max) = N'Data Source=nis.database.windows.net;Initial Catalog=NIS_DEV;User ID=websym;Password=Admin@123'
+Declare @ConnectionString as nvarchar(max) = N'Data Source=nis.database.windows.net;Initial Catalog=NIS_DEV;User ID=websym;Password=Admin@123'
 
 --- For Local (Test Server)
 --Declare @StorageAccount as nvarchar(max) = N'Data Source=WSPL_LAP_031;Initial Catalog=nvidyo;User ID=sa;Password=Admin@123'

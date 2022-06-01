@@ -24,6 +24,8 @@ namespace nIS
     /// <summary>
     /// This class represent api controller for schedule
     /// </summary>
+    /// <seealso cref="System.Web.Http.ApiController" />
+    [RoutePrefix("Schedule")]
     public class ScheduleController : ApiController
     {
         #region Private Members
@@ -48,6 +50,10 @@ namespace nIS
 
         #region Constructor
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScheduleController"/> class.
+        /// </summary>
+        /// <param name="unityContainer">The unity container.</param>
         public ScheduleController(IUnityContainer unityContainer)
         {
             this.unityContainer = unityContainer;
@@ -64,8 +70,10 @@ namespace nIS
         /// <summary>
         /// This method helps to add schedules
         /// </summary>
-        /// <param name="schedules"></param>
-        /// <returns>boolean value</returns>
+        /// <param name="schedules">The schedules.</param>
+        /// <returns>
+        /// boolean value
+        /// </returns>
         [HttpPost]
         public bool Add(IList<Schedule> schedules)
         {
@@ -84,10 +92,35 @@ namespace nIS
         }
 
         /// <summary>
+        /// Adds the with language.
+        /// </summary>
+        /// <param name="schedules">The schedules.</param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("AddWithLanguage")]
+        public bool AddWithLanguage(IList<Schedule> schedules)
+        {
+            bool result = false;
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                result = this.scheduleManager.AddSchedulesWithLanguage(schedules, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// This method helps to update schedules.
         /// </summary>
-        /// <param name="schedules"></param>
-        /// <returns>boolean value</returns>
+        /// <param name="schedules">The schedules.</param>
+        /// <returns>
+        /// boolean value
+        /// </returns>
         [HttpPost]
         public bool Update(IList<Schedule> schedules)
         {
@@ -106,10 +139,35 @@ namespace nIS
         }
 
         /// <summary>
+        /// Updates the with language.
+        /// </summary>
+        /// <param name="schedules">The schedules.</param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("UpdateWithLanguage")]
+        public bool UpdateWithLanguage(IList<Schedule> schedules)
+        {
+            bool result = false;
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                result = this.scheduleManager.UpdateSchedulesWithLanguage(schedules, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// This method helps to delete schedules.
         /// </summary>
-        /// <param name="schedules"></param>
-        /// <returns>boolean value</returns>
+        /// <param name="schedules">The schedules.</param>
+        /// <returns>
+        /// boolean value
+        /// </returns>
         [HttpPost]
         public bool Delete(IList<Schedule> schedules)
         {
@@ -130,8 +188,10 @@ namespace nIS
         /// <summary>
         /// This method helps to get schedules list based on the search parameters.
         /// </summary>
-        /// <param name="scheduleSearchParameter"></param>
-        /// <returns>List of schedules</returns>
+        /// <param name="scheduleSearchParameter">The schedule search parameter.</param>
+        /// <returns>
+        /// List of schedules
+        /// </returns>
         [HttpPost]
         public IList<Schedule> List(ScheduleSearchParameter scheduleSearchParameter)
         {
@@ -150,11 +210,32 @@ namespace nIS
             return schedules;
         }
 
+        [HttpPost]
+        [Route("ListWithLanguage")]
+        public IList<Schedule> ListWithLanguage(ScheduleSearchParameter scheduleSearchParameter)
+        {
+            IList<Schedule> schedules = new List<Schedule>();
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                schedules = this.scheduleManager.GetSchedulesWithLanguage(scheduleSearchParameter, tenantCode);
+                HttpContext.Current.Response.AppendHeader("recordCount", this.scheduleManager.GetScheduleCount(scheduleSearchParameter, tenantCode).ToString());
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return schedules;
+        }
+
         /// <summary>
         /// This method helps to get schedule based on given identifier.
         /// </summary>
-        /// <param name="scheduleSearchParameter"></param>
-        /// <returns>schedule record</returns>
+        /// <param name="scheduleIdentifier">The schedule identifier.</param>
+        /// <returns>
+        /// schedule record
+        /// </returns>
         [HttpGet]
         public Schedule Detail(long scheduleIdentifier)
         {
@@ -178,8 +259,10 @@ namespace nIS
         /// <summary>
         /// This method helps to activate the schedule
         /// </summary>
-        /// <param name="scheduleIdentifier">The schedule identifier</param>       
-        /// <returns>True if schedule activated successfully false otherwise</returns>
+        /// <param name="scheduleIdentifier">The schedule identifier</param>
+        /// <returns>
+        /// True if schedule activated successfully false otherwise
+        /// </returns>
         [HttpGet]
         public bool Activate(long scheduleIdentifier)
         {
@@ -200,8 +283,10 @@ namespace nIS
         /// <summary>
         /// This method helps to deactivate the schedule
         /// </summary>
-        /// <param name="scheduleIdentifier">The schedule identifier</param>       
-        /// <returns>True if schedule deactivated successfully false otherwise</returns>
+        /// <param name="scheduleIdentifier">The schedule identifier</param>
+        /// <returns>
+        /// True if schedule deactivated successfully false otherwise
+        /// </returns>
         [HttpGet]
         public bool Deactivate(long scheduleIdentifier)
         {
@@ -223,7 +308,9 @@ namespace nIS
         /// <summary>
         /// This method helps to run the schedule
         /// </summary>
-        /// <returns>True if schedule runs successfully false otherwise</returns>
+        /// <returns>
+        /// True if schedule runs successfully false otherwise
+        /// </returns>
         [HttpPost]
         public bool RunSchedule()
         {
@@ -244,7 +331,9 @@ namespace nIS
         /// This method helps to run the schedule now
         /// </summary>
         /// <param name="batchMaster">The batch object</param>
-        /// <returns>True if schedule runs successfully false otherwise</returns>
+        /// <returns>
+        /// True if schedule runs successfully false otherwise
+        /// </returns>
         [HttpPost]
         public bool RunScheduleNow(BatchMaster batchMaster)
         {
@@ -255,6 +344,7 @@ namespace nIS
                     return false;
                 }
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
+
                 var baseURL = Url.Content("~/");
                 var outputLocation = AppDomain.CurrentDomain.BaseDirectory;
                 var tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
@@ -273,6 +363,11 @@ namespace nIS
 
         #region Batch master
 
+        /// <summary>
+        /// Gets the batch master.
+        /// </summary>
+        /// <param name="scheduleIdentifier">The schedule identifier.</param>
+        /// <returns></returns>
         [HttpPost]
         public IList<BatchMaster> GetBatchMaster(long scheduleIdentifier)
         {
@@ -289,11 +384,32 @@ namespace nIS
 
             return batchMasters;
         }
+
+        [HttpPost]
+        [Route("GetBatchMastersByLanguage")]
+        public IList<BatchMaster> GetBatchMastersByLanguage(long scheduleIdentifier)
+        {
+            IList<BatchMaster> batchMasters = new List<BatchMaster>();
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                batchMasters = this.scheduleManager.GetBatchMastersByLanguage(scheduleIdentifier, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return batchMasters;
+        }
+
         /// <summary>
         /// This method helps to approve batch of the respective schedule.
         /// </summary>
-        /// <param name="BatchIdentifier"></param>
-        /// <returns>True if success, otherwise false</returns>
+        /// <param name="BatchIdentifier">The batch identifier.</param>
+        /// <returns>
+        /// True if success, otherwise false
+        /// </returns>
         [HttpPost]
         public bool ValidateApproveScheduleBatch(long BatchIdentifier)
         {
@@ -311,8 +427,10 @@ namespace nIS
         /// <summary>
         /// This method helps to approve batch of the respective schedule.
         /// </summary>
-        /// <param name="BatchIdentifier"></param>
-        /// <returns>True if success, otherwise false</returns>
+        /// <param name="BatchIdentifier">The batch identifier.</param>
+        /// <returns>
+        /// True if success, otherwise false
+        /// </returns>
         [HttpPost]
         public bool ApproveScheduleBatch(long BatchIdentifier)
         {
@@ -330,8 +448,10 @@ namespace nIS
         /// <summary>
         /// This method helps to clean batch and related data of the respective schedule.
         /// </summary>
-        /// <param name="BatchIdentifier"></param>
-        /// <returns>True if success, otherwise false</returns>
+        /// <param name="BatchIdentifier">The batch identifier.</param>
+        /// <returns>
+        /// True if success, otherwise false
+        /// </returns>
         [HttpPost]
         public bool CleanScheduleBatch(long BatchIdentifier)
         {
@@ -355,8 +475,10 @@ namespace nIS
         /// <summary>
         /// This method helps to add schedules
         /// </summary>
-        /// <param name="schedules"></param>
-        /// <returns>boolean value</returns>
+        /// <param name="schedules">The schedules.</param>
+        /// <returns>
+        /// boolean value
+        /// </returns>
         [HttpPost]
         public bool AddScheduleHistory(IList<ScheduleRunHistory> schedules)
         {
@@ -377,8 +499,10 @@ namespace nIS
         /// <summary>
         /// This method helps to get schedules list based on the search parameters.
         /// </summary>
-        /// <param name="scheduleSearchParameter"></param>
-        /// <returns>List of schedules</returns>
+        /// <param name="scheduleSearchParameter">The schedule search parameter.</param>
+        /// <returns>
+        /// List of schedules
+        /// </returns>
         [HttpPost]
         public IList<ScheduleRunHistory> GetScheduleRunHistories(ScheduleSearchParameter scheduleSearchParameter)
         {
@@ -399,8 +523,15 @@ namespace nIS
 
         #endregion
 
+
         #region Download
 
+        /// <summary>
+        /// Downloads the specified scheduel history identifier.
+        /// </summary>
+        /// <param name="scheduelHistoryIdentifier">The scheduel history identifier.</param>
+        /// <returns></returns>
+        /// <exception cref="System.Web.Http.HttpResponseException"></exception>
         [HttpGet]
         [Route("ScheduleHistory/Download")]
         public HttpResponseMessage Download(string scheduelHistoryIdentifier)

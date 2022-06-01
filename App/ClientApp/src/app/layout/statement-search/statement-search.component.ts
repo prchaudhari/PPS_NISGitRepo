@@ -43,6 +43,7 @@ export class StatementSearchComponent implements OnInit {
   public filterFromDateErrorMessage: string = "";
   public filterToDateError: boolean = false;
   public filterToDateErrorMessage: string = "";
+  public noFilterValueError: boolean = true;
   public userClaimsRolePrivilegeOperations: any[] = [];
   public baseURL = AppSettings.baseURL;
   
@@ -185,6 +186,7 @@ export class StatementSearchComponent implements OnInit {
     let scheduleLogService = this.injector.get(StatementSearchService);
     if (searchParameter == null) {
       searchParameter = {};
+      searchParameter.IsPasswordRequired = false;
       searchParameter.PagingParameter = {};
       searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
       searchParameter.PagingParameter.PageSize = this.pageSize;
@@ -256,8 +258,12 @@ export class StatementSearchComponent implements OnInit {
   }
 
   searchStatementSearchRecordFilter(searchType) {
+
+    this.scheduleLogList = [];
     this.filterFromDateError = false;
+    this.noFilterValueError = false;
     this.isFilterDone = true;
+
     if (searchType == 'reset') {
       this.resetSchdeuleLogFilterForm();
       this.scheduleLogList = [];
@@ -265,41 +271,48 @@ export class StatementSearchComponent implements OnInit {
       this.dataSource.sort = this.sort;
       this.array = this.scheduleLogList;
       this.totalSize = this.array.length;
+      this.noFilterValueError = true;
       this.isFilter = !this.isFilter;
     }
     else {
-      if (this.validateFilterDate()) {
-        let searchParameter: any = {};
-        searchParameter.PagingParameter = {};
-        searchParameter.PagingParameter.PageIndex = 1;
-        searchParameter.PagingParameter.PageSize = this.pageSize;
-        searchParameter.SortParameter = {};
-        searchParameter.SortParameter.SortColumn = 'Id';
-        searchParameter.SortParameter.SortOrder = Constants.Descending;
-        searchParameter.SearchMode = Constants.Contains;
-
-        if (this.StatementSearchFilterForm.value.filterStatementCustomer != null && this.StatementSearchFilterForm.value.filterStatementCustomer != '') {
-          this.filterCustomerName = this.StatementSearchFilterForm.value.filterStatementCustomer.trim();
-          searchParameter.StatementCustomer = this.StatementSearchFilterForm.value.filterStatementCustomer.trim();
-        }
-        if (this.StatementSearchFilterForm.value.filterStatementAccountId != null && this.StatementSearchFilterForm.value.filterStatementAccountId != '') {
-          this.filterCustomerAccountId = this.StatementSearchFilterForm.value.filterStatementAccountId.trim();
-          searchParameter.StatementAccount = this.StatementSearchFilterForm.value.filterStatementAccountId.trim();
-        }
-        if (this.StatementSearchFilterForm.value.filterStatementDate != null && this.StatementSearchFilterForm.value.filterStatementDate != '') {
-          this.filterStatementDte = this.StatementSearchFilterForm.value.filterStatementDate;
-          searchParameter.StatementStartDate = new Date(this.StatementSearchFilterForm.value.filterStatementDate.setHours(0, 0, 0));
-          searchParameter.StatementEndDate = new Date(this.StatementSearchFilterForm.value.filterStatementDate.setHours(23, 59, 59));
-          searchParameter.SortParameter.SortColumn = 'StatementDate';
-        }
-        if (this.StatementSearchFilterForm.value.filterStatementPeriod != null && this.StatementSearchFilterForm.value.filterStatementPeriod != '') {
-          this.filterStatementPeriodValue = this.StatementSearchFilterForm.value.filterStatementPeriod.trim();
-          searchParameter.StatementPeriod = this.StatementSearchFilterForm.value.filterStatementPeriod.trim();
-        }
-
-        this.currentPage = 0;
-        this.getStatementSearchs(searchParameter);
+      if ((this.StatementSearchFilterForm.value.filterStatementCustomer == null || this.StatementSearchFilterForm.value.filterStatementCustomer == '') && (this.StatementSearchFilterForm.value.filterStatementAccountId == null || this.StatementSearchFilterForm.value.filterStatementAccountId == '') && (this.StatementSearchFilterForm.value.filterStatementDate == null || this.StatementSearchFilterForm.value.filterStatementDate == '') && (this.StatementSearchFilterForm.value.filterStatementPeriod == null || this.StatementSearchFilterForm.value.filterStatementPeriod == '')) {
+        this.noFilterValueError = true;
         this.isFilter = !this.isFilter;
+      } else {
+        if (this.validateFilterDate()) {
+          let searchParameter: any = {};
+          searchParameter.PagingParameter = {};
+          searchParameter.IsPasswordRequired = false;
+          searchParameter.PagingParameter.PageIndex = 1;
+          searchParameter.PagingParameter.PageSize = this.pageSize;
+          searchParameter.SortParameter = {};
+          searchParameter.SortParameter.SortColumn = 'Id';
+          searchParameter.SortParameter.SortOrder = Constants.Descending;
+          searchParameter.SearchMode = Constants.Contains;
+
+          if (this.StatementSearchFilterForm.value.filterStatementCustomer != null && this.StatementSearchFilterForm.value.filterStatementCustomer != '') {
+            this.filterCustomerName = this.StatementSearchFilterForm.value.filterStatementCustomer.trim();
+            searchParameter.StatementCustomer = this.StatementSearchFilterForm.value.filterStatementCustomer.trim();
+          }
+          if (this.StatementSearchFilterForm.value.filterStatementAccountId != null && this.StatementSearchFilterForm.value.filterStatementAccountId != '') {
+            this.filterCustomerAccountId = this.StatementSearchFilterForm.value.filterStatementAccountId.trim();
+            searchParameter.StatementAccount = this.StatementSearchFilterForm.value.filterStatementAccountId.trim();
+          }
+          if (this.StatementSearchFilterForm.value.filterStatementDate != null && this.StatementSearchFilterForm.value.filterStatementDate != '') {
+            this.filterStatementDte = this.StatementSearchFilterForm.value.filterStatementDate;
+            searchParameter.StatementStartDate = new Date(this.StatementSearchFilterForm.value.filterStatementDate.setHours(0, 0, 0));
+            searchParameter.StatementEndDate = new Date(this.StatementSearchFilterForm.value.filterStatementDate.setHours(23, 59, 59));
+            searchParameter.SortParameter.SortColumn = 'StatementDate';
+          }
+          if (this.StatementSearchFilterForm.value.filterStatementPeriod != null && this.StatementSearchFilterForm.value.filterStatementPeriod != '') {
+            this.filterStatementPeriodValue = this.StatementSearchFilterForm.value.filterStatementPeriod.trim();
+            searchParameter.StatementPeriod = this.StatementSearchFilterForm.value.filterStatementPeriod.trim();
+          }
+
+          this.currentPage = 0;
+          this.getStatementSearchs(searchParameter);
+          this.isFilter = !this.isFilter;
+        }
       }
     }
   }

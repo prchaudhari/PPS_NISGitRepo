@@ -194,6 +194,7 @@ namespace nIS
             claimIdentity.AddClaim(new Claim(ClaimType.UserIdentifier.ToString(), user.EmailAddress.ToString()));
             claimIdentity.AddClaim(new Claim(ClaimType.TenantCode.ToString(), user.TenantCode));
             claimIdentity.AddClaim(new Claim(ClaimType.UserId.ToString(), user.Identifier.ToString()));
+            claimIdentity.AddClaim(new Claim(ClaimType.UserFullName.ToString(), user.FirstName + " " + user.LastName));
 
             List<RolePrivilege> userCliams = new List<RolePrivilege>();
             userCliams.AddRange(user.Roles.SelectMany(role => role.RolePrivileges).ToList());

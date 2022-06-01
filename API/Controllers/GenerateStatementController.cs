@@ -37,7 +37,7 @@ namespace nIS
         /// <summary>
         /// This method generate respective customer's HTML statement file.
         /// </summary>
-        /// <param name="GenerateStatementRawData">The raw data object required for statement generation process</param>
+        /// <param name="statementRawData">The raw data object required for statement generation process</param>
         [HttpPost]
         public void CreateCustomerStatement(GenerateStatementRawData statementRawData)
         {
@@ -45,6 +45,24 @@ namespace nIS
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 this.generateStatementManager.CreateCustomerStatement(statementRawData, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method generate respective nedbank customer's HTML statement file.
+        /// </summary>
+        /// <param name="statementRawData">The raw data object required for statement generation process</param>
+        [HttpPost]
+        public void CreateNedbankCustomerStatement(GenerateStatementRawData statementRawData)
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                this.generateStatementManager.CreateCustomerNedbankStatement(statementRawData, tenantCode);
             }
             catch (Exception ex)
             {
@@ -81,6 +99,42 @@ namespace nIS
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 this.generateStatementManager.RunArchivalForCustomerRecord(archivalProcessRawData, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method helps to retry to generate HTML statement for failed nedbank customer list.
+        /// </summary>
+        /// <param name="statementRawData"> the raw data object requires for statement generate process</param>
+        [HttpPost]
+        public void RetryToCreateFailedNedbankCustomerStatements(GenerateStatementRawData statementRawData)
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                this.generateStatementManager.RetryToCreateFailedNedbankCustomerStatements(statementRawData, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method helps to convert HTML statement to PDF statement and archive related data for the nedbank customer.
+        /// </summary>
+        /// <param name="archivalProcessRawData">The raw data object required for archival process</param>
+        [HttpPost]
+        public void RunArchivalForNedbankCustomerRecord(ArchivalProcessRawData archivalProcessRawData)
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                this.generateStatementManager.RunArchivalForNedbankCustomerRecord(archivalProcessRawData, tenantCode);
             }
             catch (Exception ex)
             {

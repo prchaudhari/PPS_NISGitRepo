@@ -53,6 +53,12 @@ namespace nIS
             unityContainer.RegisterType<ITenantTransactionDataRepository, TenantTransactionDataRepository>();
             unityContainer.RegisterType<IArchivalProcessRepository, SQLArchivalProcessRepository>();
             unityContainer.RegisterType<IPageTypeRepository, SQLPageTypeRepository>();
+            unityContainer.RegisterType<ISQLSystemActivityHistoryRepository, SQLSystemActivityHistoryRepository>();
+            unityContainer.RegisterType<IInvestmentRepository, SQLInvestmentRepository>();
+            unityContainer.RegisterType<ICustomerRepository, SQLCustomerRepository>();
+            unityContainer.RegisterType<IMCARepository, SQLMCARepository>();
+            unityContainer.RegisterType<ICorporateSaverRepository, SQLCorporateSaverRepository>();
+            unityContainer.RegisterType<IProductRepository, SQLProductRepository>();
             return unityContainer;
         }
     }

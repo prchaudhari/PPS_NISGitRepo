@@ -11,6 +11,9 @@ namespace nIS
     using System.ComponentModel;
     #endregion
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class Schedule
     {
         #region Private Members
@@ -23,6 +26,11 @@ namespace nIS
         /// The Schedule Name
         /// </summary>
         private string name;
+
+        /// <summary>
+        /// This ProductBatchName
+        /// </summary>
+        private string productBatchName;
 
         /// <summary>
         /// The Schdeule description
@@ -85,6 +93,11 @@ namespace nIS
         private User updateBy;
 
         /// <summary>
+        /// The languages
+        /// </summary>
+        private IList<string> languages;
+
+        /// <summary>
         /// The utility object
         /// </summary>
         private IUtility utility = new Utility();
@@ -94,6 +107,11 @@ namespace nIS
         /// </summary>
         private IValidationEngine validationEngine = new ValidationEngine();
 
+        /// <summary>
+        /// The product id
+        /// </summary>
+        private int productId;
+
         #endregion
 
         #region public members
@@ -101,6 +119,9 @@ namespace nIS
         /// <summary>
         /// Gets or sets user Identifier.
         /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
         [Description("Identifier")]
         public long Identifier
         {
@@ -115,8 +136,30 @@ namespace nIS
         }
 
         /// <summary>
+        /// Gets or sets Product Batch Name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        [Description("ProductBatchName")]
+        public string ProductBatchName
+        {
+            get
+            {
+                return this.ProductBatchName;
+            }
+            set
+            {
+                this.ProductBatchName = value;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets user Identifier.
         /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
         [Description("Name")]
         public string Name
         {
@@ -132,6 +175,9 @@ namespace nIS
         /// <summary>
         /// Gets or sets user Description.
         /// </summary>
+        /// <value>
+        /// The description.
+        /// </value>
         [Description("Description")]
         public string Description
         {
@@ -147,6 +193,9 @@ namespace nIS
         /// <summary>
         /// Gets or sets user DayOfMonth.
         /// </summary>
+        /// <value>
+        /// The day of month.
+        /// </value>
         [Description("DayOfMonth")]
         public long DayOfMonth
         {
@@ -162,6 +211,9 @@ namespace nIS
         /// <summary>
         /// Gets or sets user HourOfDay.
         /// </summary>
+        /// <value>
+        /// The hour of day.
+        /// </value>
         [Description("HourOfDay")]
         public long HourOfDay
         {
@@ -175,6 +227,9 @@ namespace nIS
         /// <summary>
         /// Gets or sets user MinuteOfDay.
         /// </summary>
+        /// <value>
+        /// The minute of day.
+        /// </value>
         [Description("MinuteOfDay")]
         public long MinuteOfDay
         {
@@ -191,6 +246,9 @@ namespace nIS
         /// <summary>
         /// Gets or sets user StartDate.
         /// </summary>
+        /// <value>
+        /// The start date.
+        /// </value>
         [Description("StartDate")]
         public DateTime? StartDate
         {
@@ -204,6 +262,9 @@ namespace nIS
         /// <summary>
         /// Gets or sets user EndDate.
         /// </summary>
+        /// <value>
+        /// The end date.
+        /// </value>
         [Description("EndDate")]
         public DateTime? EndDate
         {
@@ -217,6 +278,9 @@ namespace nIS
         /// <summary>
         /// Gets or sets user Status.
         /// </summary>
+        /// <value>
+        /// The status.
+        /// </value>
         [Description("Status")]
         public string Status
         {
@@ -231,6 +295,9 @@ namespace nIS
         /// <summary>
         /// Gets or sets user IsActive.
         /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is active; otherwise, <c>false</c>.
+        /// </value>
         [Description("IsActive")]
         public bool IsActive
         {
@@ -247,6 +314,9 @@ namespace nIS
         /// <summary>
         /// Gets or sets Statement.
         /// </summary>
+        /// <value>
+        /// The statement.
+        /// </value>
         [Description("Statement")]
         public Statement Statement
         {
@@ -263,6 +333,9 @@ namespace nIS
         /// <summary>
         /// Gets or sets user IsExportToPDF.
         /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is export to PDF; otherwise, <c>false</c>.
+        /// </value>
         [Description("IsExportToPDF")]
         public bool IsExportToPDF
         {
@@ -279,6 +352,9 @@ namespace nIS
         /// <summary>
         /// Gets or sets user Identifier.
         /// </summary>
+        /// <value>
+        /// The last updated date.
+        /// </value>
         [Description("LastUpdatedDate")]
         public DateTime? LastUpdatedDate
         {
@@ -294,6 +370,9 @@ namespace nIS
         /// <summary>
         /// Gets or sets user Identifier.
         /// </summary>
+        /// <value>
+        /// The update by.
+        /// </value>
         [Description("UpdateBy")]
         public User UpdateBy
         {
@@ -307,17 +386,115 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// Gets or sets the languages.
+        /// </summary>
+        /// <value>
+        /// The languages.
+        /// </value>
+        [Description("Languages")]
+        public IList<string> Languages
+        {
+            get
+            {
+                return this.languages;
+            }
+            set
+            {
+                this.languages = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the recurrance pattern.
+        /// </summary>
+        /// <value>
+        /// The recurrance pattern.
+        /// </value>
         public string RecurrancePattern { get; set; }
+        /// <summary>
+        /// Gets or sets the repeat every day mon week year.
+        /// </summary>
+        /// <value>
+        /// The repeat every day mon week year.
+        /// </value>
         public Nullable<long> RepeatEveryDayMonWeekYear { get; set; }
+        /// <summary>
+        /// Gets or sets the week days.
+        /// </summary>
+        /// <value>
+        /// The week days.
+        /// </value>
         public string WeekDays { get; set; }
+        /// <summary>
+        /// Gets or sets the is every week day.
+        /// </summary>
+        /// <value>
+        /// The is every week day.
+        /// </value>
         public Nullable<bool> IsEveryWeekDay { get; set; }
+        /// <summary>
+        /// Gets or sets the month of year.
+        /// </summary>
+        /// <value>
+        /// The month of year.
+        /// </value>
         public string MonthOfYear { get; set; }
+        /// <summary>
+        /// Gets or sets the is ends after no of occurrences.
+        /// </summary>
+        /// <value>
+        /// The is ends after no of occurrences.
+        /// </value>
         public Nullable<bool> IsEndsAfterNoOfOccurrences { get; set; }
+        /// <summary>
+        /// Gets or sets the no of occurrences.
+        /// </summary>
+        /// <value>
+        /// The no of occurrences.
+        /// </value>
         public Nullable<long> NoOfOccurrences { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is recurrance pattern change.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is recurrance pattern change; otherwise, <c>false</c>.
+        /// </value>
         public bool IsRecurrancePatternChange { get; set; }
+        /// <summary>
+        /// Gets or sets the executed batch count.
+        /// </summary>
+        /// <value>
+        /// The executed batch count.
+        /// </value>
         public int ExecutedBatchCount { get; set; }
 
+        /// <summary>
+        /// Gets or sets the tenant code.
+        /// </summary>
+        /// <value>
+        /// The tenant code.
+        /// </value>
         public string TenantCode { get; set; }
+
+        /// <summary>
+        /// Gets or sets user Product Id.
+        /// </summary>
+        /// <value>
+        /// The product id.
+        /// </value>
+        [Description("Product Id")]
+        public int ProductId
+        {
+            get
+            {
+                return this.productId;
+            }
+            set
+            {
+                this.productId = value;
+            }
+        }
         #endregion
 
         #region Public Methods

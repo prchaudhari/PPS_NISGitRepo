@@ -25,6 +25,10 @@ namespace nIS
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public string TenantCode { get; set; }
+        public Nullable<long> CountryId { get; set; }
+        public bool IsInstanceManager { get; set; }
+        public bool IsGroupManager { get; set; }
+        public Nullable<bool> IsPasswordResetByAdmin { get; set; }
         public string Name { get; set; }
     }
 }

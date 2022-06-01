@@ -29,22 +29,22 @@
           </ng-container>
 
           <ng-container matColumnDef="accountId">
-            <th class="width13" mat-header-cell *matHeaderCellDef mat-sort-header> Account ID </th>
+            <th class="width12" mat-header-cell *matHeaderCellDef mat-sort-header> Account ID </th>
             <td mat-cell *matCellDef="let element"> <span title="{{element.AccountNumber}}">{{element.AccountNumber}}</span> </td>
           </ng-container>
 
           <ng-container matColumnDef="accounttype">
-            <th class="width13" mat-header-cell *matHeaderCellDef mat-sort-header> Account Type </th>
+            <th class="width12" mat-header-cell *matHeaderCellDef mat-sort-header> Account Type </th>
             <td mat-cell *matCellDef="let element"> <span title="{{element.AccountType}}">{{element.AccountType}}</span> </td>
           </ng-container>
 
           <ng-container matColumnDef="date">
-            <th class="width13" mat-header-cell *matHeaderCellDef mat-sort-header> Statement Date </th>
+            <th class="width12" mat-header-cell *matHeaderCellDef mat-sort-header> Statement Date </th>
             <td mat-cell *matCellDef="let element"> <span title="{{element.StatementDate | date:DataFormat}}">{{element.StatementDate | date:DataFormat}}</span> </td>
           </ng-container>
 
           <ng-container matColumnDef="period">
-            <th class="width12" mat-header-cell *matHeaderCellDef mat-sort-header> Statement Period </th>
+            <th class="width15" mat-header-cell *matHeaderCellDef mat-sort-header> Statement Period </th>
             <td mat-cell *matCellDef="let element"> <span title="{{element.StatementPeriod}}">{{element.StatementPeriod}}</span> </td>
           </ng-container>
 
@@ -62,8 +62,11 @@
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
       </div>
-      <div class="widget-area-grid padding-0 text-center" *ngIf='scheduleLogList!=undefined && scheduleLogList.length==0'>
-          <label>Please use the filter to see the statement records.</label>
+      <div class="widget-area-grid padding-0 text-center" *ngIf='noFilterValueError == false && scheduleLogList!=undefined && scheduleLogList.length==0'>
+        <label>No records found.</label>
+      </div>
+      <div class="widget-area-grid padding-0 text-center" *ngIf='noFilterValueError==true'>
+        <label>Please use the filter to see the statement records.</label>
       </div>
     </div>
   </div>

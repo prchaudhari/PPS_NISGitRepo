@@ -281,7 +281,29 @@ namespace nIS
                                                             if (statements.Count > 0)
                                                             {
                                                                 var statement = statements.FirstOrDefault();
-                                                                var statementPageContents = this.statementManager.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
+
+                                                                IList<StatementPageContent> statementPageContents = new List<StatementPageContent>();
+                                                                var functionName = string.Empty;
+                                                                if (tenantConfiguration != null && !string.IsNullOrEmpty(tenantConfiguration.GenerateHtmlFormatForStatementFunctionName))
+                                                                {
+                                                                    functionName = tenantConfiguration.GenerateHtmlFormatForStatementFunctionName;
+                                                                }
+
+                                                                switch (functionName)
+                                                                {
+                                                                    case ModelConstant.GENERATE_HTML_FORMAT_OF_FINANCIAL_TENANT_STATEMENT:
+                                                                        statementPageContents = this.statementManager.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
+                                                                        break;
+
+                                                                    case ModelConstant.GENERATE_HTML_FORMAT_OF_NEDBANK_TENANT_STATEMENT:
+                                                                        statementPageContents = this.statementManager.GenerateHtmlFormatOfNedbankStatement(statement, tenantCode, tenantConfiguration);
+                                                                        break;
+
+                                                                    default:
+                                                                        statementPageContents = this.statementManager.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
+                                                                        break;
+                                                                }
+
                                                                 customerIds = res.GroupedStatementMetadataRecords.Select(item => item.CustomerId).Distinct().ToList();
 
                                                                 //insert schedule log into archive table
@@ -579,6 +601,13 @@ namespace nIS
                 ParallelOptions parallelOptions = new ParallelOptions();
                 parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
 
+                var tenantConfiguration = archivalProcessRawData.TenantConfiguration;
+                var apiName = ModelConstant.FINANCIAL_TENANT_ARCHIVAL_PROCESS_API_NAME;
+                if (tenantConfiguration != null && !string.IsNullOrEmpty(tenantConfiguration.ArchivalProcessApiName))
+                {
+                    apiName = tenantConfiguration.ArchivalProcessApiName;
+                }
+
                 Parallel.ForEach(parallelRequest.Customers, parallelOptions, CustomerId =>
                 {
                     var newArchivalProcessRawData = new ArchivalProcessRawData()
@@ -602,7 +631,7 @@ namespace nIS
                     client.BaseAddress = new Uri(RenderEngineBaseUrl);
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ModelConstant.APPLICATION_JSON_MEDIA_TYPE));
                     client.DefaultRequestHeaders.Add(ModelConstant.TENANT_CODE_KEY, TenantCode);
-                    var response = client.PostAsync(ModelConstant.RUN_ARCHIVAL_PROCESS_FOR_CUSTOMER_RECORD, new StringContent(JsonConvert.SerializeObject(newArchivalProcessRawData), Encoding.UTF8, ModelConstant.APPLICATION_JSON_MEDIA_TYPE)).Result;
+                    var response = client.PostAsync(apiName, new StringContent(JsonConvert.SerializeObject(newArchivalProcessRawData), Encoding.UTF8, ModelConstant.APPLICATION_JSON_MEDIA_TYPE)).Result;
                 });
             }
             catch (Exception ex)

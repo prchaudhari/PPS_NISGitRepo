@@ -22,5 +22,9 @@ namespace nIS
         public bool IsDeleted { get; set; }
         public int NumberOfThread { get; set; }
         public bool InUse { get; set; }
+        public string NetworkLocation { get; set; }
+        public string Domain { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
     }
 }

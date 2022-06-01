@@ -13,6 +13,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ScheduleLogServiceDetail } from './logs-details.service';
 import { ScheduleLogDetail } from './log-details';
 import { PreviewDialogService } from './../../shared/services/preview-dialog.service';
+import { AppSettings } from '../../appsettings';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import * as $ from 'jquery';
 
 export interface ListElement {
   UserID: string;
@@ -57,6 +61,8 @@ export class LogsDetailsComponent implements OnInit {
   public filterLogStatus = '';
   public sortColumn = 'Name';
   public sortOrder = Constants.Ascending;
+  public baseURL = AppSettings.baseURL;
+
   closeFilter() {
     this.isFilter = !this.isFilter;
   }
@@ -102,7 +108,8 @@ export class LogsDetailsComponent implements OnInit {
     private _messageDialogService: MessageDialogService,
     private route: Router,
     private localstorageservice: LocalStorageService,
-    private scheduleLogService: ScheduleLogServiceDetail) {
+    private scheduleLogService: ScheduleLogServiceDetail,
+    private http: HttpClient) {
     this.sortedScheduleLogList = this.scheduleLogList.slice();
 
     route.events.subscribe(e => {
@@ -129,14 +136,6 @@ export class LogsDetailsComponent implements OnInit {
     this.pageSize = e.pageSize;
     //this.iterator();
     this.getScheduleLogs(null);
-  }
-
-  private iterator() {
-    const end = (this.currentPage + 1) * this.pageSize;
-    const start = this.currentPage * this.pageSize;
-    const part = this.array.slice(start, end);
-    this.dataSource = part;
-    this.dataSource.sort = this.sort;
   }
 
   //Getters for Page Forms
@@ -402,16 +401,61 @@ export class LogsDetailsComponent implements OnInit {
       previewservice.openMulipleMessageDialogBox('Success', log.LogMessage, Constants.msgBoxSuccess);
     }
   }
+
+  ViewHTML(log: ScheduleLogDetail) {
+    this.uiLoader.start();
+    this.http.post(this.baseURL + 'ScheduleLog/ScheduleLogDetail/DownloadHTMLStatement', log, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
+      .subscribe(
+        data => {
+          this.uiLoader.stop();
+          let contentType = data.headers.get('Content-Type');
+          let fileName = data.headers.get('x-filename');
+          fileName = fileName.substring(fileName.lastIndexOf('\\') + 1, fileName.length);
+          const blob = new Blob([data.body], { type: contentType });
+          if (window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob, fileName);
+          } else {
+            var link = document.createElement('a');
+            link.setAttribute("type", "hidden");
+            link.download = fileName;
+            link.href = window.URL.createObjectURL(blob);
+            document.body.appendChild(link);
+            link.click();
+          }
+        },
+        error => {
+          $('.overlay').show();
+          this._messageDialogService.openDialogBox('Error', "File Not Found", Constants.msgBoxError);
+          this.uiLoader.stop();
+        });
+  }
+
+  ExportToPDF(log: ScheduleLogDetail): void {
+    this.uiLoader.start();
+    this.http.post(this.baseURL + 'ScheduleLog/ScheduleLogDetail/ExportToPDF' , log, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
+      .subscribe(
+        data => {
+          this.uiLoader.stop();
+          let contentType = data.headers.get('Content-Type');
+          let fileName = data.headers.get('x-filename');
+          fileName = fileName.substring(fileName.lastIndexOf('\\') + 1, fileName.length);
+          const blob = new Blob([data.body], { type: contentType });
+          if (window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob, fileName);
+          } else {
+            var link = document.createElement('a');
+            link.setAttribute("type", "hidden");
+            link.download = fileName;
+            link.href = window.URL.createObjectURL(blob);
+            document.body.appendChild(link);
+            link.click();
+          }
+        },
+        error => {
+          $('.overlay').show();
+          this._messageDialogService.openDialogBox('Error', "File Not Found", Constants.msgBoxError);
+          this.uiLoader.stop();
+        });
+   }
 }
 
-function compare(a: number, b: number, isAsc: boolean) {
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
-}
-
-function compareStr(a: string, b: string, isAsc: boolean) {
-  return (a.toLowerCase() < b.toLowerCase() ? -1 : 1) * (isAsc ? 1 : -1);
-}
-
-function compareDate(a: Date, b: Date, isAsc: boolean) {
-  return (Date.parse("" + a) < Date.parse("" + b) ? -1 : 1) * (isAsc ? 1 : -1);
-}
