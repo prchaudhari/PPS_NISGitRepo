@@ -89,6 +89,9 @@ export class URLConfiguration {
   //Logout user--
   public static get logoutUrl(): string { return "Login/Logout" };
 
+  // Products
+    public static get productGetUrl(): string { return "Product/GetProducts" };
+    
   public static get assetLibraryGetUrl(): string { return "AssetLibrary/List" };
   public static get assetLibraryAddUrl(): string { return "AssetLibrary/Add" };
   public static get assetLibraryUpdateUrl(): string { return "AssetLibrary/Update" };
