@@ -71,19 +71,17 @@ export class ProductService {
   //   }
 
 
-  // getProducts():any {
-  //   debugger;
-  //  return this._http.get(this.baseURL + URLConfiguration.productGetUrl);
-  //   }
-    getProducts():any {
-      debugger;
-      this._http.get(this.baseURL + URLConfiguration.productGetUrl).subscribe(data => {
-      return data;
-    }); 
+  getProducts():any {
+    debugger;
+   return this._http.get(this.baseURL + URLConfiguration.productGetUrl);
     }
+    // getProducts():any {
+    //   debugger;
+    //   this._http.get(this.baseURL + URLConfiguration.productGetUrl).subscribe(data => {
+    //   return data;
+    // }); 
+    // }
     getpageTypeByProductID(productId:string):any {
-      debugger;
-      this.uiLoader.start();
      return this._http.post(`${this.baseURL}Product/GetProductPageTypeMappingByProductId?productId=${productId}`,null);   
       }
 }

@@ -500,7 +500,7 @@ export class AddComponent implements OnInit {
     }
 
     this.scheduleForm = this.formBuilder.group({
-      ScheduleName: [null, Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(50),
+      ScheduleName: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(50),
       Validators.pattern(this.onlyAlphabetswithInbetweenSpaceUpto50Characters)])],
       StatementDefinition: [0, Validators.compose([Validators.required])],
       //DayOfMonth: ["Please Select", Validators.compose([Validators.required])],
@@ -605,16 +605,15 @@ export class AddComponent implements OnInit {
     }
   }
 
-  // getProducts() {
-  //   this.productList = this.product.getProducts().subscribe(data => {
-      
-  //     this.productList = data;
-  //   });
-  // }
-
   getProducts() {
-    this.productList = this.productService.getProducts();
+    this.productList = this.productService.getProducts().subscribe(data => {
+      this.productList = data;
+    });
   }
+
+  // getProducts() {
+  //   this.productList = this.productService.getProducts();
+  // }
 
 
 
