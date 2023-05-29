@@ -100,7 +100,7 @@ export class URLConfiguration {
 
   public static get assetGetUrl(): string { return "assetlibrary/asset/list" };
 
-  public static get segmentGetUrl(): string { return "NB_SegmentMaster/GetNB_SegmentMaster?tenantCode=94461633-b316-42c3-a188-db8d78075ef4" };
+  public static get segmentGetUrl(): string { return "NB_SegmentMaster/GetNB_SegmentMaster" };
 
   //Page Url Method
   public static get pageGetUrl(): string { return "Page/List" };

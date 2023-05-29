@@ -231,7 +231,7 @@ namespace nIS
 
         public const string WEALTH_NEDBANK_STATEMENT_FOOTER = "<div class='ftr pt-2'><div class='row'><div class='col-lg-12 col-md-12 col-sm-12'><img class='ftr-lt-span1' src='{{NedbankSloganImage}}' alt='Nedbank slogan' style=\"width:100%; float: right !important \"></div></div></div>";
 
-        public const string CUSTOMER_INFORMATION_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'><div class='p-1 bg-light border-0 text-left'><h5 class='m-0'>Customer Information</h5></div><div class='card-body'><div class='row'><div class='col-sm-4'><h4 class='mb-4'>{{CustomerName}}</h4><h6>{{Address1}}{{Address2}}</h6></div><div class='col-sm-8'> <video class='doc-video' controls><source src='{{VideoSource}}' type='video/mp4'></video></div></div></div></div>";
+        public const string CUSTOMER_INFORMATION_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'><div class='p-1 bg-light border-0 text-left'><h5 class='m-0'>Customer Information</h5></div><div class='card-body'><div class='row'><div class='col-sm-12'><h4 class='mb-4'>{{CustomerName}}</h4><h6>{{Address1}}{{Address2}}</h6></div></div></div></div>";
 
         public const string ACCOUNT_INFORMATION_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'><div class='p-1 bg-light border-0 text-left'><h5 class='m-0'>Account Information</h5></div> <div class='card-body overflow-auto'>{{AccountInfoData}}</div></div>";
 

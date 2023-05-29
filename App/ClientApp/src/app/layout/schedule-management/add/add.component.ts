@@ -884,7 +884,8 @@ export class AddComponent implements OnInit {
 
   async SaveSchedule() {
     this.schedule.Name = this.scheduleForm.value.ScheduleName;
-    this.schedule.Statement.Identifier = this.scheduleForm.value.StatementDefinition;
+    //this.schedule.Statement.Identifier = this.scheduleForm.value.StatementDefinition;
+    this.schedule.Statement.Identifier=this.scheduleForm.value.pagetype[0].statements[0].Id
     this.schedule.StartDate = this.scheduleForm.value.filtershiftfromdate;
     this.schedule.IsExportToPDF = this.IsExportToPDF;
     this.schedule.UpdateBy = new User();

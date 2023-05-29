@@ -1468,13 +1468,13 @@ namespace nIS
 
                     //If has any error while rendering html statement, then assign status as failed and all collected errors message to log message variable..
                     //Otherwise write html statement string to actual html file and store it at output location, then assign status as completed
-                    if (IsFailed)
-                    {
-                        logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                        logDetailRecord.LogMessage = "<ul class='pl-4 text-left'>" + ErrorMessages.ToString() + "</ul>";
-                    }
-                    else
-                    {
+                    //if (IsFailed)
+                    //{
+                    //    logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
+                    //    logDetailRecord.LogMessage = "<ul class='pl-4 text-left'>" + ErrorMessages.ToString() + "</ul>";
+                    //}
+                    //else
+                    //{
                         string fileName = "Statement_" + customer.Identifier + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
                         string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, batchMaster.Identifier, customer.Identifier, statementRawData.BaseURL, statementRawData.OutputLocation, true, statement.Pages[0].PageTypeName);
 
@@ -1482,7 +1482,7 @@ namespace nIS
                         logDetailRecord.Status = ScheduleLogStatus.Completed.ToString();
                         logDetailRecord.LogMessage = "Statement generated successfully..!!";
                         logDetailRecord.statementMetadata = statementMetadataRecords;
-                    }
+                    //}
                 }
 
                 return logDetailRecord;
@@ -2216,7 +2216,7 @@ namespace nIS
             string address2 = (customer.AddressLine2 != "" ? customer.AddressLine2 + ", " : "") + (customer.City != "" ? customer.City + ", " : "") + (customer.State != "" ? customer.State + ", " : "") + (customer.Country != "" ? customer.Country + ", " : "") + (customer.Zip != "" ? customer.Zip : "");
             pageContent.Replace("{{Address2}}", address2);
 
-            var custMedia = customerMedias.Where(item => item.PageId == page.Identifier && item.WidgetId == widget.Identifier)?.ToList()?.FirstOrDefault();
+          /*  var custMedia = customerMedias.Where(item => item.PageId == page.Identifier && item.WidgetId == widget.Identifier)?.ToList()?.FirstOrDefault();
             if (custMedia != null && custMedia.VideoURL != string.Empty)
             {
                 pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", custMedia.VideoURL);
@@ -2228,7 +2228,7 @@ namespace nIS
                 {
                     pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", batchDetail.VideoURL);
                 }
-            }
+            }*/
         }
 
         private void BindAccountInformationWidgetData(StringBuilder pageContent, CustomerMaster customer, Page page, PageWidget widget)

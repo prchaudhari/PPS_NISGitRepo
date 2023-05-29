@@ -50,7 +50,7 @@
                         <label></label>
                         <div class="form-check " *ngFor="let statment of page.get('statements').value">
                           <input class="form-check-input" formControlName="radioBottonStatements" id="{{statment.Id}}"
-                            type="radio" value="{{statment.Id}}">
+                            type="checkbox" value="{{statment.Id}}">
                           <label class="form-check-label" for="{{statment.Id}}">
                             {{statment.StatementName}}
                           </label>

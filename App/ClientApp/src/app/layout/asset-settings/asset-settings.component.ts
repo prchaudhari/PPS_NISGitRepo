@@ -146,6 +146,7 @@ export class AssetSettingsComponent implements OnInit {
   LoadAsset(): void {
     this._spinnerService.start();
     var AssetSearchParameter;
+    console.log("Got")
     this._http.post(this.baseURL + 'AssetSetting/list', AssetSearchParameter).subscribe(
       data => {
         this._spinnerService.stop();

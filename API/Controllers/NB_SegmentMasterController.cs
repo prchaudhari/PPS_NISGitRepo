@@ -41,8 +41,9 @@ namespace nIS.Controllers
         }
 
         // GET: api/NB_SegmentMaster
-        public List<Segment> GetNB_SegmentMaster(string tenantCode)
+        public List<Segment> GetNB_SegmentMaster()
         {
+            string tenantCode = Helper.CheckTenantCode(Request.Headers);
             this.SetAndValidateConnectionString(tenantCode);
             List<NB_SegmentMaster> segments = new List<NB_SegmentMaster>();
             using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))

@@ -1364,7 +1364,8 @@ namespace nIS
                     var filesDict = new Dictionary<string, string>();
                     for (int i = 0; i < statementPreviewData.SampleFiles.Count; i++)
                     {
-                        filesDict.Add(statementPreviewData.SampleFiles[i].FileName, statementPreviewData.SampleFiles[i].FileUrl);
+                        if (!filesDict.ContainsKey(statementPreviewData.SampleFiles[i].FileName))
+                            filesDict.Add(statementPreviewData.SampleFiles[i].FileName, statementPreviewData.SampleFiles[i].FileUrl);
                     }
                     string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, batch.Identifier, baseURL, outputLocation, filesDict);
 

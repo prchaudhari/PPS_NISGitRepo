@@ -730,7 +730,7 @@ export class AddDashboardDesignerComponent implements OnInit {
 
     this.getAssetLibraries();
 
-    this.getSegments();
+   // this.getSegments();
 
     if (this.pageEditModeOn && this.widgetsGridsterItemArray.length == 0) {
       this.getTemplate();

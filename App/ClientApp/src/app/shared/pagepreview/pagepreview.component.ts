@@ -478,7 +478,8 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
         if(tenant != null) {
           if(tenant.TenantLogo != undefined && tenant.TenantLogo != null && tenant.TenantLogo != '') {
             let image = new Image();
-            image.src = tenant.TenantLogo;
+            //image.src = tenant.TenantLogo;
+            image.src="assets/images/absa-logo.png"
             image.height = 40;
             $('#TenantLogo').append(image);
           }else {

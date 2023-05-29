@@ -36,11 +36,7 @@ noData(Highcharts);
           <h4 class="mb-4">Laura J Donald</h4>
           <h6>4000 Executive Parkway, Saint Globin Rd #250,<br /> Canary Wharf, E94583</h6>
         </div>
-        <div class="col-sm-8">
-          <video class="doc-video" controls>
-            <source src="assets/images/SampleVideo.mp4" type="video/mp4">
-          </video>
-        </div>
+      
       </div>
     </div>
   </div>`

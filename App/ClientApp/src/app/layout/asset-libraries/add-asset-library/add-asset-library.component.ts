@@ -251,7 +251,7 @@ export class AddAssetLibraryComponent implements OnInit {
           let assetSearchParameter: AssetSearchParameter;
           assetSearchParameter = new AssetSearchParameter();
           assetSearchParameter.SortParameter.SortColumn = "LastUpdatedDate";
-          assetSearchParameter.SortParameter.SortOrder = 2;
+          //assetSearchParameter.SortParameter.SortOrder = 2;
           assetSearchParameter.AssetLibraryIdentifier = this.assetLibrary.Identifier ? this.assetLibrary.Identifier.toString() : null;
           this.LoadAsset(assetSearchParameter);
           $('.overlay').show();
@@ -860,6 +860,7 @@ export class AddAssetLibraryComponent implements OnInit {
   }
 
   onOverrideHandleFileUpload(e, multipleFileAssetUpload): void {
+    console.log("Found");
     this.assetFileTypeError = false;
     this.assetFileSizeError = false;
     this.assetFileWidthHeightError = false;

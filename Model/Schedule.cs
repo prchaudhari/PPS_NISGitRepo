@@ -141,8 +141,8 @@ namespace nIS
         /// <value>
         /// The name.
         /// </value>
-        [Description("ProductBatchName")]
-        public string ProductBatchName
+       /*   [Description("ProductBatchName")]
+      public string ProductBatchName
         {
             get
             {
@@ -152,7 +152,7 @@ namespace nIS
             {
                 this.ProductBatchName = value;
             }
-        }
+        }*/
 
         /// <summary>
         /// Gets or sets user Identifier.
