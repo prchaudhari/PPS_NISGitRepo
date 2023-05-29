@@ -82,6 +82,7 @@ export class AccountInformationComponent {
 
 }
 
+
 // Component Created for Image Widget--
 @Component({
   selector: 'image-widget',
