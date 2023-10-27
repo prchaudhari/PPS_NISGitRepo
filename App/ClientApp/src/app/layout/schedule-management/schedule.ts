@@ -26,5 +26,6 @@ export class Schedule {
   "MonthOfYear":string;
   "IsEndsAfterNoOfOccurrences":boolean;
   "NoOfOccurrences":number;
-  "ExecutedBatchCount":number;
+  "ExecutedBatchCount": number;
+  "ProductId": number;
 }

@@ -783,12 +783,12 @@ namespace nIS
                     IList<View_ScheduleRecord> view_ScheduleRecords = new List<View_ScheduleRecord>();
                     if (scheduleSearchParameter.PagingParameter.PageIndex > 0 && scheduleSearchParameter.PagingParameter.PageSize > 0)
                     {
-                        view_ScheduleRecords = nISEntitiesDataContext.View_ScheduleRecord
-                        .OrderBy(scheduleSearchParameter.SortParameter.SortColumn + " " + scheduleSearchParameter.SortParameter.SortOrder.ToString())
-                        .Where(whereClause)
-                        .Skip((scheduleSearchParameter.PagingParameter.PageIndex - 1) * scheduleSearchParameter.PagingParameter.PageSize)
-                        .Take(scheduleSearchParameter.PagingParameter.PageSize)
-                        .ToList();
+                        view_ScheduleRecords = nISEntitiesDataContext.View_ScheduleRecord.ToList();
+                        //.OrderBy(scheduleSearchParameter.SortParameter.SortColumn + " " + scheduleSearchParameter.SortParameter.SortOrder.ToString())
+                        //.Where(whereClause)
+                        //.Skip((scheduleSearchParameter.PagingParameter.PageIndex - 1) * scheduleSearchParameter.PagingParameter.PageSize)
+                        //.Take(scheduleSearchParameter.PagingParameter.PageSize)
+                        //.ToList();
                     }
                     else
                     {

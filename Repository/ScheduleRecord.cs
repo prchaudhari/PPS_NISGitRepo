@@ -39,5 +39,6 @@ namespace nIS
         public Nullable<long> NoOfOccurrences { get; set; }
         public string Languages { get; set; }
         public string ProductBatchName { get; set; }
+        public long PeoductId { get; set; }
     }
 }
