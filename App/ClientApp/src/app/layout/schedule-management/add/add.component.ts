@@ -35,6 +35,8 @@ export class AddComponent implements OnInit {
   public statementDefinitionList = [];
   public onlyAlphabetswithInbetweenSpaceUpto50Characters = Constants.onlyAlphabetswithInbetweenSpaceUpto50Characters;
   public schedule: Schedule;
+  public scheduleDetails: Schedule;
+  public scheduleRecords: any;
   public st: Statement;
   public pt:Product;
   public updateOperationMode: boolean;
@@ -635,6 +637,7 @@ export class AddComponent implements OnInit {
       this._messageDialogService.openDialogBox('Error', "Schedule Not Found", Constants.msgBoxError);
     }
     this.schedule = response.List[0];
+    this.scheduleForm.controls['ScheduleName'].setValue(this.scheduleRecords != null && this.scheduleRecords.ProductBatches.length > 0 ? this.scheduleRecords.ProductBatches[0].ScheduleNameByUser : "");
     this.scheduleForm.controls['ScheduleName'].setValue(this.schedule.Name);
     this.scheduleForm.controls['StatementDefinition'].setValue(this.schedule.Statement.Identifier);
     //this.scheduleForm.controls['DayOfMonth'].setValue(this.schedule.DayOfMonth);
@@ -887,6 +890,7 @@ export class AddComponent implements OnInit {
     //this.schedule.Statement.Identifier = this.scheduleForm.value.StatementDefinition;
     this.schedule.Statement.Identifier = this.scheduleForm.value.pagetype[0].statements[0].Id
     this.schedule.ProductId = this.scheduleForm.value.StatementDefinition;
+    this.schedule.ScheduleNameByUser = this.scheduleForm.value.ScheduleName;
     this.schedule.StartDate = this.scheduleForm.value.filtershiftfromdate;
     this.schedule.IsExportToPDF = this.IsExportToPDF;
     this.schedule.UpdateBy = new User();

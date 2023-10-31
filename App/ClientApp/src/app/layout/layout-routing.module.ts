@@ -55,7 +55,7 @@ const routes: Routes = [
       { path: 'groupManagerDashboard', component: GroupmanagerdashboardComponent, resolve: { envSpecific: EnvironmentSpecificResolver } },
       { path: 'instanceManagerDashboard', component: InstancemanagerdashboardComponent, resolve: { envSpecific: EnvironmentSpecificResolver } },
       { path: 'pagetype', component: PagetypeComponent, resolve: { envSpecific: EnvironmentSpecificResolver }},
-
+      { path: 'datahub', loadChildren: () => import('./datahub/datahub.module').then(m => m.DatahubModule), resolve: { envSpecific: EnvironmentSpecificResolver } },
     ]
   }
 ];

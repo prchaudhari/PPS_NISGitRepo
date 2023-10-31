@@ -106,6 +106,7 @@
     <Compile Include="MarketingMessage.cs" />
     <Compile Include="MultiTenantUserRoleAccess.cs" />
     <Compile Include="NedBank\BreakdownOfInvestmentAccounts.cs" />
+    <Compile Include="NedBank\ETLScheduleModel.cs" />
     <Compile Include="NedBank\InvestmentPottfolio.cs" />
     <Compile Include="NedBank\InvestmentTransaction.cs" />
     <Compile Include="NedBank\InvestorPerformance.cs" />

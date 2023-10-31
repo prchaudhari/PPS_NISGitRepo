@@ -25,6 +25,7 @@ import { map } from 'rxjs/operators';
 
 export class ViewComponent implements OnInit {
   public schedule: Schedule;
+  public scheduleRecord: any;
   public params;
   public userClaimsRolePrivilegeOperations: any[] = [];
   public isCollapsedDetails: boolean = false;
@@ -119,28 +120,34 @@ export class ViewComponent implements OnInit {
     searchParameter.SearchMode = Constants.Exact;
     searchParameter.Identifier = this.schedule.Identifier;
     searchParameter.IsStatementDefinitionRequired = true;
+    searchParameter.ProductBatchName = this.schedule.ProductBatchName;
     var response = await scheduleService.getSchedule(searchParameter);
     this.schedule = response.List[0];
 
-    if(this.schedule.RecurrancePattern == null || this.schedule.RecurrancePattern == '') {
-      this.RecurrencePattern = 'Repeat';
-    }else {
-      if(this.schedule.RecurrancePattern.includes('Custom')) {
-        let index = this.schedule.RecurrancePattern.indexOf('-');
-        this.RepeatEveryBy = this.schedule.RecurrancePattern.substring(index+1, this.schedule.RecurrancePattern.length);
-        this.RecurrencePattern = this.schedule.RecurrancePattern.substring(0, index);
-      }else {
-        this.RecurrencePattern = this.schedule.RecurrancePattern;
+    this.scheduleRecord = response.List[0];
+    if (this.scheduleRecord != null && this.scheduleRecord.ProductBatches != null || this.scheduleRecord.ProductBatches.length > 0) {
+      if (this.scheduleRecord.ProductBatches[0].RecurrancePattern == null || this.scheduleRecord.ProductBatches[0].RecurrancePattern == '') {
+        this.RecurrencePattern = 'Repeat';
+      } else {
+        if (this.scheduleRecord.ProductBatches[0].RecurrancePattern.includes('Custom')) {
+          let index = this.scheduleRecord.ProductBatches[0].RecurrancePattern.indexOf('-');
+          this.RepeatEveryBy = this.scheduleRecord.ProductBatches[0].RecurrancePattern.substring(index + 1, this.scheduleRecord.ProductBatches[0].RecurrancePattern.length);
+          this.RecurrencePattern = this.scheduleRecord.ProductBatches[0].RecurrancePattern.substring(0, index);
+        } else {
+          this.RecurrencePattern = this.scheduleRecord.ProductBatches[0].RecurrancePattern;
+        }
       }
+      this.RecurrencePattern = this.scheduleRecord.ProductBatches[0].RecurrancePattern;
     }
-    this.RecurrencePattern = this.schedule.RecurrancePattern;
 
-    if(this.schedule.WeekDays != null && this.schedule.WeekDays!='') {
-      var scheduledays = this.schedule.WeekDays.split(',');
-      scheduledays.forEach(day => {
-        var dayObj = this.dayObjectArr.filter(x => x.Day.toLocaleLowerCase() == day.toLocaleLowerCase())[0];
-        this.selectedWeekdays.push({'Id': dayObj.Id, 'Day': dayObj.Day});
-      }); 
+    if (this.scheduleRecord != null && this.scheduleRecord.ProductBatches != null || this.scheduleRecord.ProductBatches.length > 0) {
+      if (this.scheduleRecord.ProductBatches[0].WeekDays != null && this.scheduleRecord.ProductBatches[0].WeekDays != '') {
+        var scheduledays = this.scheduleRecord.ProductBatches[0].WeekDays.split(',');
+        scheduledays.forEach(day => {
+          var dayObj = this.dayObjectArr.filter(x => x.Day.toLocaleLowerCase() == day.toLocaleLowerCase())[0];
+          this.selectedWeekdays.push({ 'Id': dayObj.Id, 'Day': dayObj.Day });
+        });
+      }
     }
 
     this.setScheduleOccuranceMessage();
@@ -223,7 +230,7 @@ export class ViewComponent implements OnInit {
         },
         filteredparams: {
           //passing data using json stringify.
-          "ScheduleName": this.schedule.Name != null ? this.schedule.Name : ""
+          "ScheduleName": this.scheduleRecord != null && this.scheduleRecord.length > 0 && this.scheduleRecord.ProductBatches.length > 0 ? this.scheduleRecord.ProductBatches[0].ScheduleNameByUser : ""
         }
       }
     }

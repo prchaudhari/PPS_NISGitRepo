@@ -258,6 +258,8 @@ namespace nIS
         /// </summary>
         public const string SCHEDULE_MODEL_SECTION = "ScheduleModel";
 
+        public const string ETL_SCHEDULE_MODEL_SECTION = "ETLScheduleModel";
+
         /// <summary>
         /// The invalid schedule name
         /// </summary>

@@ -1,0 +1,192 @@
+<div class="main-container position-relative">
+  <div class="page-title d-flex justify-content-md-between justify-content-end">
+    <div class="xs-title">
+      <span class="mr-2">ETL Schedule Management</span>
+      <span class="icon-filter filter-btn" id="spnFilter" (click)="isFilter=!isFilter"></span>
+    </div>
+  </div>
+
+  <!--desktop view start-->
+  <div class="card border-0 mb-3 card-shadow">
+    <div class="card-body">
+      <div class="d-flex justify-content-center mb-4">
+        <div class="pagination-mat position-relative">
+          <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true"
+            [length]="totalSize" [pageIndex]="currentPage" (page)="handlePage($event)">
+          </mat-paginator>
+        </div>
+      </div>
+
+      <div class="widget-area-grid padding-0">
+        <table class="table-cust mat-table">
+          <thead role="rowgroup">
+            <tr class="mat-header-row ng-star-inserted" role="row">
+              <th class="width35 ip-w-15 padding_bottom_15">Name</th>
+              <th class="width10 ip-w-15 padding_bottom_15">Schedule Date</th>
+              <th class="width10 ip-w-15 padding_bottom_15">Start Date</th>
+              <th class="width10 ip-w-15 padding_bottom_15">End Date</th>
+              <th class="width10 ip-w-10 padding_bottom_15">Executed Batches</th>
+              <th class="width10 ip-w-10 padding_bottom_15">Total Batches</th>
+              <th class="width15 ip-w-15 padding_bottom_15">Status</th>
+              <th class="width25 ip-w-20 padding_bottom_15"> Actions </th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of array">
+              <tr class="mat-row ng-star-inserted padding_bottom_15">
+                <td
+                  class="mat-cell cdk-column-name mat-column-name ng-star-inserted font-weight-bold padding_bottom_8 padding_top_8"
+                  colspan="8">
+                  {{ item.ProductName }}
+                </td>
+              </tr>
+
+              <tr class="mat-row ng-star-inserted" *ngFor="let childItem of item.ProductBatches">
+                <td
+                  class="mat-cell cdk-column-statement mat-column-statement ng-star-inserted padding_bottom_8 padding_top_8">
+                  {{ childItem.Name }}
+                </td>
+                <td
+                  class="mat-cell cdk-column-startDate mat-column-startDate ng-star-inserted padding_bottom_8 padding_top_8">
+                  <span *ngIf='childItem.ScheduleDate != null && childItem.ScheduleDate != "0001-01-01T00:00:00"'>
+                    {{childItem.ScheduleDate | date:DateFormat}}</span>
+                  <span *ngIf='childItem.ScheduleDate==null || childItem.ScheduleDate=="0001-01-01T00:00:00"'> NA
+                  </span>
+                </td>
+                <td
+                  class="mat-cell cdk-column-startDate mat-column-startDate ng-star-inserted padding_bottom_8 padding_top_8">
+                  <span *ngIf='childItem.StartDate != null && childItem.StartDate != "0001-01-01T00:00:00"'>
+                    {{childItem.StartDate | date:DateFormat}}</span>
+                  <span *ngIf='childItem.StartDate==null || childItem.StartDate=="0001-01-01T00:00:00"'> NA </span>
+                </td>
+                <td
+                  class="mat-cell cdk-column-endDate mat-column-endDate ng-star-inserted padding_bottom_8 padding_top_8">
+                  <span *ngIf='childItem.EndDate != null && childItem.EndDate != "0001-01-01T00:00:00"'>
+                    {{childItem.EndDate | date:DateFormat}}</span>
+                  <span *ngIf='childItem.EndDate==null || childItem.EndDate=="0001-01-01T00:00:00"'> NA </span>
+                </td>
+                <td
+                  class="mat-cell cdk-column-NoOfOccurrence mat-column-NoOfOccurrence ng-star-inserted padding_bottom_8 padding_top_8">
+                  {{childItem.ExecutedBatches }}
+                </td>
+                <td
+                  class="mat-cell cdk-column-NoOfOccurrence mat-column-NoOfOccurrence ng-star-inserted padding_bottom_8 padding_top_8">
+                  {{childItem.TotalBacthes }}
+                </td>
+                <td
+                  class="mat-cell cdk-column-Status mat-column-Status ng-star-inserted padding_bottom_8 padding_top_8">
+                  {{childItem.Status}}
+                </td>
+                <td
+                  class="mat-cell cdk-column-actions mat-column-actions ng-star-inserted padding_bottom_8 padding_top_8 ">
+                  <div class="action-btns btn-tbl-action">
+                    <button type="button" id="btnViewETLSchedule" title="View ETL Schedule"
+                      (click)="navigateToETLScheduleDetail(childItem)"
+                      *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'ETL Schedule Management',Operation: 'View' }))">
+                      <span class="fa fa-file-text-o"></span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!--desktop view end-->
+  <form [formGroup]="ETLScheduleFilterForm">
+    <div class="filter-popup" [ngClass]="!isFilter? 'filter-popup':'filter-popup-show'">
+      <div class="filter-head">
+        <label class="m-0">Apply Filter</label>
+      </div>
+      <div class="filter-body-left d-flex flex-column stylescrollbar">
+        <div class="form-group">
+          <label>Product</label>
+          <div class="position-relative">
+            <select formControlName="filterProduct" class="form-control">
+              <option [value]="'0'" [selected]="true">Select Product</option>
+              <option *ngFor="let sd of productList" [value]="sd.Id">{{ sd.Name }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" class="form-control" id="filterName" formControlName="filterName">
+        </div>
+        <div class="form-group">
+          <label>Schedule Date</label>
+          <div class="position-relative">
+            <input [owlDateTime]="dt2" class="form-control" id="inputScheduleDate" formControlName="filterScheduleDate"
+              placeholder="Please select schedule date" readonly>
+            <span [owlDateTimeTrigger]="dt2" class="datetime-icon">
+              <i class="fa fa-calendar"></i>
+            </span>
+            <owl-date-time #dt2 [pickerType]="'calendar'"></owl-date-time>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Start Date</label>
+          <div class="position-relative">
+            <input [owlDateTime]="dt" class="form-control" id="inputStartDate" formControlName="filterStartDate"
+              placeholder="Please select start date" readonly (ngModelChange)="onFilterDateChange($event)">
+            <span [owlDateTimeTrigger]="dt" class="datetime-icon">
+              <i class="fa fa-calendar"></i>
+            </span>
+            <owl-date-time #dt [pickerType]="'calendar'"></owl-date-time>
+          </div>
+          <div class="text-danger" *ngIf="filterStartDateError">
+            {{filterStartDateErrorMessage}}
+          </div>
+        </div>
+        <div class="form-group">
+          <label>End Date</label>
+          <div class="position-relative">
+            <input [owlDateTime]="dt1" class="form-control" id="inputEndDate" formControlName="filterEndDate"
+              placeholder="Please select end date" readonly (ngModelChange)="onFilterDateChange($event)">
+            <span [owlDateTimeTrigger]="dt1" class="datetime-icon">
+              <i class="fa fa-calendar"></i>
+            </span>
+            <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
+          </div>
+          <div class="text-danger" *ngIf="filterEndDateError">
+            {{filterEndDateErrorMessage}}
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Activation Status</label>
+          <select id="filterIsActive" formControlName="filterIsActive" (change)="onActiveStatusSelected($event)"
+            class="form-control">
+            <option *ngFor="let item of activeStatusArray" [value]="item.Identifier">{{item.Name}}</option>
+          </select>
+        </div>
+      </div>
+      <!--[ngClass]="filterClass"-->
+      <div class="filter-footer">
+        <ul class="nav">
+          <li class="nav-item width33" id="liSearchFilter" title="Search" (click)="searchFilter('search')">
+            <!--(click)="searchFilter('search')" -->
+            <a class="nav-link p-0">
+              <span class="fa fa-check"></span>
+            </a>
+          </li>
+          <li class="nav-item width33" id="liResetFilter" title="Reset" (click)="searchFilter('reset')">
+            <!-- (click)="searchFilter('reset')" -->
+            <a class="nav-link p-0">
+              <span class="fa fa-refresh"></span>
+            </a>
+          </li>
+          <li class="nav-item width33" id="liCloseFilter" title="Close" (click)="isFilter=!isFilter">
+            <!-- (click)="isFilter=!isFilter" -->
+            <a class="nav-link p-0">
+              <span class="fa fa-close"></span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="overlay" [ngClass]="!isFilter? 'hide':'show'"></div>

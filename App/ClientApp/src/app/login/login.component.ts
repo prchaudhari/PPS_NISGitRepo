@@ -87,7 +87,11 @@ export class LoginComponent implements OnInit {
   {
     "State": "statemenetsearch",
     "Entity": "Statement Search",
-  },
+    },
+    {
+      "State": "datahub",
+      "Entity": "Schedule Management",
+    },
   ]
   // login form error Obj created.
   public loginFormErrorObject: any = {

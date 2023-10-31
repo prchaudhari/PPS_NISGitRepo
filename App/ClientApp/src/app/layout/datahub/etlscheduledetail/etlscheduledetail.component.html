@@ -1,0 +1,301 @@
+<div class="main-container position-relative">
+  <div class="page-title d-flex justify-content-md-between justify-content-end">
+    <div class="xs-title">
+      <span class="mr-2">ETL Schedule Details</span>
+    </div>
+  </div>
+
+  <div class="card border-0 mb-2 card-shadow">
+    <div class="card-header bg-white d-flex justify-content-between">
+      <div><label class="m-0">Details</label></div>
+      <div>
+        <button type="button" id="btnCollapsedDetails" class="toggle-btn border-0 p-0 bg-transparent"
+          (click)="isCollapsedDetails = !isCollapsedDetails" [attr.aria-expanded]="!isCollapsedDetails"
+          aria-controls="collapseDetails">
+          <span class="fa" [ngClass]="!isCollapsedDetails? 'fa-angle-down' : 'fa-angle-right'"></span>
+        </button>
+      </div>
+    </div>
+    <div class="card-body" id="collapseDetails" [ngbCollapse]="isCollapsedDetails">
+      <div class="row form-group">
+        <div class="col-md-4 col-lg-4">
+          <label id="lblName" for="inputName">Name</label>
+          <div
+            *ngIf="scheduleRecord != null && scheduleRecord.ProductBatches != null && scheduleRecord.ProductBatches.length > 0">
+            {{scheduleRecord.ProductBatches[0].Name}}</div>
+        </div>
+        <div class="col-md-4 col-lg-4">
+          <label id="lblProduct" for="inputProduct">Product</label>
+          <div *ngIf="scheduleRecord!=undefined && scheduleRecord!=null && scheduleRecord.ProductName!=null">{{
+            scheduleRecord.ProductName }}</div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-4 col-lg-4">
+          <label id="lblRecurrancePattern" for="inputRecurrancePattern">Recurrance Pattern</label>
+          <div
+            *ngIf="scheduleRecord != null && scheduleRecord.ProductBatches != null && scheduleRecord.ProductBatches.length > 0">
+            {{ RecurrencePattern }}</div>
+        </div>
+        <div class="col-md-4 col-lg-4">
+          <label id="lblTimefortheDay" for="inputTimefortheDay">Time for the day (HH : MM) </label>
+          <div
+            *ngIf="scheduleRecord != null && scheduleRecord.ProductBatches != null && scheduleRecord.ProductBatches.length > 0">
+            <span
+              *ngIf="10>scheduleRecord.ProductBatches[0].HourOfDay">0</span>{{scheduleRecord.ProductBatches[0].HourOfDay}}
+            : <span
+              *ngIf="10>scheduleRecord.ProductBatches[0].MinuteOfDay">0</span>{{scheduleRecord.ProductBatches[0].MinuteOfDay}}
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-4 col-lg-4">
+          <label id="lblStartDate" for="inputStartDate">Start Date</label>
+          <div
+            *ngIf="scheduleRecord != null && scheduleRecord.ProductBatches != null && scheduleRecord.ProductBatches.length > 0">
+            {{scheduleRecord.ProductBatches[0].StartDate | date:DataFormat}}</div>
+        </div>
+        <div class="col-md-4 col-lg-4">
+          <label id="lblEndDate" for="inputEndDate">End Date</label>
+          <div
+            *ngIf="scheduleRecord != null && scheduleRecord.ProductBatches != null && scheduleRecord.ProductBatches.length > 0">
+            <span
+              *ngIf='scheduleRecord.ProductBatches[0].EndDate != undefined && scheduleRecord.EndDate!="0001-01-01T00:00:00"'>
+              {{scheduleRecord.ProductBatches[0].EndDate | date:DataFormat}}</span>
+            <span
+              *ngIf='scheduleRecord.ProductBatches[0].EndDate == undefined || scheduleRecord.ProductBatches[0].EndDate == null || scheduleRecord.EndDate=="0001-01-01T00:00:00"'>
+              - </span>
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-4 col-lg-4">
+          <label id="lblSchedulewillRun" for="inputSchedulewillRun">Schedule will run</label>
+          <div>{{ScheduleOccuranceMessage}}</div>
+        </div>
+        <div class="col-md-4 col-lg-4">
+          <label id="lblScheduleforStatements" for="inputScheduleforStatements">Schedule for Statements</label>
+          <div>{{ScheduleforStatements}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card border-0 mb-2 card-shadow">
+    <div class="card-header bg-white d-flex justify-content-between">
+      <div>
+        <label class="m-0">Batches</label>
+      </div>
+      <div>
+        <button type="button" id="btnCollapsedUsers" class="toggle-btn border-0 p-0 bg-transparent"
+          (click)="getBatchMaster()" [attr.aria-expanded]="!isCollapsedBatch" aria-controls="CollapsedBatch">
+          <span class="fa" [ngClass]="!isCollapsedBatch ? 'fa-angle-down' : 'fa-angle-right'"></span>
+        </button>
+        <button type="button" id="btnRefreshBatches" class="border-0 pr-5 bg-transparent" (click)="refreshBatches()">
+          <span class="fa fa-refresh"></span>
+        </button>
+      </div>
+    </div>
+    <div class="card-body" id="CollapsedBatch" [ngbCollapse]="isCollapsedBatch">
+      <div class="d-flex justify-content-center mb-4">
+        <div class="pagination-mat position-relative">
+          <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true"
+            [length]="totalSize" [pageIndex]="currentPage" (page)="handlePage($event)">
+          </mat-paginator>
+        </div>
+      </div>
+      <div class="widget-area-grid padding-0">
+        <table mat-table [dataSource]="dataSource" matSort class="table-cust" (matSortChange)="sortData($event)">
+          <ng-container matColumnDef="id">
+            <th class="width5 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+            <td mat-cell *matCellDef="let element">{{element.Index}}</td>
+          </ng-container>
+          <ng-container matColumnDef="BatchName">
+            <th class="width20 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Batch Name </th>
+            <td mat-cell *matCellDef="let element"><span title="{{element.BatchName}}">{{element.BatchName}}</span></td>
+          </ng-container>
+          <ng-container matColumnDef="IsExecuted">
+            <th class="width10 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Is Executed </th>
+            <td mat-cell *matCellDef="let element">
+              <span *ngIf="element.IsExecuted">Yes</span>
+              <span *ngIf="!element.IsExecuted">No</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="DataExtractionDate">
+            <th class="width15 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> ETL Execution Date </th>
+            <td mat-cell *matCellDef="let element"> {{element.DataExtractionDate | date:'MM/dd/yyyy hh:mm:ss'}} </td>
+          </ng-container>
+          <ng-container matColumnDef="BatchExecutionDate">
+            <th class="width15 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Statement Generation Date
+            </th>
+            <td mat-cell *matCellDef="let element"> {{element.BatchExecutionDate | date:'MM/dd/yyyy hh:mm:ss'}}</td>
+          </ng-container>
+          <ng-container matColumnDef="BatchStatus">
+            <th class="width8 ip-w-20" mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+            <td mat-cell *matCellDef="let element">
+              <span class="badge badge-success p-1" *ngIf="element.Status=='Completed'">{{element.Status}}</span>
+              <span title="{{element.Status}}" *ngIf="element.Status!='Completed'">{{element.Status}}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="RecordProcess">
+            <th class="width10 ip-w-20" mat-header-cell *matHeaderCellDef mat-sort-header> Record Process </th>
+            <td mat-cell *matCellDef="let element">
+              <span>{{element.RecordProcess}} / {{element.RecordRecieved}}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="Actions">
+            <th class="width15 ip-w-15" mat-header-cell *matHeaderCellDef> Action</th>
+            <td mat-cell *matCellDef="let element">
+              <div class="action-btns btn-tbl-action">
+                <button type="button" id="btnViewETLScheduleBatch" title="View ETL Schedule Batch"
+                  (click)="showListETLScheduleBatchLog(element)" data-toggle="modal"
+                  data-target="#ViewListETLScheduleBatchLog"
+                  *ngIf="element.Status=='Retry' || element.Status=='Completed' || element.Status=='Approved' || element.Status=='Failure'">
+                  <span class="fa fa-file-text-o"></span>
+                </button>
+                <button type="button" id="btnManualExecutionETLScheduleBatch"
+                  title="Manual Execution ETL Schedule Batch" (click)="runETL(element, elem)"
+                  *ngIf="element.Status=='Failure' || element.Status=='Retry' || element.Status=='New'">
+                  <span class="fa fa-play text-success" id="elem" #elem></span>
+                </button>
+                <button type="button" id="btnManualExecutionETLScheduleBatchRunning"
+                  title="Manual Execution ETL Schedule Batch Running"
+                  *ngIf="!element.IsExecuted && (element.Status=='Running' || element.Status=='Processing')">
+                  <span class="fa fa-circle-o-notch fa-spin"></span>
+                </button>
+                <button type="button" id="btnDeleteETLScheduleBatch" title="Delete ETL Schedule Batch"
+                  (click)="deleteETLScheduleBatchConfirmationPopUp(element.Identifier, element.BatchName)"
+                  *ngIf="(element.Status=='Completed' || element.Status=='Failure') && !element.IsApproved && element.IsExecuted">
+                  <span class="fa fa-trash-o"></span>
+                </button>
+                <button type="button" id="btnRetryETLScheduleBatchExecution" title="Retry ETL Schedule Batch Execution"
+                  (click)="retryETLScheduleBatchExecution(element.Identifier, element.BatchName)"
+                  *ngIf="element.Status=='Failure'">
+                  <span class="fa fa-repeat" id="elem" #elem></span>
+                </button>
+                <button type="button" id="btnApprovedETLScheduleBatch" title="Approved ETL Schedule Batch"
+                  (click)="approvedETLScheduleBatchConfirmationPopUp(element.Identifier, element.BatchName)"
+                  *ngIf="(element.Status=='Completed' || element.Status=='Failure') && !element.IsApproved && element.IsExecuted">
+                  <span class="fa fa-check"></span>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card border-0 mt-4 mb-3 bg-transparent">
+    <div class="card-body p-0">
+      <button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>
+    </div>
+  </div>
+
+  <div class="modal fade cust-modal bd-example-modal-xl" id="ViewListETLScheduleBatchLog" data-backdrop="static"
+    data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    data-target="#modal">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-body p-1">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+            (click)="closeListETLScheduleBatchLog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <!--desktop view start-->
+          <div class="page-title d-flex justify-content-md-between justify-content-end">
+            <div class="xs-title">
+              <span class="mr-2">ETL Logs Summary - {{ETLScheduleName}} - {{ETLScheduleBatchName}}</span>
+            </div>
+          </div>
+          <div class="card border-0 mb-3 card-shadow">
+            <div class="card-body">
+              <div class="d-flex justify-content-center mb-4">
+                <div class="pagination-mat position-relative">
+                  <mat-paginator #batchLogPaginator [pageSize]="batchLogPageSize" [pageSizeOptions]="[5, 10, 20]"
+                    [showFirstLastButtons]="true" [length]="batchLogTotalSize" [pageIndex]="batchLogCurrentPage"
+                    (page)="batchLogHandlePage($event)">
+                  </mat-paginator>
+                </div>
+              </div>
+
+              <div *ngIf='etlScheduleBatchLogList!=undefined'>
+                <div class="widget-area-grid padding-0" *ngIf='etlScheduleBatchLogList.length!=0'>
+                  <table mat-table [dataSource]="batchLogDataSource" matSort class="table-cust"
+                    (matSortChange)="batchLogSortData($event)">
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="sequenceNo">
+                      <th class="width5 ip-w-40" mat-header-cell *matHeaderCellDef mat-sort-header> Sequence No
+                      </th>
+                      <td mat-cell *matCellDef="let etlScheduleBatchLog">{{etlScheduleBatchLog.SequenceNo}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="processingTime">
+                      <th class="width15 ip-w-40" mat-header-cell *matHeaderCellDef mat-sort-header> Processing Time
+                      </th>
+                      <td mat-cell *matCellDef="let etlScheduleBatchLog">
+                        {{etlScheduleBatchLog.ProcessingTime.replace(":"," Hr
+                        ").replace(":"," Min ") + " Sec"}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="status">
+                      <th class="width10 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+                      <td mat-cell *matCellDef="let etlScheduleBatchLog">
+                        <span class="badge badge-success p-1"
+                          *ngIf="etlScheduleBatchLog.Status=='Completed'">{{etlScheduleBatchLog.Status}}</span>
+                        <span title="{{etlScheduleBatchLog.Status}}"
+                          *ngIf="etlScheduleBatchLog.Status!='Completed'">{{etlScheduleBatchLog.Status}}</span>
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="executionDate">
+                      <th class="width15 ip-w-40" mat-header-cell *matHeaderCellDef mat-sort-header> Execution Date
+                      </th>
+                      <td mat-cell *matCellDef="let etlScheduleBatchLog">
+                        <span
+                          *ngIf='etlScheduleBatchLog.ExecutionDate != null && etlScheduleBatchLog.ExecutionDate != "0001-01-01T00:00:00"'>
+                          {{etlScheduleBatchLog.ExecutionDate | date:batchLogDateFormat}}</span>
+                        <span
+                          *ngIf='etlScheduleBatchLog.ExecutionDate==null || etlScheduleBatchLog.ExecutionDate=="0001-01-01T00:00:00"'>
+                          NA </span>
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="message">
+                      <th class="width40 ip-w-40" mat-header-cell *matHeaderCellDef mat-sort-header> Message </th>
+                      <td mat-cell *matCellDef="let etlScheduleBatchLog"><span
+                          *ngIf="etlScheduleBatchLog.Status =='Failure' && etlScheduleBatchLog.Status !='Error'">{{etlScheduleBatchLog.LogMessage}}</span>
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="actions">
+                      <th class="width40 ip-w-40" mat-header-cell *matHeaderCellDef> Actions </th>
+                      <td mat-cell *matCellDef="let etlScheduleBatchLog">
+                        <div class="action-btns btn-tbl-action">
+                          <button type="button" id="btnViewETLScheduleBatchLog" title="View ETL Schedule Batch Log"
+                            data-target="#ViewListETLScheduleBatchLog" data-dismiss="modal" aria-label="Close"
+                            (click)="navigateToListETLScheduleBatchLogDetails(etlScheduleBatchLog)"
+                            *ngIf="(etlScheduleBatchLog.Status =='Completed' || etlScheduleBatchLog.Status =='Error') && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'ETL Schedule Management',Operation: 'View' }))">
+                            <span class="fa fa-file-text-o"></span>
+                          </button>
+                          <button type="button" id="btnDownloadETLScheduleBatch" title="Download ETL Schedule Batch Log"
+                            (click)="ExportTOExcel(etlScheduleBatchLog)"
+                            *ngIf="(etlScheduleBatchLog.Status =='Failure' || etlScheduleBatchLog.Status =='Error') && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'ETL Schedule Management',Operation: 'View' }))">
+                            <span class="fa fa-download"></span>
+                          </button>
+                        </div>
+                      </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="batchLogDisplayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: batchLogDisplayedColumns;"></tr>
+                  </table>
+                </div>
+                <div class="widget-area-grid padding-0 text-center" *ngIf='etlScheduleBatchLogList.length==0'>
+                  No record found
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -27,6 +27,8 @@ namespace nIS
         /// </summary>
         private string name;
 
+        public long? ProductBatchId { get; set; }
+
         /// <summary>
         /// This ProductBatchName
         /// </summary>
@@ -110,8 +112,9 @@ namespace nIS
         /// <summary>
         /// The product id
         /// </summary>
-        private int productId;
+        private int? productId;
 
+        public string ScheduleNameByUser { get; set; }
         #endregion
 
         #region public members
@@ -484,7 +487,7 @@ namespace nIS
         /// The product id.
         /// </value>
         [Description("Product Id")]
-        public int ProductId
+        public int? ProductId
         {
             get
             {

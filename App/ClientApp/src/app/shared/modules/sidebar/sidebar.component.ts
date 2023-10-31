@@ -128,6 +128,11 @@ export class SidebarComponent implements OnInit {
     this.hideSidebar();
     this.route.navigate(['/schedulemanagement']);
   }
+  navigateToDataHub() {
+    this.URL = '/datahub';
+    this.hideSidebar();
+    this.route.navigate(['/datahub']);
+  }
   navigateTogroupManagerDashboard() {
     this.URL = '/groupManagerDashboard';
     this.hideSidebar();
@@ -363,6 +368,9 @@ export class SidebarComponent implements OnInit {
       }
       else if(this.URL.includes('/tenantgroupusers')) {
         this.URL = '/tenantgroupusers';
+      }
+      else if (this.URL.includes('/datahub')) {
+        this.URL = '/datahub';
       }
     } 
   }

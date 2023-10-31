@@ -49,6 +49,9 @@ export class Constants {
   public static get StatementGeneratedSuccessfullyForSelectedRecordMessage(): string { return "Statement generated successfully for this record." };
   public static get DynamicWidgetPublishedSuccessfullyMessage(): string { return "Dynamic widget published successfully." };
   public static get DynamicWidgetCloneSuccessfullyMessage(): string { return "Dynamic widget clone successfully." };
+
+  public static get recordApprovedMessage(): string { return "Record approved successfully." };
+  public static get recordRetryMessage(): string { return "Record retry successfully." };
 }
 
 export class ErrorMessageConstants {

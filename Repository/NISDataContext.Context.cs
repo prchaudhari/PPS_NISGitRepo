@@ -14,7 +14,8 @@ namespace nIS
     using System.Data.Entity.Infrastructure;
     using System.Data.Entity.Core.Objects;
     using System.Linq;
-    
+    using NIS.Repository.Entities;
+
     public partial class NISEntities : DbContext
     {
         public NISEntities()
@@ -145,7 +146,10 @@ namespace nIS
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<NB_InvestmentMaster> NB_InvestmentMaster { get; set; }
         public virtual DbSet<NB_InvestmentTransaction> NB_InvestmentTransaction { get; set; }
-    
+        public virtual DbSet<EtlSchedules> EtlSchedules { get; set; }
+        public virtual DbSet<EtlBatches> EtlBatches { get; set; }
+        public virtual DbSet<SystemActivityHistory> SystemActivityHistory { get; set; }
+
         [DbFunction("NISEntities", "FnUserTenant")]
         public virtual IQueryable<FnUserTenant_Result> FnUserTenant(Nullable<int> userId)
         {

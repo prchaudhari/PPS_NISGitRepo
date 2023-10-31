@@ -1405,6 +1405,9 @@ warning 6002: The table/view 'NIS_DEV2.NIS.NB_MCAMaster' does not have a primary
           <Property Name="IsEndsAfterNoOfOccurrences" Type="bit" />
           <Property Name="NoOfOccurrences" Type="bigint" />
           <Property Name="Languages" Type="varchar" MaxLength="100" />
+          <Property Name="ProductBatchId" Type="bigint"  />
+          <Property Name="ProductId" Type="bigint"  />
+          <Property Name="ScheduleNameByUser" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="ScheduleLog">
           <Key>
@@ -3019,6 +3022,9 @@ warning 6002: The table/view 'NIS_DEV2.NIS.View_User' does not have a primary ke
           <Property Name="NoOfOccurrences" Type="Int64" />
           <Property Name="Languages" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ProductBatchName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ProductBatchId" Type="Int64"  />
+          <Property Name="ProductId" Type="Int64"  />
+           <Property Name="ScheduleNameByUser" Type="String" MaxLength="200" />
         </EntityType>
         <EntityType Name="StatementRecord">
           <Key>
@@ -5299,6 +5305,9 @@ warning 6002: The table/view 'NIS_DEV2.NIS.View_User' does not have a primary ke
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ProductBatchId" ColumnName="ProductBatchId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="ScheduleNameByUser" ColumnName="ScheduleNameByUser" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

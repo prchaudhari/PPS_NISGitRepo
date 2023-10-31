@@ -8,6 +8,8 @@ namespace nIS
     using Microsoft.Practices.ObjectBuilder2;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
+    using nIS.NedBank;
+    using NIS.Repository.Entities;
     #region References
     using System;
     using System.Collections.Generic;
@@ -128,6 +130,7 @@ namespace nIS
                     throw new DuplicateScheduleFoundException(tenantCode);
                 }
                 IList<ScheduleRecord> scheduleRecords = new List<ScheduleRecord>();
+
                 schedules.ToList().ForEach(schedule =>
                 {
                     //DateTime startDateTime = DateTime.SpecifyKind(Convert.ToDateTime(schedule.StartDate), DateTimeKind.Utc);
@@ -135,11 +138,26 @@ namespace nIS
 
                     var startDateTime = schedule.StartDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
                     var endDateTime = schedule.EndDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
-                    var productType = productRepository.Get_ProductById(schedule.ProductId, tenantCode);
+                    var productType = productRepository.Get_ProductById((int)schedule.ProductId, tenantCode);
                     var randomNumber = Guid.NewGuid().ToString().Split('-')[0];
+
+                    long? productBatchId = 0;
+                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                    {
+                        //productBatchId = nISEntitiesDataContext.ScheduleRecords.Count() > 0 ? nISEntitiesDataContext.ScheduleRecords.Max(x => x.ProductBatchId) : 0;
+                        if (nISEntitiesDataContext.ScheduleRecords.Count() > 0)
+                            productBatchId = nISEntitiesDataContext.ScheduleRecords.Max(x => x.ProductBatchId);
+                        else
+                            productBatchId = 0;
+
+                    }
+                    productBatchId++;
 
                     scheduleRecords.Add(new ScheduleRecord()
                     {
+                        ScheduleNameByUser = schedule.ScheduleNameByUser,
+                        ProductBatchId = productBatchId,
+                        ProductId = schedule.ProductId,
                         ProductBatchName = $"{schedule.Name}_{productType}_{randomNumber}",
                         Name = schedule.Name,
                         Description = schedule.Description,
@@ -171,6 +189,9 @@ namespace nIS
                     nISEntitiesDataContext.SaveChanges();
                     result = true;
                 }
+                DateTime endDate = DateTime.MinValue;
+                int noOfOccurance = 0;
+
                 if (result)
                 {
                     IList<SystemActivityHistoryRecord> Records = new List<SystemActivityHistoryRecord>();
@@ -179,7 +200,7 @@ namespace nIS
                         int batchIndex = 1;
                         if (schedulerecord.RecurrancePattern == ModelConstant.DOES_NOT_REPEAT)
                         {
-                            this.AddDoesNotRepeatBatch(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId);
+                            this.AddDoesNotRepeatBatch(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, out endDate, out noOfOccurance);
                         }
                         else if (schedulerecord.RecurrancePattern == ModelConstant.DAILY || schedulerecord.RecurrancePattern == ModelConstant.CUSTOM_DAY)
                         {
@@ -263,7 +284,7 @@ namespace nIS
 
                     var startDateTime = schedule.StartDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
                     var endDateTime = schedule.EndDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
-                    var productType = productRepository.Get_ProductById(schedule.ProductId, tenantCode);
+                    var productType = productRepository.Get_ProductById((int)schedule.ProductId, tenantCode);
                     var randomNumber = Guid.NewGuid().ToString().Split('-')[0];
 
                     scheduleRecords.Add(new ScheduleRecord()
@@ -431,7 +452,8 @@ namespace nIS
                         scheduleRecord.IsEndsAfterNoOfOccurrences = item.IsEndsAfterNoOfOccurrences;
                         scheduleRecord.NoOfOccurrences = item.NoOfOccurrences;
                         nISEntitiesDataContext.SaveChanges();
-
+                        DateTime endDate = DateTime.MinValue;
+                        int noOfOccurance = 0;
                         //If any batch is not executed or data ready for it, then delete all batches and re-insert it as per start date and end date, 
                         //Else insert new batches as per new end date and previous end date logic
                         var batches = nISEntitiesDataContext.BatchMasterRecords.Where(batch => batch.ScheduleId == scheduleRecord.Id && (batch.IsExecuted || batch.IsDataReady)).ToList();
@@ -443,7 +465,7 @@ namespace nIS
                             int batchIndex = 1;
                             if (scheduleRecord.RecurrancePattern == ModelConstant.DOES_NOT_REPEAT)
                             {
-                                this.AddDoesNotRepeatBatch(scheduleRecord.StartDate ?? DateTime.Now, scheduleRecord, tenantCode, userId);
+                                this.AddDoesNotRepeatBatch(scheduleRecord.StartDate ?? DateTime.Now, scheduleRecord, tenantCode, userId, out endDate, out noOfOccurance);
                             }
                             else if (scheduleRecord.RecurrancePattern == ModelConstant.DAILY || scheduleRecord.RecurrancePattern == ModelConstant.CUSTOM_DAY)
                             {
@@ -980,6 +1002,118 @@ namespace nIS
             }
         }
 
+        private IDictionary<string, long> AddETLSchedules(ScheduleRecord schedule, string tenantCode, DateTime startDate, DateTime endDate)
+        {
+            IDictionary<string, long> result = new Dictionary<string, long>();
+            try
+            {
+                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                int userId = 1;
+                bool isExists = false;
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+                var userFullName = claims?.FirstOrDefault(x => x.Type.Equals("UserFullName", StringComparison.OrdinalIgnoreCase)).Value;
+
+                this.SetAndValidateConnectionString(tenantCode);
+
+                List<ETLScheduleModel> etlScheduleModel = new List<ETLScheduleModel>();
+                IList<EtlSchedules> scheduleRecords = new List<EtlSchedules>();
+
+                scheduleRecords.Add(new EtlSchedules()
+                {
+                    Name = schedule.Name,               //***
+                    ProductId = Convert.ToInt32(schedule.ProductId),
+                    ProductBatchId = (long)schedule.ProductBatchId,
+                    DayOfMonth = schedule.DayOfMonth,
+                    StartDate = startDate,
+                    EndDate = endDate,
+                    IsLastDate = false,
+                    IsDeleted = false,
+                    IsActive = true,
+                    Status = "New",
+                    UpdateBy = userId,
+                    LastUpdatedDate = DateTime.UtcNow,
+                    TenantCode = tenantCode,
+                    HourOfDay = startDate.Hour,
+                    MinuteOfDay = startDate.Minute,
+                });
+
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    isExists = nISEntitiesDataContext.EtlSchedules.Where(x => x.ProductBatchId == schedule.ProductBatchId).Count() > 0;
+
+                    if (!isExists)
+                    {
+                        nISEntitiesDataContext.EtlSchedules.AddRange(scheduleRecords);
+                        nISEntitiesDataContext.SaveChanges();
+                    }
+                }
+
+                if (!isExists)
+                {
+                    IList<SystemActivityHistory> Records = new List<SystemActivityHistory>();
+                    scheduleRecords.ToList().ForEach(schedulerecord =>
+                    {
+                        result.Add(schedulerecord.Name, schedulerecord.Id);
+                        Records.Add(new SystemActivityHistory()
+                        {
+                            Module = ModelConstant.ETL_SCHEDULE_MODEL_SECTION,
+                            EntityId = schedulerecord.Id,
+                            EntityName = schedulerecord.Name,
+                            SubEntityId = null,
+                            SubEntityName = null,
+                            ActionTaken = "Add",
+                            ActionTakenBy = userId,
+                            ActionTakenByUserName = userFullName,
+                            ActionTakenDate = DateTime.Now,
+                            TenantCode = tenantCode
+                        });
+                    });
+
+                    if (Records.Count > 0)
+                    {
+                        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                        {
+                            nISEntitiesDataContext.SystemActivityHistory.AddRange(Records);
+                            nISEntitiesDataContext.SaveChanges();
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
+
+            return result;
+        }
+
+        private bool AddETLBatches(long scheduleId, long productBatchId, string scheduleName, string tenantCode, List<BatchMasterRecord> batchMasterRecords)
+        {
+            this.SetAndValidateConnectionString(tenantCode);
+            IList<EtlBatches> etlBatchesRecords = new List<EtlBatches>();
+            int index = 1;
+            batchMasterRecords.ForEach(item =>
+            {
+                etlBatchesRecords.Add(new EtlBatches()
+                {
+                    EtlScheduleId = scheduleId,
+                    ProductBatchId = productBatchId,
+                    IsExecuted = false,
+                    BatchName = "ETL Batch " + index + " " + scheduleName,
+                    DataExtractionDateTime = item.DataExtractionDate,
+                    Status = "New",
+                    TenantCode = tenantCode
+                });
+                index++;
+            });
+
+            using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+            {
+                nISEntitiesDataContext.EtlBatches.AddRange(etlBatchesRecords);
+                nISEntitiesDataContext.SaveChanges();
+                return true;
+            }
+        }
         #endregion
 
         #region Deactivate Schedule
@@ -2950,14 +3084,18 @@ namespace nIS
         /// <returns>
         /// true if added successfully otherwise false
         /// </returns>
-        private bool AddDoesNotRepeatBatch(DateTime scheduleStartDate, ScheduleRecord schedule, string tenantCode, int userId)
+        private bool AddDoesNotRepeatBatch(DateTime scheduleStartDate, ScheduleRecord schedule, string tenantCode, int userId, out DateTime endDate, out int noOfOccurance)
         {
             try
             {
                 //var newstartdate = DateTime.SpecifyKind((DateTime)scheduleStartDate, DateTimeKind.Utc);
-                var newstartdate = new DateTime(scheduleStartDate.Year, scheduleStartDate.Month, (scheduleStartDate.Day + 1), 0, 0, 0);
+                long batchId = 0;
+                IDictionary<string, long> etlSchedule = new Dictionary<string, long>();
+                var recordsList = new List<BatchMasterRecord>();
+                var newstartdate = new DateTime(scheduleStartDate.Year, scheduleStartDate.Month, (scheduleStartDate.Day), 0, 0, 0);
                 newstartdate = DateTime.SpecifyKind((DateTime)newstartdate, DateTimeKind.Utc);
                 this.SetAndValidateConnectionString(tenantCode);
+                double dataExtractionHours = 0;
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
                     BatchMasterRecord record = new BatchMasterRecord();
@@ -2974,7 +3112,19 @@ namespace nIS
                     record.Status = BatchStatus.New.ToString();
                     nISEntitiesDataContext.BatchMasterRecords.Add(record);
                     nISEntitiesDataContext.SaveChanges();
+                    batchId = record.Id;
+                    endDate = record.BatchExecutionDate;
+                    noOfOccurance = 1;
+                    recordsList.Add(record);
                 }
+                etlSchedule = AddETLSchedules(schedule, tenantCode, endDate.AddHours(dataExtractionHours * -1), endDate.AddHours(dataExtractionHours * -1));
+
+                if (etlSchedule.Count() > 0)
+                {
+                    var etlScheduleId = etlSchedule.Where(x => x.Key == schedule.ScheduleNameByUser)?.FirstOrDefault().Value;
+                    AddETLBatches(etlScheduleId == null ? 0 : Convert.ToInt64(etlScheduleId), (long)schedule.ProductBatchId, schedule.ScheduleNameByUser, tenantCode, recordsList);
+                }
+
                 return true;
             }
             catch (Exception ex)

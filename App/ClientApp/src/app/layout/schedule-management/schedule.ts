@@ -27,5 +27,7 @@ export class Schedule {
   "IsEndsAfterNoOfOccurrences":boolean;
   "NoOfOccurrences":number;
   "ExecutedBatchCount": number;
+  "ProductBatchName": string = "";
+  "ScheduleNameByUser": string = "";
   "ProductId": number;
 }

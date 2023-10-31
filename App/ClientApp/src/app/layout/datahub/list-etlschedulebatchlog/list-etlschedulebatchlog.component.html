@@ -1,0 +1,150 @@
+<div class="main-container position-relative">
+  <div class="page-title d-flex justify-content-md-between justify-content-end">
+    <div class="xs-title">
+      <span class="mr-2">ETL Logs Summary</span>
+      <span class="icon-filter filter-btn" id="spnFilter" (click)="isFilter=!isFilter"></span>
+    </div>
+  </div>
+
+  <!--desktop view start-->
+  <div class="card border-0 mb-3 card-shadow">
+    <div class="card-body">
+      <div class="d-flex justify-content-center mb-4">
+        <div class="pagination-mat position-relative">
+          <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true"
+            [length]="totalSize" [pageIndex]="currentPage" (page)="handlePage($event)">
+          </mat-paginator>
+        </div>
+      </div>
+
+      <div *ngIf='etlScheduleBatchLogList!=undefined'>
+        <div class="widget-area-grid padding-0" *ngIf='etlScheduleBatchLogList.length!=0'>
+          <table mat-table [dataSource]="dataSource" matSort class="table-cust" (matSortChange)="sortData($event)">
+            <!-- Position Column -->
+            <ng-container matColumnDef="eTLSchedule">
+              <th class="width25 ip-w-40" mat-header-cell *matHeaderCellDef mat-sort-header> ETL Schedule </th>
+              <td mat-cell *matCellDef="let etlScheduleBatchLog">{{etlScheduleBatchLog.ETLSchedule}}</td>
+            </ng-container>
+            <ng-container matColumnDef="batch">
+              <th class="width25 ip-w-40" mat-header-cell *matHeaderCellDef mat-sort-header> Batch </th>
+              <td mat-cell *matCellDef="let etlScheduleBatchLog">{{etlScheduleBatchLog.Batch}}</td>
+            </ng-container>
+            <ng-container matColumnDef="processingTime">
+              <th class="width15 ip-w-40" mat-header-cell *matHeaderCellDef mat-sort-header> Processing Time </th>
+              <td mat-cell *matCellDef="let etlScheduleBatchLog">{{etlScheduleBatchLog.ProcessingTime.replace(":"," Hr
+                ").replace(":"," Min ") + " Sec"}}</td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+              <th class="width10 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+              <td mat-cell *matCellDef="let etlScheduleBatchLog">
+                <span class="badge badge-success p-1"
+                  *ngIf="etlScheduleBatchLog.Status=='Completed'">{{etlScheduleBatchLog.Status}}</span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="executionDate">
+              <th class="width15 ip-w-40" mat-header-cell *matHeaderCellDef mat-sort-header> Execution Date </th>
+              <td mat-cell *matCellDef="let etlScheduleBatchLog">
+                <span
+                  *ngIf='etlScheduleBatchLog.ExecutionDate != null && etlScheduleBatchLog.ExecutionDate != "0001-01-01T00:00:00"'>
+                  {{etlScheduleBatchLog.ExecutionDate | date:DateFormat}}</span>
+                <span
+                  *ngIf='etlScheduleBatchLog.ExecutionDate==null || etlScheduleBatchLog.ExecutionDate=="0001-01-01T00:00:00"'>
+                  NA </span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <th class="width40 ip-w-40" mat-header-cell *matHeaderCellDef> Actions </th>
+              <td mat-cell *matCellDef="let etlScheduleBatchLog">
+                <div class="action-btns btn-tbl-action">
+                  <button type="button" id="btnViewETLScheduleBatchLog" title="View ETL Schedule Batch Log"
+                    (click)="navigateToListETLScheduleBatchLogDetails(etlScheduleBatchLog)"
+                    *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'ETL Schedule Management',Operation: 'View' }))">
+                    <span class="fa fa-file-text-o"></span>
+                  </button>
+                  <button type="button" id="btnHistoryETLScheduleBatchLog" title="History ETL Schedule Batch Log"
+                    *ngIf="etlScheduleBatchLog.Status=='Completed' && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'ETL Schedule Management',Operation: 'View' }))">
+                    <!-- (click)="navigateToScheduleHistory(childItem)"-->
+                    <span class="fa fa-history"></span>
+                  </button>
+                  <button type="button" id="btnDownloadETLScheduleBatch" title="Download ETL Schedule Batch Log" (click)="ExportTOExcel(etlScheduleBatchLog)"
+                    *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'ETL Schedule Management',Operation: 'View' }))">
+                    <span class="fa fa-download"></span>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+        <div class="widget-area-grid padding-0 text-center" *ngIf='etlScheduleBatchLogList.length==0'>
+          No record found
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--desktop view end-->
+
+  <form [formGroup]="ETLScheduleBatchLogFilterForm">
+    <div class="filter-popup" [ngClass]="!isFilter? 'filter-popup':'filter-popup-show'">
+      <div class="filter-head">
+        <label class="m-0">Apply Filter</label>
+      </div>
+      <div class="filter-body-left d-flex flex-column stylescrollbar">
+        <div class="form-group">
+          <label>ETL Schedule</label>
+          <input type="text" class="form-control" id="filterETLSchedule" formControlName="filterETLSchedule">
+        </div>
+        <div class="form-group">
+          <label>Batch</label>
+          <input type="text" class="form-control" id="filterBatch" formControlName="filterBatch">
+        </div>
+        <div class="form-group">
+          <label>Processing Time</label>
+          <input type="text" class="form-control" id="filterProcessingTime" formControlName="filterProcessingTime">
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <input type="text" class="form-control" id="filterStatus" formControlName="filterStatus">
+        </div>
+        <div class="form-group">
+          <label>Execution Date</label>
+          <div class="position-relative">
+            <input [owlDateTime]="dt" class="form-control" id="filterExecutionDate"
+              formControlName="filterExecutionDate" placeholder="Please select execution date" readonly>
+            <span [owlDateTimeTrigger]="dt" class="datetime-icon">
+              <i class="fa fa-calendar"></i>
+            </span>
+            <owl-date-time #dt [pickerType]="'calendar'"></owl-date-time>
+          </div>
+        </div>
+      </div>
+      <!--[ngClass]="filterClass"-->
+      <div class="filter-footer">
+        <ul class="nav">
+          <li class="nav-item width33" id="liSearchFilter" title="Search" (click)="searchFilter('search')">
+            <!--(click)="searchFilter('search')" -->
+            <a class="nav-link p-0">
+              <span class="fa fa-check"></span>
+            </a>
+          </li>
+          <li class="nav-item width33" id="liResetFilter" title="Reset" (click)="searchFilter('reset')">
+            <!-- (click)="searchFilter('reset')" -->
+            <a class="nav-link p-0">
+              <span class="fa fa-refresh"></span>
+            </a>
+          </li>
+          <li class="nav-item width33" id="liCloseFilter" title="Close" (click)="isFilter=!isFilter">
+            <!-- (click)="isFilter=!isFilter" -->
+            <a class="nav-link p-0">
+              <span class="fa fa-close"></span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="overlay" [ngClass]="!isFilter? 'hide':'show'"></div>

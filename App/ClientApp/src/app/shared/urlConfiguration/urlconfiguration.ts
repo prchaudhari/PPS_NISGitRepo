@@ -181,4 +181,15 @@ export class URLConfiguration {
   public static get getUserTenantRoleMap(): string { return "MultiTenantUserRoleAccess/GetUserTenants" };
   public static get getParentAndChildTenants(): string { return "MultiTenantUserRoleAccess/GetParentAndChildTenants" };
 
+  //DataHub Url Method
+  public static get eTLScheduleGetUrl(): string { return "DataHub/ETLScheduleList" };
+  public static get eTLScheduleBatchLogGetUrl(): string { return "DataHub/ETLScheduleBatchLogList" };
+  public static get eTLScheduleDetailForBatchLogDetailsGetUrl(): string { return "DataHub/GetETLScheduleDetailForBatchLogDetail" };
+  public static get eTLScheduleBatchLogDetailsGetUrl(): string { return "DataHub/ETLScheduleBatchLogDetailList" };
+  public static get eTLScheduleDetailGetUrl(): string { return "DataHub/ETLScheduleList" };
+  public static get runETLUrl(): string { return "DataHub/RunETLManually" };
+  public static get approvedETLBatch(): string { return "DataHub/ApproveETLBatch" };
+  public static get deleteETLBatch(): string { return "DataHub/DeleteETLBatch" };
+  public static get retryETLBatchExecution(): string { return "DataHub/RetryETLManually" };
+
 }

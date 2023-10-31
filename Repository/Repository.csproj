@@ -204,6 +204,8 @@
     <Compile Include="DynamicWidgetRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\EtlBatches.cs" />
+    <Compile Include="Entities\EtlSchedules.cs" />
     <Compile Include="EntityFieldMapRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
