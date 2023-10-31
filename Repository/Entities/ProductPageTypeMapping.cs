@@ -11,12 +11,15 @@ namespace nIS
 {
     using System;
     using System.Collections.Generic;
-    
-    public partial class LanguageMaster
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    public partial class ProductPageTypeMapping
     {
-        public long Id { get; set; }
-        public bool IsDeleted { get; set; }
-        public string Code { get; set; }
-        public string Description { get; set; }
+        [Key, Column(Order = 0)]
+        public int ProductId { get; set; }
+
+        [Key, Column(Order = 1)]
+        public int PageTypeId { get; set; }
     }
 }

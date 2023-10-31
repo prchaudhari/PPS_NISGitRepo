@@ -81,143 +81,136 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountMasterRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AccountTransactionRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AnalyticsDataRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AssetLibraryRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AssetPathSettingRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AssetRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AssetSettingRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BatchDetailRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BatchMasterRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CityRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ContactTypeRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CountryRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CustomerMasterRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CustomerMediaRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DM_AccountAnalysisRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DM_AccountSummaryRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DM_BranchMasterRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DM_CustomerMasterRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DM_CustomerNewsAndAlertsRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DM_CustomerProductWiseRewardPointsRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DM_CustomerReminderRecosRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DM_CustomerRewardPointsRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DM_CustomerRewardPointsRedeemedRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DM_CustomerRewardSpendByCategoryRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DM_ExplanatoryNotesRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DM_GreenbacksMasterRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DM_HomeLoanArrearsRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DM_HomeLoanMasterRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DM_HomeLoanSummaryRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DM_HomeLoanTransactionRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DM_InvestmentMasterRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DM_InvestmentTransactionRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DM_MarketingMessagesRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DM_NewsAndAlertsRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DM_PersonalLoanArrearsRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DM_PersonalLoanMasterRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DM_PersonalLoanTransactionRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DM_ReminderRecosRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DM_SpecialMessagesRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DynamicWidgetFilterDetail.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DynamicWidgetRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Entities\AccountMasterRecord.cs" />
+    <Compile Include="Entities\AccountTransactionRecord.cs" />
+    <Compile Include="Entities\AnalyticsDataRecord.cs" />
+    <Compile Include="Entities\AssetLibraryRecord.cs" />
+    <Compile Include="Entities\AssetPathSettingRecord.cs" />
+    <Compile Include="Entities\AssetRecord.cs" />
+    <Compile Include="Entities\AssetSettingRecord.cs" />
+    <Compile Include="Entities\BatchDetailRecord.cs" />
+    <Compile Include="Entities\BatchMasterRecord.cs" />
+    <Compile Include="Entities\CityRecord.cs" />
+    <Compile Include="Entities\ContactTypeRecord.cs" />
+    <Compile Include="Entities\CountryRecord.cs" />
+    <Compile Include="Entities\CustomerMasterRecord.cs" />
+    <Compile Include="Entities\CustomerMediaRecord.cs" />
+    <Compile Include="Entities\DM_AccountAnalysisRecord.cs" />
+    <Compile Include="Entities\DM_AccountSummaryRecord.cs" />
+    <Compile Include="Entities\DM_BranchMasterRecord.cs" />
+    <Compile Include="Entities\DM_CustomerMasterRecord.cs" />
+    <Compile Include="Entities\DM_CustomerNewsAndAlertsRecord.cs" />
+    <Compile Include="Entities\DM_CustomerProductWiseRewardPointsRecord.cs" />
+    <Compile Include="Entities\DM_CustomerReminderRecosRecord.cs" />
+    <Compile Include="Entities\DM_CustomerRewardPointsRecord.cs" />
+    <Compile Include="Entities\DM_CustomerRewardPointsRedeemedRecord.cs" />
+    <Compile Include="Entities\DM_CustomerRewardSpendByCategoryRecord.cs" />
+    <Compile Include="Entities\DM_ExplanatoryNotesRecord.cs" />
+    <Compile Include="Entities\DM_GreenbacksMasterRecord.cs" />
+    <Compile Include="Entities\DM_HomeLoanArrearsRecord.cs" />
+    <Compile Include="Entities\DM_HomeLoanMasterRecord.cs" />
+    <Compile Include="Entities\DM_HomeLoanSummaryRecord.cs" />
+    <Compile Include="Entities\DM_HomeLoanTransactionRecord.cs" />
+    <Compile Include="Entities\DM_InvestmentMasterRecord.cs" />
+    <Compile Include="Entities\DM_InvestmentTransactionRecord.cs" />
+    <Compile Include="Entities\DM_MarketingMessagesRecord.cs" />
+    <Compile Include="Entities\DM_NewsAndAlertsRecord.cs" />
+    <Compile Include="Entities\DM_PersonalLoanArrearsRecord.cs" />
+    <Compile Include="Entities\DM_PersonalLoanMasterRecord.cs" />
+    <Compile Include="Entities\DM_PersonalLoanTransactionRecord.cs" />
+    <Compile Include="Entities\DM_ReminderRecosRecord.cs" />
+    <Compile Include="Entities\DM_SpecialMessagesRecord.cs" />
+    <Compile Include="Entities\DynamicWidgetFilterDetail.cs" />
+    <Compile Include="Entities\DynamicWidgetRecord.cs" />
+    <Compile Include="Entities\EntityFieldMapRecord.cs" />
+    <Compile Include="Entities\FnGetParentAndChildTenant_Result.cs" />
+    <Compile Include="Entities\FnGetStaticAndDynamicWidgets_Result.cs" />
+    <Compile Include="Entities\FnUserTenant_Result.cs" />
+    <Compile Include="Entities\MultiTenantUserAccessMapRecord.cs" />
+    <Compile Include="Entities\NB_BatchMaster_Source.cs" />
+    <Compile Include="Entities\NB_BranchMaster.cs" />
+    <Compile Include="Entities\NB_BranchMaster_Old.cs" />
+    <Compile Include="Entities\NB_CorporateSaverMaster.cs" />
+    <Compile Include="Entities\NB_CorporateSaverTax.cs" />
+    <Compile Include="Entities\NB_CorporateSaverTransactions.cs" />
+    <Compile Include="Entities\NB_CustomerMaster.cs" />
+    <Compile Include="Entities\NB_HomeLoanArrears.cs" />
+    <Compile Include="Entities\NB_HomeLoanMaster.cs" />
+    <Compile Include="Entities\NB_HomeLoanSummary.cs" />
+    <Compile Include="Entities\NB_HomeLoanTransaction.cs" />
+    <Compile Include="Entities\NB_InvestmentMaster.cs" />
+    <Compile Include="Entities\NB_InvestmentMaster_Old.cs" />
+    <Compile Include="Entities\NB_InvestmentTransaction.cs" />
+    <Compile Include="Entities\NB_InvestmentTransaction_Old.cs" />
+    <Compile Include="Entities\NB_Investment_Source.cs" />
+    <Compile Include="Entities\NB_MCAMaster.cs" />
+    <Compile Include="Entities\NB_MCATransaction.cs" />
+    <Compile Include="Entities\NB_SegmentMaster.cs" />
+    <Compile Include="Entities\NB_SegmentTypeMaster.cs" />
+    <Compile Include="Entities\NB_ServiceMessagesAndContacts.cs" />
+    <Compile Include="DAL\NISDataContext.Context.cs" />
+    <Compile Include="Entities\PageRecord.cs" />
+    <Compile Include="Entities\PageTypeRecord.cs" />
+    <Compile Include="Entities\PageWidgetMapRecord.cs" />
+    <Compile Include="Entities\Product.cs" />
+    <Compile Include="Entities\ProductPageTypeMapping.cs" />
+    <Compile Include="Entities\ReminderAndRecommendationRecord.cs" />
+    <Compile Include="Entities\RenderEngineRecord.cs" />
+    <Compile Include="Entities\RolePrivilegeRecord.cs" />
+    <Compile Include="Entities\RoleRecord.cs" />
+    <Compile Include="Entities\SavingTrendRecord.cs" />
+    <Compile Include="Entities\ScheduleLogArchiveRecord.cs" />
+    <Compile Include="Entities\ScheduleLogDetailArchiveRecord.cs" />
+    <Compile Include="Entities\ScheduleLogDetailRecord.cs" />
+    <Compile Include="Entities\ScheduleLogRecord.cs" />
+    <Compile Include="Entities\ScheduleRecord.cs" />
+    <Compile Include="Entities\ScheduleRunHistoryRecord.cs" />
+    <Compile Include="Entities\StatementMetadataArchiveRecord.cs" />
+    <Compile Include="Entities\StatementMetadataRecord.cs" />
+    <Compile Include="Entities\StatementPageMapRecord.cs" />
+    <Compile Include="Entities\StatementRecord.cs" />
+    <Compile Include="Entities\StateRecord.cs" />
+    <Compile Include="Entities\SystemActivityHistoryRecord.cs" />
+    <Compile Include="Entities\TenantConfigurationRecord.cs" />
+    <Compile Include="Entities\TenantContactRecord.cs" />
+    <Compile Include="Entities\TenantEntityRecord.cs" />
+    <Compile Include="Entities\TenantRecord.cs" />
+    <Compile Include="Entities\TenantSecurityCodeFormatRecord.cs" />
+    <Compile Include="Entities\TenantSubscriptionRecord.cs" />
+    <Compile Include="Entities\TenantUserRecord.cs" />
+    <Compile Include="Entities\Top4IncomeSourcesRecord.cs" />
+    <Compile Include="Entities\TransactionDetailRecord.cs" />
+    <Compile Include="Entities\TransactionDetail_Old.cs" />
+    <Compile Include="Entities\TTD_CustomerMaster_Old.cs" />
+    <Compile Include="Entities\TTD_DataUsage_Old.cs" />
+    <Compile Include="Entities\TTD_EmailsBySubscription_Old.cs" />
+    <Compile Include="Entities\TTD_MeetingUsage_Old.cs" />
+    <Compile Include="Entities\TTD_SubscriptionMaster_Old.cs" />
+    <Compile Include="Entities\TTD_SubscriptionSpend_Old.cs" />
+    <Compile Include="Entities\TTD_SubscriptionSummary_Old.cs" />
+    <Compile Include="Entities\TTD_SubscriptionUsage_Old.cs" />
+    <Compile Include="Entities\TTD_UserSubscriptions_Old.cs" />
+    <Compile Include="Entities\TTD_VendorSubscription_Old.cs" />
+    <Compile Include="Entities\UserCredentialHistoryRecord.cs" />
+    <Compile Include="Entities\UserLoginActivityHistoryRecord.cs" />
+    <Compile Include="Entities\UserLoginRecord.cs" />
+    <Compile Include="Entities\UserRecord.cs" />
+    <Compile Include="Entities\UserRoleMapRecord.cs" />
+    <Compile Include="Entities\View_DynamicWidgetRecord.cs" />
+    <Compile Include="Entities\View_MultiTenantUserAccessMapRecord.cs" />
+    <Compile Include="Entities\View_PageRecord.cs" />
+    <Compile Include="Entities\View_PageWidgetMapRecord.cs" />
+    <Compile Include="Entities\View_ScheduleLog.cs" />
+    <Compile Include="Entities\View_ScheduleRecord.cs" />
+    <Compile Include="Entities\View_SourceDataRecord.cs" />
+    <Compile Include="Entities\View_StatementDefinitionRecord.cs" />
+    <Compile Include="Entities\View_StatementMetadataRecord.cs" />
+    <Compile Include="Entities\View_TenantSubscriptionRecord.cs" />
+    <Compile Include="Entities\View_UserRecord.cs" />
+    <Compile Include="Entities\WidgetPageTypeMap.cs" />
+    <Compile Include="Entities\WidgetRecord.cs" />
     <Compile Include="Entities\EtlBatches.cs" />
     <Compile Include="Entities\EtlSchedules.cs" />
-    <Compile Include="EntityFieldMapRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="FnGetParentAndChildTenant_Result.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="FnGetStaticAndDynamicWidgets_Result.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="FnUserTenant_Result.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="IRepository\IArchivalProcessRepository.cs" />
     <Compile Include="IRepository\IPageTypeRepository.cs" />
     <Compile Include="IRepository\IContactTypeRepository.cs" />
@@ -250,136 +243,7 @@
     <Compile Include="IRepository\NedBank\IProductRepository.cs" />
     <Compile Include="Mappings\ScheduleLogDetailRecord.cs" />
     <Compile Include="Mappings\View_PageRecord.cs" />
-    <Compile Include="MultiTenantUserAccessMapRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NB_BatchMaster_Source.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NB_BranchMaster.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NB_BranchMaster_Old.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NB_CorporateSaverMaster.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NB_CorporateSaverTax.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NB_CorporateSaverTransactions.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NB_CustomerMaster.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NB_HomeLoanArrears.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NB_HomeLoanMaster.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NB_HomeLoanSummary.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NB_HomeLoanTransaction.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NB_InvestmentMaster.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NB_InvestmentMaster_Old.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NB_InvestmentTransaction.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NB_InvestmentTransaction_Old.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NB_Investment_Source.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NB_MCAMaster.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NB_MCATransaction.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NB_SegmentMaster.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NB_SegmentTypeMaster.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NB_ServiceMessagesAndContacts.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NISDataContext.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>NISDataContext.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NISDataContext.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NISDataContext.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>NISDataContext.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="PageRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PageTypeRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PageWidgetMapRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Product.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ProductPageTypeMapping.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReminderAndRecommendationRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="RenderEngineRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="RolePrivilegeRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="RoleRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SavingTrendRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ScheduleLogArchiveRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ScheduleLogDetailArchiveRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ScheduleLogDetailRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ScheduleLogRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ScheduleRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ScheduleRunHistoryRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="SQLRepository\NedBank\SQLProductRepository.cs" />
     <Compile Include="SQLRepository\NedBank\SQLCustomerRepository.cs" />
     <Compile Include="SQLRepository\NedBank\SQLInvestmentRepository.cs" />
@@ -410,105 +274,6 @@
     <Compile Include="SQLRepository\SQLScheduleRepository.cs" />
     <Compile Include="SQLRepository\SQLRoleRepository.cs" />
     <Compile Include="SQLRepository\TenantTransactionDataRepository.cs" />
-    <Compile Include="StatementMetadataArchiveRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="StatementMetadataRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="StatementPageMapRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="StatementRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="StateRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SystemActivityHistoryRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TenantConfigurationRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TenantContactRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TenantEntityRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TenantRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TenantSecurityCodeFormatRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TenantSubscriptionRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TenantUserRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Top4IncomeSourcesRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TransactionDetailRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UserCredentialHistoryRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UserLoginActivityHistoryRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UserLoginRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UserRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UserRoleMapRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="View_DynamicWidgetRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="View_MultiTenantUserAccessMapRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="View_PageRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="View_PageWidgetMapRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="View_ScheduleLog.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="View_ScheduleRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="View_SourceDataRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="View_StatementDefinitionRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="View_StatementMetadataRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="View_TenantSubscriptionRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="View_UserRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="WidgetPageTypeMap.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="WidgetRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CryptoManager\CryptoManager.csproj">
@@ -533,29 +298,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="NISDataContext.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>NISDataContext.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
-    <None Include="NISDataContext.edmx.diagram">
-      <DependentUpon>NISDataContext.edmx</DependentUpon>
-    </None>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="NISDataContext.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>NISDataContext.Context.cs</LastGenOutput>
-      <DependentUpon>NISDataContext.edmx</DependentUpon>
-    </Content>
-    <Content Include="NISDataContext.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>NISDataContext.edmx</DependentUpon>
-      <LastGenOutput>NISDataContext.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

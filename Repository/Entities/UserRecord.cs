@@ -11,25 +11,25 @@ namespace nIS
 {
     using System;
     using System.Collections.Generic;
-    
-    public partial class NB_CustomerMaster_Old
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    [Table("User")]
+    public partial class UserRecord
     {
         public long Id { get; set; }
-        public long BatchId { get; set; }
-        public long CustomerId { get; set; }
-        public long InvestorId { get; set; }
-        public long BranchId { get; set; }
-        public string Title { get; set; }
         public string FirstName { get; set; }
-        public string SurName { get; set; }
-        public string AddressLine0 { get; set; }
-        public string AddressLine1 { get; set; }
-        public string AddressLine2 { get; set; }
-        public string AddressLine3 { get; set; }
-        public string AddressLine4 { get; set; }
+        public string LastName { get; set; }
+        public string ContactNumber { get; set; }
         public string EmailAddress { get; set; }
-        public string MaskCellNo { get; set; }
-        public string Barcode { get; set; }
+        public string Image { get; set; }
+        public bool IsLocked { get; set; }
+        public int NoofAttempts { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
         public string TenantCode { get; set; }
+        public Nullable<long> CountryId { get; set; }
+        public bool IsInstanceManager { get; set; }
+        public bool IsGroupManager { get; set; }
+        public Nullable<bool> IsPasswordResetByAdmin { get; set; }
     }
 }

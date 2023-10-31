@@ -11,12 +11,16 @@ namespace nIS
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
     public partial class View_TenantSubscriptionRecord
     {
+        [Key, Column(Order = 0)]
         public System.Guid TenantCode { get; set; }
         public System.DateTime SubscriptionStartDate { get; set; }
         public System.DateTime SubscriptionEndDate { get; set; }
+        [Key, Column(Order = 1)]
         public string SubscriptionKey { get; set; }
         public long LastModifiedBy { get; set; }
         public System.DateTime LastModifiedOn { get; set; }

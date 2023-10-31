@@ -15,7 +15,7 @@
     <RootNamespace>nIS</RootNamespace>
     <AssemblyName>nIS.API</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44345</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
@@ -349,6 +349,7 @@
     <Compile Include="Controllers\AnalyticsDataController.cs" />
     <Compile Include="Controllers\ArchivalProcessController.cs" />
     <Compile Include="Controllers\ClientController.cs" />
+    <Compile Include="Controllers\DataHubController.cs" />
     <Compile Include="Controllers\GenerateStatementController.cs" />
     <Compile Include="Controllers\NB_SegmentMasterController.cs" />
     <Compile Include="Controllers\PageTypeController.cs" />
