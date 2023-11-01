@@ -11,7 +11,9 @@ namespace nIS
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    [Table("NIS.View_StatementMetadata")]
     public partial class View_StatementMetadataRecord
     {
         public long Id { get; set; }

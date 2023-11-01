@@ -11,7 +11,9 @@ namespace nIS
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    [Table("NIS.Products")]
     public partial class Product
     {
         public int Id { get; set; }

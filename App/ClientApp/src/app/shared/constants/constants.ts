@@ -67,6 +67,7 @@ export class ErrorMessageConstants {
   public static get getPreviousEndDateShouldNotBeLessThanEndDateMessage(): string { return "End date should not be less than previous end date." };
   public static get getStartDateAndEndDateShouldhaveMonthDifferenceMessage(): string { return "Start date and end date should have minimum one month difference." };
   public static get getSomethingWentWrongErrorMessage(): string { return "Something went wrong, Please contact Administrator." };
+  public static get getCheckboxErrorMessage(): string { return "Select atleast one statement." };
 }
 
 @Injectable()

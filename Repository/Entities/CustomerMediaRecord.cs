@@ -11,7 +11,9 @@ namespace nIS
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    [Table("NIS.CustomerMedia")]
     public partial class CustomerMediaRecord
     {
         public long Id { get; set; }

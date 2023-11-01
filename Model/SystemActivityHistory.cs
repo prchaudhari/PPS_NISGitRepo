@@ -11,13 +11,15 @@ namespace nIS
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     #endregion
 
+    //[Table("NIS.SystemActivityHistory")]
     public class SystemActivityHistory
     {
         [Key]
-        public long Identifier { get; set; }
+        public long Id { get; set; }
         public string Module { get; set; }
         public long EntityId { get; set; }
         public string EntityName { get; set; }

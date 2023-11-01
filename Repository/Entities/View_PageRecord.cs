@@ -11,9 +11,13 @@ namespace nIS
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    [Table("NIS.View_Page")]
     public partial class View_PageRecord
     {
+        [Key, Column(Order = 0)]
         public long Id { get; set; }
         public string DisplayName { get; set; }
         public long PageTypeId { get; set; }

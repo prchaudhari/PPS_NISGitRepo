@@ -151,6 +151,8 @@ namespace nIS
                             productBatchId = 0;
 
                     }
+                    if(productBatchId == null)
+                        productBatchId = 0;
                     productBatchId++;
 
                     scheduleRecords.Add(new ScheduleRecord()
@@ -1050,11 +1052,11 @@ namespace nIS
 
                 if (!isExists)
                 {
-                    IList<SystemActivityHistory> Records = new List<SystemActivityHistory>();
+                    IList<SystemActivityHistoryRecord> Records = new List<SystemActivityHistoryRecord>();
                     scheduleRecords.ToList().ForEach(schedulerecord =>
                     {
                         result.Add(schedulerecord.Name, schedulerecord.Id);
-                        Records.Add(new SystemActivityHistory()
+                        Records.Add(new SystemActivityHistoryRecord()
                         {
                             Module = ModelConstant.ETL_SCHEDULE_MODEL_SECTION,
                             EntityId = schedulerecord.Id,
@@ -1073,7 +1075,7 @@ namespace nIS
                     {
                         using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                         {
-                            nISEntitiesDataContext.SystemActivityHistory.AddRange(Records);
+                            nISEntitiesDataContext.SystemActivityHistoryRecords.AddRange(Records);
                             nISEntitiesDataContext.SaveChanges();
                         }
                     }
@@ -3121,7 +3123,7 @@ namespace nIS
 
                 if (etlSchedule.Count() > 0)
                 {
-                    var etlScheduleId = etlSchedule.Where(x => x.Key == schedule.ScheduleNameByUser)?.FirstOrDefault().Value;
+                    var etlScheduleId = etlSchedule.Where(x => x.Key == schedule.Name)?.FirstOrDefault().Value;
                     AddETLBatches(etlScheduleId == null ? 0 : Convert.ToInt64(etlScheduleId), (long)schedule.ProductBatchId, schedule.ScheduleNameByUser, tenantCode, recordsList);
                 }
 

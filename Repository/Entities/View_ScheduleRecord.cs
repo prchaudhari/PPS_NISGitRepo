@@ -11,7 +11,9 @@ namespace nIS
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    [Table("NIS.View_Schedule")]
     public partial class View_ScheduleRecord
     {
         public long Id { get; set; }
@@ -40,6 +42,8 @@ namespace nIS
         public Nullable<long> NoOfOccurrences { get; set; }
         public Nullable<int> ExecutedBatchCount { get; set; }
         public string Languages { get; set; }
-        public long ProductId { get; set; }
+        public Nullable<long> ProductId { get; set; }
+        public Nullable<long> ProductBatchId { get; set; }
+        public string ScheduleNameByUser { get; set; }
     }
 }

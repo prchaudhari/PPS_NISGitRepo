@@ -113,10 +113,10 @@
                                                   join ppt in nISEntitiesDataContext.ProductPageTypeMappings on pr.PageTypeId equals ppt.PageTypeId
                                                   join st in nISEntitiesDataContext.StatementRecords on spm.StatementId equals st.Id
                                                   where ppt.PageTypeId == item.PageTypeId && st.IsDeleted == false && st.IsActive == true
-                                                  select new StatementViewModel
+                                                  select new Statement
                                                   {
-                                                      Id = st.Id,
-                                                      StatementName = st.Name
+                                                      Identifier = st.Id,
+                                                      Name = st.Name
                                                   }).ToList();
                         item.StatementViewModel = statementViewModel;
                     }

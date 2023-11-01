@@ -11,7 +11,9 @@ namespace nIS
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    [Table("NIS.BatchDetails")]
     public partial class BatchDetailRecord
     {
         public long Id { get; set; }

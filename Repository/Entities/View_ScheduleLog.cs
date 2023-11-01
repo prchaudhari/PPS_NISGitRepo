@@ -11,7 +11,9 @@ namespace nIS
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    [Table("NIS.View_ScheduleLog")]
     public partial class View_ScheduleLog
     {
         public long Id { get; set; }

@@ -14,6 +14,7 @@ namespace nIS
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
+    [Table("NIS.ProductPageTypeMapping")]
     public partial class ProductPageTypeMapping
     {
         [Key, Column(Order = 0)]

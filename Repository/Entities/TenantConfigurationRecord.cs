@@ -11,7 +11,9 @@ namespace nIS
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    [Table("NIS.TenantConfiguration")]
     public partial class TenantConfigurationRecord
     {
         public long Id { get; set; }

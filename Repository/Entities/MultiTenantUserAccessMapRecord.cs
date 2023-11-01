@@ -11,7 +11,9 @@ namespace nIS
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    [Table("NIS.MultiTenantUserAccessMap")]
     public partial class MultiTenantUserAccessMapRecord
     {
         public long Id { get; set; }

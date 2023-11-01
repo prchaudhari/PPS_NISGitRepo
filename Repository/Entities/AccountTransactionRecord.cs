@@ -11,7 +11,9 @@ namespace nIS
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    [Table("NIS.AccountTransaction")]
     public partial class AccountTransactionRecord
     {
         public long Id { get; set; }

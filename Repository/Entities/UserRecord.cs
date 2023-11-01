@@ -13,7 +13,7 @@ namespace nIS
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("User")]
+    [Table("NIS.User")]
     public partial class UserRecord
     {
         public long Id { get; set; }

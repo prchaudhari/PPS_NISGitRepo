@@ -11,7 +11,9 @@ namespace nIS
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    [Table("NIS.ReminderAndRecommendation")]
     public partial class ReminderAndRecommendationRecord
     {
         public long Id { get; set; }

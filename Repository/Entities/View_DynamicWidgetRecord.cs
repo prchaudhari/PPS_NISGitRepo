@@ -11,7 +11,9 @@ namespace nIS
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    [Table("NIS.View_DynamicWidget")]
     public partial class View_DynamicWidgetRecord
     {
         public long Id { get; set; }

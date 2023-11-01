@@ -11,7 +11,9 @@ namespace nIS
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    [Table("NIS.AssetLibrary")]
     public partial class AssetLibraryRecord
     {
         public long Id { get; set; }

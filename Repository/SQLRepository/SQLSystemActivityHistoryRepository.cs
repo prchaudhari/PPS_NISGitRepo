@@ -89,7 +89,7 @@ namespace nIS
                     {
                         records.ForEach(it => systemActivityHistories.Add(new SystemActivityHistory()
                         {
-                            Identifier = it.Id,
+                            Id = it.Id,
                             Module = it.Module,
                             EntityId = it.EntityId,
                             EntityName = it.EntityName,

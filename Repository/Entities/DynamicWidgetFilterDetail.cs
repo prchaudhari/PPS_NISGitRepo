@@ -11,7 +11,9 @@ namespace nIS
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    [Table("NIS.DynamicWidgetFilterDetail")]
     public partial class DynamicWidgetFilterDetail
     {
         public long Id { get; set; }

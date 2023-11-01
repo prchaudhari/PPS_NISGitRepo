@@ -11,7 +11,9 @@ namespace nIS
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    [Table("NIS.TransactionDetail")]
     public partial class TransactionDetailRecord
     {
         public int Id { get; set; }

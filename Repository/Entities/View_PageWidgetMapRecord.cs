@@ -11,9 +11,13 @@ namespace nIS
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    [Table("NIS.View_PageWidgetMap")]
     public partial class View_PageWidgetMapRecord
     {
+        [Key, Column(Order = 0)]
         public long Id { get; set; }
         public long ReferenceWidgetId { get; set; }
         public int Height { get; set; }

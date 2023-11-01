@@ -11,7 +11,9 @@ namespace nIS
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    [Table("NIS.SavingTrend")]
     public partial class SavingTrendRecord
     {
         public long Id { get; set; }

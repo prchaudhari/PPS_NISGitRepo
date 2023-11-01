@@ -11,7 +11,9 @@ namespace nIS
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    [Table("NIS.WidgetPageTypeMap")]
     public partial class WidgetPageTypeMap
     {
         public long Id { get; set; }
