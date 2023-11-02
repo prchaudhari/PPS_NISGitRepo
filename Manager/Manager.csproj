@@ -146,6 +146,7 @@
     <Compile Include="ArchivalProcessManager.cs" />
     <Compile Include="CityManager.cs" />
     <Compile Include="ClientManager.cs" />
+    <Compile Include="ETLScheduleManager.cs" />
     <Compile Include="GenerateStatementManager.cs" />
     <Compile Include="PageTypeManager.cs" />
     <Compile Include="ContactTypeManager.cs" />

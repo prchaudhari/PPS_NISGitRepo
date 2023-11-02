@@ -112,7 +112,7 @@ namespace nIS
         /// <summary>
         /// The product id
         /// </summary>
-        private int? productId;
+        private long? productId;
 
         public string ScheduleNameByUser { get; set; }
         #endregion
@@ -487,7 +487,7 @@ namespace nIS
         /// The product id.
         /// </value>
         [Description("Product Id")]
-        public int? ProductId
+        public long? ProductId
         {
             get
             {

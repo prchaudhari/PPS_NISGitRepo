@@ -13,6 +13,7 @@ namespace nIS
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Http;
+    using nIS.Models.NedBank;
     //using nIS.Models;
     //using nIS.Models.NedBank;
     using nIS.NedBank;
@@ -25,85 +26,85 @@ namespace nIS
     /// </summary>
     public class DataHubController : ApiController
     {
-        //#region Private Members
-        ///// <summary>
-        ///// The schedule manager object.
-        ///// </summary>
-        //private ScheduleManager scheduleManager = null;
+        #region Private Members
+        /// <summary>
+        /// The schedule manager object.
+        /// </summary>
+        private ScheduleManager scheduleManager = null;
 
-        ///// <summary>
-        ///// the Data Hub Manager object
-        ///// </summary>
-        //private ETLScheduleManager eTLScheduleManager = null;
+        /// <summary>
+        /// the Data Hub Manager object
+        /// </summary>
+        private ETLScheduleManager eTLScheduleManager = null;
 
-        ///// <summary>
-        ///// The unity container
-        ///// </summary>
-        //private readonly IUnityContainer unityContainer = null;
+        /// <summary>
+        /// The unity container
+        /// </summary>
+        private readonly IUnityContainer unityContainer = null;
 
-        ///// <summary>
-        ///// The tenant config manager object.
-        ///// </summary>
-        //private TenantConfigurationManager tenantConfigurationManager = null;
+        /// <summary>
+        /// The tenant config manager object.
+        /// </summary>
+        private TenantConfigurationManager tenantConfigurationManager = null;
 
-        //#endregion
+        #endregion
 
-        //#region Constructor
+        #region Constructor
 
-        ///// <summary>
-        ///// Initializes a new instance of the <see cref="ScheduleController"/> class.
-        ///// </summary>
-        ///// <param name="unityContainer">The unity container.</param>
-        //public DataHubController(IUnityContainer unityContainer)
-        //{
-        //    this.unityContainer = unityContainer;
-        //    this.tenantConfigurationManager = new TenantConfigurationManager(unityContainer);
-        //    this.scheduleManager = new ScheduleManager(this.unityContainer);
-        //    this.eTLScheduleManager = new ETLScheduleManager(this.unityContainer);
-        //}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScheduleController"/> class.
+        /// </summary>
+        /// <param name="unityContainer">The unity container.</param>
+        public DataHubController(IUnityContainer unityContainer)
+        {
+            this.unityContainer = unityContainer;
+            this.tenantConfigurationManager = new TenantConfigurationManager(unityContainer);
+            this.scheduleManager = new ScheduleManager(this.unityContainer);
+            this.eTLScheduleManager = new ETLScheduleManager(this.unityContainer);
+        }
 
-        //#endregion
+        #endregion
 
         //#region Public Methods
 
-        ///// <summary>
-        ///// This method helps to get ETL schedules list based on the search parameters.
-        ///// </summary>
-        ///// <param name="eTLScheduleSearchParameter">The etl schedule search parameter.</param>
-        ///// <returns>List of ETL schedules.</returns>
-        //[HttpPost]
-        //public IList<ETLScheduleListModel> ETLScheduleList(ETLScheduleSearchParameter eTLScheduleSearchParameter)
-        //{
-        //    IList<ETLScheduleListModel> schedules = new List<ETLScheduleListModel>();
-        //    try
-        //    {
-        //        string tenantCode = Helper.CheckTenantCode(Request.Headers);
-        //        schedules = this.eTLScheduleManager.GetETLSchedule(eTLScheduleSearchParameter, tenantCode);
-        //        HttpContext.Current.Response.AppendHeader("recordCount", this.eTLScheduleManager.GetETLScheduleCount(eTLScheduleSearchParameter, tenantCode).ToString());
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        throw;
-        //    }
-        //    return schedules;
-        //}
+        /// <summary>
+        /// This method helps to get ETL schedules list based on the search parameters.
+        /// </summary>
+        /// <param name="eTLScheduleSearchParameter">The etl schedule search parameter.</param>
+        /// <returns>List of ETL schedules.</returns>
+        [HttpPost]
+        public IList<ETLScheduleListModel> ETLScheduleList(ETLScheduleSearchParameter eTLScheduleSearchParameter)
+        {
+            IList<ETLScheduleListModel> schedules = new List<ETLScheduleListModel>();
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                schedules = this.eTLScheduleManager.GetETLSchedule(eTLScheduleSearchParameter, tenantCode);
+                HttpContext.Current.Response.AppendHeader("recordCount", this.eTLScheduleManager.GetETLScheduleCount(eTLScheduleSearchParameter, tenantCode).ToString());
+            }
+            catch (Exception exception)
+            {
+                throw;
+            }
+            return schedules;
+        }
 
-        //[HttpPost]
-        //public IList<ETLBatchMasterViewModel> GetETLBatches(long productBatchId)
-        //{
-        //    IList<ETLBatchMasterViewModel> batchMasters = new List<ETLBatchMasterViewModel>();
-        //    try
-        //    {
-        //        string tenantCode = Helper.CheckTenantCode(Request.Headers);
-        //        batchMasters = this.eTLScheduleManager.GetETLBatches(productBatchId, tenantCode);
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        throw;
-        //    }
+        [HttpPost]
+        public IList<ETLBatchMasterViewModel> GetETLBatches(long productBatchId)
+        {
+            IList<ETLBatchMasterViewModel> batchMasters = new List<ETLBatchMasterViewModel>();
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                batchMasters = this.eTLScheduleManager.GetETLBatches(productBatchId, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw;
+            }
 
-        //    return batchMasters;
-        //}
+            return batchMasters;
+        }
 
         //#region ETLScheduleBatchLogList
 

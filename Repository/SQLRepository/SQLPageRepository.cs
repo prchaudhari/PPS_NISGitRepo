@@ -338,7 +338,7 @@ namespace nIS
                     if (pageSearchParameter.IsPageWidgetsRequired)
                     {
                         view_PageRecords.ToList().ForEach(pageRecord =>
-                        {
+                        {   //try it as itm => itm.PageId == 10017
                             pageRecord.PageWidgetMapRecords = nISEntitiesDataContext.View_PageWidgetMapRecord.Where(itm => itm.PageId == pageRecord.Id && itm.TenantCode == tenantCode).ToList();
                         });
                     }

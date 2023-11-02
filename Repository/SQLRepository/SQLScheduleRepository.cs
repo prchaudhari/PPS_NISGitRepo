@@ -847,7 +847,11 @@ namespace nIS
                             IsEndsAfterNoOfOccurrences = scheduleRecord.IsEndsAfterNoOfOccurrences,
                             NoOfOccurrences = scheduleRecord.NoOfOccurrences,
                             ExecutedBatchCount = scheduleRecord.ExecutedBatchCount ?? 0,
-                            TenantCode = scheduleRecord.TenantCode
+                            TenantCode = scheduleRecord.TenantCode,
+                            ProductBatchId = scheduleRecord.ProductBatchId,
+                            ProductId = scheduleRecord.ProductId,
+                            ScheduleNameByUser = scheduleRecord.ScheduleNameByUser
+
                         }).ToList();
                     }
                 }

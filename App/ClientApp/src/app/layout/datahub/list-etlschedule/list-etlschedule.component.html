@@ -81,8 +81,8 @@
                   class="mat-cell cdk-column-actions mat-column-actions ng-star-inserted padding_bottom_8 padding_top_8 ">
                   <div class="action-btns btn-tbl-action">
                     <button type="button" id="btnViewETLSchedule" title="View ETL Schedule"
-                      (click)="navigateToETLScheduleDetail(childItem)"
-                      *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'ETL Schedule Management',Operation: 'View' }))">
+                      (click)="navigateToETLScheduleDetail(childItem)">
+                      <!--*ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'ETL Schedule Management',Operation: 'View' }))"-->
                       <span class="fa fa-file-text-o"></span>
                     </button>
                   </div>
