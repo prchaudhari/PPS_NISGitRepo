@@ -313,7 +313,7 @@ namespace nIS
                 this.SetAndValidateConnectionString(tenantCode);
                 string whereClause = this.WhereClauseGenerator(pageSearchParameter, tenantCode);
 
-                IList<View_PageRecord> view_PageRecords = new List<View_PageRecord>();
+                IList<View_Page> view_PageRecords = new List<View_Page>();
                 IList<WidgetRecord> widgetRecords = new List<WidgetRecord>();
                 IList<View_DynamicWidgetRecord> dynamicWidgetRecords = new List<View_DynamicWidgetRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString)) 
@@ -339,19 +339,19 @@ namespace nIS
                     {
                         view_PageRecords.ToList().ForEach(pageRecord =>
                         {   //try it as itm => itm.PageId == 10017
-                            pageRecord.PageWidgetMapRecords = nISEntitiesDataContext.View_PageWidgetMapRecord.Where(itm => itm.PageId == pageRecord.Id && itm.TenantCode == tenantCode).ToList();
+                            pageRecord.PageWidgetMap = nISEntitiesDataContext.View_PageWidgetMap.Where(itm => itm.PageId == pageRecord.Id && itm.TenantCode == tenantCode).ToList();
                         });
                     }
                 }
-                
+                //.Where(itm => itm.PageId == pageRecord.Id && itm.TenantCode == tenantCode).ToList();   pageRecord.PageWidgetMap
                 if (view_PageRecords != null && view_PageRecords.ToList().Count > 0)
                 {
                     view_PageRecords?.ToList().ForEach(pageRecord =>
                     {
                         IList<PageWidget> pageWidgets = new List<PageWidget>();
-                        if (pageRecord.PageWidgetMapRecords?.ToList().Count > 0)
+                        if (pageRecord.PageWidgetMap?.ToList().Count > 0)
                         {
-                            pageRecord.PageWidgetMapRecords?.ToList().ForEach(pageWidgetRecord =>
+                            pageRecord.PageWidgetMap?.ToList().ForEach(pageWidgetRecord =>
                             {
                                 pageWidgets.Add(new PageWidget
                                 {
@@ -421,7 +421,7 @@ namespace nIS
                 this.SetAndValidateConnectionString(tenantCode);
                 string whereClause = this.WhereClauseGenerator(pageSearchParameter, tenantCode);
 
-                IList<View_PageRecord> pageRecords = new List<View_PageRecord>();
+                IList<View_Page> pageRecords = new List<View_Page>();  
                 IList<UserRecord> pageOwnerUserRecords = new List<UserRecord>();
                 IList<UserRecord> pagePublishedUserRecords = new List<UserRecord>();
                 IList<PageTypeRecord> pageTypeRecords = new List<PageTypeRecord>();

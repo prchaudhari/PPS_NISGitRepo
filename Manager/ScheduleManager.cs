@@ -6,6 +6,7 @@
 namespace nIS
 {
     using Newtonsoft.Json;
+    using nIS.NedBank;
     #region References
 
     using System;
@@ -267,6 +268,35 @@ namespace nIS
             catch (Exception exception)
             {
                 throw exception;
+            }
+            return schedules;
+        }
+
+        public IList<ScheduleListModel> GetSchedulesWithProduct(ScheduleSearchParameter scheduleSearchParameter, string tenantCode)
+        {
+            IList<ScheduleListModel> schedules = new List<ScheduleListModel>();
+            try
+            {
+                InvalidSearchParameterException invalidSearchParameterException = new InvalidSearchParameterException(tenantCode);
+                try
+                {
+                    scheduleSearchParameter.IsValid();
+                }
+                catch (Exception exception)
+                {
+                    invalidSearchParameterException.Data.Add("InvalidPagingParameter", exception.Data);
+                }
+
+                if (invalidSearchParameterException.Data.Count > 0)
+                {
+                    throw invalidSearchParameterException;
+                }
+
+                schedules = this.scheduleRepository.GetSchedulesWithProduct(scheduleSearchParameter, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw;
             }
             return schedules;
         }
@@ -973,6 +1003,34 @@ namespace nIS
             return batchMasters;
         }
 
+        public IList<BatchMaster> GetBatchMastersById(long id, string tenantCode)
+        {
+            IList<BatchMaster> batchMasters = new List<BatchMaster>();
+            try
+            {
+                batchMasters = this.scheduleRepository.GetBatchMastersById(id, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw;
+            }
+            return batchMasters;
+        }
+
+        public IList<BatchMaster> GetBatchMastersByProductBatchName(string productBatchName, string tenantCode)
+        {
+            IList<BatchMaster> batchMasters = new List<BatchMaster>();
+            try
+            {
+                batchMasters = this.scheduleRepository.GetBatchMastersByProductBatchName(productBatchName, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw;
+            }
+            return batchMasters;
+        }
+
         /// <summary>
         /// Gets the batch masters by language.
         /// </summary>
@@ -1092,6 +1150,24 @@ namespace nIS
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        /// <summary>
+        /// this method get visibility of delete button.
+        /// </summary>
+        /// <param name="scheduleIdentifier">the schedule identifier.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>True if visible, otherwise false</returns>
+        public bool GetDeleteButtonVisibility(long scheduleIdentifier, string tenantCode)
+        {
+            try
+            {
+                return this.scheduleRepository.GetDeleteButtonVisibility(scheduleIdentifier, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
         }
 

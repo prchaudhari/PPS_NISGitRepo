@@ -15,7 +15,7 @@ namespace nIS
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("NIS.View_PageWidgetMap")]
-    public partial class View_PageWidgetMapRecord
+    public partial class View_PageWidgetMap
     {
         [Key, Column(Order = 0)]
         public long Id { get; set; }

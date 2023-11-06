@@ -53,6 +53,11 @@ namespace nIS
         /// </summary>
         private bool? isStatementDefinitionRequired;
 
+        private bool? isPublished;
+
+        private string productBatchName;
+
+
         #endregion
 
         #region Public Members
@@ -151,6 +156,30 @@ namespace nIS
         /// </summary>
         [Description("ScheduleName")]
         public string ScheduleName { get; set; }
+
+        public bool? IsPublished
+        {
+            get
+            {
+                return this.isPublished;
+            }
+            set
+            {
+                this.isPublished = value;
+            }
+        }
+
+        public string ProductBatchName
+        {
+            get
+            {
+                return this.productBatchName;
+            }
+            set
+            {
+                this.productBatchName = value;
+            }
+        }
 
         #endregion
 

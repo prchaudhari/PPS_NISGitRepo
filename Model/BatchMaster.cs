@@ -27,5 +27,9 @@ namespace nIS
         public string Status { get; set; }
         public string LanguageCode { get; set; }
 
+        public string Ids { get; set; }
+        public string ProductBatchName { get; set; }
+
+
     }
 }

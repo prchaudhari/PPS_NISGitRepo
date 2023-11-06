@@ -37,7 +37,7 @@ export class ViewComponent implements OnInit {
   public currentPage = 0;
   public totalSize = 0;
   public array: any;
-  
+
   public isDaily: boolean = false;
   public isWeekly: boolean = true;
   public isMonthly: boolean = false;
@@ -47,10 +47,11 @@ export class ViewComponent implements OnInit {
   public isNoEndDate: boolean = false;
   public RecurrencePattern = '';
   public ScheduleOccuranceMessage = '';
-  public monthArray = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  public dayObjectArr = [{Id: 1, 'Day':'Monday'},{Id:2,'Day':'Tuesday'},{Id:3, 'Day':'Wednesday'},{Id:4,'Day':'Thursday'},{Id:5, 'Day':'Friday'},{Id:6,'Day':'Saturday'},{Id: 7, 'Day':'Sunday'}];
+  public monthArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  public dayObjectArr = [{ Id: 1, 'Day': 'Monday' }, { Id: 2, 'Day': 'Tuesday' }, { Id: 3, 'Day': 'Wednesday' }, { Id: 4, 'Day': 'Thursday' }, { Id: 5, 'Day': 'Friday' }, { Id: 6, 'Day': 'Saturday' }, { Id: 7, 'Day': 'Sunday' }];
   public selectedWeekdays = [];
   public RepeatEveryBy = '';
+  public isDeleteButtonVisible: boolean = false;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -86,6 +87,7 @@ export class ViewComponent implements OnInit {
           //set passing parameters to localstorage.
           this.params = JSON.parse(localStorage.getItem('scheduleparams'));
           if (localStorage.getItem('scheduleparams')) {
+            this.schedule.ProductBatchName = this.params.Routeparams.passingparams.ScheduleProductBatchName;
             this.schedule.Identifier = this.params.Routeparams.passingparams.ScheduleIdentifier;
           }
         } else {
@@ -106,6 +108,7 @@ export class ViewComponent implements OnInit {
       this.userClaimsRolePrivilegeOperations = [];
     }
     this.getScheduleRecords();
+    this.getDeleteButtonVisibility();
   }
 
   async getScheduleRecords() {
@@ -122,8 +125,6 @@ export class ViewComponent implements OnInit {
     searchParameter.IsStatementDefinitionRequired = true;
     searchParameter.ProductBatchName = this.schedule.ProductBatchName;
     var response = await scheduleService.getSchedule(searchParameter);
-    this.schedule = response.List[0];
-
     this.scheduleRecord = response.List[0];
     if (this.scheduleRecord != null && this.scheduleRecord.ProductBatches != null || this.scheduleRecord.ProductBatches.length > 0) {
       if (this.scheduleRecord.ProductBatches[0].RecurrancePattern == null || this.scheduleRecord.ProductBatches[0].RecurrancePattern == '') {
@@ -154,79 +155,80 @@ export class ViewComponent implements OnInit {
   }
 
   setScheduleOccuranceMessage() {
-    var dt = new Date(this.schedule.StartDate);
-    var dayOfMonth = dt.getDate(); //this.schedule.DayOfMonth == undefined || this.schedule.DayOfMonth == 0 ? dt.getDate() : this.schedule.DayOfMonth;
-    var ssd = new Date(dt.getFullYear(), dt.getMonth(), dayOfMonth);
-    var schedulestartdte = ssd.toLocaleDateString();
-    var dte = ssd.getDate();
-    var month = this.monthArray[ssd.getMonth()];
+    if (this.scheduleRecord != null && this.scheduleRecord.ProductBatches != null || this.scheduleRecord.ProductBatches.length > 0) {
+      var dt = new Date(this.scheduleRecord.ProductBatches[0].StartDate);
+      var dayOfMonth = dt.getDate(); //this.schedule.DayOfMonth == undefined || this.schedule.DayOfMonth == 0 ? dt.getDate() : this.schedule.DayOfMonth;
+      var ssd = new Date(dt.getFullYear(), dt.getMonth(), dayOfMonth);
+      var schedulestartdte = ssd.toLocaleDateString();
+      var dte = ssd.getDate();
+      var month = this.monthArray[ssd.getMonth()];
 
-    if(this.schedule.RecurrancePattern == 'DoesNotRepeat') {
-      this.ScheduleOccuranceMessage = 'Occurs once on ' + schedulestartdte;
-    }else {
-      let scheduleRunUtilMessage = '';
-      if(this.schedule.EndDate != null && this.schedule.EndDate.toString() != "0001-01-01T00:00:00") {
-        let sed = new Date(this.schedule.EndDate);
-        scheduleRunUtilMessage = ' until '+sed.toLocaleDateString();
-      }else if(this.schedule.NoOfOccurrences != null) {
-        scheduleRunUtilMessage = ' upto '+this.schedule.NoOfOccurrences + " occurence.";
-      }
-      
-      let repeatEvery = this.schedule.RepeatEveryDayMonWeekYear != null && this.schedule.RepeatEveryDayMonWeekYear != 0 ? this.schedule.RepeatEveryDayMonWeekYear : 1;
-      let repeatEveryByVal = this.RepeatEveryBy != null && this.RepeatEveryBy != '' ? this.RepeatEveryBy : 'Month';
-      let occurance = '';
-      if(repeatEveryByVal == 'Day') {
-        if(repeatEvery == 1) {
-          occurance = 'day';
-        }else{
-          occurance = repeatEvery+' days ';
+      if (this.scheduleRecord.ProductBatches[0].RecurrancePattern == 'DoesNotRepeat') {
+        this.ScheduleOccuranceMessage = 'Occurs once on ' + schedulestartdte;
+      } else {
+        let scheduleRunUtilMessage = '';
+        if (this.scheduleRecord.ProductBatches[0].EndDateForDisplay != null && this.scheduleRecord.ProductBatches[0].EndDateForDisplay != "0001-01-01T00:00:00") {
+          let sed = new Date(this.scheduleRecord.ProductBatches[0].EndDateForDisplay);
+          scheduleRunUtilMessage = ' until ' + sed.toLocaleDateString();
+        } else if (this.scheduleRecord.ProductBatches[0].NoOfOccurrencesForDisplay != null && this.scheduleRecord.ProductBatches[0].NoOfOccurrencesForDisplay > 0) {
+          scheduleRunUtilMessage = ' upto ' + this.scheduleRecord.ProductBatches[0].NoOfOccurrencesForDisplay + " occurence.";
         }
-      }
-      else if(repeatEveryByVal == 'Week') {
-        var weekdaystr = '';
-        if(this.selectedWeekdays.length > 0) {
-          if(this.selectedWeekdays.length == 7 && repeatEvery == 1) {
+
+        let repeatEvery = this.scheduleRecord.ProductBatches[0].RepeatEveryDayMonWeekYear != null && this.scheduleRecord.ProductBatches[0].RepeatEveryDayMonWeekYear != 0 ? this.scheduleRecord.ProductBatches[0].RepeatEveryDayMonWeekYear : 1;
+        let repeatEveryByVal = this.RepeatEveryBy != null && this.RepeatEveryBy != '' ? this.RepeatEveryBy : 'Month';
+        let occurance = '';
+        if (repeatEveryByVal == 'Day') {
+          if (repeatEvery == 1) {
             occurance = 'day';
-          }else {
-            this.selectedWeekdays.sort(function(a, b){
-              return a.Id - b.Id;
-            });
-            for(let i=0; i<this.selectedWeekdays.length; i++) {
-              let day = this.selectedWeekdays[i].Day;
-              weekdaystr = weekdaystr + (weekdaystr != '' ? (i == (this.selectedWeekdays.length - 1) ? ' and ' : ', ') : '') + day;                
-            }
-            if(repeatEvery == 1) {
-              occurance = '' + (weekdaystr != '' ? 'on '+ weekdaystr : ' week');
-            }else{
-              occurance = repeatEvery+' weeks ' + (weekdaystr != '' ? 'on '+ weekdaystr : '');
+          } else {
+            occurance = repeatEvery + ' days ';
+          }
+        }
+        else if (repeatEveryByVal == 'Week') {
+          var weekdaystr = '';
+          if (this.selectedWeekdays.length > 0) {
+            if (this.selectedWeekdays.length == 7 && repeatEvery == 1) {
+              occurance = 'day';
+            } else {
+              this.selectedWeekdays.sort(function (a, b) {
+                return a.Id - b.Id;
+              });
+              for (let i = 0; i < this.selectedWeekdays.length; i++) {
+                let day = this.selectedWeekdays[i].Day;
+                weekdaystr = weekdaystr + (weekdaystr != '' ? (i == (this.selectedWeekdays.length - 1) ? ' and ' : ', ') : '') + day;
+              }
+              if (repeatEvery == 1) {
+                occurance = '' + (weekdaystr != '' ? 'on ' + weekdaystr : ' week');
+              } else {
+                occurance = repeatEvery + ' weeks ' + (weekdaystr != '' ? 'on ' + weekdaystr : '');
+              }
             }
           }
         }
-      }
-      else if(repeatEveryByVal == 'Month') {
-        if(repeatEvery == 1) {
-          occurance = 'month on day '+dte;
-        }else{
-          occurance = repeatEvery+' months on day '+dte;
+        else if (repeatEveryByVal == 'Month') {
+          if (repeatEvery == 1) {
+            occurance = 'month on day ' + dte;
+          } else {
+            occurance = repeatEvery + ' months on day ' + dte;
+          }
         }
-      }
-      else if(repeatEveryByVal == 'Year') {
-        if(repeatEvery == 1) {
-          occurance = 'year on day '+dte+ ' of '+month;
-        }else{
-          occurance = repeatEvery+' years on day '+dte+ ' of '+month;
+        else if (repeatEveryByVal == 'Year') {
+          if (repeatEvery == 1) {
+            occurance = 'year on day ' + dte + ' of ' + month;
+          } else {
+            occurance = repeatEvery + ' years on day ' + dte + ' of ' + month;
+          }
         }
+        this.ScheduleOccuranceMessage = 'On every ' + occurance + ' starting ' + schedulestartdte + scheduleRunUtilMessage;
       }
-      this.ScheduleOccuranceMessage = 'On every '+occurance+' starting ' + schedulestartdte + scheduleRunUtilMessage;
     }
-    
   }
 
   navigateToScheduleEdit() {
     let queryParams = {
       Routeparams: {
         passingparams: {
-          "ScheduleIdentifier": this.schedule.Identifier,
+          "ScheduleProductBatchName": this.scheduleRecord != null && this.scheduleRecord.length > 0 && this.scheduleRecord.ProductBatches.length > 0 ? this.scheduleRecord.ProductBatches[0].ProductBatchName : "",
         },
         filteredparams: {
           //passing data using json stringify.
@@ -244,9 +246,8 @@ export class ViewComponent implements OnInit {
     this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
       if (isConfirmed) {
         let roleData = [{
-          "Identifier": this.schedule.Identifier,
+          "ProductBatchName": this.scheduleRecord != null && this.scheduleRecord.ProductBatches.length > 0 ? this.scheduleRecord.ProductBatches[0].ProductBatchName : "",
         }];
-
         let isDeleted = await this.scheduleService.deleteSchedule(roleData);
         if (isDeleted) {
           let messageString = Constants.recordDeletedMessage;
@@ -264,14 +265,19 @@ export class ViewComponent implements OnInit {
     this.isCollapsedBatch = !this.isCollapsedBatch;
     if (this.IsBatchDetailsGet == false) {
       this._spinnerService.start();
-      this._http.post(this.baseURL + 'Schedule/GetBatchMaster?scheduleIdentifier=' + this.schedule.Identifier, null).subscribe(
+      let productBatchName: string = "";
+      if (this.scheduleRecord.ProductBatches != null && this.scheduleRecord.ProductBatches.length > 0) {
+        productBatchName = this.scheduleRecord.ProductBatches[0].ProductBatchName;
+      }
+
+      this._http.post(this.baseURL + 'Schedule/GetBatchMastersByProductBatchName?productBatchName=' + productBatchName, null).subscribe(
         data => {
           this.IsBatchDetailsGet = true;
           this.batchmasterList = data;
           for (var i = 0; i < this.batchmasterList.length; i++) {
-            this.batchmasterList[i].Index = i+1;
+            this.batchmasterList[i].Index = i + 1;
           }
-          
+
           this.dataSource = new MatTableDataSource<Schedule>(this.batchmasterList);
           this.dataSource.sort = this.sort;
           this.array = this.batchmasterList;
@@ -285,16 +291,24 @@ export class ViewComponent implements OnInit {
           this._spinnerService.stop();
         });
     }
+    this.getDeleteButtonVisibility();
   }
 
-  RunScheduleNow(batch : any) {
+  RunScheduleNow(batchElement: any) {
     let message = 'Are you sure, you want to run schedule now for this batch record?';
     this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
       if (isConfirmed) {
-        batch.Status = 'Running';
-        this.scheduleService.RunScheduleNow(batch);
+        let batch: string = batchElement.Ids;
+        batchElement.Status = 'Running';
+        this.scheduleService.RunScheduleNowWithMultipleBatches(batch);
       }
     });
+  }
+
+  public refreshBatches() {
+    this.IsBatchDetailsGet = false;
+    this.isCollapsedBatch = true;
+    this.getBatchMaster();
   }
 
   public handlePage(e: any) {
@@ -346,7 +360,8 @@ export class ViewComponent implements OnInit {
     }
     this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
       if (isConfirmed) {
-        let result = await this.scheduleService.ValidateApproveBatchAsync(batch.Identifier);
+        let batchIds: string = batch.Ids;
+        let result = await this.scheduleService.ValidateApproveBatchAsync(batchIds);
         if (result) {
           let messageString = "Batch approval in progress successfully";
           this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
@@ -362,7 +377,8 @@ export class ViewComponent implements OnInit {
     let message = 'Are you sure, you want to clean for this batch?';
     this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
       if (isConfirmed) {
-        let result = await this.scheduleService.CleanBatch(batch.Identifier);
+        let batchIds: string = batch.Ids;
+        let result = await this.scheduleService.CleanBatch(batchIds);
         if (result) {
           let messageString = "Batch data cleaned successfully";
           this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
@@ -374,6 +390,10 @@ export class ViewComponent implements OnInit {
     });
   }
 
+  async getDeleteButtonVisibility() {
+    let scheduleService = this.injector.get(ScheduleService);
+    this.isDeleteButtonVisible = await scheduleService.getDeleteButtonVisibility(this.schedule.Identifier);
+  }
 }
 
 function compare(a: number, b: number, isAsc: boolean) {

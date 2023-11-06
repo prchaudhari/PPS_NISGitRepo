@@ -11,6 +11,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ScheduleService } from '../schedule.service';
 import { Schedule } from '../schedule';
+import { ProductService } from '../../products/product.service';
 
 @Component({
   selector: 'app-list',
@@ -20,7 +21,7 @@ import { Schedule } from '../schedule';
 
 export class ListComponent implements OnInit {
   public isFilter: boolean = false;
-  public pageSize = 5;
+  public pageSize = 10;
   public currentPage = 0;
   public totalSize = 0;
   public scheduleList: Schedule[] = [];
@@ -33,19 +34,21 @@ export class ListComponent implements OnInit {
   public isFilterDone = false;
   public array: any;
   public userClaimsRolePrivilegeOperations: any[] = [];
+  public productList: any = [];
 
   public totalRecordCount = 0;
   public filterScheduleNameValue = '';
   public filterStatementNameValue = '';
   public filterScheduleStartDate = null;
   public filterScheduleEndDate = null;
+  public filterScheduleProductValue = 0;
   public sortOrder = Constants.Descending;
   public sortColumn = 'LastUpdatedDate';
 
   closeFilter() {
     this.isFilter = !this.isFilter;
   }
-  displayedColumns: string[] = ['name', 'statement', 'startDate', 'endDate', 'DayOfMonth', 'NoOfOccurrence', 'actions'];
+  displayedColumns: string[] = ['name', 'statement', 'startDate', 'endDate', 'DayOfMonth', 'NoOfOccurrence', 'totalBatches', 'actions'];
   dataSource = new MatTableDataSource<any>();
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -68,10 +71,17 @@ export class ListComponent implements OnInit {
     //this.getStatementDefinition(null);
     this.ScheduleFilterForm = this.fb.group({
       filterDisplayName: [null],
-
+      filterProductName: [null],
       filterStatementDefiniton: [null],
       filterStartDate: [null],
       filterEndDate: [null],
+    });
+    this.getProducts();
+  }
+
+  getProducts() {
+    this.productService.getProducts().subscribe(data => {
+      this.productList = data;
     });
   }
 
@@ -85,7 +95,8 @@ export class ListComponent implements OnInit {
     private _messageDialogService: MessageDialogService,
     private route: Router,
     private localstorageservice: LocalStorageService,
-    private scheduleService: ScheduleService) {
+    private scheduleService: ScheduleService,
+    private productService: ProductService) {
     this.sortedscheduleList = this.scheduleList.slice();
   }
 
@@ -111,12 +122,17 @@ export class ListComponent implements OnInit {
     return this.ScheduleFilterForm.get('filterEndDate');
   }
 
+  get filterProductName() {
+    return this.ScheduleFilterForm.get('filterProductName');
+  }
+
   resetFilterForm() {
     this.ScheduleFilterForm.patchValue({
       filterDisplayName: null,
       filterStatementDefiniton: null,
       filterEndDate: null,
-      filterStartDate: null
+      filterStartDate: null,
+      filterProductName: 0
     });
 
     this.currentPage = 0;
@@ -128,6 +144,7 @@ export class ListComponent implements OnInit {
     this.filterToDateError = false;
     this.filterFromDateErrorMessage = "";
     this.filterToDateErrorMessage = "";
+    this.filterScheduleProductValue = 0;
   }
 
   validateFilterDate(): boolean {
@@ -196,6 +213,10 @@ export class ListComponent implements OnInit {
           this.filterScheduleEndDate = this.ScheduleFilterForm.value.filterEndDate;
           searchParameter.EndDate = new Date(this.ScheduleFilterForm.value.filterEndDate.setHours(23, 59, 59));
         }
+        if (this.ScheduleFilterForm.value.filterProductName != null && this.ScheduleFilterForm.value.filterProductName != '' && this.ScheduleFilterForm.value.filterProductName != '0') {
+          this.filterScheduleProductValue = this.ScheduleFilterForm.value.filterProductName;
+          searchParameter.ProductId = this.ScheduleFilterForm.value.filterProductName;
+        }
 
         this.currentPage = 0;
         this.getSchedule(searchParameter);
@@ -228,6 +249,10 @@ export class ListComponent implements OnInit {
     }
     if (this.filterScheduleEndDate != null && this.filterScheduleEndDate != '') {
       searchParameter.EndDate = new Date(this.filterScheduleEndDate.setHours(23, 59, 59));
+    }
+    if(this.filterScheduleProductValue != 0)
+    {
+      searchParameter.ProductId = this.filterScheduleProductValue;
     }
 
     searchParameter.IsStatementDefinitionRequired = true;
@@ -270,6 +295,7 @@ export class ListComponent implements OnInit {
       case 'endDate': this.sortColumn = "EndDate"; break;
       case 'DayOfMonth': this.sortColumn = "DayOfMonth"; break;
       case 'NoOfOccurrence': this.sortColumn = "NoOfOccurrences"; break;
+      case 'totalBatches': this.sortColumn = "TotalBatches"; break;
       default: this.sortColumn = "LastUpdatedDate"; break;
     }
 
@@ -290,7 +316,8 @@ export class ListComponent implements OnInit {
     let queryParams = {
       Routeparams: {
         passingparams: {
-          "ScheduleIdentifier": schedule.Identifier,
+          "ScheduleProductBatchName": schedule.ProductBatchName,
+          "ScheduleIdentifier": schedule.Identifier
         },
         filteredparams: {
           //passing data using json stringify.
@@ -314,7 +341,7 @@ export class ListComponent implements OnInit {
     let queryParams = {
       Routeparams: {
         passingparams: {
-          "ScheduleIdentifier": schedule.Identifier,
+          "ScheduleProductBatchName": schedule.ProductBatchName,
         },
         filteredparams: {
           //passing data using json stringify.
@@ -350,7 +377,7 @@ export class ListComponent implements OnInit {
     this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
       if (isConfirmed) {
         let roleData = [{
-          "Identifier": role.Identifier,
+          "ProductBatchName": role.ProductBatchName,
         }];
 
         let isDeleted = await this.scheduleService.deleteSchedule(roleData);
@@ -390,8 +417,6 @@ export class ListComponent implements OnInit {
             let messageString = "Schedule activated successfully";
             this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
             this.getSchedule(null);
-
-
           }
         }
       });

@@ -70,7 +70,7 @@ namespace nIS
         public virtual DbSet<BatchMasterRecord> BatchMasterRecords { get; set; }
         public virtual DbSet<AnalyticsDataRecord> AnalyticsDataRecords { get; set; }
         public virtual DbSet<View_ScheduleRecord> View_ScheduleRecord { get; set; }
-        public virtual DbSet<View_PageRecord> View_PageRecord { get; set; }
+        public virtual DbSet<View_Page> View_PageRecord { get; set; }
         public virtual DbSet<View_StatementDefinitionRecord> View_StatementDefinitionRecord { get; set; }
         public virtual DbSet<View_SourceDataRecord> View_SourceDataRecord { get; set; }
         public virtual DbSet<ContactTypeRecord> ContactTypeRecords { get; set; }
@@ -84,7 +84,7 @@ namespace nIS
         public virtual DbSet<TenantEntityRecord> TenantEntityRecords { get; set; }
         public virtual DbSet<DynamicWidgetFilterDetail> DynamicWidgetFilterDetails { get; set; }
         public virtual DbSet<WidgetPageTypeMap> WidgetPageTypeMaps { get; set; }
-        public virtual DbSet<View_PageWidgetMapRecord> View_PageWidgetMapRecord { get; set; }
+        public virtual DbSet<View_PageWidgetMap> View_PageWidgetMap { get; set; }
         public virtual DbSet<ScheduleLogDetailArchiveRecord> ScheduleLogDetailArchiveRecords { get; set; }
         public virtual DbSet<StatementMetadataRecord> StatementMetadataRecords { get; set; }
         public virtual DbSet<StatementMetadataArchiveRecord> StatementMetadataArchiveRecords { get; set; }

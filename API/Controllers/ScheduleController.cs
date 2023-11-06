@@ -5,6 +5,7 @@
 
 namespace nIS
 {
+    using nIS.NedBank;
     #region References
 
     using System;
@@ -193,13 +194,14 @@ namespace nIS
         /// List of schedules
         /// </returns>
         [HttpPost]
-        public IList<Schedule> List(ScheduleSearchParameter scheduleSearchParameter)
+        public IList<ScheduleListModel> List(ScheduleSearchParameter scheduleSearchParameter)
         {
-            IList<Schedule> schedules = new List<Schedule>();
+            IList<ScheduleListModel> schedules = new List<ScheduleListModel>();
             try
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                schedules = this.scheduleManager.GetSchedules(scheduleSearchParameter, tenantCode);
+                //schedules = this.scheduleManager.GetSchedules(scheduleSearchParameter, tenantCode);
+                schedules = this.scheduleManager.GetSchedulesWithProduct(scheduleSearchParameter, tenantCode);
                 HttpContext.Current.Response.AppendHeader("recordCount", this.scheduleManager.GetScheduleCount(scheduleSearchParameter, tenantCode).ToString());
             }
             catch (Exception exception)
@@ -361,6 +363,58 @@ namespace nIS
             }
         }
 
+        [HttpPost]
+        public bool RunScheduleNowWithMultipleBatches(string ids)
+        {
+            try
+            {
+                if (ids == null)
+                {
+                    return false;
+                }
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                var baseURL = Url.Content("~/");
+                var outputLocation = AppDomain.CurrentDomain.BaseDirectory;
+                var tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
+                if (tenantConfiguration != null && !string.IsNullOrEmpty(tenantConfiguration.OutputHTMLPath))
+                {
+                    baseURL = tenantConfiguration.OutputHTMLPath;
+                    outputLocation = tenantConfiguration.OutputHTMLPath;
+                }
+                var batchesId = ids.Split(',').ToList();
+                var result = 0;
+                foreach (var item in batchesId)
+                {
+                    var batchMaster = GetBatchMastersById(Convert.ToInt64(item))?.FirstOrDefault();
+                    if (batchMaster != null)
+                    {
+                        batchMaster.Status = "Running";
+                        var scheduleResult = this.scheduleManager.RunScheduleNowNew(batchMaster, baseURL, outputLocation, tenantConfiguration, tenantCode);
+                        if (scheduleResult == true)
+                        {
+                            result += 0;
+                        }
+                        else
+                        {
+                            result += 1;
+                        }
+                    }
+                }
+                if (result == 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         #region Batch master
 
         /// <summary>
@@ -380,6 +434,41 @@ namespace nIS
             catch (Exception exception)
             {
                 throw exception;
+            }
+
+            return batchMasters;
+        }
+
+        [HttpPost]
+        public IList<BatchMaster> GetBatchMastersById(long id)
+        {
+            IList<BatchMaster> batchMasters = new List<BatchMaster>();
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                batchMasters = this.scheduleManager.GetBatchMastersById(id, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw;
+            }
+
+            return batchMasters;
+        }
+
+
+        [HttpPost]
+        public IList<BatchMaster> GetBatchMastersByProductBatchName(string productBatchName)
+        {
+            IList<BatchMaster> batchMasters = new List<BatchMaster>();
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                batchMasters = this.scheduleManager.GetBatchMastersByProductBatchName(productBatchName, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw;
             }
 
             return batchMasters;
@@ -464,6 +553,27 @@ namespace nIS
             {
                 throw ex;
             }
+        }
+
+        /// <summary>
+        /// this method get visibility of delete button.
+        /// </summary>
+        /// <param name="scheduleId">the schedule Identifier.</param>
+        /// <returns>True if visible, otherwise false</returns>
+        [HttpPost]
+        public bool GetDeleteButtonVisibility(long scheduleId)
+        {
+            bool result = false;
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                result = this.scheduleManager.GetDeleteButtonVisibility(scheduleId, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw;
+            }
+            return result;
         }
 
         #endregion

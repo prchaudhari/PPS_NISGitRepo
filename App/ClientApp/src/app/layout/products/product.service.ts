@@ -72,7 +72,7 @@ export class ProductService {
 
 
   getProducts():any {
-    debugger;
+   // debugger;
    return this._http.get(this.baseURL + URLConfiguration.productGetUrl);
     }
     // getProducts():any {

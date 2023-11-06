@@ -32,7 +32,7 @@ namespace nIS
         /// <summary>
         /// This ProductBatchName
         /// </summary>
-        private string productBatchName;
+        public string productBatchName;
 
         /// <summary>
         /// The Schdeule description

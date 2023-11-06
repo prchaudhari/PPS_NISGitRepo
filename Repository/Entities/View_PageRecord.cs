@@ -15,7 +15,7 @@ namespace nIS
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("NIS.View_Page")]
-    public partial class View_PageRecord
+    public partial class View_Page
     {
         [Key, Column(Order = 0)]
         public long Id { get; set; }

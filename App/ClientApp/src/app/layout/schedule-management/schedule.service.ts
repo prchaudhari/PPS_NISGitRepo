@@ -25,6 +25,8 @@ export class ScheduleService {
   public countrycodeList = [];
   public ouList = [];
   public isDependencyPresent: boolean = false;
+  public isDeleteButtonVisibility: boolean = false;
+
   constructor(private http: HttpClient,
     private injector: Injector,
     private uiLoader: NgxUiLoaderService,
@@ -207,10 +209,22 @@ export class ScheduleService {
         this.isRecordDeleted = false;
       });
   }
+
+  public RunScheduleNowWithMultipleBatches(postData) {
+    let httpClientService = this.injector.get(HttpClientService);
+    let requestUrl = URLConfiguration.RunScheduleNowWithMultipleBatches + "?" + "ids=" + postData;
+    httpClientService.CallHttp("POST", requestUrl).toPromise()
+      .then((httpEvent: HttpEvent<any>) => {
+      }, (error: HttpResponse<any>) => {
+        this.uiLoader.stop();
+        this.isRecordDeleted = false;
+      });
+  }
+  
   public ApproveBatch(BatchIdentifier) {
     let httpClientService = this.injector.get(HttpClientService);
 
-    let requestUrl = URLConfiguration.ApproveScheduleBatch + "?" + "BatchIdentifier=" + BatchIdentifier;
+    let requestUrl = URLConfiguration.ApproveScheduleBatches + "?" + "batchIdentifiers=" + BatchIdentifier;
     httpClientService.CallHttp("POST", requestUrl).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
       }, (error: HttpResponse<any>) => {
@@ -221,7 +235,7 @@ export class ScheduleService {
 
   public async ValidateApproveBatchAsync(BatchIdentifier): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl = URLConfiguration.ValidateApproveScheduleBatch + "?" + "BatchIdentifier=" + BatchIdentifier;
+    let requestUrl = URLConfiguration.ValidateApproveScheduleBatch + "?" + "batchIdentifiers=" + BatchIdentifier;
     this.uiLoader.start();
     var result = false;
     await httpClientService.CallHttp("POST", requestUrl).toPromise()
@@ -267,4 +281,26 @@ export class ScheduleService {
     return <boolean>result;
   }
 
+  public async getDeleteButtonVisibility(scheduleId): Promise<boolean> {
+    let httpClientService = this.injector.get(HttpClientService);
+    let requestUrl = URLConfiguration.GetDeleteButtonVisibilityURL + "?" + "scheduleId=" + scheduleId;
+    this.uiLoader.start();
+    await httpClientService.CallHttp("POST", requestUrl).toPromise()
+      .then((httpEvent: HttpEvent<any>) => {
+        if (httpEvent.type == HttpEventType.Response) {
+          this.uiLoader.stop();
+          if (httpEvent["status"] === 200) {
+            this.isDeleteButtonVisibility = httpEvent['body'];
+          }
+          else {
+            this.isDeleteButtonVisibility = false;
+          }
+        }
+      }, (error) => {
+        this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+        this.uiLoader.stop();
+        this.isDeleteButtonVisibility = false;
+      });
+    return <boolean>this.isDeleteButtonVisibility;
+  }
 }

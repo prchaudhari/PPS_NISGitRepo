@@ -26,8 +26,10 @@ export class Schedule {
   "MonthOfYear":string;
   "IsEndsAfterNoOfOccurrences":boolean;
   "NoOfOccurrences":number;
-  "ExecutedBatchCount": number;
-  "ProductBatchName": string = "";
-  "ScheduleNameByUser": string = "";
+  "ExecutedBatchCount":number;
+  "ProductBatchName": string="";
+  "ScheduleNameByUser": string="";
   "ProductId": number;
+  "TotalBatches": number;
+  "IsDeleteButtonVisible": boolean;
 }

@@ -864,6 +864,196 @@ namespace nIS
             return schedules;
         }
 
+        public IList<ScheduleListModel> GetSchedulesWithProduct(ScheduleSearchParameter scheduleSearchParameter, string tenantCode)
+        {
+            IList<ScheduleListModel> schedules = new List<ScheduleListModel>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGenerator(scheduleSearchParameter, tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    IList<Schedule> scheduleRecords = new List<Schedule>();
+                    List<ScheduleModel> result = new List<ScheduleModel>();
+                    if (scheduleSearchParameter.PagingParameter.PageIndex > 0 && scheduleSearchParameter.PagingParameter.PageSize > 0)
+                    {
+                        var queryResult = (from spm in nISEntitiesDataContext.StatementPageMapRecords
+                                           join pr in nISEntitiesDataContext.PageRecords on spm.ReferencePageId equals pr.Id
+                                           join ppt in nISEntitiesDataContext.ProductPageTypeMappings on pr.PageTypeId equals ppt.PageTypeId
+                                           join pro in nISEntitiesDataContext.Products on ppt.ProductId equals pro.Id
+                                           join s in nISEntitiesDataContext.StatementRecords on spm.StatementId equals s.Id
+                                           join sc in nISEntitiesDataContext.ScheduleRecords on s.Id equals sc.StatementId
+                                           orderby scheduleSearchParameter.SortParameter.SortColumn + " " + scheduleSearchParameter.SortParameter.SortOrder.ToString()
+                                           where (sc.ProductBatchName != " ")
+
+                                           select new ScheduleModel
+                                           {
+                                               Identifier = sc.Id,
+                                               Name = sc.Name,
+                                               StatementId = sc.StatementId,
+                                               Description = sc.Description,
+                                               DayOfMonth = sc.DayOfMonth,
+                                               HourOfDay = sc.HourOfDay,
+                                               MinuteOfDay = sc.MinuteOfDay,
+                                               StartDate = sc.StartDate,
+                                               EndDate = sc.EndDate,
+                                               Status = sc.Status,
+                                               IsActive = sc.IsActive,
+                                               IsDeleted = sc.IsDeleted,
+                                               TenantCode = sc.TenantCode,
+                                               LastUpdatedDate = sc.LastUpdatedDate,
+                                               UpdateBy = sc.UpdateBy,
+                                               IsExportToPDF = sc.IsExportToPDF,
+                                               RecurrancePattern = sc.RecurrancePattern,
+                                               RepeatEveryDayMonWeekYear = sc.RepeatEveryDayMonWeekYear,
+                                               WeekDays = sc.WeekDays,
+                                               IsEveryWeekDay = sc.IsEveryWeekDay,
+                                               MonthOfYear = sc.MonthOfYear,
+                                               IsEndsAfterNoOfOccurrences = sc.IsEndsAfterNoOfOccurrences,
+                                               NoOfOccurrences = sc.NoOfOccurrences,
+                                               ExecutedBatchCount = (from bm in nISEntitiesDataContext.BatchMasterRecords where bm.ScheduleId == sc.Id && bm.IsDataReady == true && bm.IsExecuted == true select bm.Id).Count(),
+                                               Languages = sc.Languages,
+                                               ProductBatchName = sc.ProductBatchName,
+                                               ProductName = pro.Name,
+                                               ProductId = pro.Id,
+                                               ScheduleNameByUser = sc.ScheduleNameByUser,
+                                               //EndDateForDisplay = sc.EndDateForDisplay,
+                                               //NoOfOccuranceForDisplay = sc.NoOfOccuranceForDisplay,
+                                               IsDataReady = (from bm in nISEntitiesDataContext.BatchMasterRecords
+                                                              join sr in nISEntitiesDataContext.ScheduleRecords on bm.ScheduleId equals sr.Id
+                                                              where sr.ProductBatchName == sc.ProductBatchName && bm.IsDataReady == true
+                                                              select bm.IsDataReady).ToList().Where(x => x == true).Count() > 0 ? true : false,
+                                               TotalBatches = nISEntitiesDataContext.BatchMasterRecords.Where(x => x.ScheduleId == sc.Id).Count(),
+                                               IsDeleteButtonVisible = nISEntitiesDataContext.BatchMasterRecords.Where(x => (x.IsDataReady == true || x.IsExecuted == true) && x.ScheduleId == sc.Id).Count() == 0 ? true : false
+                                           });
+
+                        result = WhereClauseGeneratorInQuery(scheduleSearchParameter, tenantCode, queryResult).GroupBy(x => x.ProductBatchName).OrderBy(x => x.Key).Skip((scheduleSearchParameter.PagingParameter.PageIndex - 1) * scheduleSearchParameter.PagingParameter.PageSize)
+                                    .Take(scheduleSearchParameter.PagingParameter.PageSize).Select(x => x.FirstOrDefault())
+                                    .ToList();
+                    }
+                    else
+                    {
+                        var queryResult = (from spm in nISEntitiesDataContext.StatementPageMapRecords
+                                           join pr in nISEntitiesDataContext.PageRecords on spm.ReferencePageId equals pr.Id
+                                           join ppt in nISEntitiesDataContext.ProductPageTypeMappings on pr.PageTypeId equals ppt.PageTypeId
+                                           join pro in nISEntitiesDataContext.Products on ppt.ProductId equals pro.Id
+                                           join s in nISEntitiesDataContext.StatementRecords on spm.StatementId equals s.Id
+                                           join sc in nISEntitiesDataContext.ScheduleRecords on s.Id equals sc.StatementId
+                                           orderby scheduleSearchParameter.SortParameter.SortColumn + " " + scheduleSearchParameter.SortParameter.SortOrder.ToString()
+                                           where (sc.ProductBatchName != " ")
+
+                                           select new ScheduleModel
+                                           {
+                                               Identifier = sc.Id,
+                                               Name = sc.Name,
+                                               StatementId = sc.StatementId,
+                                               Description = sc.Description,
+                                               DayOfMonth = sc.DayOfMonth,
+                                               HourOfDay = sc.HourOfDay,
+                                               MinuteOfDay = sc.MinuteOfDay,
+                                               StartDate = sc.StartDate,
+                                               EndDate = sc.EndDate,
+                                               Status = sc.Status,
+                                               IsActive = sc.IsActive,
+                                               IsDeleted = sc.IsDeleted,
+                                               TenantCode = sc.TenantCode,
+                                               LastUpdatedDate = sc.LastUpdatedDate,
+                                               UpdateBy = sc.UpdateBy,
+                                               IsExportToPDF = sc.IsExportToPDF,
+                                               RecurrancePattern = sc.RecurrancePattern,
+                                               RepeatEveryDayMonWeekYear = sc.RepeatEveryDayMonWeekYear,
+                                               WeekDays = sc.WeekDays,
+                                               IsEveryWeekDay = sc.IsEveryWeekDay,
+                                               MonthOfYear = sc.MonthOfYear,
+                                               IsEndsAfterNoOfOccurrences = sc.IsEndsAfterNoOfOccurrences,
+                                               NoOfOccurrences = sc.NoOfOccurrences,
+                                               ExecutedBatchCount = (from bm in nISEntitiesDataContext.BatchMasterRecords where bm.ScheduleId == sc.Id && bm.IsDataReady == true && bm.IsExecuted == true select bm.Id).Count(),
+                                               Languages = sc.Languages,
+                                               ProductBatchName = sc.ProductBatchName,
+                                               ProductName = pro.Name,
+                                               ProductId = pro.Id,
+                                               ScheduleNameByUser = sc.ScheduleNameByUser,
+                                               //EndDateForDisplay = sc.EndDateForDisplay,
+                                               //NoOfOccuranceForDisplay = sc.NoOfOccuranceForDisplay,
+                                               IsDataReady = (from bm in nISEntitiesDataContext.BatchMasterRecords
+                                                              join sr in nISEntitiesDataContext.ScheduleRecords on bm.ScheduleId equals sr.Id
+                                                              where sr.ProductBatchName == sc.ProductBatchName && bm.IsDataReady == true
+                                                              select bm.IsDataReady).ToList().Where(x => x == true).Count() > 0 ? true : false,
+                                               TotalBatches = nISEntitiesDataContext.BatchMasterRecords.Where(x => x.ScheduleId == sc.Id).Count(),
+                                               IsDeleteButtonVisible = nISEntitiesDataContext.BatchMasterRecords.Where(x => (x.IsDataReady == true || x.IsExecuted == true) && x.ScheduleId == sc.Id).Count() == 0 ? true : false
+                                           });
+
+                        result = WhereClauseGeneratorInQuery(scheduleSearchParameter, tenantCode, queryResult).OrderBy(x => x.ProductBatchName).ToList();
+                    }
+                    if (result != null && result.Count > 0)
+                    {
+                        List<string> productName = new List<string>();
+                        int index = 0;
+                        foreach (var item in result)
+                        {
+                            if (!productName.Contains(item.ProductName))
+                            {
+                                productName.Add(item.ProductName);
+                                index = productName.IndexOf(item.ProductName);
+                                schedules.Add(new ScheduleListModel
+                                {
+                                    ProductName = item.ProductName,
+                                    ProductId = item.ProductId
+                                });
+                            }
+                            else
+                            {
+                                index = productName.IndexOf(item.ProductName);
+                            }
+
+                            schedules[index].ProductBatches.Add(new ScheduleModel
+                            {
+                                Identifier = item.Identifier,
+                                Name = item.Name,
+                                StatementId = item.StatementId,
+                                Description = item.Description,
+                                DayOfMonth = item.DayOfMonth,
+                                HourOfDay = item.HourOfDay,
+                                MinuteOfDay = item.MinuteOfDay,
+                                StartDate = item.StartDate,
+                                EndDate = item.EndDate,
+                                Status = item.Status,
+                                IsActive = item.IsActive,
+                                IsDeleted = item.IsDeleted,
+                                TenantCode = item.TenantCode,
+                                LastUpdatedDate = item.LastUpdatedDate,
+                                UpdateBy = item.UpdateBy,
+                                IsExportToPDF = item.IsExportToPDF,
+                                StatementName = String.Join(", ", (from p in nISEntitiesDataContext.StatementRecords join pm in nISEntitiesDataContext.ScheduleRecords on p.Id equals pm.StatementId where pm.ProductBatchName == item.ProductBatchName select p.Name).ToList()),
+                                RecurrancePattern = item.RecurrancePattern,
+                                RepeatEveryDayMonWeekYear = item.RepeatEveryDayMonWeekYear,
+                                WeekDays = item.WeekDays,
+                                IsEveryWeekDay = item.IsEveryWeekDay,
+                                MonthOfYear = item.MonthOfYear,
+                                IsEndsAfterNoOfOccurrences = item.IsEndsAfterNoOfOccurrences,
+                                NoOfOccurrences = item.NoOfOccurrences,
+                                ExecutedBatchCount = item.ExecutedBatchCount,
+                                Languages = item.Languages,
+                                ProductBatchName = item.ProductBatchName,
+                                ScheduleNameByUser = item.ScheduleNameByUser,
+                                EndDateForDisplay = item.EndDateForDisplay,
+                                NoOfOccuranceForDisplay = item.NoOfOccuranceForDisplay,
+                                IsDataReady = item.IsDataReady,
+                                TotalBatches = item.TotalBatches,
+                                IsDeleteButtonVisible = item.IsDeleteButtonVisible,
+                            });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return schedules;
+        }
+
         /// <summary>
         /// Gets the schedules with language.
         /// </summary>
@@ -2127,6 +2317,47 @@ namespace nIS
             return batchMasters;
         }
 
+        public IList<BatchMaster> GetBatchMastersById(long identifier, string tenantCode)
+        {
+            IList<BatchMaster> batchMasters = new List<BatchMaster>();
+            IList<BatchMasterRecord> batchMasterRecords = new List<BatchMasterRecord>();
+
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    batchMasterRecords = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == identifier && item.TenantCode == tenantCode).ToList();
+                    if (batchMasterRecords?.Count() > 0)
+                    {
+                        batchMasterRecords.ToList().ForEach(item =>
+                        {
+                            batchMasters.Add(new BatchMaster
+                            {
+                                Identifier = item.Id,
+                                BatchName = item.BatchName,
+                                TenantCode = item.TenantCode == string.Empty ? tenantCode : item.TenantCode,
+                                CreatedBy = item.CreatedBy,
+                                CreatedDate = item.CreatedDate,
+                                ScheduleId = item.ScheduleId,
+                                IsExecuted = item.IsExecuted,
+                                IsDataReady = item.IsDataReady,
+                                BatchExecutionDate = item.BatchExecutionDate,
+                                DataExtractionDate = item.DataExtractionDate,
+                                Status = item.Status,
+                            });
+                        });
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return batchMasters;
+        }
+
         /// <summary>
         /// Gets the batch masters by language.
         /// </summary>
@@ -2218,6 +2449,94 @@ namespace nIS
                 throw ex;
             }
             return batches;
+        }
+
+
+        public IList<BatchMaster> GetBatchMastersByProductBatchName(string productBatchName, string tenantCode)
+        {
+            IList<BatchMaster> batchMasters = new List<BatchMaster>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var batchesList = (from spm in nISEntitiesDataContext.StatementPageMapRecords
+                                       join pr in nISEntitiesDataContext.PageRecords on spm.ReferencePageId equals pr.Id
+                                       join ppt in nISEntitiesDataContext.ProductPageTypeMappings on pr.PageTypeId equals ppt.PageTypeId
+                                       join pro in nISEntitiesDataContext.Products on ppt.ProductId equals pro.Id
+                                       join s in nISEntitiesDataContext.StatementRecords on spm.StatementId equals s.Id
+                                       join sr in nISEntitiesDataContext.ScheduleRecords on s.Id equals sr.StatementId
+                                       join bm in nISEntitiesDataContext.BatchMasterRecords on sr.Id equals bm.ScheduleId
+                                       where (sr.ProductBatchName == productBatchName)
+
+                                       select new BatchMaster
+                                       {
+                                           Identifier = bm.Id,
+                                           BatchName = bm.BatchName,
+                                           TenantCode = bm.TenantCode == string.Empty ? tenantCode : bm.TenantCode,
+                                           CreatedBy = bm.CreatedBy,
+                                           CreatedDate = bm.CreatedDate,
+                                           ScheduleId = bm.ScheduleId,
+                                           IsExecuted = bm.IsExecuted,
+                                           IsDataReady = bm.IsDataReady,
+                                           BatchExecutionDate = bm.BatchExecutionDate,
+                                           DataExtractionDate = bm.DataExtractionDate,
+                                           Status = bm.Status,
+                                           ProductBatchName = pro.Name
+                                       }).ToList();
+
+                    long scheduleId = 0;
+                    foreach (var item in batchesList.Select((value, index) => new { index, value }))
+                    {
+                        if (scheduleId == 0 || scheduleId == item.value.ScheduleId)
+                        {
+                            var status = string.Empty;
+                            if (batchesList.Where(x => x.BatchExecutionDate == item.value.BatchExecutionDate).ToList().Any(x => x.Status == BatchStatus.Running.ToString()))
+                            {
+                                status = BatchStatus.Running.ToString();
+                            }
+                            else if (batchesList.Where(x => x.BatchExecutionDate == item.value.BatchExecutionDate).ToList().Any(x => x.Status == BatchStatus.Completed.ToString()))
+                            {
+                                status = BatchStatus.Completed.ToString();
+                            }
+                            else if (batchesList.Where(x => x.BatchExecutionDate == item.value.BatchExecutionDate).ToList().All(x => x.Status == BatchStatus.Failed.ToString()))
+                            {
+                                status = BatchStatus.Failed.ToString();
+                            }
+                            else if (batchesList.Where(x => x.BatchExecutionDate == item.value.BatchExecutionDate).ToList().All(x => x.Status == BatchStatus.BatchDataNotAvailable.ToString()))
+                            {
+                                status = BatchStatus.BatchDataNotAvailable.ToString();
+                            }
+                            else
+                            {
+                                status = item.value.Status;
+                            }
+
+                            batchMasters.Add(new BatchMaster
+                            {
+                                Ids = string.Join(",", batchesList.Where(x => x.BatchExecutionDate == item.value.BatchExecutionDate).Select(x => x.Identifier)),
+                                BatchName = "Batch " + (item.index + 1),
+                                TenantCode = item.value.TenantCode,
+                                CreatedBy = item.value.CreatedBy,
+                                CreatedDate = item.value.CreatedDate,
+                                ScheduleId = item.value.ScheduleId,
+                                IsExecuted = batchesList.Where(x => x.BatchExecutionDate == item.value.BatchExecutionDate).Select(x => x.IsExecuted).Where(x => x == true).Count() > 0 ? true : false,
+                                IsDataReady = batchesList.Where(x => x.BatchExecutionDate == item.value.BatchExecutionDate).Select(x => x.IsDataReady).Where(x => x == true).Count() > 0 ? true : false,
+                                BatchExecutionDate = item.value.BatchExecutionDate,
+                                DataExtractionDate = item.value.DataExtractionDate,
+                                Status = status,
+                                ProductBatchName = item.value.ProductBatchName
+                            });
+                            scheduleId = item.value.ScheduleId;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return batchMasters;
         }
 
         /// <summary>
@@ -2703,11 +3022,104 @@ namespace nIS
             return result;
         }
 
+        /// <summary>
+        /// this method get visibility of delete button.
+        /// </summary>
+        /// <param name="scheduleIdentifier">the schedule identifier.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>True if visible, otherwise false</returns>
+        public bool GetDeleteButtonVisibility(long scheduleIdentifier, string tenantCode)
+        {
+            bool result = false;
+            this.SetAndValidateConnectionString(tenantCode);
+            using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+            {
+                result = nISEntitiesDataContext.BatchMasterRecords
+                         .Where(x => (x.IsDataReady == true || x.IsExecuted == true) && x.ScheduleId == scheduleIdentifier)
+                         .Count() == 0 ? true : false;
+            }
+            return result;
+        }
+
         #endregion
 
         #endregion
 
         #region Private Methods
+
+        /// <summary>
+        /// Generate string for dynamic linq.
+        /// </summary>
+        /// <param name="searchParameter">Schedule search Parameters</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// Returns a string.
+        /// </returns>
+        private IQueryable<ScheduleModel> WhereClauseGeneratorInQuery(ScheduleSearchParameter searchParameter, string tenantCode, IQueryable<ScheduleModel> schedule)
+        {
+            if (searchParameter.SearchMode == SearchMode.Equals)
+            {
+                if (validationEngine.IsValidText(searchParameter.ProductBatchName))
+                {
+                    schedule = schedule.Where(x => x.ProductBatchName == searchParameter.ProductBatchName);
+                }
+                if (validationEngine.IsValidText(searchParameter.Identifier))
+                {
+                    var ids = searchParameter.Identifier.ToString().Split(',').Select(x => x).ToList();
+                    schedule = schedule.Where(x => ids.All(y => y == x.Identifier.ToString()));
+                }
+                if (validationEngine.IsValidText(searchParameter.Name))
+                {
+                    schedule = schedule.Where(x => x.Name == searchParameter.Name);
+                }
+            }
+            if (searchParameter.SearchMode == SearchMode.Contains)
+            {
+                if (validationEngine.IsValidText(searchParameter.Name))
+                {
+                    schedule = schedule.Where(x => x.Name.Contains(searchParameter.Name));
+                }
+            }
+            if (validationEngine.IsValidText(searchParameter.StatementDefinitionName))
+            {
+                schedule = schedule.Where(x => x.StatementName.Contains(searchParameter.StatementDefinitionName));
+            }
+            if (searchParameter.IsActive == null || searchParameter.IsActive == true)
+            {
+                schedule = schedule.Where(x => x.IsDeleted == false);
+            }
+            else if (searchParameter.IsActive != null && searchParameter.IsActive == false)
+            {
+                schedule = schedule.Where(x => x.IsDeleted == true);
+            }
+            else if (searchParameter.IsPublished != null && searchParameter.IsPublished == true)
+            {
+                schedule = schedule.Where(x => x.Status == "Published");
+            }
+            if (this.validationEngine.IsValidDate(searchParameter.StartDate) && !this.validationEngine.IsValidDate(searchParameter.EndDate))
+            {
+                schedule = schedule.Where(x => x.StartDate >= searchParameter.StartDate);
+            }
+
+            if (this.validationEngine.IsValidDate(searchParameter.EndDate) && !this.validationEngine.IsValidDate(searchParameter.StartDate))
+            {
+                DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.EndDate), DateTimeKind.Utc);
+                schedule = schedule.Where(x => x.EndDate <= searchParameter.EndDate);
+            }
+
+            if (this.validationEngine.IsValidDate(searchParameter.StartDate) && this.validationEngine.IsValidDate(searchParameter.EndDate))
+            {
+                schedule = schedule.Where(x => x.StartDate >= searchParameter.StartDate && x.EndDate <= searchParameter.EndDate);
+            }
+
+            var finalQuery = string.Empty;
+            if (tenantCode != ModelConstant.DEFAULT_TENANT_CODE)
+            {
+                schedule = schedule.Where(x => x.TenantCode == tenantCode);
+            }
+
+            return schedule;
+        }
 
         /// <summary>
         /// Generate string for dynamic linq.

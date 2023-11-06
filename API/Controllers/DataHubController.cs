@@ -240,23 +240,23 @@ namespace nIS
         //}
         //#endregion
 
-        //#region ETLBatchApproved
-        //[HttpPost]
-        //public bool ApproveETLBatch(long etlBatchId)
-        //{
-        //    bool result = false;
-        //    try
-        //    {
-        //        string tenantCode = Helper.CheckTenantCode(Request.Headers);
-        //        result = this.eTLScheduleManager.ApproveETLBatch(etlBatchId, tenantCode);
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        throw;
-        //    }
-        //    return result;
-        //}
-        //#endregion
+        #region ETLBatchApproved
+        [HttpPost]
+        public bool ApproveETLBatch(long etlBatchId)
+        {
+            bool result = false;
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                result = this.eTLScheduleManager.ApproveETLBatch(etlBatchId, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw;
+            }
+            return result;
+        }
+        #endregion
 
         //#region DeleteETLBatch
         //[HttpPost]

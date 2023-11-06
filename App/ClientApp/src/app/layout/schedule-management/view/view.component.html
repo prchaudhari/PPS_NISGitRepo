@@ -1,6 +1,6 @@
 <div class="main-container">
   <div class="page-title">
-    <span class="xs-title">Schedule Details</span>
+    <span class="xs-title">Statement Schedule Details</span>
   </div>
   <div class="card border-0 mb-2 card-shadow">
     <div class="card-header bg-white d-flex justify-content-between">
@@ -8,11 +8,9 @@
         <label class="m-0">Details</label>
       </div>
       <div>
-        <button type="button" id="btnCollapsedDetails"
-                class="toggle-btn border-0 p-0 bg-transparent"
-                (click)="isCollapsedDetails = !isCollapsedDetails"
-                [attr.aria-expanded]="!isCollapsedDetails"
-                aria-controls="collapseDetails">
+        <button type="button" id="btnCollapsedDetails" class="toggle-btn border-0 p-0 bg-transparent"
+          (click)="isCollapsedDetails = !isCollapsedDetails" [attr.aria-expanded]="!isCollapsedDetails"
+          aria-controls="collapseDetails">
           <span class="fa" [ngClass]="!isCollapsedDetails? 'fa-angle-down' : 'fa-angle-right'"></span>
         </button>
       </div>
@@ -25,31 +23,42 @@
         </div>
         <div class="col-md-4 col-lg-4">
           <label id="lblTemplate" for="inputRoleName">Statement Definition</label>
-          <div *ngIf="schedule.Statement!=undefined">{{schedule.Statement.Name}}</div>
+          <ng-container *ngFor="let item of scheduleRecord.ProductBatches">
+            <div *ngIf="item.StatementName!=undefined && item.StatementName!=''">{{ item.StatementName }}</div>
+          </ng-container>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-4 col-lg-4">
-          <label>Recurrance Pattern</label>
-          <div>{{RecurrencePattern}}</div>
-        </div>
-
+      <div class="row ">
         <div class="col-md-4 col-lg-4 form-group">
-          <label id="lblTemplate" for="inputRoleName">Time for the day (HH : MM) </label>
-          <div><span *ngIf="10>schedule.HourOfDay">0</span>{{schedule.HourOfDay}} : <span *ngIf="10>schedule.MinuteOfDay">0</span>{{schedule.MinuteOfDay}}</div>
+          <label>Product Name</label>
+          <div *ngIf="scheduleRecord.ProductName != null">{{ scheduleRecord.ProductName }}</div>
+          <div *ngIf="scheduleRecord.ProductName == null"> - </div>
+        </div>
+        <div class="col-md-4 col-lg-4 form-group">
+          <label>Recurrance Pattern</label>
+          <div *ngIf="scheduleRecord.ProductBatches != null && scheduleRecord.ProductBatches.length > 0">{{
+            RecurrencePattern }}</div>
+        </div>
+        <div class="col-md-4 col-lg-4 form-group">
+
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-4 col-lg-4 form-group">
           <label>Start Date</label>
-          <div>{{schedule.StartDate | date:DataFormat}}</div>
+          <div *ngIf="scheduleRecord.ProductBatches != null && scheduleRecord.ProductBatches.length > 0">
+            {{scheduleRecord.ProductBatches[0].StartDate | date:DataFormat}}</div>
         </div>
         <div class="col-md-4 col-lg-4 form-group">
           <label>End Date</label>
-          <div>
-            <span *ngIf='schedule.EndDate != undefined && schedule.EndDate.toString()!="0001-01-01T00:00:00"'> {{schedule.EndDate | date:DataFormat}}</span>
-            <span *ngIf='schedule.EndDate != undefined && schedule.EndDate.toString()=="0001-01-01T00:00:00"'> - </span>
+          <div *ngIf="scheduleRecord.ProductBatches != null && scheduleRecord.ProductBatches.length > 0">
+            <span
+              *ngIf='scheduleRecord.ProductBatches[0].EndDateForDisplay != undefined && scheduleRecord.EndDateForDisplay!="0001-01-01T00:00:00"'>
+              {{scheduleRecord.ProductBatches[0].EndDateForDisplay | date:DataFormat}}</span>
+            <span
+              *ngIf='scheduleRecord.ProductBatches[0].EndDateForDisplay == undefined || scheduleRecord.ProductBatches[0].EndDateForDisplay == null || scheduleRecord.EndDateForDisplay=="0001-01-01T00:00:00"'>
+              - </span>
           </div>
         </div>
       </div>
@@ -58,6 +67,14 @@
         <div class="col-md-4 col-lg-4 form-group">
           <label>Schedule will run</label>
           <div>{{ScheduleOccuranceMessage}}</div>
+        </div>
+        <div class="col-md-4 col-lg-4 form-group">
+          <label id="lblTemplate" for="inputRoleName">Time for the day (HH : MM) </label>
+          <div *ngIf="scheduleRecord.ProductBatches != null && scheduleRecord.ProductBatches.length > 0"><span
+              *ngIf="10>scheduleRecord.ProductBatches[0].HourOfDay">0</span>{{scheduleRecord.ProductBatches[0].HourOfDay}}
+            : <span
+              *ngIf="10>scheduleRecord.ProductBatches[0].MinuteOfDay">0</span>{{scheduleRecord.ProductBatches[0].MinuteOfDay}}
+          </div>
         </div>
       </div>
 
@@ -70,20 +87,20 @@
         <label class="m-0">Batches</label>
       </div>
       <div>
-        <button type="button" id="btnCollapsedUsers"
-                class="toggle-btn border-0 p-0 bg-transparent"
-                (click)="getBatchMaster()"
-                [attr.aria-expanded]="!isCollapsedBatch"
-                aria-controls="collapseUsers">
+        <button type="button" id="btnCollapsedUsers" class="toggle-btn border-0 p-0 bg-transparent"
+          (click)="getBatchMaster()" [attr.aria-expanded]="!isCollapsedBatch" aria-controls="collapseUsers">
           <span class="fa" [ngClass]="!isCollapsedBatch? 'fa-angle-down' : 'fa-angle-right'"></span>
+        </button>
+        <button type="button" id="btnRefreshBatches" class="border-0 pr-5 bg-transparent" (click)="refreshBatches()">
+          <span class="fa fa-refresh"></span>
         </button>
       </div>
     </div>
     <div class="card-body" id="CollapsedBatch" [ngbCollapse]="isCollapsedBatch">
       <div class="d-flex justify-content-center mb-4">
         <div class="pagination-mat position-relative">
-          <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
-                         [showFirstLastButtons]="true" [length]="totalSize" [pageIndex]="currentPage" (page)="handlePage($event)">
+          <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true"
+            [length]="totalSize" [pageIndex]="currentPage" (page)="handlePage($event)">
           </mat-paginator>
         </div>
       </div>
@@ -96,12 +113,12 @@
           </ng-container>
 
           <ng-container matColumnDef="BatchName">
-            <th class="width20 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Batch Name </th>
+            <th class="width15 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Batch Name </th>
             <td mat-cell *matCellDef="let element"><span title="{{element.BatchName}}">{{element.BatchName}}</span></td>
           </ng-container>
 
           <ng-container matColumnDef="IsExecuted">
-            <th class="width13 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Is Executed </th>
+            <th class="width10 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Is Executed </th>
             <td mat-cell *matCellDef="let element">
               <span *ngIf="element.IsExecuted">Yes</span>
               <span *ngIf="!element.IsExecuted">No</span>
@@ -109,7 +126,7 @@
           </ng-container>
 
           <ng-container matColumnDef="IsDataReady">
-            <th class="width12 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Is Data Ready </th>
+            <th class="width15 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Is Data Ready </th>
             <td mat-cell *matCellDef="let element">
               <span *ngIf="element.IsDataReady">Yes</span>
               <span *ngIf="!element.IsDataReady">No</span>
@@ -135,17 +152,22 @@
             <th class="width15 ip-w-15" mat-header-cell *matHeaderCellDef> Action</th>
             <td mat-cell *matCellDef="let element">
               <div class="action-btns btn-tbl-action">
-                <button *ngIf="!element.IsExecuted && element.IsDataReady && element.Status=='New'" type="button" id="btnRunScheduleNow" title="Run Now" (click)="RunScheduleNow(element)">
+                <button *ngIf="!element.IsExecuted && element.IsDataReady && element.Status=='New'" type="button"
+                  id="btnRunScheduleNow" title="Run Now" (click)="RunScheduleNow(element)">
                   <span class="fa fa-play text-success"></span>
                 </button>
                 <i class="fa fa-circle-o-notch fa-spin" *ngIf="element.Status=='Running'" [title]="element.Status"></i>
-                <button type="button" id="btnApproveScheduleBatch" *ngIf="element.Status=='Completed' || element.Status=='Failed'" title="Approve" (click)="ApproveBatch(element)">
+                <button type="button" id="btnApproveScheduleBatch"
+                  *ngIf="element.Status=='Completed' || element.Status=='Failed'" title="Approve"
+                  (click)="ApproveBatch(element)">
                   <span class="fa fa-check"></span>
                 </button>
-                <button type="button" id="btnCleanScheduleBatch" *ngIf="element.Status=='Completed' || element.Status=='Failed' || element.Status=='BatchDataNotAvailable'" title="Clean" (click)="CleanBatch(element)">
+                <button type="button" id="btnCleanScheduleBatch"
+                  *ngIf="element.Status=='Completed' || element.Status=='Failed' || element.Status=='BatchDataNotAvailable'"
+                  title="Clean" (click)="CleanBatch(element)">
                   <span class="fa fa-trash-o"></span>
                 </button>
-                <span *ngIf="!element.IsExecuted && !element.IsDataReady && element.Status=='New'"> NA </span>
+                <span *ngIf="!element.IsExecuted && !element.IsDataReady && element.Status=='New'"> </span>
               </div>
             </td>
           </ng-container>
@@ -159,11 +181,11 @@
   <div class="card border-0 mt-4 mb-3 bg-transparent">
     <div class="card-body p-0">
       <button class="btn-footer-fill mr-2" id="btnSave" (click)="navigateToScheduleEdit()"
-              *ngIf="schedule.IsActive && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Schedule Management',Operation: 'Edit' }))">
+        *ngIf="schedule.IsActive && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Schedule Management',Operation: 'Edit' }))">
         Update
       </button>
-      <button class="btn-footer-fill-delete bg-danger mr-2" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Schedule Management',Operation: 'Delete' }))"
-              id="btnDelete" (click)="deleteSchedule()">
+      <button class="btn-footer-fill-delete bg-danger mr-2" id="btnDelete" (click)="deleteSchedule()"
+        *ngIf=" isDeleteButtonVisible && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Schedule Management',Operation: 'Delete' }))">
         Delete
       </button>
       <button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>

@@ -16,6 +16,8 @@ import * as $ from 'jquery';
 import { stringify } from 'querystring';
 import { promise } from 'protractor';
 import { analyzeFile } from '@angular/compiler';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { iterator } from 'rxjs/internal-compatibility';
 
 @Component({
   selector: 'app-add',

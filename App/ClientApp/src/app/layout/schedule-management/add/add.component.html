@@ -15,22 +15,18 @@
               <ul *ngIf="ScheduleName.touched && ScheduleName.errors" style="list-style-type:none">
                 <li class="text-danger" *ngIf="ScheduleName.errors?.pattern">Invalid schedule name</li>
                 <li class="text-danger" *ngIf="ScheduleName.errors?.required">Schedule name required</li>
-                <li class="text-danger" *ngIf="ScheduleName.errors?.minlength">
-                  Schedule name length should not be less
-                  than 2
-                </li>
-                <li class="text-danger" *ngIf="ScheduleName.errors?.maxlength">
-                  Schedule name length should not be
-                  greater than 50
-                </li>
+                <li class="text-danger" *ngIf="ScheduleName.errors?.minlength">Schedule name length should not be less
+                  than 2</li>
+                <li class="text-danger" *ngIf="ScheduleName.errors?.maxlength">Schedule name length should not be
+                  greater than 50</li>
               </ul>
             </div>
           </div>
           <div class="col-md-4 col-lg-4" id="productName" *ngIf="isProductShown">
             <label id="lblTemplate" for="inputRoleName">Product<span class="text-danger">*</span></label>
-            <select formControlName="StatementDefinition" (change)="GetSegmentsByProductFromDB()" class="form-control" (focusout)="GetSegmentByProduct($event)">
-              <option [value]="'Please Select'" [selected]="true">Select Product</option>
-              <option *ngFor="let sd of productList" [value]="sd.Id">{{ sd.Name }}</option>
+              <select formControlName="StatementDefinition" (change)="GetSegmentsByProductFromDB()" class="form-control" (focusout)="GetSegmentByProduct($event)">
+                <option [value]="'Please Select'" [selected] ="true" >Select Product</option>
+                <option *ngFor="let sd of productList" [value]="sd.Id" >{{ sd.Name }}</option>
             </select>
             <div class="validation-msg" style="color:red">
               <ul *ngIf="scheduleFormErrorObject.ProductShowError" style="list-style-type:none">
@@ -46,26 +42,26 @@
             <div class="row">
               <ng-container *ngIf="pageTypeData == null || pageTypeData.length==0"></ng-container>
               <div class="row col-md-12 mypagetype mt-2">
-                <ng-container *ngIf="pageTypeData != null && pageTypeData.length>0">
-                  <ng-container *ngFor="let items of pageTypeData">
-                    <div class="col-md-4 mypagetype mt-2">
-                      <label>{{ items.PageTypeName }}<span class="text-danger">*</span></label>
-                      <div class="card">
-                        <div class="card-body" style="border:1px solid lightgray;overflow-y:scroll;max-height:100px;">
-                          <ng-container *ngFor="let childPage of items.StatementViewModel">
-                            <div>
-                              <label class="form-check-label" for="childPage.Identifier">
-                                <input id="childPage.Identifier" type="checkbox" [checked]="childPage.IsChecked" (change)="onCheckboxChange(childPage, $event)">
-                                {{ childPage.Name }}
-                              </label>
-                            </div>
-                          </ng-container>
+              <ng-container *ngIf="pageTypeData != null && pageTypeData.length>0">
+                <ng-container *ngFor="let items of pageTypeData" >
+                  <div class="col-md-4 mypagetype mt-2">
+                    <label>{{ items.PageTypeName }}<span class="text-danger">*</span></label>
+                    <div class="card">
+                      <div class="card-body" style="border:1px solid lightgray;overflow-y:scroll;max-height:100px;">
+                        <ng-container *ngFor="let childPage of items.StatementViewModel">
+                          <div>
+                          <label class="form-check-label" for="childPage.Identifier">
+                            <input id="childPage.Identifier" type="checkbox" [checked]="childPage.IsChecked" (change)="onCheckboxChange(childPage, $event)">
+                            {{ childPage.Name }}
+                          </label>
                         </div>
+                        </ng-container>
                       </div>
                     </div>
-                  </ng-container>
-                </ng-container>
-              </div>
+                  </div>
+              </ng-container>
+            </ng-container>
+          </div>
             </div>
           </div>
           <div class="col-md-4"></div>
@@ -75,8 +71,8 @@
             <label>Start Date<span class="text-danger">*</span></label>
             <div class="position-relative">
               <input [owlDateTime]="dt" class="form-control" id="inputFromDate" formControlName="filtershiftfromdate"
-                     placeholder="Please select start date" readonly (ngModelChange)="onFilterDateChange($event)"
-                     [disabled]="IsStartDateDisable">
+                placeholder="Please select start date" readonly (ngModelChange)="onFilterDateChange($event)"
+                [disabled]="IsStartDateDisable">
               <span [owlDateTimeTrigger]="dt" class="datetime-icon">
                 <i class="fa fa-calendar"></i>
               </span>
@@ -87,12 +83,11 @@
             </div>
           </div>
           <div class="col-md-4 col-lg-4 form-group">
-            <label id="lblTemplate" for="inputRoleName">
-              Time for the day (HH : MM) <span class="text-danger">*</span>
-            </label>
+            <label id="lblTemplate" for="inputRoleName">Time for the day (HH : MM) <span
+                class="text-danger">*</span></label>
             <div class="row">
               <div class="col-md-6 col-lg-6">
-                <select formControlName="TimeOfDayHours" (change)="onTimeOfDayHoursSelected($event)" (focusout)="onTimeOfDayHoursSelected($event)" class="form-control" [attr.disabled]="IsStartDateDisable?'':null">
+                  <select formControlName="TimeOfDayHours" (change)="onTimeOfDayHoursSelected($event)" (focusout)="onTimeOfDayHoursSelected($event)" class="form-control" [attr.disabled]="IsStartDateDisable?'':null">
                   <option *ngFor="let sd of TimeOfDayHoursList" [value]="sd.Identifier">{{sd.Name}}</option>
                 </select>
                 <div class="validation-msg" style="color:red">
@@ -105,7 +100,7 @@
               </div>
               <div class="col-md-6 col-lg-6">
                 <select formControlName="TimeOfDayMinutes" (change)="onTimeOfDayMinutesSelected($event)" (focusout)="onTimeOfDayMinutesSelected($event)"
-                        class="form-control" [attr.disabled]="IsStartDateDisable?'':null">
+                  class="form-control" [attr.disabled]="IsStartDateDisable?'':null">
                   <option *ngFor="let sd of TimeOfDayMinutesList" [value]="sd.Identifier">{{sd.Name}}</option>
                 </select>
                 <div class="validation-msg" style="color:red">
@@ -119,12 +114,12 @@
             </div>
           </div>
         </div>
-
+        
         <div class="row">
           <div class="col-md-4 col-lg-4 form-group">
             <label>Recurrence Pattern<span class="text-danger">*</span></label>
             <select formControlName="RecurrancePattern" class="form-control" (change)='OnRecurrancePatternChange()'
-                    [attr.disabled]="IsAnyBatchExecuted?'':null">
+              [attr.disabled]="IsAnyBatchExecuted?'':null">
               <option value="DoesNotRepeat">Does not Repeat</option>
               <option value="Custom">Repeat</option>
             </select>
@@ -136,12 +131,12 @@
               <div class="row">
                 <div class="col-md-2 col-lg-2 form-group">
                   <input type="number" id="inputRepeatEvery" class="form-control width100 sm-w-50" min="1"
-                         formControlName='RepeatEvery' (change)='onRepeatEveryChange()'
-                         [attr.disabled]="IsAnyBatchExecuted?'':null">
+                    formControlName='RepeatEvery' (change)='onRepeatEveryChange()'
+                    [attr.disabled]="IsAnyBatchExecuted?'':null">
                 </div>
                 <div class="col-md-3 col-lg-3 form-group">
                   <select formControlName="RepeatEveryBy" class="form-control" (change)='onRepeatEveryByValueChange()'
-                          [attr.disabled]="IsAnyBatchExecuted?'':null">
+                    [attr.disabled]="IsAnyBatchExecuted?'':null">
                     <option value="Day">Day</option>
                     <option value="Week">Week</option>
                     <option value="Month">Month</option>
@@ -152,26 +147,26 @@
                   <div *ngIf='isWeekly'>
                     <div class="weekDays-selector">
                       <input type="checkbox" id="weekday-monday" class="weekday"
-                             (change)="weekdaySelection($event,'Monday',1)" [attr.disabled]="IsAnyBatchExecuted?'':null" />
+                        (change)="weekdaySelection($event,'Monday',1)" [attr.disabled]="IsAnyBatchExecuted?'':null" />
                       <label for="weekday-monday">M</label>
                       <input type="checkbox" id="weekday-tuesday" class="weekday"
-                             (change)="weekdaySelection($event,'Tuesday',2)" [attr.disabled]="IsAnyBatchExecuted?'':null" />
+                        (change)="weekdaySelection($event,'Tuesday',2)" [attr.disabled]="IsAnyBatchExecuted?'':null" />
                       <label for="weekday-tuesday">T</label>
                       <input type="checkbox" id="weekday-wednesday" class="weekday"
-                             (change)="weekdaySelection($event,'Wednesday',3)"
-                             [attr.disabled]="IsAnyBatchExecuted?'':null" />
+                        (change)="weekdaySelection($event,'Wednesday',3)"
+                        [attr.disabled]="IsAnyBatchExecuted?'':null" />
                       <label for="weekday-wednesday">W</label>
                       <input type="checkbox" id="weekday-thursday" class="weekday"
-                             (change)="weekdaySelection($event,'Thursday',4)" [attr.disabled]="IsAnyBatchExecuted?'':null" />
+                        (change)="weekdaySelection($event,'Thursday',4)" [attr.disabled]="IsAnyBatchExecuted?'':null" />
                       <label for="weekday-thursday">T</label>
                       <input type="checkbox" id="weekday-friday" class="weekday"
-                             (change)="weekdaySelection($event,'Friday',5)" [attr.disabled]="IsAnyBatchExecuted?'':null" />
+                        (change)="weekdaySelection($event,'Friday',5)" [attr.disabled]="IsAnyBatchExecuted?'':null" />
                       <label for="weekday-friday">F</label>
                       <input type="checkbox" id="weekday-saturday" class="weekday"
-                             (change)="weekdaySelection($event,'Saturday',6)" [attr.disabled]="IsAnyBatchExecuted?'':null" />
+                        (change)="weekdaySelection($event,'Saturday',6)" [attr.disabled]="IsAnyBatchExecuted?'':null" />
                       <label for="weekday-saturday">S</label>
                       <input type="checkbox" id="weekday-sunday" class="weekday"
-                             (change)="weekdaySelection($event,'Sunday',7)" [attr.disabled]="IsAnyBatchExecuted?'':null" />
+                        (change)="weekdaySelection($event,'Sunday',7)" [attr.disabled]="IsAnyBatchExecuted?'':null" />
                       <label for="weekday-sunday">S</label>
                     </div>
                   </div>
@@ -182,8 +177,8 @@
                       </div>
                       <div class="col-md-4 col-lg-4 form-group pl-0">
                         <input type="number" id="inputCustomMonthDay" class="form-control" min="1" max="31"
-                               formControlName='CustomMonthDay' (change)='onCustomMonthDayChange()'
-                               [attr.disabled]="IsAnyBatchExecuted?'':null">
+                          formControlName='CustomMonthDay' (change)='onCustomMonthDayChange()'
+                          [attr.disabled]="IsAnyBatchExecuted?'':null">
                       </div>
                     </div>
                   </div>
@@ -194,14 +189,14 @@
                       </div>
                       <div class="col-md-4 col-lg-4 form-group pl-0">
                         <select class="form-control" formControlName='CustomYearMonth'
-                                (change)='onCustomYearMonthChange()' [attr.disabled]="IsAnyBatchExecuted?'':null">
+                          (change)='onCustomYearMonthChange()' [attr.disabled]="IsAnyBatchExecuted?'':null">
                           <option *ngFor="let mnth of monthArray" [value]="mnth">{{mnth}}</option>
                         </select>
                       </div>
                       <div class="col-md-3 col-lg-3 form-group">
                         <input type="number" id="inputCustomYearDay" class="form-control" min="1" max="31"
-                               formControlName='CustomYearDay' (change)='onCustomYearDayChange()'
-                               [attr.disabled]="IsAnyBatchExecuted?'':null">
+                          formControlName='CustomYearDay' (change)='onCustomYearDayChange()'
+                          [attr.disabled]="IsAnyBatchExecuted?'':null">
                       </div>
                     </div>
                   </div>
@@ -225,14 +220,14 @@
             <div class="d-flex justify-content-start">
               <div class="custom-control custom-radio mr-2">
                 <input class="custom-control-input" type="radio" name="enddatetype" id="enddate" value="optiondate"
-                       (click)="isEndDateClicked()">
+                  (click)="isEndDateClicked()">
                 <label class="custom-control-label dir-rtl" for="enddate">
                   End Date
                 </label>
               </div>
               <div class="custom-control custom-radio mr-2">
                 <input class="custom-control-input" type="radio" name="enddatetype" id="endafter" value="optiondate"
-                       (click)="isEndAfterClicked()">
+                  (click)="isEndAfterClicked()">
                 <label class="custom-control-label dir-rtl" for="endafter">
                   End After
                 </label>
@@ -242,8 +237,8 @@
             <div *ngIf="isEndDate">
               <div class="position-relative">
                 <input [owlDateTime]="dt1" class="form-control" id="inputToDate" formControlName="filtershiftenddate"
-                       placeholder="Please select end date" readonly (ngModelChange)="onFilterDateChange($event)"
-                       [disabled]="!IsEndDateRequired">
+                  placeholder="Please select end date" readonly (ngModelChange)="onFilterDateChange($event)"
+                  [disabled]="!IsEndDateRequired">
                 <span [owlDateTimeTrigger]="dt1" class="datetime-icon" [disabled]="IsEndDateDisable">
                   <i class="fa fa-calendar"></i>
                 </span>
@@ -261,8 +256,8 @@
                 <div class="form-group xs-frm">
                   <label> End After </label>
                   <input type="number" id="inputScheduleEndAfterNoOccurences"
-                         class="form-control mx-sm-2 width30 sm-w-50" min="1" formControlName="scheduleEndAfterNoOccurences"
-                         (change)='onScheduleEndAfterNoOccurencesChange()'>
+                    class="form-control mx-sm-2 width30 sm-w-50" min="1" formControlName="scheduleEndAfterNoOccurences"
+                    (change)='onScheduleEndAfterNoOccurencesChange()'>
                   <label> occurrences </label>
                 </div>
               </div>
@@ -275,12 +270,10 @@
     <div class="card border-0 mt-4 mb-3 bg-transparent">
       <div class="card-body p-0">
         <button class="btn-footer-fill mr-2" id="btnSave" type="submit" [disabled]="vaildateForm()"
-                (click)="SaveSchedule()">
-          Save
-        </button>
+          (click)="SaveSchedule()">Save</button>
         <button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>
       </div>
     </div>
     <!-- <input type="button" value="Get Data" (click)="handleChange()"> -->
-  </form>
+   </form>
 </div>

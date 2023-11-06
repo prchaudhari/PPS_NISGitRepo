@@ -3,6 +3,7 @@
 // </copyright>
 // -----------------------------------------------------------------------  
 
+using nIS.NedBank;
 using System;
 using System.Collections.Generic;
 
@@ -68,6 +69,8 @@ namespace nIS
         /// Returns the list of roles
         /// </returns>
         IList<Schedule> GetSchedules(ScheduleSearchParameter roleSearchParameter, string tenantCode);
+
+        IList<ScheduleListModel> GetSchedulesWithProduct(ScheduleSearchParameter scheduleSearchParameter, string tenantCode);
 
         /// <summary>
         /// Gets the schedules with language.
@@ -168,6 +171,8 @@ namespace nIS
         /// <param name="tenantCode">The tenant code.</param>
         /// <returns></returns>
         IList<BatchMaster> GetBatchMasters(long schdeuleIdentifier, string tenantCode);
+        IList<BatchMaster> GetBatchMastersById(long identifier, string tenantCode);
+        IList<BatchMaster> GetBatchMastersByProductBatchName(string productBatchName, string tenantCode);
 
         /// <summary>
         /// Gets the batch masters by language.
@@ -242,6 +247,14 @@ namespace nIS
         /// True if success, otherwise false
         /// </returns>
         bool UpdateScheduleStatus(long ScheduleIdentifier, string Status, string tenantCode);
+
+        /// <summary>
+        /// this method get visibility of delete button.
+        /// </summary>
+        /// <param name="scheduleIdentifier">the schedule identifier.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>True if visible, otherwise false</returns>
+        bool GetDeleteButtonVisibility(long scheduleIdentifier, string tenantCode);
 
         /// <summary>
         /// This method helps to update batch status.
