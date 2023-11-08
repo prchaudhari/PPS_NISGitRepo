@@ -2216,7 +2216,7 @@ namespace nIS
             string address2 = (customer.AddressLine2 != "" ? customer.AddressLine2 + ", " : "") + (customer.City != "" ? customer.City + ", " : "") + (customer.State != "" ? customer.State + ", " : "") + (customer.Country != "" ? customer.Country + ", " : "") + (customer.Zip != "" ? customer.Zip : "");
             pageContent.Replace("{{Address2}}", address2);
 
-          /*  var custMedia = customerMedias.Where(item => item.PageId == page.Identifier && item.WidgetId == widget.Identifier)?.ToList()?.FirstOrDefault();
+            var custMedia = customerMedias.Where(item => item.PageId == page.Identifier && item.WidgetId == widget.Identifier)?.ToList()?.FirstOrDefault();
             if (custMedia != null && custMedia.VideoURL != string.Empty)
             {
                 pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", custMedia.VideoURL);
@@ -2228,7 +2228,7 @@ namespace nIS
                 {
                     pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", batchDetail.VideoURL);
                 }
-            }*/
+            }
         }
 
         private void BindAccountInformationWidgetData(StringBuilder pageContent, CustomerMaster customer, Page page, PageWidget widget)
@@ -2249,22 +2249,30 @@ namespace nIS
         private bool BindSummaryAtGlanceWidgetData(StringBuilder pageContent, StringBuilder ErrorMessages, IList<AccountMaster> accountrecords, Page page, PageWidget widget)
         {
             var IsFailed = false;
-            if (accountrecords != null && accountrecords.Count > 0)
+            try
             {
-                var accSummary = new StringBuilder();
-                var accRecords = accountrecords.GroupBy(item => item.AccountType).ToList();
-                accRecords.ForEach(acc =>
+                if (accountrecords != null && accountrecords.Count > 0)
                 {
-                    accSummary.Append("<tr><td>" + acc.FirstOrDefault().AccountType + "</td><td>" + acc.FirstOrDefault().Currency + "</td><td>" + acc.Sum(it => Convert.ToDecimal(it.Balance)).ToString() + "</td></tr>");
-                });
-                pageContent.Replace("{{AccountSummary_" + page.Identifier + "_" + widget.Identifier + "}}", accSummary.ToString());
+                    var accSummary = new StringBuilder();
+                    var accRecords = accountrecords.GroupBy(item => item.AccountType).ToList();
+                    accRecords.ForEach(acc =>
+                    {
+                        accSummary.Append("<tr><td>" + acc.FirstOrDefault().AccountType + "</td><td>" + acc.FirstOrDefault().Currency + "</td><td>" + acc.Sum(it => Convert.ToDecimal(it.Balance)).ToString() + "</td></tr>");
+                    });
+                    pageContent.Replace("{{AccountSummary_" + page.Identifier + "_" + widget.Identifier + "}}", accSummary.ToString());
+                }
+                else
+                {
+                    ErrorMessages.Append("<li>Account master data is not available related to Summary at Glance widget..!!</li>");
+                    IsFailed = true;
+                }
+                return IsFailed;
             }
-            else
+            catch(Exception ex)
             {
-                ErrorMessages.Append("<li>Account master data is not available related to Summary at Glance widget..!!</li>");
-                IsFailed = true;
+                throw ex;
             }
-            return IsFailed;
+           
         }
 
         private bool BindCurrentAvailBalanceWidgetData(StringBuilder pageContent, StringBuilder ErrorMessages, CustomerMaster customer, BatchMaster batchMaster, long accountId, IList<AccountMaster> accountrecords, Page page, PageWidget widget, string currency)

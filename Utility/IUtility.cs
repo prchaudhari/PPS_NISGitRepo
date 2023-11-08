@@ -174,7 +174,8 @@
         /// <param name="htmlstr"> the html string </param>
         /// <param name="fileName"> the filename </param>
         /// <param name="batchId"> the batch id </param>
-        string CreateAndWriteToZipFile(string htmlstr, string fileName, long batchId, string baseURL, string outputLocation, IDictionary<string, string> filesDictionary = null);
+        //string CreateAndWriteToZipFile(string htmlstr, string fileName, long batchId, string baseURL, string outputLocation, IDictionary<string, string> filesDictionary = null);
+        string CreateAndWriteToZipFile(string htmlstr, string fileName, string scheduleName, string batchName, string baseURL, string outputLocation, IDictionary<string, string> filesDictionary = null);
         #endregion
 
         /// <summary>
@@ -280,5 +281,6 @@
         /// </returns>
         string CurrencyFormatting(string CountryCultureInfoCode, string CurrencyDecimalSeparator, string currencyFormat, decimal amount);
 
+      //  string CreateAndWriteToZipFileForNedBank(string htmlstr, string fileName, string batchExecutionDate, string productType, List<string> listSegment, string baseURL, string outputLocation, IDictionary<string, string> filesDictionary = null);
     }
 }

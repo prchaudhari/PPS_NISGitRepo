@@ -88,7 +88,7 @@
       </li>
 
       <li [ngClass]="(URL=='/dynamicwidget')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToDynamicWidgets()">
-          <!--*ngIf="false && IsMainMenu && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Dynamic Widget','Operation' : 'View'}))"-->
+        <!--*ngIf="false && IsMainMenu && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Dynamic Widget','Operation' : 'View'}))"-->
         <a> <span class='nav-icon icon-line-dashboard2' title="Dynamic Widgets"></span><span class='nav-title'>Dynamic Widgets</span>  </a>
       </li>
 
@@ -101,15 +101,14 @@
           *ngIf="IsMainMenu && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Statement Definition','Operation' : 'View'}))">
         <a> <span class='nav-icon icon-statemenrDefinitions' title="Statement Definitions"> </span> <span class='nav-title'>Statement Definitions</span> </a>
       </li>
+      <li [ngClass]="(URL=='/datahub')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToDataHub()"
+          *ngIf="IsMainMenu && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Schedule Management','Operation' : 'View'}))">
+        <a> <span class='nav-icon icon-line-dashboard2' title="Data Hub"> </span> <span class='nav-title'>Data Hub</span> </a>
+      </li>
 
       <li [ngClass]="(URL=='/schedulemanagement')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToScheduleManagement()"
           *ngIf="IsMainMenu && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Schedule Management','Operation' : 'View'}))">
         <a> <span class='nav-icon icon-production-plan-line2' title="Schedule Management"> </span> <span class='nav-title'>Schedule Management</span> </a>
-      </li>
-
-      <li [ngClass]="(URL=='/datahub')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToDataHub()"
-          *ngIf="IsMainMenu && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Schedule Management','Operation' : 'View'}))">
-        <a> <span class='nav-icon icon-line-dashboard2' title="Data Hub"> </span> <span class='nav-title'>Data Hub</span> </a>
       </li>
 
       <li [ngClass]="(URL=='/logs')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToLogs()"

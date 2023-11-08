@@ -206,19 +206,19 @@ namespace nIS
                         }
                         else if (schedulerecord.RecurrancePattern == ModelConstant.DAILY || schedulerecord.RecurrancePattern == ModelConstant.CUSTOM_DAY)
                         {
-                            this.AddDailyOccurenceScheduleBatches(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, batchIndex);
+                            this.AddDailyOccurenceScheduleBatches(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, batchIndex, out endDate, out noOfOccurance);
                         }
                         else if (schedulerecord.RecurrancePattern == ModelConstant.WEEKDAY || schedulerecord.RecurrancePattern == ModelConstant.WEEKLY || schedulerecord.RecurrancePattern == ModelConstant.CUSTOM_WEEK)
                         {
-                            this.AddWeeklyOccurenceScheduleBatches(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, batchIndex);
+                            this.AddWeeklyOccurenceScheduleBatches(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, batchIndex, out endDate, out noOfOccurance);
                         }
                         else if (schedulerecord.RecurrancePattern == ModelConstant.MONTHLY || schedulerecord.RecurrancePattern == ModelConstant.CUSTOM_MONTH)
                         {
-                            this.AddMonthlyOccurenceScheduleBatches(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, batchIndex);
+                            this.AddMonthlyOccurenceScheduleBatches(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, batchIndex, out endDate, out noOfOccurance);
                         }
                         else if (schedulerecord.RecurrancePattern == ModelConstant.YEARLY || schedulerecord.RecurrancePattern == ModelConstant.CUSTOM_YEAR)
                         {
-                            this.AddYearlyOccurenceScheduleBatches(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, batchIndex);
+                            this.AddYearlyOccurenceScheduleBatches(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, batchIndex, out endDate, out noOfOccurance);
                         }
 
                         Records.Add(new SystemActivityHistoryRecord()
@@ -409,119 +409,124 @@ namespace nIS
                 {
                     throw new DuplicateScheduleFoundException(tenantCode);
                 }
-
+                IList<ScheduleRecord> scheduleRecords = new List<ScheduleRecord>();
+                var productBatchName = schedules.Select(x => x.productBatchName).Where(z => z != null && z != string.Empty).FirstOrDefault();
+                long productBatchId = 0;
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    StringBuilder query = new StringBuilder();
-                    query.Append("(" + string.Join("or ", string.Join(",", schedules.Select(item => item.Identifier).Distinct()).ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") ");
+                    //StringBuilder query = new StringBuilder();
+                    //query.Append("(" + string.Join("or ", string.Join(",", schedules.Select(item => item.Identifier).Distinct()).ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") ");
 
-                    IList<ScheduleRecord> scheduleRecords = nISEntitiesDataContext.ScheduleRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
-                    if (scheduleRecords == null || scheduleRecords.Count <= 0 || scheduleRecords.Count() != string.Join(",", scheduleRecords.Select(item => item.Id).Distinct()).ToString().Split(',').Length)
+                    //IList<ScheduleRecord> scheduleRecords = nISEntitiesDataContext.ScheduleRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
+                    //if (scheduleRecords == null || scheduleRecords.Count <= 0 || scheduleRecords.Count() != string.Join(",", scheduleRecords.Select(item => item.Id).Distinct()).ToString().Split(',').Length)
+                    //{
+                    //    throw new ScheduleNotFoundException(tenantCode);
+                    //}
+
+                    var listOfSchedule = nISEntitiesDataContext.ScheduleRecords.Where(y => y.ProductBatchName == productBatchName).ToList();
+                    var scheduleIds = listOfSchedule.Select(x => x.Id).ToList();
+                    productBatchId = (long)(listOfSchedule.Count() > 0 ? listOfSchedule.FirstOrDefault().ProductBatchId : 0);
+                    var listOfBatches = nISEntitiesDataContext.BatchMasterRecords.Where(a => scheduleIds.Contains(a.ScheduleId)).ToList();
+                    var batchesId = listOfBatches.Select(y => y.Id).ToList();
+                    var listOfETL = nISEntitiesDataContext.EtlSchedules.Where(x => x.ProductBatchId == productBatchId).ToList();
+                    var listOfETLBatches = nISEntitiesDataContext.EtlBatches.Where(x => x.ProductBatchId == productBatchId).ToList();
+                    nISEntitiesDataContext.EtlSchedules.RemoveRange(listOfETL);
+                    nISEntitiesDataContext.BatchMasterRecords.RemoveRange(listOfBatches);
+                    nISEntitiesDataContext.ScheduleRecords.RemoveRange(listOfSchedule);
+                    nISEntitiesDataContext.EtlBatches.RemoveRange(listOfETLBatches);
+                    nISEntitiesDataContext.SaveChanges();
+                    result = true;
+                }
+
+                var productType = productRepository.Get_ProductById((int)schedules[0].ProductId, tenantCode);
+                var randomNumber = Guid.NewGuid().ToString().Split('-')[0];
+
+                schedules.ToList().ForEach(schedule =>
+                {
+                    var startDateTime = schedule.StartDate; //+ TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
+                    var endDateTime = schedule.EndDate; //+ TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
+
+                    scheduleRecords.Add(new ScheduleRecord()
                     {
-                        throw new ScheduleNotFoundException(tenantCode);
-                    }
+                        ScheduleNameByUser = schedule.ScheduleNameByUser,
+                        ProductBatchId = productBatchId,
+                        ProductBatchName = $"{schedule.ScheduleNameByUser}_{productType?.Name}_{randomNumber}",
+                        ProductId = schedule.ProductId,
+                        Name = schedule.Name,
+                        Description = schedule.Description,
+                        DayOfMonth = schedule.DayOfMonth,
+                        HourOfDay = schedule.HourOfDay,
+                        MinuteOfDay = schedule.MinuteOfDay,
+                        StartDate = startDateTime,
+                        EndDate = schedule.EndDate != null ? endDateTime : null,
+                        Status = schedule.Status,
+                      //  IsDeleted = false,
+                        IsActive = true,
+                        TenantCode = tenantCode,
+                        StatementId = schedule.Statement.Identifier,
+                        IsExportToPDF = schedule.IsExportToPDF,
+                        UpdateBy = userId,
+                        LastUpdatedDate = DateTime.UtcNow,
+                        RecurrancePattern = schedule.RecurrancePattern,
+                        RepeatEveryDayMonWeekYear = schedule.RepeatEveryDayMonWeekYear,
+                        WeekDays = schedule.WeekDays,
+                        IsEveryWeekDay = schedule.IsEveryWeekDay,
+                        MonthOfYear = schedule.MonthOfYear,
+                        IsEndsAfterNoOfOccurrences = schedule.IsEndsAfterNoOfOccurrences,
+                        NoOfOccurrences = schedule.NoOfOccurrences
+                    });
+                });
 
-                    IList<SystemActivityHistoryRecord> Records = new List<SystemActivityHistoryRecord>();
-                    schedules.ToList().ForEach(item =>
+                if (result)
+                {
+                    result = false;
+                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
-                        //DateTime startDateTime = DateTime.SpecifyKind(Convert.ToDateTime(item.StartDate), DateTimeKind.Utc);
-                        //DateTime? endDateTime = DateTime.SpecifyKind(Convert.ToDateTime(item.EndDate), DateTimeKind.Utc);
-
-                        var startDateTime = item.StartDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
-                        var endDateTime = item.EndDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
-
-                        ScheduleRecord scheduleRecord = scheduleRecords.FirstOrDefault(data => data.Id == item.Identifier && data.TenantCode == tenantCode && data.IsDeleted == false);
-                        scheduleRecord.Name = item.Name;
-                        scheduleRecord.Description = item.Description;
-                        scheduleRecord.DayOfMonth = item.DayOfMonth;
-                        scheduleRecord.HourOfDay = item.HourOfDay;
-                        scheduleRecord.MinuteOfDay = item.MinuteOfDay;
-                        scheduleRecord.StartDate = startDateTime;
-                        scheduleRecord.EndDate = item.EndDate != null ? endDateTime : null;
-                        scheduleRecord.Status = item.Status;
-                        scheduleRecord.IsDeleted = false;
-                        scheduleRecord.IsActive = item.IsActive;
-                        scheduleRecord.TenantCode = tenantCode;
-                        scheduleRecord.IsExportToPDF = item.IsExportToPDF;
-                        scheduleRecord.StatementId = item.Statement.Identifier;
-                        scheduleRecord.UpdateBy = userId;
-                        scheduleRecord.LastUpdatedDate = DateTime.UtcNow;
-                        scheduleRecord.RecurrancePattern = item.RecurrancePattern;
-                        scheduleRecord.RepeatEveryDayMonWeekYear = item.RepeatEveryDayMonWeekYear;
-                        scheduleRecord.WeekDays = item.WeekDays;
-                        scheduleRecord.IsEveryWeekDay = item.IsEveryWeekDay;
-                        scheduleRecord.MonthOfYear = item.MonthOfYear;
-                        scheduleRecord.IsEndsAfterNoOfOccurrences = item.IsEndsAfterNoOfOccurrences;
-                        scheduleRecord.NoOfOccurrences = item.NoOfOccurrences;
+                        nISEntitiesDataContext.ScheduleRecords.AddRange(scheduleRecords);
                         nISEntitiesDataContext.SaveChanges();
-                        DateTime endDate = DateTime.MinValue;
-                        int noOfOccurance = 0;
-                        //If any batch is not executed or data ready for it, then delete all batches and re-insert it as per start date and end date, 
-                        //Else insert new batches as per new end date and previous end date logic
-                        var batches = nISEntitiesDataContext.BatchMasterRecords.Where(batch => batch.ScheduleId == scheduleRecord.Id && (batch.IsExecuted || batch.IsDataReady)).ToList();
-                        if (batches.Count == 0)
+                        result = true;
+                    }
+                }
+
+                DateTime endDate = DateTime.MinValue;
+                int noOfOccurance = 0;
+                string updatedProductBatchName = string.Empty;
+                updatedProductBatchName = scheduleRecords.Select(x => x.ProductBatchName).FirstOrDefault();
+                if (result)
+                {
+                    IList<SystemActivityHistory> Records = new List<SystemActivityHistory>();
+                    scheduleRecords.ToList().ForEach(schedulerecord =>
+                    {
+                        int batchIndex = 1;
+                        if (schedulerecord.RecurrancePattern == ModelConstant.DOES_NOT_REPEAT)
                         {
-                            var batchesToDelete = nISEntitiesDataContext.BatchMasterRecords.Where(batch => batch.ScheduleId == scheduleRecord.Id).ToList();
-                            nISEntitiesDataContext.BatchMasterRecords.RemoveRange(batchesToDelete);
-                            nISEntitiesDataContext.SaveChanges();
-                            int batchIndex = 1;
-                            if (scheduleRecord.RecurrancePattern == ModelConstant.DOES_NOT_REPEAT)
-                            {
-                                this.AddDoesNotRepeatBatch(scheduleRecord.StartDate ?? DateTime.Now, scheduleRecord, tenantCode, userId, out endDate, out noOfOccurance);
-                            }
-                            else if (scheduleRecord.RecurrancePattern == ModelConstant.DAILY || scheduleRecord.RecurrancePattern == ModelConstant.CUSTOM_DAY)
-                            {
-                                this.AddDailyOccurenceScheduleBatches(scheduleRecord.StartDate ?? DateTime.Now, scheduleRecord, tenantCode, userId, batchIndex);
-                            }
-                            else if (scheduleRecord.RecurrancePattern == ModelConstant.WEEKDAY || scheduleRecord.RecurrancePattern == ModelConstant.WEEKLY || scheduleRecord.RecurrancePattern == ModelConstant.CUSTOM_WEEK)
-                            {
-                                this.AddWeeklyOccurenceScheduleBatches(scheduleRecord.StartDate ?? DateTime.Now, scheduleRecord, tenantCode, userId, batchIndex);
-                            }
-                            else if (scheduleRecord.RecurrancePattern == ModelConstant.MONTHLY || scheduleRecord.RecurrancePattern == ModelConstant.CUSTOM_MONTH)
-                            {
-                                this.AddMonthlyOccurenceScheduleBatches(scheduleRecord.StartDate ?? DateTime.Now, scheduleRecord, tenantCode, userId, batchIndex);
-                            }
-                            else if (scheduleRecord.RecurrancePattern == ModelConstant.YEARLY || scheduleRecord.RecurrancePattern == ModelConstant.CUSTOM_YEAR)
-                            {
-                                this.AddYearlyOccurenceScheduleBatches(scheduleRecord.StartDate ?? DateTime.Now, scheduleRecord, tenantCode, userId, batchIndex);
-                            }
+                            this.AddDoesNotRepeatBatch(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, out endDate, out noOfOccurance);
                         }
-                        else
+                        else if (schedulerecord.RecurrancePattern == ModelConstant.DAILY || schedulerecord.RecurrancePattern == ModelConstant.CUSTOM_DAY)
                         {
-                            var Batches = nISEntitiesDataContext.BatchMasterRecords.Where(b => b.ScheduleId == scheduleRecord.Id).OrderByDescending(x => x.BatchExecutionDate).ToList();
-                            int batchIndex = Batches.Count + 1;
-                            var lastExecutedBatch = Batches.FirstOrDefault();
-                            var newStartDate = lastExecutedBatch.BatchExecutionDate;
-                            if (scheduleRecord.RecurrancePattern == ModelConstant.DAILY || scheduleRecord.RecurrancePattern == ModelConstant.CUSTOM_DAY)
-                            {
-                                newStartDate.AddDays(1);
-                                this.AddDailyOccurenceScheduleBatches(newStartDate, scheduleRecord, tenantCode, userId, batchIndex);
-                            }
-                            else if (scheduleRecord.RecurrancePattern == ModelConstant.WEEKDAY || scheduleRecord.RecurrancePattern == ModelConstant.WEEKLY || scheduleRecord.RecurrancePattern == ModelConstant.CUSTOM_WEEK)
-                            {
-                                newStartDate.AddDays(1);
-                                this.AddWeeklyOccurenceScheduleBatches(newStartDate, scheduleRecord, tenantCode, userId, batchIndex);
-                            }
-                            else if (scheduleRecord.RecurrancePattern == ModelConstant.MONTHLY || scheduleRecord.RecurrancePattern == ModelConstant.CUSTOM_MONTH)
-                            {
-                                newStartDate.AddMonths(1);
-                                this.AddMonthlyOccurenceScheduleBatches(newStartDate, scheduleRecord, tenantCode, userId, batchIndex);
-                            }
-                            else if (scheduleRecord.RecurrancePattern == ModelConstant.YEARLY || scheduleRecord.RecurrancePattern == ModelConstant.CUSTOM_YEAR)
-                            {
-                                newStartDate.AddYears(1);
-                                this.AddYearlyOccurenceScheduleBatches(newStartDate, scheduleRecord, tenantCode, userId, batchIndex);
-                            }
+                            this.AddDailyOccurenceScheduleBatches(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, batchIndex, out endDate, out noOfOccurance);
+                        }
+                        else if (schedulerecord.RecurrancePattern == ModelConstant.WEEKDAY || schedulerecord.RecurrancePattern == ModelConstant.WEEKLY || schedulerecord.RecurrancePattern == ModelConstant.CUSTOM_WEEK)
+                        {
+                            this.AddWeeklyOccurenceScheduleBatches(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, batchIndex, out endDate, out noOfOccurance);
+                        }
+                        else if (schedulerecord.RecurrancePattern == ModelConstant.MONTHLY || schedulerecord.RecurrancePattern == ModelConstant.CUSTOM_MONTH)
+                        {
+                            this.AddMonthlyOccurenceScheduleBatches(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, batchIndex, out endDate, out noOfOccurance);
+                        }
+                        else if (schedulerecord.RecurrancePattern == ModelConstant.YEARLY || schedulerecord.RecurrancePattern == ModelConstant.CUSTOM_YEAR)
+                        {
+                            this.AddYearlyOccurenceScheduleBatches(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, batchIndex, out endDate, out noOfOccurance);
                         }
 
-                        Records.Add(new SystemActivityHistoryRecord()
+                        Records.Add(new SystemActivityHistory()
                         {
                             Module = ModelConstant.SCHEDULE_MODEL_SECTION,
-                            EntityId = scheduleRecord.Id,
-                            EntityName = scheduleRecord.Name,
+                            EntityId = schedulerecord.Id,
+                            EntityName = schedulerecord.Name,
                             SubEntityId = null,
                             SubEntityName = null,
-                            ActionTaken = "Update",
+                            ActionTaken = "Add",
                             ActionTakenBy = userId,
                             ActionTakenByUserName = userFullName,
                             ActionTakenDate = DateTime.Now,
@@ -529,13 +534,36 @@ namespace nIS
                         });
                     });
 
-                    if (Records.Count > 0)
+                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
-                        nISEntitiesDataContext.SystemActivityHistoryRecords.AddRange(Records);
+                        List<ScheduleRecord> updatedSchedules = nISEntitiesDataContext.ScheduleRecords.Where(x => x.ProductBatchName == updatedProductBatchName).ToList();
+                        //if (endDate != DateTime.MinValue && updatedSchedules.Where(x => x.EndDate == null).Count() > 0)
+                        //{
+                        //    updatedSchedules.ForEach(item =>
+                        //    {
+                        //        item.EndDateForDisplay = endDate;
+                        //        item.NoOfOccuranceForDisplay = item.NoOfOccurrences;
+                        //    });
+                        //}
+                        //else if (noOfOccurance != 0 && updatedSchedules.Where(x => x.NoOfOccurrences == null || x.NoOfOccurrences == 0).Count() > 0)
+                        //{
+                        //    updatedSchedules.ForEach(item =>
+                        //    {
+                        //        item.NoOfOccuranceForDisplay = noOfOccurance;
+                        //        item.EndDateForDisplay = item.EndDate;
+                        //    });
+                        //}
                         nISEntitiesDataContext.SaveChanges();
                     }
 
-                    result = true;
+                    if (Records.Count > 0)
+                    {
+                        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                        {
+                            nISEntitiesDataContext.SystemActivityHistory.AddRange(Records);
+                            nISEntitiesDataContext.SaveChanges();
+                        }
+                    }
                 }
             }
             catch (Exception exception)
@@ -1464,7 +1492,7 @@ namespace nIS
                                                 }
                                             });
                                         }
-                                        string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, batchMaster.Id, baseURL, outputLocation, filesDict);
+                                        string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, schedule.Name, batchMaster.BatchName, baseURL, outputLocation, filesDict);
 
                                         var renderEngine = new RenderEngineRecord();
                                         using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
@@ -1688,7 +1716,7 @@ namespace nIS
                                                     }
                                                 });
                                             }
-                                            string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, batchMaster.Id, baseURL, outputLocation, filesDict);
+                                            string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, schedule.Name, batchMaster.BatchName, baseURL, outputLocation, filesDict);
 
                                             using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                                             {
@@ -1877,7 +1905,7 @@ namespace nIS
                     {
                         filesDict.Add(statementPreviewData.SampleFiles[i].FileName, statementPreviewData.SampleFiles[i].FileUrl);
                     }
-                    string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, batchMaster.Id, baseURL, outputLocation, filesDict);
+                    string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, scheduleRecord.Name, batchMaster.BatchName, baseURL, outputLocation, filesDict);
 
                     IList<CustomerMasterRecord> customerMasters = new List<CustomerMasterRecord>();
                     IList<BatchDetailRecord> batchDetails = new List<BatchDetailRecord>();
@@ -3564,7 +3592,7 @@ namespace nIS
             try
             {
                 //var newstartdate = DateTime.SpecifyKind((DateTime)scheduleStartDate, DateTimeKind.Utc);
-                var newstartdate = new DateTime(scheduleStartDate.Year, scheduleStartDate.Month, (scheduleStartDate.Day + 1), 0, 0, 0);
+                var newstartdate = new DateTime(scheduleStartDate.Year, scheduleStartDate.Month, (scheduleStartDate.Day), 0, 0, 0);
                 newstartdate = DateTime.SpecifyKind((DateTime)newstartdate, DateTimeKind.Utc);
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
@@ -3607,9 +3635,12 @@ namespace nIS
         /// <returns>
         /// true if added successfully otherwise false
         /// </returns>
-        private bool AddDailyOccurenceScheduleBatches(DateTime scheduleStartDate, ScheduleRecord schedule, string tenantCode, int userId, int batchIndex)
+        private bool AddDailyOccurenceScheduleBatches(DateTime scheduleStartDate, ScheduleRecord schedule, string tenantCode, int userId, int batchIndex, out DateTime endDate, out int noOfOccurance)
         {
             bool result = false;
+            IDictionary<string, long> etlSchedule = new Dictionary<string, long>();
+            DateTime updatedEndDate = new DateTime();
+            int updatedNoOfOccurance = 0;
             try
             {
                 var repeatEveryDays = schedule.RecurrancePattern == ModelConstant.CUSTOM_DAY ? Convert.ToInt32(schedule.RepeatEveryDayMonWeekYear != 0 ? schedule.RepeatEveryDayMonWeekYear : 1) : 1;
@@ -3629,9 +3660,20 @@ namespace nIS
 
                 if (dayDiff > 0)
                 {
-                    var newstartdate = new DateTime(scheduleStartDate.Year, scheduleStartDate.Month, (scheduleStartDate.Day + 1), 0, 0, 0);
+                    var newstartdate = new DateTime(scheduleStartDate.Year, scheduleStartDate.Month, (scheduleStartDate.Day), 0, 0, 0);
                     newstartdate = DateTime.SpecifyKind((DateTime)newstartdate, DateTimeKind.Utc);
                     int idx = 1;
+                    double dataExtractionHours = 0;
+
+                    //using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                    //{
+                    //    dataExtractionHours = Convert.ToDouble((from prm in nISEntitiesDataContext.ProductRecurrenceMap
+                    //                                            join rp in nISEntitiesDataContext.RecurrencePattern on prm.RecurrenceId equals rp.Id
+                    //                                            join pr in nISEntitiesDataContext.Products on prm.ProductId equals pr.Id
+                    //                                            where pr.Id == schedule.ProductId && rp.Recurrence == ModelConstant.DAILY
+                    //                                            select prm.HoursForExtraction).FirstOrDefault());
+                    //}
+
                     while (idx <= dayDiff)
                     {
                         BatchMasterRecord record = new BatchMasterRecord();
@@ -3651,13 +3693,33 @@ namespace nIS
                         batchIndex++;
                         idx = idx + repeatEveryDays;
                     }
+                    updatedEndDate = batchMasterRecords.Max(x => x.BatchExecutionDate);
+                    updatedNoOfOccurance = batchMasterRecords.Count();
                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
                         nISEntitiesDataContext.BatchMasterRecords.AddRange(batchMasterRecords);
                         nISEntitiesDataContext.SaveChanges();
                         result = true;
                     }
+                    //if (updatedEndDate != DateTime.MinValue && schedule.EndDate == null)
+                    //{
+                    //    schedule.EndDateForDisplay = updatedEndDate;
+                    //    schedule.NoOfOccuranceForDisplay = schedule.NoOfOccurrences;
+                    //}
+                    //else if (updatedNoOfOccurance != 0 && (schedule.NoOfOccurrences == null || schedule.NoOfOccurrences == 0))
+                    //{
+                    //    schedule.NoOfOccuranceForDisplay = updatedNoOfOccurance;
+                    //    schedule.EndDateForDisplay = schedule.EndDate;
+                    //}
+                    etlSchedule = AddETLSchedules(schedule, tenantCode, batchMasterRecords.Min(x => x.DataExtractionDate), batchMasterRecords.Max(x => x.DataExtractionDate));
+                    if (etlSchedule.Count() > 0)
+                    {
+                        var etlScheduleId = etlSchedule.Where(x => x.Key == schedule.ScheduleNameByUser)?.FirstOrDefault().Value;
+                        AddETLBatches(etlScheduleId == null ? 0 : Convert.ToInt64(etlScheduleId), (long)schedule.ProductBatchId, schedule.ScheduleNameByUser, tenantCode, batchMasterRecords);
+                    }
                 }
+                endDate = updatedEndDate;
+                noOfOccurance = updatedNoOfOccurance;
                 return result;
             }
             catch (Exception ex)
@@ -3697,7 +3759,7 @@ namespace nIS
 
                 if (dayDiff > 0)
                 {
-                    var newstartdate = new DateTime(scheduleStartDate.Year, scheduleStartDate.Month, (scheduleStartDate.Day + 1), 0, 0, 0);
+                    var newstartdate = new DateTime(scheduleStartDate.Year, scheduleStartDate.Month, (scheduleStartDate.Day), 0, 0, 0);
                     newstartdate = DateTime.SpecifyKind((DateTime)newstartdate, DateTimeKind.Utc);
                     int idx = 1;
                     while (idx <= dayDiff)
@@ -3749,9 +3811,10 @@ namespace nIS
         /// <returns>
         /// true if added successfully otherwise false
         /// </returns>
-        private bool AddWeeklyOccurenceScheduleBatches(DateTime scheduleStartDate, ScheduleRecord schedule, string tenantCode, int userId, int batchIndex)
+        private bool AddWeeklyOccurenceScheduleBatches(DateTime scheduleStartDate, ScheduleRecord schedule, string tenantCode, int userId, int batchIndex, out DateTime endDate, out int noOfOccurance)
         {
             bool result = false;
+            IDictionary<string, long> etlSchedule = new Dictionary<string, long>();
             try
             {
                 var repeatEveryDays = schedule.RecurrancePattern == ModelConstant.CUSTOM_WEEK ? Convert.ToInt32(schedule.RepeatEveryDayMonWeekYear != 0 ? schedule.RepeatEveryDayMonWeekYear : 1) : 1;
@@ -3771,9 +3834,21 @@ namespace nIS
                     dayDiff = Convert.ToInt32(schedule.NoOfOccurrences);
                 }
 
-                var newstartdate = new DateTime(scheduleStartDate.Year, scheduleStartDate.Month, (scheduleStartDate.Day + 1), 0, 0, 0);
+                var newstartdate = new DateTime(scheduleStartDate.Year, scheduleStartDate.Month, (scheduleStartDate.Day), 0, 0, 0);
                 newstartdate = DateTime.SpecifyKind((DateTime)newstartdate, DateTimeKind.Utc);
                 //var newstartdate = DateTime.SpecifyKind((DateTime)scheduleStartDate, DateTimeKind.Utc);
+                DateTime updatedEndDate = new DateTime();
+                int updatedNoOfOccurance = 0;
+
+                double dataExtractionHours = 0;
+                //using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                //{
+                //    dataExtractionHours = Convert.ToDouble((from prm in nISEntitiesDataContext.ProductRecurrenceMap
+                //                                            join rp in nISEntitiesDataContext.RecurrencePattern on prm.RecurrenceId equals rp.Id
+                //                                            join pr in nISEntitiesDataContext.Products on prm.ProductId equals pr.Id
+                //                                            where pr.Id == schedule.ProductId && rp.Recurrence == ModelConstant.WEEKLY
+                //                                            select prm.HoursForExtraction).FirstOrDefault());
+                //}
                 if (dayDiff > 0)
                 {
                     if (schedule.RecurrancePattern == ModelConstant.WEEKDAY)
@@ -3847,13 +3922,33 @@ namespace nIS
                         }
                     }
 
+                    updatedEndDate = batchMasterRecords.Max(x => x.BatchExecutionDate);
+                    updatedNoOfOccurance = batchMasterRecords.Count();
                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
                         nISEntitiesDataContext.BatchMasterRecords.AddRange(batchMasterRecords);
                         nISEntitiesDataContext.SaveChanges();
                         result = true;
                     }
+                    //if (updatedEndDate != DateTime.MinValue && schedule.EndDate == null)
+                    //{
+                    //    schedule.EndDateForDisplay = updatedEndDate;
+                    //    schedule.NoOfOccuranceForDisplay = schedule.NoOfOccurrences;
+                    //}
+                    //else if (updatedNoOfOccurance != 0 && (schedule.NoOfOccurrences == null || schedule.NoOfOccurrences == 0))
+                    //{
+                    //    schedule.NoOfOccuranceForDisplay = updatedNoOfOccurance;
+                    //    schedule.EndDateForDisplay = schedule.EndDate;
+                    //}
+                    etlSchedule = AddETLSchedules(schedule, tenantCode, batchMasterRecords.Min(x => x.DataExtractionDate), batchMasterRecords.Max(x => x.DataExtractionDate));
+                    if (etlSchedule.Count() > 0)
+                    {
+                        var etlScheduleId = etlSchedule.Where(x => x.Key == schedule.ScheduleNameByUser)?.FirstOrDefault().Value;
+                        AddETLBatches(etlScheduleId == null ? 0 : Convert.ToInt64(etlScheduleId), (long)schedule.ProductBatchId, schedule.ScheduleNameByUser, tenantCode, batchMasterRecords);
+                    }
                 }
+                endDate = updatedEndDate;
+                noOfOccurance = updatedNoOfOccurance;
                 return result;
             }
             catch (Exception ex)
@@ -3893,7 +3988,7 @@ namespace nIS
                     dayDiff = Convert.ToInt32(schedule.NoOfOccurrences);
                 }
 
-                var newstartdate = new DateTime(scheduleStartDate.Year, scheduleStartDate.Month, (scheduleStartDate.Day + 1), 0, 0, 0);
+                var newstartdate = new DateTime(scheduleStartDate.Year, scheduleStartDate.Month, (scheduleStartDate.Day), 0, 0, 0);
                 newstartdate = DateTime.SpecifyKind((DateTime)newstartdate, DateTimeKind.Utc);
                 //var newstartdate = DateTime.SpecifyKind((DateTime)scheduleStartDate, DateTimeKind.Utc);
                 if (dayDiff > 0)
@@ -4003,9 +4098,10 @@ namespace nIS
         /// <returns>
         /// true if added successfully otherwise false
         /// </returns>
-        private bool AddMonthlyOccurenceScheduleBatches(DateTime scheduleStartDate, ScheduleRecord schedule, string tenantCode, int userId, int batchIndex)
+        private bool AddMonthlyOccurenceScheduleBatches(DateTime scheduleStartDate, ScheduleRecord schedule, string tenantCode, int userId, int batchIndex, out DateTime endDate, out int noOfOccurance)
         {
             bool result = false;
+            IDictionary<string, long> etlSchedule = new Dictionary<string, long>();
             try
             {
                 var repeatEveryMonths = schedule.RecurrancePattern == ModelConstant.CUSTOM_MONTH ? Convert.ToInt32(schedule.RepeatEveryDayMonWeekYear != 0 ? schedule.RepeatEveryDayMonWeekYear : 1) : 1;
@@ -4023,6 +4119,17 @@ namespace nIS
                 }
 
                 var scheduleExecutionDate = new DateTime(newstartdate.Year, newstartdate.Month, Convert.ToInt32(schedule.DayOfMonth), 0, 0, 0);
+                var updatedEndDate = new DateTime();
+                int updatedNoOfOccurance = 0;
+                double dataExtractionHours = 0;
+                //using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                //{
+                //    dataExtractionHours = Convert.ToDouble((from prm in nISEntitiesDataContext.ProductRecurrenceMap
+                //                                            join rp in nISEntitiesDataContext.RecurrencePattern on prm.RecurrenceId equals rp.Id
+                //                                            join pr in nISEntitiesDataContext.Products on prm.ProductId equals pr.Id
+                //                                            where pr.Id == schedule.ProductId && rp.Recurrence == ModelConstant.MONTHLY
+                //                                            select prm.HoursForExtraction).FirstOrDefault());
+                //}
                 if (schedule.EndDate != null)
                 {
                     while (DateTime.Compare(scheduleExecutionDate, newendate) <= 0)
@@ -4086,13 +4193,33 @@ namespace nIS
                         occurences--;
                     }
                 }
-
+                updatedEndDate = batchMasterRecords.Max(x => x.BatchExecutionDate);
+                updatedNoOfOccurance = batchMasterRecords.Count();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
                     nISEntitiesDataContext.BatchMasterRecords.AddRange(batchMasterRecords);
                     nISEntitiesDataContext.SaveChanges();
                     result = true;
                 }
+                //if (updatedEndDate != DateTime.MinValue && schedule.EndDate == null)
+                //{
+                //    schedule.EndDateForDisplay = updatedEndDate;
+                //    schedule.NoOfOccuranceForDisplay = schedule.NoOfOccurrences;
+                //}
+                //else if (updatedNoOfOccurance != 0 && (schedule.NoOfOccurrences == null || schedule.NoOfOccurrences == 0))
+                //{
+                //    schedule.NoOfOccuranceForDisplay = updatedNoOfOccurance;
+                //    schedule.EndDateForDisplay = schedule.EndDate;
+                //}
+                etlSchedule = AddETLSchedules(schedule, tenantCode, batchMasterRecords.Min(x => x.DataExtractionDate), batchMasterRecords.Max(x => x.DataExtractionDate));
+                if (etlSchedule.Count() > 0)
+                {
+                    var etlScheduleId = etlSchedule.Where(x => x.Key == schedule.ScheduleNameByUser)?.FirstOrDefault().Value;
+                    AddETLBatches(etlScheduleId == null ? 0 : Convert.ToInt64(etlScheduleId), (long)schedule.ProductBatchId, schedule.ScheduleNameByUser, tenantCode, batchMasterRecords);
+                }
+
+                endDate = updatedEndDate;
+                noOfOccurance = updatedNoOfOccurance;
                 return result;
             }
             catch (Exception ex)
@@ -4227,10 +4354,11 @@ namespace nIS
         /// <returns>
         /// true if added successfully otherwise false
         /// </returns>
-        private bool AddYearlyOccurenceScheduleBatches(DateTime scheduleStartDate, ScheduleRecord schedule, string tenantCode, int userId, int batchIndex)
+        private bool AddYearlyOccurenceScheduleBatches(DateTime scheduleStartDate, ScheduleRecord schedule, string tenantCode, int userId, int batchIndex, out DateTime endDate, out int noOfOccurance)
         {
             try
             {
+                IDictionary<string, long> etlSchedule = new Dictionary<string, long>();
                 var repeatEveryYears = schedule.RecurrancePattern == ModelConstant.CUSTOM_YEAR ? Convert.ToInt32(schedule.RepeatEveryDayMonWeekYear != 0 ? schedule.RepeatEveryDayMonWeekYear : 1) : 1;
                 this.SetAndValidateConnectionString(tenantCode);
                 List<BatchMasterRecord> batchMasterRecords = new List<BatchMasterRecord>();
@@ -4261,13 +4389,23 @@ namespace nIS
                 var yearDiff = 0;
                 if (newenddate != null)
                 {
-                    yearDiff = this.utility.YearDifference(newstartdate, newenddate) + 1;
+                    yearDiff = this.utility.YearDifference(newstartdate, Convert.ToDateTime(newenddate)) + 1;
                 }
                 else
                 {
                     yearDiff = Convert.ToInt32(schedule.NoOfOccurrences);
                 }
-
+                var updatedEndDate = new DateTime();
+                int updatedNoOfOccurance = 0;
+                double dataExtractionHours = 0;
+                //using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                //{
+                //    dataExtractionHours = Convert.ToDouble((from prm in nISEntitiesDataContext.ProductRecurrenceMap
+                //                                            join rp in nISEntitiesDataContext.RecurrencePattern on prm.RecurrenceId equals rp.Id
+                //                                            join pr in nISEntitiesDataContext.Products on prm.ProductId equals pr.Id
+                //                                            where pr.Id == schedule.ProductId && rp.Recurrence == ModelConstant.YEARLY
+                //                                            select prm.HoursForExtraction).FirstOrDefault());
+                //}
                 if (yearDiff > 0)
                 {
                     int idx = 1;
@@ -4300,12 +4438,32 @@ namespace nIS
                         batchIndex++;
                         idx = idx + repeatEveryYears;
                     }
+                    updatedEndDate = batchMasterRecords.Max(x => x.BatchExecutionDate);
+                    updatedNoOfOccurance = batchMasterRecords.Count();
                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
                         nISEntitiesDataContext.BatchMasterRecords.AddRange(batchMasterRecords);
                         nISEntitiesDataContext.SaveChanges();
                     }
+                    //if (updatedEndDate != DateTime.MinValue && schedule.EndDate == null)
+                    //{
+                    //    schedule.EndDateForDisplay = updatedEndDate;
+                    //    schedule.NoOfOccuranceForDisplay = schedule.NoOfOccurrences;
+                    //}
+                    //else if (updatedNoOfOccurance != 0 && (schedule.NoOfOccurrences == null || schedule.NoOfOccurrences == 0))
+                    //{
+                    //    schedule.NoOfOccuranceForDisplay = updatedNoOfOccurance;
+                    //    schedule.EndDateForDisplay = schedule.EndDate;
+                    //}
+                    etlSchedule = AddETLSchedules(schedule, tenantCode, batchMasterRecords.Min(x => x.DataExtractionDate), batchMasterRecords.Max(x => x.DataExtractionDate));
+                    if (etlSchedule.Count() > 0)
+                    {
+                        var etlScheduleId = etlSchedule.Where(x => x.Key == schedule.ScheduleNameByUser)?.FirstOrDefault().Value;
+                        AddETLBatches(etlScheduleId == null ? 0 : Convert.ToInt64(etlScheduleId), (long)schedule.ProductBatchId, schedule.ScheduleNameByUser, tenantCode, batchMasterRecords);
+                    }                  
                 }
+                endDate = updatedEndDate;
+                noOfOccurance = updatedNoOfOccurance;
                 return true;
             }
             catch (Exception ex)

@@ -31,6 +31,7 @@
 
     public class Utility : IUtility
     {
+        private static int CreateAndWriteToZipFileCount = 0;
         /// <summary>
         /// This method will helps to get description of perticular entity of class.
         /// </summary>
@@ -51,6 +52,9 @@
             return description.Description;
         }
 
+        //ILog _log = log4net.LogManager.GetLogger(typeof(Utility));
+
+        //ILog _schdeuleLog = log4net.LogManager.GetLogger("RunSchedule");
 
         /// <summary>
         /// This method will helps to get enum key valuee pair of perticular entity of class.
@@ -720,98 +724,210 @@
         /// <param name="htmlstr"> the html string </param>
         /// <param name="fileName"> the filename </param>
         /// <param name="batchId"> the batch id </param>
-        public string CreateAndWriteToZipFile(string htmlstr, string fileName, long batchId, string baseURL, string outputLocation, IDictionary<string, string> filesDictionary = null)
+        // public string CreateAndWriteToZipFile(string htmlstr, string fileName, long batchId, string baseURL, string outputLocation, IDictionary<string, string> filesDictionary = null)
+        public string CreateAndWriteToZipFile(string htmlstr, string fileName, string scheduleName, string batchName, string baseURL, string outputLocation, IDictionary<string, string> filesDictionary = null)
         {
-            //create folder to store the html statement files for current batch customers
-            string path = outputLocation + "\\Statements" + "\\" + batchId + "\\";
-            if (!Directory.Exists(path))
+            CreateAndWriteToZipFileCount += 1;
+            var callerName = (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name;
+            //  _log.Info($"CreateAndWriteToZipFile is being called {CreateAndWriteToZipFileCount} time. Called by {callerName}");
+
+            ////create folder to store the html statement files for current batch customers
+            //string path = outputLocation + "\\Statements" + "\\" + batchId + "\\";
+            //if (!Directory.Exists(path))
+            //{
+            //    Directory.CreateDirectory(path);
+            //}
+
+            ////create media folder for common images and videos files of asset library
+            //string mediaPath = path + "\\common\\media\\";
+            //if (!Directory.Exists(mediaPath))
+            //{
+            //    Directory.CreateDirectory(mediaPath);
+            //}
+
+            ////common resource files path 
+            //string resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
+
+            //string zipFileVirtualPath = "\\Statements" + "\\" + batchId + "\\statement" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".zip";
+            // string zipPath = outputLocation + zipFileVirtualPath;
+            string zipPath = string.Empty;
+            try
             {
-                Directory.CreateDirectory(path);
-            }
+                //create folder to store the html statement files for current batch customers
 
-            //create media folder for common images and videos files of asset library
-            string mediaPath = path + "\\common\\media\\";
-            if (!Directory.Exists(mediaPath))
-            {
-                Directory.CreateDirectory(mediaPath);
-            }
-
-            //common resource files path 
-            string resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
-
-            string zipFileVirtualPath = "\\Statements" + "\\" + batchId + "\\statement" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".zip";
-            string zipPath = outputLocation + zipFileVirtualPath;
-
-            //create temp folder for common html statement
-            string temppath = path + "\\temp\\";
-            if (!Directory.Exists(temppath))
-            {
-                Directory.CreateDirectory(temppath);
-            }
-
-            //create temp media folder for common images and videos files of asset library
-            string tempmediaPath = temppath + "\\common\\media\\";
-            if (!Directory.Exists(tempmediaPath))
-            {
-                Directory.CreateDirectory(tempmediaPath);
-            }
-
-            //folder to save actual common html statement file
-            string spath = temppath + "\\statement\\";
-            if (!Directory.Exists(spath))
-            {
-                Directory.CreateDirectory(spath);
-            }
-
-            //to delete any common html statement file, if exist 
-            string filepath = spath + fileName;
-            if (File.Exists(filepath))
-            {
-                File.Delete(filepath);
-            }
-
-            // Create a html file to write to common html statement
-            using (StreamWriter sw = File.CreateText(filepath))
-            {
-                sw.WriteLine(htmlstr);
-            }
-
-            //asset (images and videos) files as well as json files
-            if (filesDictionary != null && filesDictionary?.Count > 0)
-            {
-                //WebClient webClient = new WebClient();
-                foreach (KeyValuePair<string, string> file in filesDictionary)
+                if (!Directory.Exists(Path.GetPathRoot(outputLocation)))
                 {
-                    if (File.Exists(file.Value))
-                    {
-                        if (file.Key.Contains(".json"))
-                        {
-                            File.Copy(file.Value, Path.Combine(spath, file.Key));
-                        }
-                        else
-                        {
-                            File.Copy(file.Value, Path.Combine(mediaPath, file.Key));
-                            File.Copy(file.Value, Path.Combine(tempmediaPath, file.Key));
-                        }
-                    }
-                    //webClient.DownloadFile(file.Value, (spath + file.Key));
+                    return string.Empty;
                 }
+
+                string path = outputLocation + "\\Statements" + "\\" + scheduleName + "\\" + batchName;
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                //create media folder for common images and videos files of asset library
+                string mediaPath = path + "\\common\\media\\";
+                if (!Directory.Exists(mediaPath))
+                {
+                    Directory.CreateDirectory(mediaPath);
+                }
+
+                //common resource files path 
+                string resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
+
+                //string zipFileVirtualPath = "\\Statements" + "\\" + scheduleName + "\\" + batchName + "\\statement" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".zip";
+                //zipPath = outputLocation + zipFileVirtualPath;
+
+                ////create temp folder for common html statement
+                //string temppath = path + "\\temp\\";
+                //if (!Directory.Exists(temppath))
+                //{
+                //    Directory.CreateDirectory(temppath);
+                //}
+
+                ////create temp media folder for common images and videos files of asset library
+                //string tempmediaPath = temppath + "\\common\\media\\";
+                //if (!Directory.Exists(tempmediaPath))
+                //{
+                //    Directory.CreateDirectory(tempmediaPath);
+                //}
+
+                ////folder to save actual common html statement file
+                //string spath = temppath + "\\statement\\";
+                //if (!Directory.Exists(spath))
+                //{
+                //    Directory.CreateDirectory(spath);
+                //}
+
+                ////to delete any common html statement file, if exist 
+                //string filepath = spath + fileName;
+                //if (File.Exists(filepath))
+                //{
+                //    File.Delete(filepath);
+                //}
+
+                //// Create a html file to write to common html statement
+                //using (StreamWriter sw = File.CreateText(filepath))
+                //{
+                //    sw.WriteLine(htmlstr);
+                //}
+
+                //asset (images and videos) files as well as json files
+                if (filesDictionary != null && filesDictionary?.Count > 0)
+                {
+                    //WebClient webClient = new WebClient();
+                    foreach (KeyValuePair<string, string> file in filesDictionary)
+                    {
+                        if (File.Exists(file.Value))
+                        {
+                            if (file.Key.Contains(".json"))
+                            {
+                                //File.Copy(file.Value, Path.Combine(spath, file.Key));
+                            }
+                            else
+                            {
+                                File.Copy(file.Value, Path.Combine(mediaPath, file.Key));
+                                //File.Copy(file.Value, Path.Combine(tempmediaPath, file.Key));
+                            }
+                        }
+                        //webClient.DownloadFile(file.Value, (spath + file.Key));
+                    }
+                }
+
+                //copy all common resource file to current batch statement folder as well as at common statement folder
+                DirectoryCopy(resourceFilePath, (path + "\\common"), true);
+                //DirectoryCopy(resourceFilePath, (temppath + "\\common"), true);
+
+                ////create a zip file for common html statement and related resources and media files
+                //if (!File.Exists(Path.Combine(temppath, zipPath)))
+                //{
+                //    ZipFile.CreateFromDirectory(temppath, zipPath);
+                //}
+
+                ////delete temp folder after zip file created
+                //string deleteFile = path + "\\temp";
+                //DirectoryInfo directoryInfo = new DirectoryInfo(deleteFile);
+                //if (directoryInfo.Exists)
+                //{
+                //    directoryInfo.Delete(true);
+                //}
             }
-
-            //copy all common resource file to current batch statement folder as well as at common statement folder
-            DirectoryCopy(resourceFilePath, (path + "\\common"), true);
-            DirectoryCopy(resourceFilePath, (temppath + "\\common"), true);
-
-            //create a zip file for common html statement and related resources and media files
-            ZipFile.CreateFromDirectory(temppath, zipPath);
-
-            //delete temp folder after zip file created
-            string deleteFile = path + "\\temp";
-            DirectoryInfo directoryInfo = new DirectoryInfo(deleteFile);
-            if (directoryInfo.Exists)
+            catch (Exception ex)
             {
-                directoryInfo.Delete(true);
+                throw ex;
+               // _log.Error($"CreateAndWriteToZipFile method get exception which is {ex.Message}. Called by {callerName}.");
             }
+            // //create temp folder for common html statement
+            // string temppath = path + "\\temp\\";
+            // if (!Directory.Exists(temppath))
+            // {
+            //     Directory.CreateDirectory(temppath);
+            // }
+
+            // //create temp media folder for common images and videos files of asset library
+            // string tempmediaPath = temppath + "\\common\\media\\";
+            // if (!Directory.Exists(tempmediaPath))
+            // {
+            //     Directory.CreateDirectory(tempmediaPath);
+            // }
+
+            // //folder to save actual common html statement file
+            // string spath = temppath + "\\statement\\";
+            // if (!Directory.Exists(spath))
+            // {
+            //     Directory.CreateDirectory(spath);
+            // }
+
+            // //to delete any common html statement file, if exist 
+            // string filepath = spath + fileName;
+            // if (File.Exists(filepath))
+            // {
+            //     File.Delete(filepath);
+            // }
+
+            // // Create a html file to write to common html statement
+            // using (StreamWriter sw = File.CreateText(filepath))
+            // {
+            //     sw.WriteLine(htmlstr);
+            // }
+
+            // //asset (images and videos) files as well as json files
+            // if (filesDictionary != null && filesDictionary?.Count > 0)
+            // {
+            //     //WebClient webClient = new WebClient();
+            //     foreach (KeyValuePair<string, string> file in filesDictionary)
+            //     {
+            //         if (File.Exists(file.Value))
+            //         {
+            //             if (file.Key.Contains(".json"))
+            //             {
+            //                 File.Copy(file.Value, Path.Combine(spath, file.Key));
+            //             }
+            //             else
+            //             {
+            //                 File.Copy(file.Value, Path.Combine(mediaPath, file.Key));
+            //                // File.Copy(file.Value, Path.Combine(tempmediaPath, file.Key));
+            //             }
+            //         }
+            //         //webClient.DownloadFile(file.Value, (spath + file.Key));
+            //     }
+            // }
+
+            // //copy all common resource file to current batch statement folder as well as at common statement folder
+            // DirectoryCopy(resourceFilePath, (path + "\\common"), true);
+            //// DirectoryCopy(resourceFilePath, (temppath + "\\common"), true);
+
+            // //create a zip file for common html statement and related resources and media files
+            // ZipFile.CreateFromDirectory(temppath, zipPath);
+
+            // //delete temp folder after zip file created
+            // string deleteFile = path + "\\temp";
+            // DirectoryInfo directoryInfo = new DirectoryInfo(deleteFile);
+            // if (directoryInfo.Exists)
+            // {
+            //     directoryInfo.Delete(true);
+            // }
 
             return zipPath;
         }

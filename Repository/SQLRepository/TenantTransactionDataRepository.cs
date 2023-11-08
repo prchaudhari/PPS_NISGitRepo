@@ -134,6 +134,7 @@ namespace nIS
                 var accountMasterRecords = new List<AccountMasterRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
+                    accountMasterRecords = nISEntitiesDataContext.AccountMasterRecords.ToList();
                     accountMasterRecords = nISEntitiesDataContext.AccountMasterRecords.Where(whereClause).ToList();
                     if (accountMasterRecords != null && accountMasterRecords.Count > 0)
                     {
@@ -186,6 +187,7 @@ namespace nIS
                 var accountTransactionRecords = new List<AccountTransactionRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
+                    accountTransactionRecords = nISEntitiesDataContext.AccountTransactionRecords.ToList();
                     accountTransactionRecords = nISEntitiesDataContext.AccountTransactionRecords.Where(whereClause)?.OrderByDescending(it => it.TransactionDate).ToList();
                     if (accountTransactionRecords != null && accountTransactionRecords.Count > 0)
                     {
@@ -1909,46 +1911,53 @@ namespace nIS
 
         private string WhereClauseGeneratorForCustomerAccount(CustomerAccountSearchParameter searchParameter, string tenantCode)
         {
-            StringBuilder queryString = new StringBuilder();
+            try
+            {
+                StringBuilder queryString = new StringBuilder();
 
-            //send account id value to this property when account master data fetching
-            if (validationEngine.IsValidLong(searchParameter.Identifier))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
-            }
-
-            //send account id value to this property when account transaction data fetching
-            if (validationEngine.IsValidLong(searchParameter.AccountId))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.AccountId.ToString().Split(',').Select(item => string.Format("AccountId.Equals({0}) ", item))) + ") and ");
-            }
-
-            if (validationEngine.IsValidLong(searchParameter.BatchId))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") and ");
-            }
-            if (validationEngine.IsValidLong(searchParameter.CustomerId) && validationEngine.IsValidText(searchParameter.AccountType))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") and ");
-            }
-            if (validationEngine.IsValidLong(searchParameter.CustomerId) && !validationEngine.IsValidText(searchParameter.AccountType))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") ");
-            }
-            if (validationEngine.IsValidText(searchParameter.AccountType))
-            {
-                queryString.Append(string.Format("AccountType.Contains(\"{0}\") ", searchParameter.AccountType));
-            }
-            if (searchParameter.WidgetFilterSetting != null && searchParameter.WidgetFilterSetting != string.Empty)
-            {
-                var filterEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFilterEntity>>(searchParameter.WidgetFilterSetting);
-                filterEntities.ForEach(filterEntity =>
+                //send account id value to this property when account master data fetching
+                if (validationEngine.IsValidLong(searchParameter.Identifier))
                 {
-                    queryString.Append(this.QueryGenerator(filterEntity));
-                });
+                    queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
+                }
+
+                //send account id value to this property when account transaction data fetching
+                if (validationEngine.IsValidLong(searchParameter.AccountId))
+                {
+                    queryString.Append("(" + string.Join("or ", searchParameter.AccountId.ToString().Split(',').Select(item => string.Format("AccountId.Equals({0}) ", item))) + ") and ");
+                }
+
+                if (validationEngine.IsValidLong(searchParameter.BatchId))
+                {
+                    queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") and ");
+                }
+                if (validationEngine.IsValidLong(searchParameter.CustomerId) && validationEngine.IsValidText(searchParameter.AccountType))
+                {
+                    queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") and ");
+                }
+                if (validationEngine.IsValidLong(searchParameter.CustomerId) && !validationEngine.IsValidText(searchParameter.AccountType))
+                {
+                    queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") ");
+                }
+                if (validationEngine.IsValidText(searchParameter.AccountType))
+                {
+                    queryString.Append(string.Format("AccountType.Contains(\"{0}\") ", searchParameter.AccountType));
+                }
+                if (searchParameter.WidgetFilterSetting != null && searchParameter.WidgetFilterSetting != string.Empty)
+                {
+                    var filterEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFilterEntity>>(searchParameter.WidgetFilterSetting);
+                    filterEntities.ForEach(filterEntity =>
+                    {
+                        queryString.Append(this.QueryGenerator(filterEntity));
+                    });
+                }
+                queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
+                return queryString.ToString();
             }
-            queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
-            return queryString.ToString();
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         #endregion
