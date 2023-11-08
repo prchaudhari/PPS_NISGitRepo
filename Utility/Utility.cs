@@ -827,6 +827,11 @@
                             }
                             else
                             {
+                                if (File.Exists(Path.Combine(mediaPath, file.Key)))
+                                {
+                                    // If it exists, delete the destination file before copying the new one
+                                    File.Delete(Path.Combine(mediaPath, file.Key));
+                                }
                                 File.Copy(file.Value, Path.Combine(mediaPath, file.Key));
                                 //File.Copy(file.Value, Path.Combine(tempmediaPath, file.Key));
                             }

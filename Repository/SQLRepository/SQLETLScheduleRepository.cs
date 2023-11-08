@@ -567,79 +567,80 @@ namespace nIS
         }
         #endregion
 
-        //#region ETLScheduleBatchLog
+        #region ETLScheduleBatchLog
 
-        ///// <summary>
-        ///// Generate string for dynamic linq.
-        ///// </summary>
-        ///// <param name="eTLScheduleBatchLogSearchParameter">ETL Schedule Batch Log search Parameters.</param>
-        ///// <param name="tenantCode">The tenant code.</param>
-        ///// <returns>Returns a string.</returns>
-        //private string WhereClauseGeneratorForETLScheduleBatchLogs(ETLScheduleBatchLogSearchParameter eTLScheduleBatchLogSearchParameter, string tenantCode)
-        //{
-        //    StringBuilder queryString = new StringBuilder();
-        //    if (eTLScheduleBatchLogSearchParameter.ETLBatchId != 0)
-        //    {
-        //        queryString.Append(string.Format("ETLBatchId.Equals({0}) and ", eTLScheduleBatchLogSearchParameter.ETLBatchId));
-        //    }
+        /// <summary>
+        /// Generate string for dynamic linq.
+        /// </summary>
+        /// <param name="eTLScheduleBatchLogSearchParameter">ETL Schedule Batch Log search Parameters.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>Returns a string.</returns>
+        private string WhereClauseGeneratorForETLScheduleBatchLogs(ETLScheduleBatchLogSearchParameter eTLScheduleBatchLogSearchParameter, string tenantCode)
+        {
+            StringBuilder queryString = new StringBuilder();
+            if (eTLScheduleBatchLogSearchParameter.ETLBatchId != 0)
+            {
+                queryString.Append(string.Format("ETLBatchId.Equals({0}) and ", eTLScheduleBatchLogSearchParameter.ETLBatchId));
+            }
 
-        //    var finalQuery = string.Empty;
-        //    if (tenantCode != ModelConstant.DEFAULT_TENANT_CODE)
-        //    {
-        //        queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
-        //        finalQuery = queryString.ToString();
-        //    }
-        //    else
-        //    {
-        //        int last = queryString.ToString().LastIndexOf("and");
-        //        finalQuery = queryString.ToString().Substring(0, last);
-        //    }
+            var finalQuery = string.Empty;
+            if (tenantCode != ModelConstant.DEFAULT_TENANT_CODE)
+            {
+                queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
+                finalQuery = queryString.ToString();
+            }
+            else
+            {
+                int last = queryString.ToString().LastIndexOf("and");
+                finalQuery = queryString.ToString().Substring(0, last);
+            }
 
-        //    return finalQuery;
-        //}
+            return finalQuery;
+        }
 
-        ///// <summary>
-        ///// This method gets the specified list of ETL Schedule Batch Log from database.
-        ///// </summary>
-        ///// <param name="eTLScheduleBatchLogSearchParameter">ETL Schedule Batch Log search Parameters.</param>
-        ///// <param name="tenantCode">The tenant code.</param>
-        ///// <returns>Returns the list of ETL Schedule Batch Log.</returns>
-        //public IList<ETLScheduleBatchLogModel> GetETLScheduleBatchLogs(ETLScheduleBatchLogSearchParameter eTLScheduleBatchLogSearchParameter, string tenantCode, out int noOfRecordCount)
-        //{
-        //    IList<ETLScheduleBatchLogModel> eTLScheduleBatchLogs = new List<ETLScheduleBatchLogModel>();
-        //    try
-        //    {
-        //        this.SetAndValidateConnectionString(tenantCode);
-        //        string whereClause = this.WhereClauseGeneratorForETLScheduleBatchLogs(eTLScheduleBatchLogSearchParameter, tenantCode);
-        //        IList<View_ETLScheduleLog> scheduleLogRecords = new List<View_ETLScheduleLog>();
-        //        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-        //        {
-        //            scheduleLogRecords = nISEntitiesDataContext.View_ETLScheduleLog.Where(whereClause).ToList();
-        //            noOfRecordCount = scheduleLogRecords.Count();
-        //            if (noOfRecordCount > 0)
-        //            {
-        //                eTLScheduleBatchLogs = scheduleLogRecords.Select(eTLScheduleBatchLogRecord => new ETLScheduleBatchLogModel()
-        //                {
-        //                    Identifier = eTLScheduleBatchLogRecord.Id,
-        //                    ETLSchedule = eTLScheduleBatchLogRecord.ETLSchedule,
-        //                    Batch = eTLScheduleBatchLogRecord.BatchName,
-        //                    ProcessingTime = eTLScheduleBatchLogRecord.ProcessingTime,
-        //                    Status = eTLScheduleBatchLogRecord.Status,
-        //                    ExecutionDate = eTLScheduleBatchLogRecord.ExecutionDate != null ? DateTime.SpecifyKind((DateTime)eTLScheduleBatchLogRecord.ExecutionDate, DateTimeKind.Utc) : DateTime.MinValue,
-        //                    EtlScheduleId = eTLScheduleBatchLogRecord.EtlScheduleId,
-        //                    LogMessage = string.IsNullOrEmpty(eTLScheduleBatchLogRecord.LogMessage) ? "" : eTLScheduleBatchLogRecord.LogMessage
-        //                }).ToList();
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw;
-        //    }
-        //    return eTLScheduleBatchLogs;
-        //}
+        /// <summary>
+        /// This method gets the specified list of ETL Schedule Batch Log from database.
+        /// </summary>
+        /// <param name="eTLScheduleBatchLogSearchParameter">ETL Schedule Batch Log search Parameters.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>Returns the list of ETL Schedule Batch Log.</returns>
+        public IList<ETLScheduleBatchLogModel> GetETLScheduleBatchLogs(ETLScheduleBatchLogSearchParameter eTLScheduleBatchLogSearchParameter, string tenantCode, out int noOfRecordCount)
+        {
+            IList<ETLScheduleBatchLogModel> eTLScheduleBatchLogs = new List<ETLScheduleBatchLogModel>();
+            //try ***
+            //{
+            //    this.SetAndValidateConnectionString(tenantCode);
+            //    string whereClause = this.WhereClauseGeneratorForETLScheduleBatchLogs(eTLScheduleBatchLogSearchParameter, tenantCode);
+            //    IList<View_ETLScheduleLog> scheduleLogRecords = new List<View_ETLScheduleLog>();
+            //    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+            //    {
+            //        scheduleLogRecords = nISEntitiesDataContext.View_ETLScheduleLog.Where(whereClause).ToList();
+            //        noOfRecordCount = scheduleLogRecords.Count();
+            //        if (noOfRecordCount > 0)
+            //        {
+            //            eTLScheduleBatchLogs = scheduleLogRecords.Select(eTLScheduleBatchLogRecord => new ETLScheduleBatchLogModel()
+            //            {
+            //                Identifier = eTLScheduleBatchLogRecord.Id,
+            //                ETLSchedule = eTLScheduleBatchLogRecord.ETLSchedule,
+            //                Batch = eTLScheduleBatchLogRecord.BatchName,
+            //                ProcessingTime = eTLScheduleBatchLogRecord.ProcessingTime,
+            //                Status = eTLScheduleBatchLogRecord.Status,
+            //                ExecutionDate = eTLScheduleBatchLogRecord.ExecutionDate != null ? DateTime.SpecifyKind((DateTime)eTLScheduleBatchLogRecord.ExecutionDate, DateTimeKind.Utc) : DateTime.MinValue,
+            //                EtlScheduleId = eTLScheduleBatchLogRecord.EtlScheduleId,
+            //                LogMessage = string.IsNullOrEmpty(eTLScheduleBatchLogRecord.LogMessage) ? "" : eTLScheduleBatchLogRecord.LogMessage
+            //            }).ToList();
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw;
+            //}
+            noOfRecordCount = 0;
+            return eTLScheduleBatchLogs;
+        }
 
-        //#endregion
+        #endregion
 
         //#region ETLScheduleBatchLogDetail
 

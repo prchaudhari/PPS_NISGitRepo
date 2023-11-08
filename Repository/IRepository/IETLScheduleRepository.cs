@@ -34,18 +34,18 @@ namespace nIS
         /// <returns>Returns etl schedules detail if found for given parameters, else return null</returns>
         IList<ETLScheduleListModel> GetETLScheduleDetailByProduct(ETLScheduleSearchParameter eTLScheduleSearchParameter, string tenantCode, out int noOfRecordCount);
 
-        //#region ETLScheduleBatchLog
+        #region ETLScheduleBatchLog
 
-        ///// <summary>
-        ///// This method gets the specified list of ETL Schedule Batch Log from ETLSchedule repository.
-        ///// </summary>
-        ///// <param name="eTLScheduleBatchLogSearchParameter">The Etl Schedule Batch Log search parameter.</param>
-        ///// <param name="tenantCode">The tenant code</param>
-        ///// <param name="noOfRecordCount">out parameter for total of record in database's table.</param>
-        ///// <returns>Returns the list of Etl Schedule Batch Log.</returns>
-        //IList<ETLScheduleBatchLogModel> GetETLScheduleBatchLogs(ETLScheduleBatchLogSearchParameter eTLScheduleBatchLogSearchParameter, string tenantCode, out int noOfRecordCount);
+        /// <summary>
+        /// This method gets the specified list of ETL Schedule Batch Log from ETLSchedule repository.
+        /// </summary>
+        /// <param name="eTLScheduleBatchLogSearchParameter">The Etl Schedule Batch Log search parameter.</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <param name="noOfRecordCount">out parameter for total of record in database's table.</param>
+        /// <returns>Returns the list of Etl Schedule Batch Log.</returns>
+        IList<ETLScheduleBatchLogModel> GetETLScheduleBatchLogs(ETLScheduleBatchLogSearchParameter eTLScheduleBatchLogSearchParameter, string tenantCode, out int noOfRecordCount);
 
-        //#endregion
+        #endregion
 
         //#region ETLScheduleBatchLogDetail
 

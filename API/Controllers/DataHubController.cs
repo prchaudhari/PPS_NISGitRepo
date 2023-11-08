@@ -106,31 +106,31 @@ namespace nIS
             return batchMasters;
         }
 
-        //#region ETLScheduleBatchLogList
+        #region ETLScheduleBatchLogList
 
-        ///// <summary>
-        ///// This method helps to get ETL schedules batch log list based on the search parameters.
-        ///// </summary>
-        ///// <param name="eTLScheduleBatchLogSearchParameter">The ETL schedules batch log search parameter.</param>
-        ///// <returns>List of ETL schedules batch log.</returns>
-        //[HttpPost]
-        //public IList<ETLScheduleBatchLogModel> ETLScheduleBatchLogList(ETLScheduleBatchLogSearchParameter eTLScheduleBatchLogSearchParameter)
-        //{
-        //    IList<ETLScheduleBatchLogModel> eTLscheduleLogs = new List<ETLScheduleBatchLogModel>();
-        //    try
-        //    {
-        //        string tenantCode = Helper.CheckTenantCode(Request.Headers);
-        //        eTLscheduleLogs = this.eTLScheduleManager.GetETLScheduleBatchLogs(eTLScheduleBatchLogSearchParameter, tenantCode, out int recordCount);
-        //        HttpContext.Current.Response.AppendHeader("recordCount", recordCount.ToString());
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        throw;
-        //    }
-        //    return eTLscheduleLogs;
-        //}
+        /// <summary>
+        /// This method helps to get ETL schedules batch log list based on the search parameters.
+        /// </summary>
+        /// <param name="eTLScheduleBatchLogSearchParameter">The ETL schedules batch log search parameter.</param>
+        /// <returns>List of ETL schedules batch log.</returns>
+        [HttpPost]
+        public IList<ETLScheduleBatchLogModel> ETLScheduleBatchLogList(ETLScheduleBatchLogSearchParameter eTLScheduleBatchLogSearchParameter)
+        {
+            IList<ETLScheduleBatchLogModel> eTLscheduleLogs = new List<ETLScheduleBatchLogModel>();
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                eTLscheduleLogs = this.eTLScheduleManager.GetETLScheduleBatchLogs(eTLScheduleBatchLogSearchParameter, tenantCode, out int recordCount);
+                HttpContext.Current.Response.AppendHeader("recordCount", recordCount.ToString());
+            }
+            catch (Exception exception)
+            {
+                throw;
+            }
+            return eTLscheduleLogs;
+        }
 
-        //#endregion
+        #endregion
 
         //#region ETLScheduleBatchLogDetail
 

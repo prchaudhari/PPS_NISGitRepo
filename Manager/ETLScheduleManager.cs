@@ -157,44 +157,44 @@ namespace nIS
 
         #endregion
 
-        //#region ETLScheduleBatchLogList
+        #region ETLScheduleBatchLogList
 
-        ///// <summary>
-        ///// This method gets the specified list of ETL Schedule Batch Log method of repository.
-        ///// </summary>
-        ///// <param name="eTLscheduleLogSearchParameter">The Etl Schedule Batch Log search parameter.</param>
-        ///// <param name="tenantCode">The tenant code.</param>
-        ///// <param name="recordCount">out parameter for total of record in database's table.</param>
-        ///// <returns>Returns etl schedules batch log's list if found for given parameters, else return null.</returns>
-        //public IList<ETLScheduleBatchLogModel> GetETLScheduleBatchLogs(ETLScheduleBatchLogSearchParameter eTLscheduleLogSearchParameter, string tenantCode, out int recordCount)
-        //{
-        //    IList<ETLScheduleBatchLogModel> eTLscheduleLogs = new List<ETLScheduleBatchLogModel>();
-        //    try
-        //    {
-        //        InvalidSearchParameterException invalidSearchParameterException = new InvalidSearchParameterException(tenantCode);
-        //        try
-        //        {
-        //            eTLscheduleLogSearchParameter.IsValid();
-        //        }
-        //        catch (Exception exception)
-        //        {
-        //            invalidSearchParameterException.Data.Add("InvalidPagingParameter", exception.Data);
-        //        }
-        //        if (invalidSearchParameterException.Data.Count > 0)
-        //        {
-        //            throw invalidSearchParameterException;
-        //        }
-        //        eTLscheduleLogs = this.eTLScheduleRepository.GetETLScheduleBatchLogs(eTLscheduleLogSearchParameter, tenantCode, out int noOfRecordCount);
-        //        recordCount = noOfRecordCount;
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        throw;
-        //    }
-        //    return eTLscheduleLogs;
-        //}
+        /// <summary>
+        /// This method gets the specified list of ETL Schedule Batch Log method of repository.
+        /// </summary>
+        /// <param name="eTLscheduleLogSearchParameter">The Etl Schedule Batch Log search parameter.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <param name="recordCount">out parameter for total of record in database's table.</param>
+        /// <returns>Returns etl schedules batch log's list if found for given parameters, else return null.</returns>
+        public IList<ETLScheduleBatchLogModel> GetETLScheduleBatchLogs(ETLScheduleBatchLogSearchParameter eTLscheduleLogSearchParameter, string tenantCode, out int recordCount)
+        {
+            IList<ETLScheduleBatchLogModel> eTLscheduleLogs = new List<ETLScheduleBatchLogModel>();
+            try
+            {
+                InvalidSearchParameterException invalidSearchParameterException = new InvalidSearchParameterException(tenantCode);
+                try
+                {
+                    eTLscheduleLogSearchParameter.IsValid();
+                }
+                catch (Exception exception)
+                {
+                    invalidSearchParameterException.Data.Add("InvalidPagingParameter", exception.Data);
+                }
+                if (invalidSearchParameterException.Data.Count > 0)
+                {
+                    throw invalidSearchParameterException;
+                }
+                eTLscheduleLogs = this.eTLScheduleRepository.GetETLScheduleBatchLogs(eTLscheduleLogSearchParameter, tenantCode, out int noOfRecordCount);
+                recordCount = noOfRecordCount;
+            }
+            catch (Exception exception)
+            {
+                throw;
+            }
+            return eTLscheduleLogs;
+        }
 
-        //#endregion
+        #endregion
 
         //#region ETLScheduleBatchLogDetail
 

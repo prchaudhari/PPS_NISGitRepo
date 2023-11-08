@@ -108,6 +108,7 @@
     <Compile Include="MultiTenantUserRoleAccess.cs" />
     <Compile Include="NedBank\BreakdownOfInvestmentAccounts.cs" />
     <Compile Include="NedBank\ETLBatchMasterViewModel.cs" />
+    <Compile Include="NedBank\ETLScheduleBatchLogModel.cs" />
     <Compile Include="NedBank\ETLScheduleListModel.cs" />
     <Compile Include="NedBank\ETLScheduleModel.cs" />
     <Compile Include="NedBank\InvestmentPottfolio.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="ScheduleLogDetailSearchParameter.cs" />
     <Compile Include="ScheduleLogErrorDetail.cs" />
     <Compile Include="ScheduleRunHistory.cs" />
+    <Compile Include="Search Parameter\ETLScheduleBatchLogSearchParameter.cs" />
     <Compile Include="Search Parameter\ETLScheduleSearchParameter.cs" />
     <Compile Include="Search Parameter\ProductPageTypeSearchParameter.cs" />
     <Compile Include="Search Parameter\ProductSearchParameter.cs" />
