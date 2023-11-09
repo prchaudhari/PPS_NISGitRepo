@@ -150,6 +150,7 @@ namespace nIS
         public virtual DbSet<EtlSchedules> EtlSchedules { get; set; }
         public virtual DbSet<EtlBatches> EtlBatches { get; set; }
         public virtual DbSet<SystemActivityHistory> SystemActivityHistory { get; set; }
+        public virtual DbSet<View_ETLScheduleLog> View_ETLScheduleLog { get; set; }
 
         [DbFunction("NISEntities", "FnUserTenant")]
         public virtual IQueryable<FnUserTenant_Result> FnUserTenant(Nullable<int> userId)

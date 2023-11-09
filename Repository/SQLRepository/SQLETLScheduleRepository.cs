@@ -607,35 +607,35 @@ namespace nIS
         public IList<ETLScheduleBatchLogModel> GetETLScheduleBatchLogs(ETLScheduleBatchLogSearchParameter eTLScheduleBatchLogSearchParameter, string tenantCode, out int noOfRecordCount)
         {
             IList<ETLScheduleBatchLogModel> eTLScheduleBatchLogs = new List<ETLScheduleBatchLogModel>();
-            //try ***
-            //{
-            //    this.SetAndValidateConnectionString(tenantCode);
-            //    string whereClause = this.WhereClauseGeneratorForETLScheduleBatchLogs(eTLScheduleBatchLogSearchParameter, tenantCode);
-            //    IList<View_ETLScheduleLog> scheduleLogRecords = new List<View_ETLScheduleLog>();
-            //    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-            //    {
-            //        scheduleLogRecords = nISEntitiesDataContext.View_ETLScheduleLog.Where(whereClause).ToList();
-            //        noOfRecordCount = scheduleLogRecords.Count();
-            //        if (noOfRecordCount > 0)
-            //        {
-            //            eTLScheduleBatchLogs = scheduleLogRecords.Select(eTLScheduleBatchLogRecord => new ETLScheduleBatchLogModel()
-            //            {
-            //                Identifier = eTLScheduleBatchLogRecord.Id,
-            //                ETLSchedule = eTLScheduleBatchLogRecord.ETLSchedule,
-            //                Batch = eTLScheduleBatchLogRecord.BatchName,
-            //                ProcessingTime = eTLScheduleBatchLogRecord.ProcessingTime,
-            //                Status = eTLScheduleBatchLogRecord.Status,
-            //                ExecutionDate = eTLScheduleBatchLogRecord.ExecutionDate != null ? DateTime.SpecifyKind((DateTime)eTLScheduleBatchLogRecord.ExecutionDate, DateTimeKind.Utc) : DateTime.MinValue,
-            //                EtlScheduleId = eTLScheduleBatchLogRecord.EtlScheduleId,
-            //                LogMessage = string.IsNullOrEmpty(eTLScheduleBatchLogRecord.LogMessage) ? "" : eTLScheduleBatchLogRecord.LogMessage
-            //            }).ToList();
-            //        }
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw;
-            //}
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForETLScheduleBatchLogs(eTLScheduleBatchLogSearchParameter, tenantCode);
+                IList<View_ETLScheduleLog> scheduleLogRecords = new List<View_ETLScheduleLog>();
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    scheduleLogRecords = nISEntitiesDataContext.View_ETLScheduleLog.Where(whereClause).ToList();
+                    noOfRecordCount = scheduleLogRecords.Count();
+                    if (noOfRecordCount > 0)
+                    {
+                        eTLScheduleBatchLogs = scheduleLogRecords.Select(eTLScheduleBatchLogRecord => new ETLScheduleBatchLogModel()
+                        {
+                            Identifier = eTLScheduleBatchLogRecord.Id,
+                            ETLSchedule = eTLScheduleBatchLogRecord.ETLSchedule,
+                            Batch = eTLScheduleBatchLogRecord.BatchName,
+                            ProcessingTime = eTLScheduleBatchLogRecord.ProcessingTime,
+                            Status = eTLScheduleBatchLogRecord.Status,
+                            ExecutionDate = eTLScheduleBatchLogRecord.ExecutionDate != null ? DateTime.SpecifyKind((DateTime)eTLScheduleBatchLogRecord.ExecutionDate, DateTimeKind.Utc) : DateTime.MinValue,
+                            EtlScheduleId = eTLScheduleBatchLogRecord.EtlScheduleId,
+                            LogMessage = string.IsNullOrEmpty(eTLScheduleBatchLogRecord.LogMessage) ? "" : eTLScheduleBatchLogRecord.LogMessage
+                        }).ToList();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
             noOfRecordCount = 0;
             return eTLScheduleBatchLogs;
         }

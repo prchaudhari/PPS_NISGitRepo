@@ -202,6 +202,7 @@
     <Compile Include="Entities\UserRecord.cs" />
     <Compile Include="Entities\UserRoleMapRecord.cs" />
     <Compile Include="Entities\View_DynamicWidgetRecord.cs" />
+    <Compile Include="Entities\View_ETLScheduleLog.cs" />
     <Compile Include="Entities\View_MultiTenantUserAccessMapRecord.cs" />
     <Compile Include="Entities\View_PageRecord.cs" />
     <Compile Include="Entities\View_PageWidgetMapRecord.cs" />

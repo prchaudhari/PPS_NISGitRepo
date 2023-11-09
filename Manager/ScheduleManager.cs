@@ -1320,11 +1320,19 @@ namespace nIS
                         RenderEngine = parallelRequest.RenderEngine
                     };
 
-                    HttpClient client = new HttpClient();
-                    client.BaseAddress = new Uri(RenderEngineBaseUrl);
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ModelConstant.APPLICATION_JSON_MEDIA_TYPE));
-                    client.DefaultRequestHeaders.Add(ModelConstant.TENANT_CODE_KEY, TenantCode);
-                    var response = client.PostAsync(ModelConstant.CREATE_CUSTOMER_STATEMENT_API_URL, new StringContent(JsonConvert.SerializeObject(newStatementRawData), Encoding.UTF8, ModelConstant.APPLICATION_JSON_MEDIA_TYPE)).Result;
+                    using (HttpClient client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri(RenderEngineBaseUrl);
+                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ModelConstant.APPLICATION_JSON_MEDIA_TYPE));
+                        client.DefaultRequestHeaders.Add(ModelConstant.TENANT_CODE_KEY, TenantCode);
+
+                        using (var stringContent = new StringContent(JsonConvert.SerializeObject(newStatementRawData), Encoding.UTF8, ModelConstant.APPLICATION_JSON_MEDIA_TYPE))
+                        {
+                            using (client.PostAsync(ModelConstant.CREATE_CUSTOMER_STATEMENT_API_URL, stringContent).Result)
+                            {
+                            }
+                        }
+                    }
                 });
             }
             catch (Exception ex)
@@ -1444,8 +1452,14 @@ namespace nIS
                         if (!filesDict.ContainsKey(statementPreviewData.SampleFiles[i].FileName))
                             filesDict.Add(statementPreviewData.SampleFiles[i].FileName, statementPreviewData.SampleFiles[i].FileUrl);
                     }
-                    string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, scheduleRecord.Name, batch.BatchName, baseURL, outputLocation, filesDict);
-
+                    try
+                    {
+                       // string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, scheduleRecord.Name, batch.BatchName, baseURL, outputLocation, filesDict);
+                    }
+                    catch(Exception ex)
+                    {
+                        throw ex;
+                    }
                     var scheduleLog = this.scheduleLogRepository.GetScheduleLogs(new ScheduleLogSearchParameter()
                     {
                         ScheduleName = scheduleRecord.Name,
@@ -1518,8 +1532,14 @@ namespace nIS
                                             count += 1;
                                             availableNisEngines = availableNisEngines.Skip(count).ToList();
                                         }
-
-                                        ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+                                        try
+                                        {
+                                            ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+                                        }
+                                        catch(Exception ex)
+                                        {
+                                            throw ex;
+                                        }
                                     }
                                     else
                                     {
@@ -1541,8 +1561,14 @@ namespace nIS
                                                 customers = new List<CustomerMaster>();
                                             }
                                         }
-
-                                        ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+                                        try
+                                        {
+                                            ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            throw ex;
+                                        }
                                     }
                                 }
                             }
@@ -1603,7 +1629,7 @@ namespace nIS
                             StatementId = statement.Identifier,
                             ScheduleLogId = scheduleLog.Identifier,
                             EndDate = DateTime.UtcNow,
-                            StatementFilePath = CommonStatementZipFilePath
+                            StatementFilePath = ""//CommonStatementZipFilePath
                         });
                         this.scheduleRepository.AddScheduleRunHistorys(scheduleRunHistory, tenantCode);
 
