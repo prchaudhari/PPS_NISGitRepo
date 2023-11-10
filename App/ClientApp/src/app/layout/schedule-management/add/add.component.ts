@@ -561,7 +561,9 @@ export class AddComponent implements OnInit {
           if (this.scheduleRecords != null && this.scheduleRecords.ProductBatches != null && this.scheduleRecords.ProductBatches.length > 0) {
             if (this.scheduleRecords.ProductBatches.find(obj => obj.StatementId == subitem.Identifier)) {
               subitem.IsChecked = true;
-              this.checkBoxArray.push(subitem);
+              if (this.checkBoxArray.find(subitem) != undefined)
+                this.checkBoxArray.push(subitem);
+
             }
             else {
               subitem.IsChecked = false;

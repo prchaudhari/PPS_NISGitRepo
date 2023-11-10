@@ -460,7 +460,7 @@ namespace nIS
                         StartDate = startDateTime,
                         EndDate = schedule.EndDate != null ? endDateTime : null,
                         Status = schedule.Status,
-                      //  IsDeleted = false,
+                        IsDeleted = false,
                         IsActive = true,
                         TenantCode = tenantCode,
                         StatementId = schedule.Statement.Identifier,
@@ -618,6 +618,7 @@ namespace nIS
                         var startDateTime = item.StartDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
                         var endDateTime = item.EndDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
                         ScheduleRecord scheduleRecord = scheduleRecords.FirstOrDefault(data => data.Id == item.Identifier && data.TenantCode == tenantCode && data.IsDeleted == false);
+                        scheduleRecord.ProductBatchName = item.productBatchName;
                         scheduleRecord.Name = item.Name;
                         scheduleRecord.Description = item.Description;
                         scheduleRecord.DayOfMonth = item.DayOfMonth;
@@ -760,7 +761,15 @@ namespace nIS
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
                     StringBuilder query = new StringBuilder();
-                    query.Append("(" + string.Join("or ", string.Join(",", schedules.Select(item => item.Identifier).Distinct()).ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") ");
+                    //query.Append("(" + string.Join("or ", string.Join(",", schedules.Select(item => item.Identifier).Distinct()).ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") ");
+                    if (schedules.Count > 0 && schedules[0].Identifier == 0)
+                    {
+                        query.Append("(" + string.Join("or ", string.Join(",", schedules.Select(item => item.productBatchName).Distinct()).ToString().Split(',').Select(item => string.Format("ProductBatchName.Equals(\"{0}\") ", item))) + ") ");
+                    }
+                    else
+                    {
+                        query.Append("(" + string.Join("or ", string.Join(",", schedules.Select(item => item.Identifier).Distinct()).ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") ");
+                    }                    
                     query.Append("and IsDeleted.Equals(false)");
                     IList<ScheduleRecord> scheduleRecords = nISEntitiesDataContext.ScheduleRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
                     if (scheduleRecords == null || scheduleRecords.Count <= 0 || scheduleRecords.Count() != string.Join(",", scheduleRecords.Select(item => item.Id).Distinct()).ToString().Split(',').Length)
@@ -777,11 +786,16 @@ namespace nIS
                     }
 
                     IList<SystemActivityHistoryRecord> Records = new List<SystemActivityHistoryRecord>();
+                    IList<long> scheduleIds = new List<long>();
+                    List<long> batchIds = new List<long>();
+                    IList<long> productBatchIds = new List<long>();
                     scheduleRecords.ToList().ForEach(item =>
                     {
                         item.IsDeleted = true;
                         item.UpdateBy = userId;
                         item.LastUpdatedDate = DateTime.Now;
+                        scheduleIds.Add(item.Id);
+                        productBatchIds.Add((long)item.ProductBatchId);
 
                         Records.Add(new SystemActivityHistoryRecord()
                         {
@@ -797,6 +811,14 @@ namespace nIS
                             TenantCode = tenantCode
                         });
                     });
+
+                    IList<BatchMasterRecord> batches = nISEntitiesDataContext.BatchMasterRecords.Where(x => scheduleIds.Contains(x.ScheduleId)).ToList();
+                    IList<EtlSchedules> etlSchedules = nISEntitiesDataContext.EtlSchedules.Where(x => productBatchIds.Contains(x.ProductBatchId)).ToList();
+                    IList<EtlBatches> etlBatches = nISEntitiesDataContext.EtlBatches.Where(x => productBatchIds.Contains(x.ProductBatchId)).ToList();
+                    nISEntitiesDataContext.ScheduleRecords.RemoveRange(scheduleRecords);
+                    nISEntitiesDataContext.BatchMasterRecords.RemoveRange(batches);
+                    nISEntitiesDataContext.EtlSchedules.RemoveRange(etlSchedules);
+                    nISEntitiesDataContext.EtlBatches.RemoveRange(etlBatches);
 
                     if (Records.Count > 0)
                     {
