@@ -1100,7 +1100,18 @@ namespace nIS
             {
                 throw;
             }
+            if(schedules.Count > 0)
+            {
+                for (int i = 0; i < schedules.Count; i++)
+                {
+                    var distinctProductBatches = schedules[i].ProductBatches
+                                                    .GroupBy(x => x.Identifier)
+                                                    .Select(group => group.First())
+                                                    .ToList();
 
+                    schedules[i].ProductBatches = distinctProductBatches;
+                }
+            }
             return schedules;
         }
 

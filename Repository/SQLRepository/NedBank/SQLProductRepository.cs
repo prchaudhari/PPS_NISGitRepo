@@ -118,7 +118,12 @@
                                                       Identifier = st.Id,
                                                       Name = st.Name
                                                   }).ToList();
-                        item.StatementViewModel = statementViewModel;
+                        var distinctStatements = statementViewModel
+                                              .GroupBy(x => x.Identifier)
+                                              .Select(group => group.First())
+                                              .ToList();
+
+                        item.StatementViewModel = distinctStatements;
                     }
                     return result;
                 }
