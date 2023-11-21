@@ -61,10 +61,12 @@ export class ViewComponent implements OnInit {
       if (e instanceof NavigationEnd) {
         if (e.url.includes('/roles')) {
           //set passing parameters to localstorage.
-          this.params = JSON.parse(localStorage.getItem('roleparams'));
-          this.RoleIdentifier = this.params.Routeparams.passingparams.RoleIdentifier
-          this.RoleName = this.params.Routeparams.filteredparams.RoleName
-          this.roleStatus = this.params.Routeparams.filteredparams.IsActive
+          if (localStorage.getItem('roleparams')) {
+            this.params = JSON.parse(localStorage.getItem('roleparams'));
+            this.RoleIdentifier = this.params.Routeparams.passingparams.RoleIdentifier
+            this.RoleName = this.params.Routeparams.filteredparams.RoleName
+            this.roleStatus = this.params.Routeparams.filteredparams.IsActive
+          }
         } else {
           localStorage.removeItem("roleparams");
         }
