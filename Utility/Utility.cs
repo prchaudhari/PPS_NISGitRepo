@@ -625,8 +625,10 @@
             }
 
             //To move js, css and other assets contents which are common to each statment file
-            DirectoryCopy(resourceFilePath, (statementDestPath + "\\common"), true);
-
+            if (!Directory.Exists(statementDestPath + "\\common"))
+            {
+                DirectoryCopy(resourceFilePath, (statementDestPath + "\\common"), true);
+            }
             //Printing PDF
             if (printPdf)
             {
@@ -1374,6 +1376,8 @@
 
         public bool GeneratePdf(string htmlPath, string outPdfPath, string segment, string language, out string pdfGenerationError)
         {
+            SelectPdf.PdfDocument doc = new PdfDocument();
+            segment = "pps";
             try
             {
                 string headerFooterFontFolderPath = System.Configuration.ConfigurationManager.AppSettings["HeaderFooterFontFolderPath"];
@@ -1443,9 +1447,15 @@
                 headHtml.AutoFitHeight = HtmlToPdfPageFitMode.AutoFit;
                 footHtml.AutoFitHeight = HtmlToPdfPageFitMode.AutoFit;
 
-                // create a new pdf document converting an url
-                SelectPdf.PdfDocument doc = converter.ConvertUrl(htmlPath);
-
+                try
+                {
+                    // create a new pdf document converting an url                    
+                    doc = converter.ConvertUrl(htmlPath);
+                }
+                catch(Exception e)
+                {
+                    pdfGenerationError = $"GeneratePdf method get exception which is {e.Message}";
+                }
                 var endTime = DateTime.Now;
                // _log.Info($"PRF, pdf conversion, Finished, {(endTime - startTime).TotalMilliseconds} MS, {endTime:yyyy-MM-dd HH:mm:ss.fff}");
 

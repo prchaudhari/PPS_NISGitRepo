@@ -301,6 +301,17 @@
     margin-bottom: 0.25rem !important;
   }
 
+  .CustomerDetailsForCS {
+    font-size: 8pt;
+    text-align: left;
+    font-family: Arial;
+    height: 110px;
+  }
+
+  .CustomerDetailsForCS p {
+    margin-bottom: 0.25rem !important;
+  }
+
   .AgentAddress {
     font-size: 8pt;
     text-align: right;
@@ -478,6 +489,13 @@
     color: rgb(0, 91, 0) !important;
   }
 
+  .important-information-header {
+    font-size: 14pt;
+    font-family: 'Arial';
+    color: rgb(0, 99, 65) !important;
+    font-weight: bold;
+  }
+
   .card-body-header-name {
     font-size: 14pt;
     color: #1C6B40 !important;
@@ -495,6 +513,7 @@
     font-size: 10pt;
     color: black !important;
     font-family: 'Mark Pro Bold';
+    font-weight: bold;
   }
 
   .card-body-header-name-w {
@@ -534,6 +553,13 @@
 
   .card-body-sub-header2 {
     font-size: 10pt;
+    font-family: 'Mark Pro Regular';
+    padding: 0px 25px;
+  }
+
+  .card-body-sub-header2-w {
+    font-size: 10pt;
+    color: rgb(126, 84, 117) !important;
     font-family: 'Mark Pro Regular';
     padding: 0px 25px;
   }
@@ -624,7 +650,6 @@
   }
 
   .mca_small_table td {
-    padding: 0px 25px;
     font-family: 'Mark Pro Regular';
     font-size: 8pt;
   }
@@ -857,12 +882,12 @@
 
   .ftr-rt-span1 {
     float: right;
-    margin-right: 1.75rem !important;
+    /*margin-right: 1.75rem !important;*/
   }
 
   .ftr-rt-span2 {
     float: right;
-    margin-right: 1.75rem !important;
+    /*margin-right: 1.75rem !important;*/
     color: #666666;
     font-size: 7pt;
     font-family: 'Mark Pro Regular'
@@ -956,7 +981,7 @@
     width: 100%;
     border-collapse: collapse;
     font-family: 'Arial';
-    font-size: 9pt;
+    font-size: 8pt;
     text-align: left;
   }
 
@@ -966,10 +991,10 @@
   }
 
   .NedbankHomeLoanTxt1 {
-    color: #006341 !important;
+    color: rgb(0, 99, 65) !important;
     font-family: Arial !important;
-    font-size: 12pt !important;
-    font-weight: 700;
+    font-size: 8pt !important;
+    font-weight: bold;
   }
 
   .LoanTransactionTable1 th {
@@ -990,8 +1015,8 @@
   .CS-header {
     font-size: 14pt;
     font-family: 'arial';
-    color: rgb(0, 91, 65) !important;
-    font-weight: 700;
+    color: rgb(0, 99, 65) !important;
+    font-weight: bold;
     text-align: left;
   }
 
@@ -1329,4 +1354,16 @@
       right: 0px;
     }
   }
+}
+
+.padding_bottom_15 {
+  padding-bottom: 15px !important;
+}
+
+.padding_bottom_8 {
+  padding-bottom: 8px !important;
+}
+
+.padding_top_8 {
+  padding-top: 8px !important;
 }

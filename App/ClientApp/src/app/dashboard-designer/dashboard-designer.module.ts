@@ -25,7 +25,7 @@ import {
 import { PageDesignPreviewComponent } from './page-design-preview/page-design-preview.component';
 import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
 import { SafeHtmlPip } from '../shared/pagepreview/pagepreview.component';
-
+import { MatIconModule } from '@angular/material/icon';
 @NgModule({
   declarations: [AddDashboardDesignerComponent, ViewDashboardDesignerComponent, CustomerInformationComponent,
     AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
@@ -39,7 +39,7 @@ import { SafeHtmlPip } from '../shared/pagepreview/pagepreview.component';
     PageDesignPreviewComponent, CSAgentLogoComponent, CorporateSaverAgentMessageComponent, CorporateSaverTransactionComponent,CorporateSaverClientDetailsComponent,CorporateAgentDetailsComponent,CorporateSaverTableTotalComponent],
   imports: [
     CommonModule, DashboardDesignerRoutingModule, RouterModule, SharedModule, FormsModule, ReactiveFormsModule,
-    GridsterModule, LayoutModule, MatSortModule, MatTableModule, MatPaginatorModule, DynamicModule, RichTextEditorAllModule
+    GridsterModule, LayoutModule, MatSortModule, MatTableModule, MatPaginatorModule, DynamicModule, RichTextEditorAllModule, MatIconModule
   ],
   entryComponents: [
     CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent, SavingAvailableBalanceComponent,
