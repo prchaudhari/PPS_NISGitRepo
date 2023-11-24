@@ -13,7 +13,7 @@ namespace nIS
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("NIS.Tenant")]
+    [Table("TenantManager.Tenant")]
     public partial class TenantRecord
     {
         public int Id { get; set; }
