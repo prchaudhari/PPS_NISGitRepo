@@ -226,7 +226,7 @@ namespace nIS
         /// True if success, otherwise false
         /// </returns>
         bool ValidateApproveScheduleBatch(long BatchIdentifier, string tenantCode);
-
+        bool ValidateApproveScheduleBatches(List<long> BatchIdentifier, string tenantCode);
         /// <summary>
         /// This method helps to clean batch and related data of the respective schedule.
         /// </summary>
@@ -236,6 +236,7 @@ namespace nIS
         /// True if success, otherwise false
         /// </returns>
         bool CleanScheduleBatch(long BatchIdentifier, string tenantCode);
+        bool CleanScheduleBatches(List<long> BatchIdentifier, string tenantCode);
 
         /// <summary>
         /// This method helps to update schedule status.

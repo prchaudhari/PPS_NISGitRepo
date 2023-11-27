@@ -205,40 +205,40 @@ namespace nIS
         //}
         //#endregion
 
-        //#region ETLRunManually
+        #region ETLRunManually
 
-        //[HttpPost]
-        //public async Task<bool> RunETLManually(long etlBatchId)
-        //{
-        //    bool result = false;
-        //    try
-        //    {
-        //        string tenantCode = Helper.CheckTenantCode(Request.Headers);
-        //        result = await this.eTLScheduleManager.RunETLManually(etlBatchId, tenantCode);
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        throw;
-        //    }
-        //    return result;
-        //}
+        [HttpPost]
+        public async Task<bool> RunETLManually(long etlBatchId)
+        {
+            bool result = false;
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                result = await this.eTLScheduleManager.RunETLManually(etlBatchId, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw;
+            }
+            return result;
+        }
 
-        //[HttpPost]
-        //public async Task<bool> RetryETLManually(long etlBatchId)
-        //{
-        //    bool result = false;
-        //    try
-        //    {
-        //        string tenantCode = Helper.CheckTenantCode(Request.Headers);
-        //        result = await this.eTLScheduleManager.RetryETLManually(etlBatchId, tenantCode);
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        throw;
-        //    }
-        //    return result;
-        //}
-        //#endregion
+        [HttpPost]
+        public async Task<bool> RetryETLManually(long etlBatchId)
+        {
+            bool result = false;
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                result = await this.eTLScheduleManager.RetryETLManually(etlBatchId, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw;
+            }
+            return result;
+        }
+        #endregion
 
         #region ETLBatchApproved
         [HttpPost]
@@ -258,22 +258,22 @@ namespace nIS
         }
         #endregion
 
-        //#region DeleteETLBatch
-        //[HttpPost]
-        //public bool DeleteETLBatch(long etlBatchId)
-        //{
-        //    bool result = false;
-        //    try
-        //    {
-        //        string tenantCode = Helper.CheckTenantCode(Request.Headers);
-        //        result = this.eTLScheduleManager.DeleteETLBatch(etlBatchId, tenantCode);
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        throw;
-        //    }
-        //    return result;
-        //}
-        //#endregion
+        #region DeleteETLBatch
+        [HttpPost]
+        public bool DeleteETLBatch(long etlBatchId)
+        {
+            bool result = false;
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                result = this.eTLScheduleManager.DeleteETLBatch(etlBatchId, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw;
+            }
+            return result;
+        }
+        #endregion
     }
 }

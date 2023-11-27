@@ -235,7 +235,7 @@ export class ScheduleService {
 
   public async ValidateApproveBatchAsync(BatchIdentifier): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl = URLConfiguration.ValidateApproveScheduleBatch + "?" + "batchIdentifiers=" + BatchIdentifier;
+    let requestUrl = URLConfiguration.ValidateApproveScheduleBatches + "?" + "batchIdentifiers=" + BatchIdentifier;
     this.uiLoader.start();
     var result = false;
     await httpClientService.CallHttp("POST", requestUrl).toPromise()

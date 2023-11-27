@@ -129,8 +129,10 @@ export class URLConfiguration {
   public static get RunScheduleNowWithMultipleBatches(): string { return "Schedule/RunScheduleNowWithMultipleBatches" };
   public static get ValidateApproveScheduleBatch(): string { return "Schedule/ValidateApproveScheduleBatch" };
   public static get ApproveScheduleBatch(): string { return "Schedule/ApproveScheduleBatch" };
+  public static get ValidateApproveScheduleBatches(): string { return "Schedule/ValidateApproveScheduleBatches" };
   public static get ApproveScheduleBatches(): string { return "Schedule/ApproveScheduleBatch" };
-  public static get CleanScheduleBatch(): string { return "Schedule/CleanScheduleBatch" };
+ // public static get CleanScheduleBatch(): string { return "Schedule/CleanScheduleBatch" };
+  public static get CleanScheduleBatch(): string { return "Schedule/CleanScheduleBatches" };
   public static get GetDeleteButtonVisibilityURL(): string { return "Schedule/GetDeleteButtonVisibility" };
   //Statement Url Method
   public static get statementGetUrl(): string { return "Statement/List" };

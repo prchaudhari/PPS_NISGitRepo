@@ -1112,6 +1112,18 @@ namespace nIS
             }
         }
 
+        public bool ValidateApproveScheduleBatches(List<long> BatchIdentifier, string tenantCode)
+        {
+            try
+            {
+                return this.scheduleRepository.ValidateApproveScheduleBatches(BatchIdentifier, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         /// <summary>
         /// This method helps to clean batch and related data of the respective schedule.
         /// </summary>
@@ -1131,6 +1143,19 @@ namespace nIS
                 throw ex;
             }
         }
+
+        public bool CleanScheduleBatches(List<long> BatchIdentifier, string tenantCode)
+        {
+            try
+            {
+                return this.scheduleRepository.CleanScheduleBatches(BatchIdentifier, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
 
         /// <summary>
         /// This method helps to update batch status.

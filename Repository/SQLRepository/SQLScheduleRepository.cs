@@ -1537,7 +1537,7 @@ namespace nIS
                                             runHistory.StatementId = statement.Identifier;
                                             runHistory.ScheduleLogId = scheduleLog.Id;
                                             runHistory.EndDate = DateTime.Now;
-                                            runHistory.FilePath = CommonStatementZipFilePath;
+                                            runHistory.FilePath = fileName;
                                             nISEntitiesDataContext.ScheduleRunHistoryRecords.Add(runHistory);
                                             nISEntitiesDataContext.SaveChanges();
 
@@ -2936,6 +2936,105 @@ namespace nIS
             }
         }
 
+        public bool ValidateApproveScheduleBatches(List<long> BatchIdentifier, string tenantCode)
+        {
+            List<CustomerMasterRecord> customerMasterRecords = new List<CustomerMasterRecord>();
+            List<DM_CustomerMasterRecord> dm_customerMasterRecords = new List<DM_CustomerMasterRecord>();
+            List<StatementMetadataRecord> statementMetadataRecords = new List<StatementMetadataRecord>();
+            IList<ScheduleLogRecord> scheduleLogRecords = new List<ScheduleLogRecord>();
+            IList<ScheduleLogDetailRecord> scheduleLogDetailRecords = new List<ScheduleLogDetailRecord>();
+
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    customerMasterRecords = nISEntitiesDataContext.CustomerMasterRecords.Where(item => BatchIdentifier.Contains(item.BatchId) && item.TenantCode == tenantCode)?.ToList();
+                    if (customerMasterRecords == null || customerMasterRecords.Count == 0)
+                    {
+                        dm_customerMasterRecords = nISEntitiesDataContext.DM_CustomerMasterRecord.Where(it => BatchIdentifier.Contains((long)it.BatchId) && it.TenantCode == tenantCode)?.ToList();
+                    }
+                    scheduleLogRecords = nISEntitiesDataContext.ScheduleLogRecords.Where(item => BatchIdentifier.Contains(item.BatchId)).ToList();
+                }
+                StringBuilder query = new StringBuilder();
+                if (scheduleLogRecords?.Count > 0)
+                {
+                    query = query.Append("(" + string.Join("or ", scheduleLogRecords.Select(item => string.Format("ScheduleLogId.Equals({0}) ", item.Id))) + ") and ");
+                    query.Append(string.Format(" TenantCode.Equals(\"{0}\") ", tenantCode));
+                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                    {
+                        statementMetadataRecords = nISEntitiesDataContext.StatementMetadataRecords.Where(query.ToString()).ToList();
+                    }
+                }
+                if (statementMetadataRecords?.Count > 0)
+                {
+                    TenantSecurityCodeFormatRecord tenantSecurityCodeFormatRecord;
+                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                    {
+                        tenantSecurityCodeFormatRecord = nISEntitiesDataContext.TenantSecurityCodeFormatRecords.Where(item => item.TenantCode == tenantCode).ToList().FirstOrDefault();
+                    }
+                    if (tenantSecurityCodeFormatRecord == null)
+                    {
+                        throw new TenantSecurityCodeFormatNotAvailableException(tenantCode);
+                    }
+                    List<string> fields = tenantSecurityCodeFormatRecord.Format.Split('<').ToList();
+                    fields.RemoveAt(0);
+                    for (int i = 0; i < fields.Count; i++)
+                    {
+                        fields[i] = fields[i].Remove(fields[i].Length - 1);
+                    }
+                    IList<StatementMetadata> newStatementMetadataRecords = new List<StatementMetadata>();
+                    if (customerMasterRecords != null && customerMasterRecords.Count > 0)
+                    {
+                        customerMasterRecords.ToList().ForEach(item =>
+                        {
+                            JObject customerDetails = JObject.FromObject(item);
+                            fields.ToList().ForEach(field =>
+                            {
+                                string fieldValue = string.Empty;
+                                List<string> fieldDetail = field.Split(':').ToList();
+                                if (customerDetails[fieldDetail[0]].ToString() == "")
+                                {
+                                    throw new TenantSecurityCodeFieldDataNotAvailable(tenantCode);
+                                }
+                            });
+                        });
+                    }
+                    else if (dm_customerMasterRecords != null && dm_customerMasterRecords.Count > 0)
+                    {
+                        dm_customerMasterRecords.ToList().ForEach(item =>
+                        {
+                            JObject customerDetails = JObject.FromObject(item);
+                            fields.ToList().ForEach(field =>
+                            {
+                                string fieldValue = string.Empty;
+                                List<string> fieldDetail = field.Split(':').ToList();
+                                if (customerDetails[fieldDetail[0]].ToString() == "")
+                                {
+                                    throw new TenantSecurityCodeFieldDataNotAvailable(tenantCode);
+                                }
+                            });
+                        });
+                    }
+                }
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var batchs = nISEntitiesDataContext.BatchMasterRecords.Where(item => BatchIdentifier.Contains(item.Id) && item.TenantCode == tenantCode).ToList();
+                    batchs.ForEach(batch =>
+                    {
+                        batch.Status = BatchStatus.ApprovalInProgress.ToString();
+                    });
+
+                    nISEntitiesDataContext.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         /// <summary>
         /// This method helps to clean batch and related data of the respective schedule.
         /// </summary>
@@ -3047,6 +3146,145 @@ namespace nIS
             {
                 throw ex;
             }
+            return result;
+        }
+
+        public bool CleanScheduleBatches(List<long> BatchIdentifier, string tenantCode)
+        {
+            bool result = false;
+            var HtmlFilePath = string.Empty;
+            long BatchId = 0;
+            IList<SystemActivityHistoryRecord> Records = new List<SystemActivityHistoryRecord>();
+            string productName = string.Empty;
+            try
+            {
+                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                int userId;
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+                var userFullName = claims?.FirstOrDefault(x => x.Type.Equals("UserFullName", StringComparison.OrdinalIgnoreCase)).Value;
+
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var batches = nISEntitiesDataContext.BatchMasterRecords.Where(item => BatchIdentifier.Contains(item.Id) && item.TenantCode == tenantCode)?.ToList();
+                    productName = (from bm in nISEntitiesDataContext.BatchMasterRecords
+                                   join sc in nISEntitiesDataContext.ScheduleRecords on bm.ScheduleId equals sc.Id
+                                   join pr in nISEntitiesDataContext.Products on sc.ProductId equals pr.Id
+                                   where (BatchIdentifier.Contains(bm.Id))
+                                   select new
+                                   {
+                                       pr.Name
+                                   }).Select(x => x.Name)?.FirstOrDefault();
+
+                    if (batches.Count() > 0)
+                    {
+                        batches.ForEach(batch =>
+                        {
+                            BatchId = batch.Id;
+
+                            //update batch status as NEW and IsExecuted flag to false to available it for re-run
+                            batch.Status = BatchStatus.New.ToString();
+                            batch.IsExecuted = false;
+
+                            //get schedule log
+                            var scheduleLogs = nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.ScheduleId == batch.ScheduleId && item.BatchId == batch.Id && item.TenantCode == tenantCode).ToList();
+                            scheduleLogs.ForEach(log =>
+                            {
+
+                                //get and delete schedule log details
+                                var schedulelogdetails = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.ScheduleId == batch.ScheduleId && item.ScheduleLogId == log.Id && item.TenantCode == tenantCode).ToList();
+                                nISEntitiesDataContext.ScheduleLogDetailRecords.RemoveRange(schedulelogdetails);
+                                //var scheduleLogDetailParam = new System.Data.SqlClient.SqlParameter("@idsTableType", System.Data.SqlDbType.Structured);
+                                //scheduleLogDetailParam.TypeName = "dbo.IdsTableType";
+                                //var idsForScheduleLogDetails = new List<SQLIdsTableType>();
+                                //foreach (var item in schedulelogdetails)
+                                //{
+                                //    idsForScheduleLogDetails.Add(new SQLIdsTableType { Id = item.Id });
+                                //}
+                                //DataTable dataTableForScheduleLogDetails = idsForScheduleLogDetails.ToDataTable();
+                                //scheduleLogDetailParam.Value = dataTableForScheduleLogDetails;
+                                //nISEntitiesDataContext.Database.ExecuteSqlCommand("exec dbo.Delete_ScheduleLogDetails @idsTableType", scheduleLogDetailParam);
+
+                                //get and delete schedule run history
+                                var scheduleRunHistories = nISEntitiesDataContext.ScheduleRunHistoryRecords.Where(item => item.ScheduleId == batch.ScheduleId && item.ScheduleLogId == log.Id && item.TenantCode == tenantCode).ToList();
+                                if (scheduleRunHistories.Count > 0)
+                                {
+                                    HtmlFilePath = scheduleRunHistories[0].FilePath;
+                                }
+
+                                nISEntitiesDataContext.ScheduleRunHistoryRecords.RemoveRange(scheduleRunHistories);
+
+                                //get and delete statement metadata
+                                var statementMetadatas = nISEntitiesDataContext.StatementMetadataRecords.Where(item => item.ScheduleId == batch.ScheduleId && item.ScheduleLogId == log.Id && item.TenantCode == tenantCode).ToList();
+                                nISEntitiesDataContext.StatementMetadataRecords.RemoveRange(statementMetadatas);
+                                //var parameter = new System.Data.SqlClient.SqlParameter("@idsTableType", System.Data.SqlDbType.Structured);
+                                //parameter.TypeName = "dbo.IdsTableType";
+                                //var ids = new List<SQLIdsTableType>();
+                                //foreach (var item in statementMetadatas)
+                                //{
+                                //    ids.Add(new SQLIdsTableType { Id = item.Id });
+                                //}
+                                //DataTable dataTable = ids.ToDataTable();
+                                //parameter.Value = dataTable;
+                                //nISEntitiesDataContext.Database.ExecuteSqlCommand("exec dbo.Delete_StatementMetaData @idsTableType", parameter);
+
+                                Records.Add(new SystemActivityHistoryRecord()
+                                {
+                                    Module = ModelConstant.SCHEDULE_MODEL_SECTION,
+                                    EntityId = batch.ScheduleId,
+                                    EntityName = log.ScheduleName,
+                                    SubEntityId = batch.Id,
+                                    SubEntityName = batch.BatchName,
+                                    ActionTaken = "CleanBatch",
+                                    ActionTakenBy = userId,
+                                    ActionTakenByUserName = userFullName,
+                                    ActionTakenDate = DateTime.Now,
+                                    TenantCode = tenantCode
+                                });
+                            });
+
+                            //delete schedule log
+                            nISEntitiesDataContext.ScheduleLogRecords.RemoveRange(scheduleLogs);
+
+                            if (Records.Count > 0)
+                            {
+                                nISEntitiesDataContext.SystemActivityHistoryRecords.AddRange(Records);
+                            }
+
+                            //to save all above delete records in database
+                            nISEntitiesDataContext.SaveChanges();
+                            result = true;
+                        });
+                    }
+                }
+
+                if (result && BatchId != 0 && HtmlFilePath != string.Empty)
+                {
+                    //get HTML statements and other related files directory path
+                    var filePathArr = HtmlFilePath.Split('\\').ToList();
+                    var HtmlFilesDir = new StringBuilder();
+                    for (int i = 0; i < filePathArr.Count; i++)
+                    {
+                        HtmlFilesDir = HtmlFilesDir.Append((HtmlFilesDir.ToString() != string.Empty ? "\\" : "") + filePathArr[i]);
+                        if (filePathArr[i].Equals("" + BatchId))
+                        {
+                            break;
+                        }
+                    }
+
+                    //delete all HTML statements and other related files directory from pyshical path
+                    DirectoryInfo directoryInfo = new DirectoryInfo(HtmlFilesDir.ToString());
+                    if (directoryInfo.Exists)
+                    {
+                        directoryInfo.Delete(true);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            //RemoveApprovedData(productName, BatchIdentifier).ConfigureAwait(false);
             return result;
         }
 
@@ -4605,6 +4843,54 @@ namespace nIS
             }
         }
 
+        private Task RemoveApprovedData(string productName, List<long> batchIds)
+        {
+            try
+            {
+                using (NISEntities nISEntitiesDataContext = new NISEntities(connectionString))
+                {
+                    switch (productName?.ToLower())
+                    {
+                        case "home loan":
+                            if (batchIds.Count() > 0)
+                            {
+                                nISEntitiesDataContext.Database.ExecuteSqlCommand("exec [NB_Delete_HomeLoanStatementData] '" + string.Join(",", batchIds) + "'");
+                            }
+                            break;
+                        case "investment":
+                            if (batchIds.Count() > 0)
+                            {
+                                nISEntitiesDataContext.Database.ExecuteSqlCommand("exec [NB_Delete_InvestmentStatementData] '" + string.Join(",", batchIds) + "'");
+                            }
+                            break;
+                        case "mca":
+                            if (batchIds.Count() > 0)
+                            {
+                                nISEntitiesDataContext.Database.ExecuteSqlCommand("exec [NB_Delete_MCAStatementData] '" + string.Join(",", batchIds) + "'");
+                            }
+                            break;
+                        case "personal loan":
+                            if (batchIds.Count() > 0)
+                            {
+                                nISEntitiesDataContext.Database.ExecuteSqlCommand("exec [NB_Delete_PersonalLoanStatementData] '" + string.Join(",", batchIds) + "'");
+                            }
+                            break;
+                        case "corporate saver":
+                            if (batchIds.Count() > 0)
+                            {
+                                nISEntitiesDataContext.Database.ExecuteSqlCommand("exec [NB_Delete_CorporateSaverStatementData] '" + string.Join(",", batchIds) + "'");
+                            }
+                            break;
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                throw;
+            }
+
+            return Task.CompletedTask;
+        }
         #endregion
     }
 }

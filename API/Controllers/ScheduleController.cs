@@ -534,6 +534,25 @@ namespace nIS
             }
         }
 
+        [HttpPost]
+        public bool ValidateApproveScheduleBatches(string batchIdentifiers)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(batchIdentifiers))
+                {
+                    return false;
+                }
+                var batchesId = batchIdentifiers.Split(',').Select(x => Convert.ToInt64(x)).ToList();
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                return this.scheduleManager.ValidateApproveScheduleBatches(batchesId, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         /// <summary>
         /// This method helps to clean batch and related data of the respective schedule.
         /// </summary>
@@ -552,6 +571,25 @@ namespace nIS
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        [HttpPost]
+        public bool CleanScheduleBatches(string BatchIdentifier)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(BatchIdentifier))
+                {
+                    return false;
+                }
+                var batchesId = BatchIdentifier.Split(',').Select(x => Convert.ToInt64(x)).ToList();
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                return this.scheduleManager.CleanScheduleBatches(batchesId, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
         }
 
