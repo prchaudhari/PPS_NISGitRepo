@@ -1476,7 +1476,7 @@ namespace nIS
                     //else
                     //{
                         string fileName = "Statement_" + customer.Identifier + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
-                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, batchMaster.Identifier, customer.Identifier, statementRawData.BaseURL, statementRawData.OutputLocation, true, statement.Pages[0].PageTypeName);
+                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, statementRawData.ScheduleLog.ScheduleName,batchMaster.BatchName, customer.Identifier, statementRawData.BaseURL, statementRawData.OutputLocation, true, statement.Pages[0].PageTypeName);
 
                         logDetailRecord.StatementFilePath = filePath;
                         logDetailRecord.Status = ScheduleLogStatus.Completed.ToString();
@@ -2192,7 +2192,7 @@ namespace nIS
                         string headerHtml = statement.Pages[0].HeaderHTML;
                         string footerHtml = statement.Pages[0].FooterHTML;
 
-                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, batchMaster.Identifier, customer.CustomerId, statementRawData.BaseURL, statementRawData.OutputLocation, printPdf: true, headerHtml: headerHtml, footerHtml: footerHtml, segment: statement.Pages[0].PageTypeName, language: customer.Language);
+                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, "",batchMaster.BatchName, customer.CustomerId, statementRawData.BaseURL, statementRawData.OutputLocation, printPdf: true, headerHtml: headerHtml, footerHtml: footerHtml, segment: statement.Pages[0].PageTypeName, language: customer.Language);
 
                         logDetailRecord.StatementFilePath = filePath;
                         logDetailRecord.Status = ScheduleLogStatus.Completed.ToString();

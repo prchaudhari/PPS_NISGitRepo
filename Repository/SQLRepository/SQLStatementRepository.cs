@@ -3185,7 +3185,14 @@ namespace nIS
                     else
                     {
                         string fileName = "Statement_" + customer.Id + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
-                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, batchMaster.Id, customer.Id, baseURL, outputLocation);
+                        //string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, batchMaster.Id, customer.Id, baseURL, outputLocation);
+                        var scheduleName = "";
+                        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                        {
+                            var schedule = nISEntitiesDataContext.ScheduleRecords.Where(a => a.Id == logDetailRecord.ScheduleId).FirstOrDefault();
+                            scheduleName = schedule.Name;
+                        }
+                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, scheduleName, batchMaster.BatchName, customer.Id, baseURL, outputLocation);
 
                         logDetailRecord.StatementFilePath = filePath;
                         logDetailRecord.Status = ScheduleLogStatus.Completed.ToString();

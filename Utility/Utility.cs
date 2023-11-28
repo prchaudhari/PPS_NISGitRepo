@@ -593,11 +593,13 @@
         /// <param name="fileName"> the file name </param>
         /// <param name="batchId"> the batch identifier </param>
         /// <param name="customerId"> the customer identifier </param>
-        public string WriteToFile(string Message, string fileName, long batchId, long customerId, string baseURL, string outputLocation, bool printPdf = false, string headerHtml = "", string footerHtml = "", string segment = "", string language = "")
+        public string WriteToFile(string Message, string fileName, string scheduleName, string batchName, long customerId, string baseURL, string outputLocation, bool printPdf = false, string headerHtml = "", string footerHtml = "", string segment = "", string language = "")
         {
             string resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
-            string statementDestPath = outputLocation + "\\Statements" + "\\" + batchId;
-            string statementPath = baseURL + "\\Statements" + "\\" + batchId + "\\" + customerId + "\\" + fileName;
+            //string statementDestPath = outputLocation + "\\Statements" + "\\" + batchId;
+            //string statementPath = baseURL + "\\Statements" + "\\" + batchId + "\\" + customerId + "\\" + fileName;
+            string statementDestPath = outputLocation + "\\Statements" + "\\" + scheduleName + "\\" + batchName;
+            string statementPath = baseURL + "\\Statements" + "\\" + scheduleName + "\\" + batchName + "\\" + customerId + "\\" + fileName;
             if (!Directory.Exists(statementDestPath))
             {
                 Directory.CreateDirectory(statementDestPath);
@@ -607,7 +609,7 @@
             {
                 Directory.CreateDirectory(path);
             }
-            string filepath = path + fileName;
+            string filepath = Path.Combine(path, fileName);
             if (!File.Exists(filepath))
             {
                 // Create a file to write to.
