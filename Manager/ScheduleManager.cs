@@ -1500,7 +1500,7 @@ namespace nIS
                             SortColumn = "Id",
                         },
                         SearchMode = SearchMode.Equals
-                    }, tenantCode).ToList().FirstOrDefault();
+                    }, tenantCode).ToList().LastOrDefault();        //.FirstOrDefault();
                     scheduleLog.ScheduleId = scheduleRecord.Identifier;
 
                     var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
@@ -1771,7 +1771,7 @@ namespace nIS
                             SortColumn = "Id",
                         },
                         SearchMode = SearchMode.Equals
-                    }, tenantCode).ToList().FirstOrDefault();
+                    }, tenantCode).ToList().LastOrDefault();        // FirstOrDefault();
                     scheduleLog.ScheduleId = schedule.Identifier;
 
                     var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);

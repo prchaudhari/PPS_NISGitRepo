@@ -1468,13 +1468,13 @@ namespace nIS
 
                     //If has any error while rendering html statement, then assign status as failed and all collected errors message to log message variable..
                     //Otherwise write html statement string to actual html file and store it at output location, then assign status as completed
-                    //if (IsFailed)
-                    //{
-                    //    logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                    //    logDetailRecord.LogMessage = "<ul class='pl-4 text-left'>" + ErrorMessages.ToString() + "</ul>";
-                    //}
-                    //else
-                    //{
+                    if (IsFailed)
+                    {
+                        logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
+                        logDetailRecord.LogMessage = "<ul class='pl-4 text-left'>" + ErrorMessages.ToString() + "</ul>";
+                    }
+                    else
+                    {
                         string fileName = "Statement_" + customer.Identifier + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
                         string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, statementRawData.ScheduleLog.ScheduleName,batchMaster.BatchName, customer.Identifier, statementRawData.BaseURL, statementRawData.OutputLocation, true, statement.Pages[0].PageTypeName);
 
@@ -1482,7 +1482,7 @@ namespace nIS
                         logDetailRecord.Status = ScheduleLogStatus.Completed.ToString();
                         logDetailRecord.LogMessage = "Statement generated successfully..!!";
                         logDetailRecord.statementMetadata = statementMetadataRecords;
-                    //}
+                    }
                 }
 
                 return logDetailRecord;

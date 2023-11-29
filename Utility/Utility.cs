@@ -1420,26 +1420,26 @@
                 PdfHtmlSection headHtml = new PdfHtmlSection($@"{headerFooterFontFolderPath}\HeaderFooters\" + segment + "_header.html");
                 converter.Header.Add(headHtml);
 
-                if (segment.Contains("Corporate Saver") || segment == "Home Loan For Other Segment English")
-                {
-                    converter.Header.Height = 125;
-                }
-                else
-                {
-                    converter.Header.Height = 125;
-                }
+                //if (segment.Contains("Corporate Saver") || segment == "Home Loan For Other Segment English")
+                //{
+                //    converter.Header.Height = 125;
+                //}
+                //else
+                //{
+                //    converter.Header.Height = 125;
+                //}
 
                 PdfHtmlSection footHtml = new PdfHtmlSection($@"{headerFooterFontFolderPath}\HeaderFooters\" + segment + "_footer.html");
                 converter.Footer.Add(footHtml);
                 converter.Footer.Height = 80;
-                if (segment == "Home Loan For Other Segment English" || segment == "Home Loan For Other Segment African"
-                    || segment == "Home Loan For PML Segment English" || segment == "Home Loan For PML Segment African"
-                    || segment == "Multi Currency For CIB" || segment == "Personal Loan"
-                    || segment == "Investment Other Segment For English" || segment == "Investment Other Segment For African"
-                    || segment == "Corporate Saver English" || segment == "Corporate Saver African")
-                {
-                    converter.Footer.Height = 50;
-                }
+                //if (segment == "Home Loan For Other Segment English" || segment == "Home Loan For Other Segment African"
+                //    || segment == "Home Loan For PML Segment English" || segment == "Home Loan For PML Segment African"
+                //    || segment == "Multi Currency For CIB" || segment == "Personal Loan"
+                //    || segment == "Investment Other Segment For English" || segment == "Investment Other Segment For African"
+                //    || segment == "Corporate Saver English" || segment == "Corporate Saver African")
+                //{
+                //    converter.Footer.Height = 50;
+                //}
 
                 converter.Options.DisplayFooter = true;
                 converter.Options.DisplayHeader = true;
