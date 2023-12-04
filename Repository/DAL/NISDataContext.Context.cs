@@ -65,7 +65,7 @@ namespace nIS
         public virtual DbSet<AccountTransactionRecord> AccountTransactionRecords { get; set; }
         public virtual DbSet<SavingTrendRecord> SavingTrendRecords { get; set; }
         public virtual DbSet<Top4IncomeSourcesRecord> Top4IncomeSourcesRecord { get; set; }
-        public virtual DbSet<TransactionDetailRecord> TransactionDetailRecords { get; set; }
+        //public virtual DbSet<TransactionDetailRecord> TransactionDetailRecords { get; set; }
         public virtual DbSet<AccountMasterRecord> AccountMasterRecords { get; set; }
         public virtual DbSet<BatchMasterRecord> BatchMasterRecords { get; set; }
         public virtual DbSet<AnalyticsDataRecord> AnalyticsDataRecords { get; set; }
@@ -96,21 +96,21 @@ namespace nIS
         public virtual DbSet<TenantSecurityCodeFormatRecord> TenantSecurityCodeFormatRecords { get; set; }
         public virtual DbSet<View_StatementMetadataRecord> View_StatementMetadataRecord { get; set; }
         public virtual DbSet<View_ScheduleLog> View_ScheduleLog { get; set; }
-        public virtual DbSet<View_UserRecord> View_UserRecord { get; set; }
+        //public virtual DbSet<View_UserRecord> View_UserRecord { get; set; }
         public virtual DbSet<TenantConfigurationRecord> TenantConfigurationRecords { get; set; }
         public virtual DbSet<DM_BranchMasterRecord> DM_BranchMasterRecord { get; set; }
         public virtual DbSet<DM_CustomerMasterRecord> DM_CustomerMasterRecord { get; set; }
         public virtual DbSet<DM_ExplanatoryNotesRecord> DM_ExplanatoryNotesRecord { get; set; }
         public virtual DbSet<DM_InvestmentMasterRecord> DM_InvestmentMasterRecord { get; set; }
-        public virtual DbSet<DM_InvestmentTransactionRecord> DM_InvestmentTransactionRecord { get; set; }
+        //public virtual DbSet<DM_InvestmentTransactionRecord> DM_InvestmentTransactionRecord { get; set; }
         public virtual DbSet<DM_PersonalLoanArrearsRecord> DM_PersonalLoanArrearsRecord { get; set; }
         public virtual DbSet<DM_PersonalLoanMasterRecord> DM_PersonalLoanMasterRecord { get; set; }
         public virtual DbSet<DM_PersonalLoanTransactionRecord> DM_PersonalLoanTransactionRecord { get; set; }
         public virtual DbSet<DM_SpecialMessagesRecord> DM_SpecialMessagesRecord { get; set; }
-        public virtual DbSet<DM_HomeLoanArrearsRecord> DM_HomeLoanArrearsRecord { get; set; }
-        public virtual DbSet<DM_HomeLoanMasterRecord> DM_HomeLoanMasterRecord { get; set; }
-        public virtual DbSet<DM_HomeLoanSummaryRecord> DM_HomeLoanSummaryRecord { get; set; }
-        public virtual DbSet<DM_HomeLoanTransactionRecord> DM_HomeLoanTransactionRecord { get; set; }
+        //public virtual DbSet<DM_HomeLoanArrearsRecord> DM_HomeLoanArrearsRecord { get; set; }
+        //public virtual DbSet<DM_HomeLoanMasterRecord> DM_HomeLoanMasterRecord { get; set; }
+        //public virtual DbSet<DM_HomeLoanSummaryRecord> DM_HomeLoanSummaryRecord { get; set; }
+        //public virtual DbSet<DM_HomeLoanTransactionRecord> DM_HomeLoanTransactionRecord { get; set; }
         public virtual DbSet<DM_MarketingMessagesRecord> DM_MarketingMessagesRecord { get; set; }
         public virtual DbSet<DM_AccountAnalysisRecord> DM_AccountAnalysisRecord { get; set; }
         public virtual DbSet<DM_AccountSummaryRecord> DM_AccountSummaryRecord { get; set; }
@@ -124,12 +124,12 @@ namespace nIS
         public virtual DbSet<DM_NewsAndAlertsRecord> DM_NewsAndAlertsRecord { get; set; }
         public virtual DbSet<DM_ReminderRecosRecord> DM_ReminderRecosRecord { get; set; }
         public virtual DbSet<SystemActivityHistoryRecord> SystemActivityHistoryRecords { get; set; }
-        public virtual DbSet<NB_BatchMaster_Source> NB_BatchMaster_Source { get; set; }
-        public virtual DbSet<NB_BranchMaster> NB_BranchMaster { get; set; }
-        public virtual DbSet<NB_BranchMaster_Old> NB_BranchMaster_Old { get; set; }
-        public virtual DbSet<NB_Investment_Source> NB_Investment_Source { get; set; }
-        public virtual DbSet<NB_InvestmentMaster_Old> NB_InvestmentMaster_Old { get; set; }
-        public virtual DbSet<NB_InvestmentTransaction_Old> NB_InvestmentTransaction_Old { get; set; }
+        //public virtual DbSet<NB_BatchMaster_Source> NB_BatchMaster_Source { get; set; }
+        //public virtual DbSet<NB_BranchMaster> NB_BranchMaster { get; set; }
+        //public virtual DbSet<NB_BranchMaster_Old> NB_BranchMaster_Old { get; set; }
+        //public virtual DbSet<NB_Investment_Source> NB_Investment_Source { get; set; }
+        //public virtual DbSet<NB_InvestmentMaster_Old> NB_InvestmentMaster_Old { get; set; }
+        //public virtual DbSet<NB_InvestmentTransaction_Old> NB_InvestmentTransaction_Old { get; set; }
         public virtual DbSet<NB_SegmentMaster> NB_SegmentMaster { get; set; }
         public virtual DbSet<NB_SegmentTypeMaster> NB_SegmentTypeMaster { get; set; }
         public virtual DbSet<NB_ServiceMessagesAndContacts> NB_ServiceMessagesAndContacts { get; set; }
