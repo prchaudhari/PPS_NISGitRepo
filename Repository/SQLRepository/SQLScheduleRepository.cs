@@ -3153,7 +3153,8 @@ namespace nIS
         {
             bool result = false;
             var HtmlFilePath = string.Empty;
-            long BatchId = 0;
+            //long BatchId = 0;
+            string BatchName = string.Empty;
             IList<SystemActivityHistoryRecord> Records = new List<SystemActivityHistoryRecord>();
             string productName = string.Empty;
             try
@@ -3180,7 +3181,7 @@ namespace nIS
                     {
                         batches.ForEach(batch =>
                         {
-                            BatchId = batch.Id;
+                            BatchName = batch.BatchName;
 
                             //update batch status as NEW and IsExecuted flag to false to available it for re-run
                             batch.Status = BatchStatus.New.ToString();
@@ -3193,6 +3194,12 @@ namespace nIS
 
                                 //get and delete schedule log details
                                 var schedulelogdetails = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.ScheduleId == batch.ScheduleId && item.ScheduleLogId == log.Id && item.TenantCode == tenantCode).ToList();
+                                if (schedulelogdetails.Count > 0)
+                                {
+                                    //Get html path from schedulelogdetails instead of zip file path from table 'ScheduleRunHistory'
+                                    HtmlFilePath = schedulelogdetails[0].StatementFilePath;
+                                }
+
                                 nISEntitiesDataContext.ScheduleLogDetailRecords.RemoveRange(schedulelogdetails);
                                 //var scheduleLogDetailParam = new System.Data.SqlClient.SqlParameter("@idsTableType", System.Data.SqlDbType.Structured);
                                 //scheduleLogDetailParam.TypeName = "dbo.IdsTableType";
@@ -3207,10 +3214,10 @@ namespace nIS
 
                                 //get and delete schedule run history
                                 var scheduleRunHistories = nISEntitiesDataContext.ScheduleRunHistoryRecords.Where(item => item.ScheduleId == batch.ScheduleId && item.ScheduleLogId == log.Id && item.TenantCode == tenantCode).ToList();
-                                if (scheduleRunHistories.Count > 0)
-                                {
-                                    HtmlFilePath = scheduleRunHistories[0].FilePath;
-                                }
+                                //if (scheduleRunHistories.Count > 0)
+                                //{
+                                //    HtmlFilePath = scheduleRunHistories[0].FilePath;
+                                //}
 
                                 nISEntitiesDataContext.ScheduleRunHistoryRecords.RemoveRange(scheduleRunHistories);
 
@@ -3258,7 +3265,7 @@ namespace nIS
                     }
                 }
 
-                if (result && BatchId != 0 && HtmlFilePath != string.Empty)
+                if (result && BatchName != string.Empty && HtmlFilePath != string.Empty)
                 {
                     //get HTML statements and other related files directory path
                     var filePathArr = HtmlFilePath.Split('\\').ToList();
@@ -3266,7 +3273,7 @@ namespace nIS
                     for (int i = 0; i < filePathArr.Count; i++)
                     {
                         HtmlFilesDir = HtmlFilesDir.Append((HtmlFilesDir.ToString() != string.Empty ? "\\" : "") + filePathArr[i]);
-                        if (filePathArr[i].Equals("" + BatchId))
+                        if (filePathArr[i].Equals("" + BatchName))
                         {
                             break;
                         }
