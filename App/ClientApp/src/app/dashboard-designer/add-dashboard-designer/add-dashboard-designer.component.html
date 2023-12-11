@@ -27,6 +27,7 @@
       <li class="side-bar-li" title={{widget.DisplayName}} *ngFor="let widget of widgetsArray">
         <a (click)="selectWidget(widget.Identifier, widget.WidgetName)">
           <span class="nav-icon fa" [ngClass]="{
+                  'fa-address-book': widget.WidgetName == 'FSPDetails' || widget.WidgetName == 'PortfolioCustomerDetails',
                   'fa-address-book-o': widget.WidgetName == 'CustomerInformation' || widget.WidgetName == 'CustomerDetails' || widget.WidgetName == 'PortfolioCustomerDetails',
                   'fa-address-card-o' : widget.WidgetName == 'AccountInformation' || widget.WidgetName == 'CustomerAddressDetails',
                   'fa-cc fa-lg': widget.WidgetName == 'ClientContactDetails',

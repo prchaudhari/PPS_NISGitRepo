@@ -47,6 +47,60 @@ export class CustomerInformationComponent {
 
 }
 
+// Component Created for FSP Widget--
+@Component({
+  selector: 'fsp',
+  template: `<div class="widget">
+    <div class="widget-header">
+      <span class="widget-header-title"> FSP details </span>
+    </div>
+    <section class="info-section">
+
+            <div class="subsection">
+
+               <b>Yvonne van Heerden</b> <br>
+               T/A Yvonne Van Heerden Financial<br>
+               Planner CC<br>
+               Mobile : 082- 1234567<br>
+               Email y.vanheerden@google.com
+            </div>
+
+                    <div class="vl"></div>
+
+            <div class="subsection">
+                <b>Address</b><br>
+                1 John Vorster Drive<br>
+                Randburg<br>
+                Gauteng
+
+            </div>
+
+                <div class="vl"></div>
+
+            <div class="subsection">
+                <b>FSP</b>&nbsp;&nbsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;: 27959<br>
+                <b>FSB Agreement number</b>&nbsp;: 124411742<br>
+                <b>Vat Reg no.</b> &emsp;&emsp;&emsp;&emsp;&emsp; : 4370245823<br>
+                <b>Month </b> &nbsp;&nbsp;&nbsp;&nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; : September 2023
+            </div>
+        </section>
+        <hr class="horizontal-line">
+  </div>`
+})
+export class FSPDetailsComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+  //account info
+  //accountInfoLists: any[] = [
+  //  { title: 'Statement Date', value: '1-APR-2020' },
+  //  { title: 'Statement Period', value: 'Annual Statement' },
+  //  { title: 'Customer ID', value: 'ID2-8989-5656' },
+  //  { title: 'RM Name', value: 'David Miller' },
+  //  { title: 'RM Contact Number', value: '+4487867833' },
+  //];
+
+}
+
 // Component Created for Account Information Widget--
 @Component({
   selector: 'accountInformation',

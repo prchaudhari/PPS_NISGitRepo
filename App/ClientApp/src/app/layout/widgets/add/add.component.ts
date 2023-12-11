@@ -79,6 +79,11 @@ export class AddComponent implements OnInit {
           this.widgetList[i].ImageSource = "assets/images/CustomerInfoWidget.PNG";
           this.widgetList[i].WidgetIcon = "fa fa-address-book-o";
         }
+        else if (this.widgetList[i].WidgetName == "FSPDetails") {
+          this.widgetList[i].ImageSource = "assets/images/FSPDetails.png";
+          this.widgetList[i].WidgetIcon = "fa fa-address-book";
+        }
+
         else if (this.widgetList[i].WidgetName == "AccountInformation") {
           this.widgetList[i].ImageSource = "assets/images/AccountInfoWidget.PNG"
           this.widgetList[i].WidgetIcon = "fa fa-address-card-o";

@@ -6,7 +6,8 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import * as $ from 'jquery';
 import { DomSanitizer } from '@angular/platform-browser';
-import { SummaryAtGlanceComponent, AccountInformationComponent,
+import {
+  SummaryAtGlanceComponent, AccountInformationComponent, FSPDetailsComponent,
   SavingTrendsPreviewComponent, SpendindTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent, 
   DynamicBarChartWidgetPreviewComponent, DynamicHhtmlComponent, StaticHtmlComponent, PageBreakComponent, SegmentBasedContentComponent, PortfolioAccountAnalysisPreviewComponent, YTDRewardPointsPreviewComponent, PointsRedeemedYTDPreviewComponent, ProductRelatedPointsEarnedPreviewComponent, CategorySpendRewardsPreviewComponent } from '../widgetComponent/widgetComponent';
 import { DynamicWidgetService } from '../../layout/widget-dynamic/dynamicwidget.service';
@@ -196,6 +197,8 @@ export class PageDesignPreviewComponent extends DialogComponent<PageDesignPrevie
         return SummaryAtGlanceComponent;
       }else if(widgetType == 'Form') {
         return AccountInformationComponent;
+      } else if (widgetType == 'Form') {
+        return FSPDetailsComponent;
       }else if(widgetType == 'Html') {
         return DynamicHhtmlComponent;
       }

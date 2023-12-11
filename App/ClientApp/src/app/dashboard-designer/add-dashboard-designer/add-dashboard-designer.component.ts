@@ -22,7 +22,7 @@ import {
   HomeLoanInstalmentDetailComponent, PortfolioCustomerDetailsComponent, PortfolioCustomerAddressDetailsComponent, PortfolioClientContactDetailsComponent, PortfolioAccountSummaryDetailsComponent,
   PortfolioAccountAnalysisComponent, PortfolioRemindersComponent, PortfolioNewsAlertsComponent, GreenbacksContactUsComponent, YTDRewardPointsComponent, PointsRedeemedYTDComponent, ProductRelatedPointsEarnedComponent, CategorySpendRewardsComponent, GreenbacksTotalRewardPointsComponent, WealthBreakdownOfInvestmentAccountsComponent, HomeLoanSummaryTaxPurposeComponent,
   HomeLoanInstalmentComponent, WealthHomeLoanTotalAmountDetailComponent, WealthHomeLoanAccountsBreakdownComponent, WealthHomeLoanSummaryTaxPurposeComponent, WealthHomeLoanInstalmentComponent, WealthHomeLoanBankDetailsComponent,
-  MCAAccountSummaryComponent, MCATransactionComponent, MCAVATAnalysisComponent, WealthMCAVATAnalysisComponent, WealthMCATransactionComponent, WealthMCAAccountSummaryComponent, WealthMCABranchDetailsComponent, CorporateSaverAgentMessageComponent, CorporateSaverTransactionComponent, CorporateSaverClientDetailsComponent, CorporateSaverTableTotalComponent, CorporateAgentDetailsComponent, CSAgentLogoComponent
+  MCAAccountSummaryComponent, MCATransactionComponent, MCAVATAnalysisComponent, WealthMCAVATAnalysisComponent, WealthMCATransactionComponent, WealthMCAAccountSummaryComponent, WealthMCABranchDetailsComponent, CorporateSaverAgentMessageComponent, CorporateSaverTransactionComponent, CorporateSaverClientDetailsComponent, CorporateSaverTableTotalComponent, CorporateAgentDetailsComponent, CSAgentLogoComponent, FSPDetailsComponent
 } from '../widgetComponent/widgetComponent';
 import { AssetLibraryService } from '../../layout/asset-libraries/asset-library.service';
 import { AssetSearchParameter } from '../../layout/asset-libraries/asset-library';
@@ -945,6 +945,21 @@ export class AddDashboardDesignerComponent implements OnInit {
               y: 0,
               x: 0,
               component: CustomerInformationComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "FSPDetails") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 3,
+              rows: 4,
+              y: 0,
+              x: 0,
+              component: FSPDetailsComponent,
               value: widget.WidgetName,
               WidgetId: widget.Identifier,
               widgetItemCount: this.widgetItemCount,
@@ -2228,6 +2243,9 @@ export class AddDashboardDesignerComponent implements OnInit {
     if (widgetType == 'Static') {
       if (widgetName == 'CustomerInformation') {
         gridObj.component = CustomerInformationComponent;
+      }
+      else if (widgetName == 'FSPDetails') {
+        gridObj.component = FSPDetailsComponent;
       }
       else if (widgetName == 'AccountInformation') {
         gridObj.component = AccountInformationComponent;
