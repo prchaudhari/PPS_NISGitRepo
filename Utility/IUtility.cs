@@ -268,7 +268,7 @@
         /// <returns>
         /// Returns the the formatted amount value string
         /// </returns>
-        string NedbankClientAmountFormatter(double amount);
+        //string NedbankClientAmountFormatter(double amount);
 
         /// <summary>
         /// This method helps to format currency as per provided country currency details amount value

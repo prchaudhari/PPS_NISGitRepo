@@ -227,83 +227,83 @@ namespace nIS
         /// </summary>
         /// <param name="statementRawData"> the raw data object requires for statement generate process</param>
         /// <param name="tenantCode"></param>
-        public void CreateCustomerNedbankStatement(GenerateStatementRawData statementRawData, string tenantCode)
-        {
-            IList<StatementMetadata> statementMetadataRecords = new List<StatementMetadata>();
-            var customer = statementRawData.DM_Customer;
+        //public void CreateCustomerNedbankStatement(GenerateStatementRawData statementRawData, string tenantCode)
+        //{
+        //    IList<StatementMetadata> statementMetadataRecords = new List<StatementMetadata>();
+        //    var customer = statementRawData.DM_Customer;
 
-            try
-            {
-                //call to generate actual NedBank HTML statement file for current customer record
-                var logDetailRecord = this.GenerateNedbankStatements(statementRawData, tenantCode);
-                if (logDetailRecord != null)
-                {
-                    //save schedule log details for current customer
-                    var logDetails = new List<ScheduleLogDetail>();
-                    logDetailRecord.ScheduleLogId = statementRawData.ScheduleLog.Identifier;
-                    logDetailRecord.CustomerId = customer.CustomerId;
-                    logDetailRecord.CustomerName = customer.FirstName?.Trim() + " " + customer.SurName?.Trim();
-                    logDetailRecord.ScheduleId = statementRawData.ScheduleLog.ScheduleId;
-                    logDetailRecord.RenderEngineId = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.Identifier : 0;
-                    logDetailRecord.RenderEngineName = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.RenderEngineName : "";
-                    logDetailRecord.RenderEngineURL = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.URL : "";
-                    logDetailRecord.NumberOfRetry = 1;
-                    logDetailRecord.CreateDate = DateTime.UtcNow;
-                    logDetails.Add(logDetailRecord);
-                    this.scheduleLogRepository.SaveScheduleLogDetails(logDetails, tenantCode);
+        //    try
+        //    {
+        //        //call to generate actual NedBank HTML statement file for current customer record
+        //        var logDetailRecord = this.GenerateNedbankStatements(statementRawData, tenantCode);
+        //        if (logDetailRecord != null)
+        //        {
+        //            //save schedule log details for current customer
+        //            var logDetails = new List<ScheduleLogDetail>();
+        //            logDetailRecord.ScheduleLogId = statementRawData.ScheduleLog.Identifier;
+        //            logDetailRecord.CustomerId = customer.CustomerId;
+        //            logDetailRecord.CustomerName = customer.FirstName?.Trim() + " " + customer.SurName?.Trim();
+        //            logDetailRecord.ScheduleId = statementRawData.ScheduleLog.ScheduleId;
+        //            logDetailRecord.RenderEngineId = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.Identifier : 0;
+        //            logDetailRecord.RenderEngineName = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.RenderEngineName : "";
+        //            logDetailRecord.RenderEngineURL = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.URL : "";
+        //            logDetailRecord.NumberOfRetry = 1;
+        //            logDetailRecord.CreateDate = DateTime.UtcNow;
+        //            logDetails.Add(logDetailRecord);
+        //            this.scheduleLogRepository.SaveScheduleLogDetails(logDetails, tenantCode);
 
-                    //if statement generated successfully, then save statement metadata with actual html statement file path
-                    if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Completed.ToString().ToLower()))
-                    {
-                        if (logDetailRecord.statementMetadata.Count > 0)
-                        {
-                            logDetailRecord.statementMetadata.ToList().ForEach(metarec =>
-                            {
-                                metarec.ScheduleLogId = statementRawData.ScheduleLog.Identifier;
-                                metarec.ScheduleId = statementRawData.ScheduleLog.ScheduleId;
-                                metarec.StatementDate = DateTime.UtcNow;
-                                metarec.StatementURL = logDetailRecord.StatementFilePath;
-                                metarec.TenantCode = tenantCode;
-                                metarec.IsPasswordGenerated = false;
-                                metarec.Password = "";
-                                statementMetadataRecords.Add(metarec);
-                            });
-                            this.scheduleLogRepository.SaveStatementMetadata(statementMetadataRecords, tenantCode);
-                        }
-                    }
+        //            //if statement generated successfully, then save statement metadata with actual html statement file path
+        //            if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Completed.ToString().ToLower()))
+        //            {
+        //                if (logDetailRecord.statementMetadata.Count > 0)
+        //                {
+        //                    logDetailRecord.statementMetadata.ToList().ForEach(metarec =>
+        //                    {
+        //                        metarec.ScheduleLogId = statementRawData.ScheduleLog.Identifier;
+        //                        metarec.ScheduleId = statementRawData.ScheduleLog.ScheduleId;
+        //                        metarec.StatementDate = DateTime.UtcNow;
+        //                        metarec.StatementURL = logDetailRecord.StatementFilePath;
+        //                        metarec.TenantCode = tenantCode;
+        //                        metarec.IsPasswordGenerated = false;
+        //                        metarec.Password = "";
+        //                        statementMetadataRecords.Add(metarec);
+        //                    });
+        //                    this.scheduleLogRepository.SaveStatementMetadata(statementMetadataRecords, tenantCode);
+        //                }
+        //            }
 
-                    //If any error occurs during statement generation then delete all files from output directory of current customer html statement
-                    else if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
-                    {
-                        this.utility.DeleteUnwantedDirectory(statementRawData.Batch.Identifier, customer.CustomerId, statementRawData.OutputLocation);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                //save schedule log details for current customer, if something went wrong while statement generation...
-                var logDetails = new List<ScheduleLogDetail>();
-                logDetails.Add(new ScheduleLogDetail()
-                {
-                    ScheduleLogId = statementRawData.ScheduleLog.Identifier,
-                    CustomerId = customer.CustomerId,
-                    CustomerName = customer.FirstName.Trim() + " " + customer.SurName?.Trim(),
-                    ScheduleId = statementRawData.ScheduleLog.ScheduleId,
-                    RenderEngineId = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.Identifier : 0,
-                    RenderEngineName = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.RenderEngineName : "",
-                    RenderEngineURL = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.URL : "",
-                    NumberOfRetry = 1,
-                    CreateDate = DateTime.UtcNow,
-                    Status = ScheduleLogStatus.Failed.ToString(),
-                    LogMessage = "Something went wrong while generating statement: " + ex.Message
-                });
-                this.scheduleLogRepository.SaveScheduleLogDetails(logDetails, tenantCode);
+        //            //If any error occurs during statement generation then delete all files from output directory of current customer html statement
+        //            else if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
+        //            {
+        //                this.utility.DeleteUnwantedDirectory(statementRawData.Batch.Identifier, customer.CustomerId, statementRawData.OutputLocation);
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //save schedule log details for current customer, if something went wrong while statement generation...
+        //        var logDetails = new List<ScheduleLogDetail>();
+        //        logDetails.Add(new ScheduleLogDetail()
+        //        {
+        //            ScheduleLogId = statementRawData.ScheduleLog.Identifier,
+        //            CustomerId = customer.CustomerId,
+        //            CustomerName = customer.FirstName.Trim() + " " + customer.SurName?.Trim(),
+        //            ScheduleId = statementRawData.ScheduleLog.ScheduleId,
+        //            RenderEngineId = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.Identifier : 0,
+        //            RenderEngineName = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.RenderEngineName : "",
+        //            RenderEngineURL = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.URL : "",
+        //            NumberOfRetry = 1,
+        //            CreateDate = DateTime.UtcNow,
+        //            Status = ScheduleLogStatus.Failed.ToString(),
+        //            LogMessage = "Something went wrong while generating statement: " + ex.Message
+        //        });
+        //        this.scheduleLogRepository.SaveScheduleLogDetails(logDetails, tenantCode);
 
-                //write error log
-                WriteToFile(ex.StackTrace.ToString());
-                //throw ex;
-            }
-        }
+        //        //write error log
+        //        WriteToFile(ex.StackTrace.ToString());
+        //        //throw ex;
+        //    }
+        //}
 
 
         /// <summary>
@@ -451,150 +451,150 @@ namespace nIS
             }
         }
 
-        /// <summary>
-        /// This method helps to retry to generate HTML statement for failed nedbank customer list.
-        /// </summary>
-        /// <param name="statementRawData"> the raw data object requires for statement generate process</param>
-        /// <param name="tenantCode"></param>
-        public void RetryToCreateFailedNedbankCustomerStatements(GenerateStatementRawData statementRawData, string tenantCode)
-        {
-            try
-            {
-                var scheduleLogDetail = statementRawData.ScheduleLogDetail;
-                var customer = this.tenantTransactionDataRepository.Get_DM_CustomerMasters(new CustomerSearchParameter()
-                {
-                    Identifier = scheduleLogDetail.CustomerId,
-                    BatchId = statementRawData.Batch.Identifier,
-                }, tenantCode)?.FirstOrDefault();
-                statementRawData.DM_Customer = customer;
+        ///// <summary>
+        ///// This method helps to retry to generate HTML statement for failed nedbank customer list.
+        ///// </summary>
+        ///// <param name="statementRawData"> the raw data object requires for statement generate process</param>
+        ///// <param name="tenantCode"></param>
+        //public void RetryToCreateFailedNedbankCustomerStatements(GenerateStatementRawData statementRawData, string tenantCode)
+        //{
+        //    try
+        //    {
+        //        var scheduleLogDetail = statementRawData.ScheduleLogDetail;
+        //        var customer = this.tenantTransactionDataRepository.Get_DM_CustomerMasters(new CustomerSearchParameter()
+        //        {
+        //            Identifier = scheduleLogDetail.CustomerId,
+        //            BatchId = statementRawData.Batch.Identifier,
+        //        }, tenantCode)?.FirstOrDefault();
+        //        statementRawData.DM_Customer = customer;
 
-                if (customer != null)
-                {
-                    //call to generate actual HTML statement file for current customer record
-                    var logDetailRecord = this.GenerateNedbankStatements(statementRawData, tenantCode);
-                    if (logDetailRecord != null)
-                    {
-                        //delete un-neccessory files which are created during html statement generation in fail cases
-                        if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
-                        {
-                            this.utility.DeleteUnwantedDirectory(statementRawData.Batch.Identifier, customer.Identifier, statementRawData.OutputLocation);
-                        }
+        //        if (customer != null)
+        //        {
+        //            //call to generate actual HTML statement file for current customer record
+        //            var logDetailRecord = this.GenerateNedbankStatements(statementRawData, tenantCode);
+        //            if (logDetailRecord != null)
+        //            {
+        //                //delete un-neccessory files which are created during html statement generation in fail cases
+        //                if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
+        //                {
+        //                    this.utility.DeleteUnwantedDirectory(statementRawData.Batch.Identifier, customer.Identifier, statementRawData.OutputLocation);
+        //                }
 
-                        //update schedule log detail
-                        var scheduleLogDetails = new List<ScheduleLogDetail>();
-                        scheduleLogDetail.CustomerId = customer.CustomerId;
-                        scheduleLogDetail.CustomerName = customer.FirstName.Trim() + " " + customer.SurName?.Trim();
-                        scheduleLogDetail.RenderEngineId = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.Identifier : 0;
-                        scheduleLogDetail.RenderEngineName = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.RenderEngineName : string.Empty;
-                        scheduleLogDetail.RenderEngineURL = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.URL : string.Empty;
-                        scheduleLogDetail.LogMessage = logDetailRecord.LogMessage;
-                        scheduleLogDetail.Status = logDetailRecord.Status;
-                        scheduleLogDetail.NumberOfRetry++;
-                        scheduleLogDetail.StatementFilePath = logDetailRecord.StatementFilePath;
-                        scheduleLogDetails.Add(scheduleLogDetail);
-                        this.scheduleLogRepository.UpdateScheduleLogDetails(scheduleLogDetails, tenantCode);
+        //                //update schedule log detail
+        //                var scheduleLogDetails = new List<ScheduleLogDetail>();
+        //                scheduleLogDetail.CustomerId = customer.CustomerId;
+        //                scheduleLogDetail.CustomerName = customer.FirstName.Trim() + " " + customer.SurName?.Trim();
+        //                scheduleLogDetail.RenderEngineId = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.Identifier : 0;
+        //                scheduleLogDetail.RenderEngineName = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.RenderEngineName : string.Empty;
+        //                scheduleLogDetail.RenderEngineURL = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.URL : string.Empty;
+        //                scheduleLogDetail.LogMessage = logDetailRecord.LogMessage;
+        //                scheduleLogDetail.Status = logDetailRecord.Status;
+        //                scheduleLogDetail.NumberOfRetry++;
+        //                scheduleLogDetail.StatementFilePath = logDetailRecord.StatementFilePath;
+        //                scheduleLogDetails.Add(scheduleLogDetail);
+        //                this.scheduleLogRepository.UpdateScheduleLogDetails(scheduleLogDetails, tenantCode);
 
-                        //save statement metadata if html statement generated successfully
-                        if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Completed.ToString().ToLower()) && logDetailRecord.statementMetadata.Count > 0)
-                        {
-                            var statementMetadataRecords = new List<StatementMetadata>();
-                            logDetailRecord.statementMetadata.ToList().ForEach(metarec =>
-                            {
-                                metarec.ScheduleLogId = scheduleLogDetail.ScheduleLogId;
-                                metarec.ScheduleId = scheduleLogDetail.ScheduleId;
-                                metarec.StatementDate = DateTime.UtcNow;
-                                metarec.StatementURL = scheduleLogDetail.StatementFilePath;
-                                metarec.TenantCode = tenantCode;
-                                metarec.IsPasswordGenerated = false;
-                                metarec.Password = "";
-                                statementMetadataRecords.Add(metarec);
-                            });
-                            this.scheduleLogRepository.SaveStatementMetadata(statementMetadataRecords, tenantCode);
-                        }
+        //                //save statement metadata if html statement generated successfully
+        //                if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Completed.ToString().ToLower()) && logDetailRecord.statementMetadata.Count > 0)
+        //                {
+        //                    var statementMetadataRecords = new List<StatementMetadata>();
+        //                    logDetailRecord.statementMetadata.ToList().ForEach(metarec =>
+        //                    {
+        //                        metarec.ScheduleLogId = scheduleLogDetail.ScheduleLogId;
+        //                        metarec.ScheduleId = scheduleLogDetail.ScheduleId;
+        //                        metarec.StatementDate = DateTime.UtcNow;
+        //                        metarec.StatementURL = scheduleLogDetail.StatementFilePath;
+        //                        metarec.TenantCode = tenantCode;
+        //                        metarec.IsPasswordGenerated = false;
+        //                        metarec.Password = "";
+        //                        statementMetadataRecords.Add(metarec);
+        //                    });
+        //                    this.scheduleLogRepository.SaveStatementMetadata(statementMetadataRecords, tenantCode);
+        //                }
 
-                        var scheduleLogs = this.scheduleLogRepository.GetScheduleLogs(new ScheduleLogSearchParameter()
-                        {
-                            ScheduleLogId = scheduleLogDetail.ScheduleLogId.ToString(),
-                            BatchId = statementRawData.Batch.Identifier.ToString(),
-                            PagingParameter = new PagingParameter
-                            {
-                                PageIndex = 0,
-                                PageSize = 0,
-                            },
-                            SortParameter = new SortParameter()
-                            {
-                                SortOrder = SortOrder.Ascending,
-                                SortColumn = "Id",
-                            },
-                            SearchMode = SearchMode.Equals
-                        }, tenantCode).ToList();
-                        scheduleLogs.ForEach(scheduleLog =>
-                        {
-                            //get total no. of schedule log details for current schedule log
-                            var _lstScheduleLogDetail = this.scheduleLogRepository.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
-                            {
-                                ScheduleLogId = scheduleLog.Identifier.ToString(),
-                                PagingParameter = new PagingParameter
-                                {
-                                    PageIndex = 0,
-                                    PageSize = 0,
-                                },
-                                SortParameter = new SortParameter()
-                                {
-                                    SortOrder = SortOrder.Ascending,
-                                    SortColumn = "Id",
-                                },
-                                SearchMode = SearchMode.Equals
-                            }, tenantCode);
+        //                var scheduleLogs = this.scheduleLogRepository.GetScheduleLogs(new ScheduleLogSearchParameter()
+        //                {
+        //                    ScheduleLogId = scheduleLogDetail.ScheduleLogId.ToString(),
+        //                    BatchId = statementRawData.Batch.Identifier.ToString(),
+        //                    PagingParameter = new PagingParameter
+        //                    {
+        //                        PageIndex = 0,
+        //                        PageSize = 0,
+        //                    },
+        //                    SortParameter = new SortParameter()
+        //                    {
+        //                        SortOrder = SortOrder.Ascending,
+        //                        SortColumn = "Id",
+        //                    },
+        //                    SearchMode = SearchMode.Equals
+        //                }, tenantCode).ToList();
+        //                scheduleLogs.ForEach(scheduleLog =>
+        //                {
+        //                    //get total no. of schedule log details for current schedule log
+        //                    var _lstScheduleLogDetail = this.scheduleLogRepository.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
+        //                    {
+        //                        ScheduleLogId = scheduleLog.Identifier.ToString(),
+        //                        PagingParameter = new PagingParameter
+        //                        {
+        //                            PageIndex = 0,
+        //                            PageSize = 0,
+        //                        },
+        //                        SortParameter = new SortParameter()
+        //                        {
+        //                            SortOrder = SortOrder.Ascending,
+        //                            SortColumn = "Id",
+        //                        },
+        //                        SearchMode = SearchMode.Equals
+        //                    }, tenantCode);
 
-                            //get no of success schedule log details of current schedule log
-                            var successRecords = _lstScheduleLogDetail.Where(item => item.Status == ScheduleLogStatus.Completed.ToString())?.ToList();
+        //                    //get no of success schedule log details of current schedule log
+        //                    var successRecords = _lstScheduleLogDetail.Where(item => item.Status == ScheduleLogStatus.Completed.ToString())?.ToList();
 
-                            var batchStatus = BatchStatus.Completed.ToString();
-                            var isBatchCompleteExecuted = true;
-                            var scheduleLogStatus = ScheduleLogStatus.Completed.ToString();
+        //                    var batchStatus = BatchStatus.Completed.ToString();
+        //                    var isBatchCompleteExecuted = true;
+        //                    var scheduleLogStatus = ScheduleLogStatus.Completed.ToString();
 
-                            //check success schedule log details count is equal to total no. of schedule log details for current schedule log
-                            //if equals then update schedule log and batch status as completed otherwise failed
-                            if (successRecords != null && successRecords.Count != _lstScheduleLogDetail.Count)
-                            {
-                                scheduleLogStatus = ScheduleLogStatus.Failed.ToString();
-                                batchStatus = BatchStatus.Failed.ToString();
-                                isBatchCompleteExecuted = false;
-                            }
+        //                    //check success schedule log details count is equal to total no. of schedule log details for current schedule log
+        //                    //if equals then update schedule log and batch status as completed otherwise failed
+        //                    if (successRecords != null && successRecords.Count != _lstScheduleLogDetail.Count)
+        //                    {
+        //                        scheduleLogStatus = ScheduleLogStatus.Failed.ToString();
+        //                        batchStatus = BatchStatus.Failed.ToString();
+        //                        isBatchCompleteExecuted = false;
+        //                    }
 
-                            //update schedule log and batch status
-                            this.scheduleLogRepository.UpdateScheduleLogStatus(scheduleLog.Identifier, scheduleLogStatus, tenantCode);
-                            this.scheduleRepository.UpdateBatchStatus(statementRawData.Batch.Identifier, batchStatus, isBatchCompleteExecuted, tenantCode);
-                        });
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                //save schedule log details for current customer, if something went wrong while statement generation...
-                var logDetails = new List<ScheduleLogDetail>();
-                logDetails.Add(new ScheduleLogDetail()
-                {
-                    ScheduleLogId = statementRawData.ScheduleLog.Identifier,
-                    CustomerId = statementRawData.DM_Customer.CustomerId,
-                    CustomerName = statementRawData.DM_Customer.FirstName.Trim() + " " + statementRawData.DM_Customer.SurName?.Trim(),
-                    ScheduleId = statementRawData.ScheduleLog.ScheduleId,
-                    RenderEngineId = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.Identifier : 0,
-                    RenderEngineName = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.RenderEngineName : "",
-                    RenderEngineURL = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.URL : "",
-                    NumberOfRetry = 1,
-                    CreateDate = DateTime.UtcNow,
-                    Status = ScheduleLogStatus.Failed.ToString(),
-                    LogMessage = "Something went wrong while generating statement: " + ex.Message
-                });
-                this.scheduleLogRepository.SaveScheduleLogDetails(logDetails, tenantCode);
+        //                    //update schedule log and batch status
+        //                    this.scheduleLogRepository.UpdateScheduleLogStatus(scheduleLog.Identifier, scheduleLogStatus, tenantCode);
+        //                    this.scheduleRepository.UpdateBatchStatus(statementRawData.Batch.Identifier, batchStatus, isBatchCompleteExecuted, tenantCode);
+        //                });
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //save schedule log details for current customer, if something went wrong while statement generation...
+        //        var logDetails = new List<ScheduleLogDetail>();
+        //        logDetails.Add(new ScheduleLogDetail()
+        //        {
+        //            ScheduleLogId = statementRawData.ScheduleLog.Identifier,
+        //            CustomerId = statementRawData.DM_Customer.CustomerId,
+        //            CustomerName = statementRawData.DM_Customer.FirstName.Trim() + " " + statementRawData.DM_Customer.SurName?.Trim(),
+        //            ScheduleId = statementRawData.ScheduleLog.ScheduleId,
+        //            RenderEngineId = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.Identifier : 0,
+        //            RenderEngineName = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.RenderEngineName : "",
+        //            RenderEngineURL = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.URL : "",
+        //            NumberOfRetry = 1,
+        //            CreateDate = DateTime.UtcNow,
+        //            Status = ScheduleLogStatus.Failed.ToString(),
+        //            LogMessage = "Something went wrong while generating statement: " + ex.Message
+        //        });
+        //        this.scheduleLogRepository.SaveScheduleLogDetails(logDetails, tenantCode);
 
-                //write error log
-                WriteToFile(ex.StackTrace.ToString());
-                //throw ex;
-            }
-        }
+        //        //write error log
+        //        WriteToFile(ex.StackTrace.ToString());
+        //        //throw ex;
+        //    }
+        //}
 
         /// <summary>
         /// This method helps to convert HTML statement to PDF statement and archive related data for the customer.
@@ -805,202 +805,202 @@ namespace nIS
             return runStatus;
         }
 
-        /// <summary>
-        /// This method helps to convert HTML statement to PDF statement and archive related data for the nedbank customer.
-        /// </summary>
-        /// <param name="archivalProcessRawData">The raw data object required for archival process</param>
-        /// <param name="tenantCode">The tenant code</param>
-        public bool RunArchivalForNedbankCustomerRecord(ArchivalProcessRawData archivalProcessRawData, string tenantCode)
-        {
-            var tempDir = string.Empty;
-            var runStatus = false;
+        ///// <summary>
+        ///// This method helps to convert HTML statement to PDF statement and archive related data for the nedbank customer.
+        ///// </summary>
+        ///// <param name="archivalProcessRawData">The raw data object required for archival process</param>
+        ///// <param name="tenantCode">The tenant code</param>
+        //public bool RunArchivalForNedbankCustomerRecord(ArchivalProcessRawData archivalProcessRawData, string tenantCode)
+        //{
+        //    var tempDir = string.Empty;
+        //    var runStatus = false;
 
-            try
-            {
-                var pdfStatementFilepath = archivalProcessRawData.PdfStatementFilepath;
-                var batch = archivalProcessRawData.BatchMaster;
+        //    try
+        //    {
+        //        var pdfStatementFilepath = archivalProcessRawData.PdfStatementFilepath;
+        //        var batch = archivalProcessRawData.BatchMaster;
 
-                var customer = this.tenantTransactionDataRepository.Get_DM_CustomerMasters(new CustomerSearchParameter()
-                {
-                    BatchId = batch.Identifier,
-                    CustomerId = archivalProcessRawData.CustomerId
-                }, tenantCode).FirstOrDefault();
-                var metadataRecords = this.statementSearchRepository.GetStatementSearchs(new StatementSearchSearchParameter()
-                {
-                    CustomerId = archivalProcessRawData.CustomerId.ToString(),
-                    StatementId = archivalProcessRawData.Statement.Identifier.ToString(),
-                    PagingParameter = new PagingParameter
-                    {
-                        PageIndex = 0,
-                        PageSize = 0,
-                    },
-                    SortParameter = new SortParameter()
-                    {
-                        SortOrder = SortOrder.Ascending,
-                        SortColumn = "Id",
-                    },
-                    SearchMode = SearchMode.Equals
-                }, tenantCode);
+        //        var customer = this.tenantTransactionDataRepository.Get_DM_CustomerMasters(new CustomerSearchParameter()
+        //        {
+        //            BatchId = batch.Identifier,
+        //            CustomerId = archivalProcessRawData.CustomerId
+        //        }, tenantCode).FirstOrDefault();
+        //        var metadataRecords = this.statementSearchRepository.GetStatementSearchs(new StatementSearchSearchParameter()
+        //        {
+        //            CustomerId = archivalProcessRawData.CustomerId.ToString(),
+        //            StatementId = archivalProcessRawData.Statement.Identifier.ToString(),
+        //            PagingParameter = new PagingParameter
+        //            {
+        //                PageIndex = 0,
+        //                PageSize = 0,
+        //            },
+        //            SortParameter = new SortParameter()
+        //            {
+        //                SortOrder = SortOrder.Ascending,
+        //                SortColumn = "Id",
+        //            },
+        //            SearchMode = SearchMode.Equals
+        //        }, tenantCode);
 
-                if (customer != null && metadataRecords != null && metadataRecords.Count > 0)
-                {
-                    var statementSearchRecord = metadataRecords.FirstOrDefault();
+        //        if (customer != null && metadataRecords != null && metadataRecords.Count > 0)
+        //        {
+        //            var statementSearchRecord = metadataRecords.FirstOrDefault();
 
-                    //Create final output directory to save PDF statement of current customer
-                    var outputlocation = pdfStatementFilepath + "\\PDF_Statements" + "\\" + "ScheduleId_" + statementSearchRecord.ScheduleId + "\\" + "BatchId_" + batch.Identifier + "\\ArchiveData";
-                    if (!Directory.Exists(outputlocation))
-                    {
-                        Directory.CreateDirectory(outputlocation);
-                    }
+        //            //Create final output directory to save PDF statement of current customer
+        //            var outputlocation = pdfStatementFilepath + "\\PDF_Statements" + "\\" + "ScheduleId_" + statementSearchRecord.ScheduleId + "\\" + "BatchId_" + batch.Identifier + "\\ArchiveData";
+        //            if (!Directory.Exists(outputlocation))
+        //            {
+        //                Directory.CreateDirectory(outputlocation);
+        //            }
 
-                    tempDir = outputlocation + "\\temp_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_');
-                    if (!Directory.Exists(tempDir))
-                    {
-                        Directory.CreateDirectory(tempDir);
-                    }
+        //            tempDir = outputlocation + "\\temp_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_');
+        //            if (!Directory.Exists(tempDir))
+        //            {
+        //                Directory.CreateDirectory(tempDir);
+        //            }
 
-                    //Create temp output directory to save all neccessories files which requires to genearate PDF statement of current customer
-                    var samplefilespath = tempDir + "\\" + statementSearchRecord.Identifier + "_" + customer.CustomerId + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_');
-                    if (!Directory.Exists(samplefilespath))
-                    {
-                        Directory.CreateDirectory(samplefilespath);
-                    }
+        //            //Create temp output directory to save all neccessories files which requires to genearate PDF statement of current customer
+        //            var samplefilespath = tempDir + "\\" + statementSearchRecord.Identifier + "_" + customer.CustomerId + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_');
+        //            if (!Directory.Exists(samplefilespath))
+        //            {
+        //                Directory.CreateDirectory(samplefilespath);
+        //            }
 
-                    //get actual HTML statement file path directory for current customer
-                    var htmlStatementDirPath = statementSearchRecord.StatementURL.Substring(0, statementSearchRecord.StatementURL.LastIndexOf("\\"));
+        //            //get actual HTML statement file path directory for current customer
+        //            var htmlStatementDirPath = statementSearchRecord.StatementURL.Substring(0, statementSearchRecord.StatementURL.LastIndexOf("\\"));
 
-                    //get resource file path directory
-                    var resourceFilePath = htmlStatementDirPath.Substring(0, htmlStatementDirPath.LastIndexOf("\\")) + "\\common";
-                    if (!Directory.Exists(resourceFilePath))
-                    {
-                        resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
-                    }
+        //            //get resource file path directory
+        //            var resourceFilePath = htmlStatementDirPath.Substring(0, htmlStatementDirPath.LastIndexOf("\\")) + "\\common";
+        //            if (!Directory.Exists(resourceFilePath))
+        //            {
+        //                resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
+        //            }
 
-                    //Copying all neccessories files which requires to genearate PDF statement of current customer
-                    this.utility.DirectoryCopy(resourceFilePath + "\\css", samplefilespath, false);
-                    this.utility.DirectoryCopy(resourceFilePath + "\\js", samplefilespath, false);
-                    this.utility.DirectoryCopy(resourceFilePath + "\\images", samplefilespath, false);
-                    this.utility.DirectoryCopy(resourceFilePath + "\\fonts", samplefilespath, false);
+        //            //Copying all neccessories files which requires to genearate PDF statement of current customer
+        //            this.utility.DirectoryCopy(resourceFilePath + "\\css", samplefilespath, false);
+        //            this.utility.DirectoryCopy(resourceFilePath + "\\js", samplefilespath, false);
+        //            this.utility.DirectoryCopy(resourceFilePath + "\\images", samplefilespath, false);
+        //            this.utility.DirectoryCopy(resourceFilePath + "\\fonts", samplefilespath, false);
 
-                    //Gernerate HTML statement of current customer
-                    this.statementSearchManager.GenerateNedbankHtmlStatementForPdfGeneration(customer, archivalProcessRawData.Statement, archivalProcessRawData.StatementPageContents, batch, archivalProcessRawData.BatchDetails, tenantCode, samplefilespath, archivalProcessRawData.TenantConfiguration);
+        //            //Gernerate HTML statement of current customer
+        //            this.statementSearchManager.GenerateNedbankHtmlStatementForPdfGeneration(customer, archivalProcessRawData.Statement, archivalProcessRawData.StatementPageContents, batch, archivalProcessRawData.BatchDetails, tenantCode, samplefilespath, archivalProcessRawData.TenantConfiguration);
 
-                    //To insert html statement file of current customer and all required files into the zip file
-                    var zipfilepath = tempDir + "\\tempzip";
-                    if (!Directory.Exists(zipfilepath))
-                    {
-                        Directory.CreateDirectory(zipfilepath);
-                    }
-                    var zipFile = zipfilepath + "\\" + "StatementZip" + "_" + statementSearchRecord.Identifier + "_" + statementSearchRecord.ScheduleId + "_" + statementSearchRecord.StatementId + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".zip";
-                    ZipFile.CreateFromDirectory(samplefilespath, zipFile);
+        //            //To insert html statement file of current customer and all required files into the zip file
+        //            var zipfilepath = tempDir + "\\tempzip";
+        //            if (!Directory.Exists(zipfilepath))
+        //            {
+        //                Directory.CreateDirectory(zipfilepath);
+        //            }
+        //            var zipFile = zipfilepath + "\\" + "StatementZip" + "_" + statementSearchRecord.Identifier + "_" + statementSearchRecord.ScheduleId + "_" + statementSearchRecord.StatementId + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".zip";
+        //            ZipFile.CreateFromDirectory(samplefilespath, zipFile);
 
-                    //Convert HTML statement to PDF statement for current customer
-                    var pdfName = "Statement" + "_" + statementSearchRecord.ScheduleLogId + "_" + statementSearchRecord.ScheduleId + statementSearchRecord.StatementId + "_" + statementSearchRecord.CustomerId + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".pdf";
-                    string password = string.Empty;
-                    if (statementSearchRecord.IsPasswordGenerated)
-                    {
-                        password = this.cryptoManager.Decrypt(statementSearchRecord.Password);
-                    }
-                    var result = this.utility.HtmlStatementToPdf(zipFile, outputlocation + "\\" + pdfName, password);
-                    if (result)
-                    {
-                        //To insert archive schedule log detail records
-                        var scheduleLogDetailRecords = this.scheduleLogRepository.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
-                        {
-                            ScheduleLogId = archivalProcessRawData.ScheduleLog.Identifier.ToString(),
-                            CustomerId = archivalProcessRawData.CustomerId.ToString(),
-                            PagingParameter = new PagingParameter
-                            {
-                                PageIndex = 0,
-                                PageSize = 0,
-                            },
-                            SortParameter = new SortParameter()
-                            {
-                                SortOrder = SortOrder.Ascending,
-                                SortColumn = "Id",
-                            },
-                            SearchMode = SearchMode.Equals
-                        }, tenantCode);
-                        var scheduleDetailArchiveRecords = new List<ScheduleLogDetailArchieve>();
-                        scheduleLogDetailRecords.ToList().ForEach(logDetail =>
-                        {
-                            scheduleDetailArchiveRecords.Add(new ScheduleLogDetailArchieve()
-                            {
-                                CustomerId = logDetail.CustomerId,
-                                CustomerName = logDetail.CustomerName,
-                                LogDetailCreationDate = logDetail.CreateDate,
-                                LogMessage = logDetail.LogMessage,
-                                NumberOfRetry = logDetail.NumberOfRetry,
-                                RenderEngineId = archivalProcessRawData.RenderEngine.Identifier,
-                                RenderEngineName = archivalProcessRawData.RenderEngine.RenderEngineName,
-                                RenderEngineURL = archivalProcessRawData.RenderEngine.URL,
-                                ScheduleId = archivalProcessRawData.Schedule.Identifier,
-                                ScheduleLogArchiveId = archivalProcessRawData.ScheduleLogArchive.Identifier,
-                                Status = logDetail.Status,
-                                TenantCode = tenantCode,
-                                ArchivalDate = DateTime.UtcNow,
-                                PdfStatementPath = outputlocation + "\\" + pdfName
-                            });
-                        });
-                        this.archivalProcessRepository.SaveScheduleLogDetailsArchieve(scheduleDetailArchiveRecords, tenantCode);
+        //            //Convert HTML statement to PDF statement for current customer
+        //            var pdfName = "Statement" + "_" + statementSearchRecord.ScheduleLogId + "_" + statementSearchRecord.ScheduleId + statementSearchRecord.StatementId + "_" + statementSearchRecord.CustomerId + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".pdf";
+        //            string password = string.Empty;
+        //            if (statementSearchRecord.IsPasswordGenerated)
+        //            {
+        //                password = this.cryptoManager.Decrypt(statementSearchRecord.Password);
+        //            }
+        //            var result = this.utility.HtmlStatementToPdf(zipFile, outputlocation + "\\" + pdfName, password);
+        //            if (result)
+        //            {
+        //                //To insert archive schedule log detail records
+        //                var scheduleLogDetailRecords = this.scheduleLogRepository.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
+        //                {
+        //                    ScheduleLogId = archivalProcessRawData.ScheduleLog.Identifier.ToString(),
+        //                    CustomerId = archivalProcessRawData.CustomerId.ToString(),
+        //                    PagingParameter = new PagingParameter
+        //                    {
+        //                        PageIndex = 0,
+        //                        PageSize = 0,
+        //                    },
+        //                    SortParameter = new SortParameter()
+        //                    {
+        //                        SortOrder = SortOrder.Ascending,
+        //                        SortColumn = "Id",
+        //                    },
+        //                    SearchMode = SearchMode.Equals
+        //                }, tenantCode);
+        //                var scheduleDetailArchiveRecords = new List<ScheduleLogDetailArchieve>();
+        //                scheduleLogDetailRecords.ToList().ForEach(logDetail =>
+        //                {
+        //                    scheduleDetailArchiveRecords.Add(new ScheduleLogDetailArchieve()
+        //                    {
+        //                        CustomerId = logDetail.CustomerId,
+        //                        CustomerName = logDetail.CustomerName,
+        //                        LogDetailCreationDate = logDetail.CreateDate,
+        //                        LogMessage = logDetail.LogMessage,
+        //                        NumberOfRetry = logDetail.NumberOfRetry,
+        //                        RenderEngineId = archivalProcessRawData.RenderEngine.Identifier,
+        //                        RenderEngineName = archivalProcessRawData.RenderEngine.RenderEngineName,
+        //                        RenderEngineURL = archivalProcessRawData.RenderEngine.URL,
+        //                        ScheduleId = archivalProcessRawData.Schedule.Identifier,
+        //                        ScheduleLogArchiveId = archivalProcessRawData.ScheduleLogArchive.Identifier,
+        //                        Status = logDetail.Status,
+        //                        TenantCode = tenantCode,
+        //                        ArchivalDate = DateTime.UtcNow,
+        //                        PdfStatementPath = outputlocation + "\\" + pdfName
+        //                    });
+        //                });
+        //                this.archivalProcessRepository.SaveScheduleLogDetailsArchieve(scheduleDetailArchiveRecords, tenantCode);
 
-                        //TO insert archive statement metadata records
-                        var metadataArchiveRecords = new List<StatementMetadataArchive>();
-                        metadataRecords.ToList().ForEach(record =>
-                        {
-                            metadataArchiveRecords.Add(new StatementMetadataArchive()
-                            {
-                                AccountNumber = record.AccountNumber,
-                                AccountType = record.AccountType,
-                                CustomerId = record.CustomerId,
-                                CustomerName = record.CustomerName,
-                                ScheduleId = record.ScheduleId,
-                                ScheduleLogArchiveId = archivalProcessRawData.ScheduleLogArchive.Identifier,
-                                StatementDate = record.StatementDate,
-                                StatementId = record.StatementId,
-                                StatementPeriod = record.StatementPeriod,
-                                StatementURL = outputlocation + "\\" + pdfName,
-                                TenantCode = tenantCode,
-                                IsPasswordGenerated = record.IsPasswordGenerated,
-                                Password = record.Password,
-                                ArchivalDate = DateTime.UtcNow
-                            });
-                        });
-                        this.archivalProcessRepository.SaveStatementMetadataArchieve(metadataArchiveRecords, tenantCode);
+        //                //TO insert archive statement metadata records
+        //                var metadataArchiveRecords = new List<StatementMetadataArchive>();
+        //                metadataRecords.ToList().ForEach(record =>
+        //                {
+        //                    metadataArchiveRecords.Add(new StatementMetadataArchive()
+        //                    {
+        //                        AccountNumber = record.AccountNumber,
+        //                        AccountType = record.AccountType,
+        //                        CustomerId = record.CustomerId,
+        //                        CustomerName = record.CustomerName,
+        //                        ScheduleId = record.ScheduleId,
+        //                        ScheduleLogArchiveId = archivalProcessRawData.ScheduleLogArchive.Identifier,
+        //                        StatementDate = record.StatementDate,
+        //                        StatementId = record.StatementId,
+        //                        StatementPeriod = record.StatementPeriod,
+        //                        StatementURL = outputlocation + "\\" + pdfName,
+        //                        TenantCode = tenantCode,
+        //                        IsPasswordGenerated = record.IsPasswordGenerated,
+        //                        Password = record.Password,
+        //                        ArchivalDate = DateTime.UtcNow
+        //                    });
+        //                });
+        //                this.archivalProcessRepository.SaveStatementMetadataArchieve(metadataArchiveRecords, tenantCode);
 
-                        //TO delete actual schedule log details, and statement metadata records
-                        this.scheduleLogRepository.DeleteScheduleLogDetails(archivalProcessRawData.ScheduleLog.Identifier, archivalProcessRawData.CustomerId, tenantCode);
-                        this.scheduleLogRepository.DeleteStatementMetadata(archivalProcessRawData.ScheduleLog.Identifier, archivalProcessRawData.CustomerId, tenantCode);
+        //                //TO delete actual schedule log details, and statement metadata records
+        //                this.scheduleLogRepository.DeleteScheduleLogDetails(archivalProcessRawData.ScheduleLog.Identifier, archivalProcessRawData.CustomerId, tenantCode);
+        //                this.scheduleLogRepository.DeleteStatementMetadata(archivalProcessRawData.ScheduleLog.Identifier, archivalProcessRawData.CustomerId, tenantCode);
 
-                        //To delete actual HTML statement of currrent customer, once the PDF statement genearated
-                        DirectoryInfo directoryInfo = new DirectoryInfo(htmlStatementDirPath);
-                        if (directoryInfo.Exists)
-                        {
-                            directoryInfo.Delete(true);
-                        }
+        //                //To delete actual HTML statement of currrent customer, once the PDF statement genearated
+        //                DirectoryInfo directoryInfo = new DirectoryInfo(htmlStatementDirPath);
+        //                if (directoryInfo.Exists)
+        //                {
+        //                    directoryInfo.Delete(true);
+        //                }
 
-                        runStatus = true;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                WriteToFile(ex.Message);
-                WriteToFile(ex.StackTrace);
-                throw ex;
-            }
-            finally
-            {
-                //To delete temp files, once the PDF statement genearated
-                DirectoryInfo directoryInfo = new DirectoryInfo(tempDir);
-                if (directoryInfo.Exists)
-                {
-                    directoryInfo.Delete(true);
-                }
-            }
+        //                runStatus = true;
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        WriteToFile(ex.Message);
+        //        WriteToFile(ex.StackTrace);
+        //        throw ex;
+        //    }
+        //    finally
+        //    {
+        //        //To delete temp files, once the PDF statement genearated
+        //        DirectoryInfo directoryInfo = new DirectoryInfo(tempDir);
+        //        if (directoryInfo.Exists)
+        //        {
+        //            directoryInfo.Delete(true);
+        //        }
+        //    }
 
-            return runStatus;
-        }
+        //    return runStatus;
+        //}
 
         #endregion
 
@@ -1151,10 +1151,10 @@ namespace nIS
 
                     //get client logo in string format and pass it hidden input tag, so it will be render in right side of header of html statement
                     var clientlogo = statementRawData.Client.TenantLogo != null ? statementRawData.Client.TenantLogo : "";
-                    if (statement.Name == "Investment Wealth")
-                    {
-                        clientlogo = "../common/images/NedBankLogoBlack.png";
-                    }
+                    //if (statement.Name == "Investment Wealth")
+                    //{
+                    //    clientlogo = "../common/images/NedBankLogoBlack.png";
+                    //}
                     navbarHtml = navbarHtml + "<input type='hidden' id='TenantLogoImageValue' value='" + clientlogo + "'>";
                     htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
 
@@ -1185,8 +1185,15 @@ namespace nIS
                     for (int i = 0; i < statement.Pages.Count; i++)
                     {
                         var page = statement.Pages[i];
-                        StatementPageContent statementPageContent = newStatementPageContents.Where(item => item.PageTypeId == page.PageTypeId && item.Id == i).FirstOrDefault();
-
+                        StatementPageContent statementPageContent = new StatementPageContent();
+                        try
+                        {                          
+                            statementPageContent = newStatementPageContents.Where(item => item.PageTypeId == page.PageTypeId && item.Id == i).FirstOrDefault();
+                        }
+                        catch(Exception ex)
+                        {
+                            throw ex;
+                        }
                         //sub page count under current page tab
                         subPageCount = 1;
                         if (IsSavingOrCurrentAccountPagePresent)
@@ -1498,716 +1505,716 @@ namespace nIS
         /// </summary>
         /// <param name="statementRawData"> the object of statement raw data</param>
         /// <param name="tenantCode"> the tenant code </param>
-        private ScheduleLogDetail GenerateNedbankStatements(GenerateStatementRawData statementRawData, string tenantCode)
-        {
-            var logDetailRecord = new ScheduleLogDetail();
-            var ErrorMessages = new StringBuilder();
-            bool IsFailed = false;
-            var statementMetadataRecords = new List<StatementMetadata>();
-
-            try
-            {
-                var customer = statementRawData.DM_Customer;
-                var statement = statementRawData.Statement;
-                var batchMaster = statementRawData.Batch;
-
-                if (statementRawData.StatementPageContents.Count > 0)
-                {
-                    //collecting all media information which is required in html statement for some widgets like image, video and static customer information widgets
-                    var customerMedias = this.tenantTransactionDataRepository.GetCustomerMediaList(customer.CustomerId, batchMaster.Identifier, statement.Identifier, tenantCode);
-
-                    long BranchId = 0;
-                    var investmentMasters = new List<DM_InvestmentMaster>();
-                    var PersonalLoanAccounts = new List<DM_PersonalLoanMaster>();
-                    var HomeLoanAccounts = new List<DM_HomeLoanMaster>();
-                    var MCA = new List<DM_MCAMaster>();
-                    var CorporateSaver = new List<DM_CorporateSaverMaster>();
-                    var PersonalLoan = new List<DM_PersonalLoanMaster>();
-
-                    var AccountsSummaries = new List<DM_AccountsSummary>();
-                    var _lstAccountAnalysis = new List<DM_AccountAnanlysis>();
-                    var Reminders = new List<DM_CustomerReminderAndRecommendation>();
-                    var NewsAndAlerts = new List<DM_CustomerNewsAndAlert>();
-                    var GreenbackMaster = new DM_GreenbacksMaster();
-                    var GreenbacksRewardPoints = new List<DM_GreenbacksRewardPoints>();
-                    var GreenbacksRedeemedPoints = new List<DM_GreenbacksRewardPointsRedeemed>();
-                    var CustProductMonthwiseRewardPoints = new List<DM_CustomerProductWiseRewardPoints>();
-                    var CustRewardSpendByCategory = new List<DM_CustomerRewardSpendByCategory>();
-
-                    var customerSearchParameter = new CustomerSearchParameter() { CustomerId = customer.CustomerId, BatchId = batchMaster.Identifier };
-
-                    var IsPortFolioPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.AT_A_GLANCE_PAGE_TYPE).ToList().Count > 0;
-                    var IsInvestmentPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_ENGLISH || it.PageTypeName == HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_ENGLISH || it.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_AFRICAN || it.PageTypeName == HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_AFRICAN).ToList().Count > 0;
-                    var IsPersonalLoanPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == HtmlConstants.PERSONAL_LOAN_PAGE_TYPE).ToList().Count > 0;
-                    var IsHomeLoanPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE).ToList().Count > 0;
-                    var IsRewardPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.GREENBACKS_PAGE_TYPE).ToList().Count > 0;
-                    var IsMCAPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_FOR_CIB_PAGE_TYPE || it.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_FOR_WEA_PAGE_TYPE).ToList().Count > 0;
-                    var IsCorporateSaverPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == HtmlConstants.CORPORATE_SAVER_ENG_PAGE_TYPE || it.PageTypeName.Trim() == HtmlConstants.CORPORATE_SAVER_AFR_PAGE_TYPE).ToList().Count > 0;
-                    // var IsMCAPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == "").ToList().Count > 0;
-                    // var IsCorporateSaverPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == "").ToList().Count > 0;
-                    if (IsPortFolioPageTypePresent)
-                    {
-                        AccountsSummaries = this.tenantTransactionDataRepository.GET_DM_AccountSummaries(customerSearchParameter, tenantCode)?.ToList();
-                        _lstAccountAnalysis = this.tenantTransactionDataRepository.GET_DM_AccountAnalysisDetails(customerSearchParameter, tenantCode)?.ToList();
-                        Reminders = this.tenantTransactionDataRepository.GET_DM_CustomerReminderAndRecommendations(customerSearchParameter, tenantCode)?.ToList();
-                        NewsAndAlerts = this.tenantTransactionDataRepository.GET_DM_CustomerNewsAndAlert(customerSearchParameter, tenantCode)?.ToList();
-                    }
-                    if (IsInvestmentPageTypePresent)
-                    {
-                        investmentMasters = this.tenantTransactionDataRepository.Get_NB_InvestmentMaster(new CustomerInvestmentSearchParameter() { InvestorId = customer.CustomerId, BatchId = batchMaster.Identifier }, tenantCode)?.ToList();
-
-                        if (investmentMasters != null && investmentMasters.Count > 0)
-                        {
-                            //var totalAmount = 0.0m; var res = 0.0m;
-                            investmentMasters.ForEach(invest =>
-                            {
-                                invest.investmentTransactions = this.tenantTransactionDataRepository.Get_DM_InvestmentTransaction(new CustomerInvestmentSearchParameter() { CustomerId = customer.CustomerId, BatchId = batchMaster.Identifier, InvestmentId = invest.InvestmentId, InvestorId = invest.InvestorId }, tenantCode)?.ToList();
-
-                                //totalAmount = totalAmount + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains(ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC)).Select(it => decimal.TryParse(it.WJXBFS4_Balance.Replace(",", "."), out res) ? res : 0).ToList().Sum(it => it);
-                            });
-
-                            BranchId = (investmentMasters != null && investmentMasters.Count > 0) ? investmentMasters[0].BranchId : 0;
-
-                            //AccountsSummaries.Add(new DM_AccountsSummary() { AccountType = "Investment", TotalAmount = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, totalAmount) });
-                        }
-                    }
-                    if (IsPersonalLoanPageTypePresent)
-                    {
-                        //PersonalLoanAccounts = this.tenantTransactionDataRepository.Get_DM_PersonalLoanMaster(new CustomerPersonalLoanSearchParameter() { BatchId = 753, CustomerId = 151000262666 }, "94461633-b316-42c3-a188-db8d78075ef4")?.ToList();
-                        PersonalLoanAccounts = this.tenantTransactionDataRepository.Get_DM_PersonalLoanMaster(new CustomerPersonalLoanSearchParameter() { BatchId = batchMaster.Identifier, CustomerId = customer.CustomerId }, tenantCode)?.ToList();
-
-                        //var totalAmount = 0.0m; var res = 0.0m;
-                        //totalAmount = PersonalLoanAccounts.Select(it => decimal.TryParse(it.CreditAdvance, out res) ? res : 0).ToList().Sum(it => it);
-                        //AccountsSummaries.Add(new DM_AccountsSummary() { AccountType = "Personal Loan", TotalAmount = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, totalAmount) });
-
-                        BranchId = (PersonalLoanAccounts != null && PersonalLoanAccounts.Count > 0) ? PersonalLoanAccounts[0].BranchId : 0;
-                    }
-                    if (IsHomeLoanPageTypePresent)
-                    {
-                        HomeLoanAccounts = this.tenantTransactionDataRepository.Get_DM_HomeLoanMaster(new CustomerHomeLoanSearchParameter() { BatchId = batchMaster.Identifier, CustomerId = customer.CustomerId }, tenantCode)?.ToList();
-
-                        //var totalAmount = 0.0m; var res = 0.0m;
-                        //totalAmount = HomeLoanAccounts.Select(it => decimal.TryParse(it.LoanAmount, out res) ? res : 0).ToList().Sum(it => it);
-                        //AccountsSummaries.Add(new DM_AccountsSummary() { AccountType = "Home Loan", TotalAmount = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, totalAmount) });
-                    }
-                    if (IsRewardPageTypePresent)
-                    {
-                        //AccountsSummaries.Add(new DM_AccountsSummary() { AccountType = "Greenback reward points", TotalAmount = "432" });
-                        GreenbackMaster = this.tenantTransactionDataRepository.GET_DM_GreenbacksMasterDetails(tenantCode)?.ToList()?.FirstOrDefault();
-                        GreenbacksRewardPoints = this.tenantTransactionDataRepository.GET_DM_GreenbacksRewardPoints(customerSearchParameter, tenantCode)?.ToList();
-                        GreenbacksRedeemedPoints = this.tenantTransactionDataRepository.GET_DM_GreenbacksRewardPointsRedeemed(customerSearchParameter, tenantCode)?.ToList();
-                        CustProductMonthwiseRewardPoints = this.tenantTransactionDataRepository.GET_DM_CustomerProductWiseRewardPoints(customerSearchParameter, tenantCode)?.ToList();
-                        CustRewardSpendByCategory = this.tenantTransactionDataRepository.GET_DM_CustomerRewardSpendByCategory(customerSearchParameter, tenantCode)?.ToList();
-                    }
-                    if (IsMCAPageTypePresent)
-                    {
-                        MCA = this.mcaDataRepository.Get_DM_MCAMaster(new CustomerMCASearchParameter() { BatchId = batchMaster.Identifier, InvestorId = customer.InvestorId, CustomerId = customer.CustomerId }, tenantCode)?.ToList();
-                    }
-                    if (IsCorporateSaverPageTypePresent)
-                    {
-                        CorporateSaver = this.corporateSaverDataRepository.Get_DM_CorporateSaverMaster(new CustomerCorporateSaverSearchParameter() { BatchId = batchMaster.Identifier, InvestorId = customer.InvestorId }, tenantCode)?.ToList();
-                    }
-
-
-                    if (IsPersonalLoanPageTypePresent)
-                    {
-                        PersonalLoan = this.tenantTransactionDataRepository.Get_DM_PersonalLoanMaster(new CustomerPersonalLoanSearchParameter() { BatchId = batchMaster.Identifier, CustomerId = customer.CustomerId, InvestorId = customer.InvestorId }, tenantCode)?.ToList();
-                    }
-
-                    var SpecialMessage = this.tenantTransactionDataRepository.Get_DM_SpecialMessages(new MessageAndNoteSearchParameter() { BatchId = batchMaster.Identifier, CustomerId = customer.CustomerId }, tenantCode)?.ToList()?.FirstOrDefault();
-                    var ExplanatoryNotes = this.tenantTransactionDataRepository.Get_DM_ExplanatoryNotes(new MessageAndNoteSearchParameter() { BatchId = batchMaster.Identifier }, tenantCode)?.ToList();
-                    var _lstMessage = this.tenantTransactionDataRepository.Get_DM_MarketingMessages(new MessageAndNoteSearchParameter() { BatchId = batchMaster.Identifier }, tenantCode)?.ToList();
-
-                    var htmlbody = new StringBuilder();
-                    //htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
-                    //if (statement.Pages.Count() > 0)
-                    //{
-                    //    if (customer.Segment == "WEA" ? true : false)
-                    //    {
-                    //        htmlbody.Append(HtmlConstants.NEDBANK_STATEMENT_HEADER.Replace("{{eConfirmLogo}}", "../common/images/eConfirm.png").Replace("{{ImgHeight}}", "100").Replace("{{NedBankLogo}}", "../common/images/NedBankLogoBlack.png").Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd)));
-                    //    }
-                    //    else
-                    //    {
-                    //        htmlbody.Append(HtmlConstants.NEDBANK_STATEMENT_HEADER.Replace("{{ImgHeight}}", "80").Replace("{{eConfirmLogo}}", "../common/images/eConfirm.png").Replace("{{NedBankLogo}}", "../common/images/NEDBANKLogo.png").Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd)));
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    htmlbody.Append(HtmlConstants.NEDBANK_STATEMENT_HEADER.Replace("{{ImgHeight}}", "80").Replace("{{eConfirmLogo}}", "../common/images/eConfirm.png").Replace("{{NedBankLogo}}", "../common/images/NEDBANKLogo.png").Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd)));
-                    //}
-
-                    //htmlbody.Append(statementRawData.StatementPageContents?.FirstOrDefault().PageHeaderContent);
-
-                    //this variable is used to bind all script to html statement, which helps to render data on chart and graph widgets
-                    var scriptHtmlRenderer = new StringBuilder();
-                    HttpClient httpClient = null;
-                    var NavItemList = new StringBuilder();
-
-                    var newStatementPageContents = new List<StatementPageContent>();
-                    statementRawData.StatementPageContents.ToList().ForEach(it => newStatementPageContents.Add(new StatementPageContent()
-                    {
-                        Id = it.Id,
-                        PageId = it.PageId,
-                        PageTypeId = it.PageTypeId,
-                        HtmlContent = it.HtmlContent,
-                        PageHeaderContent = it.PageHeaderContent,
-                        PageFooterContent = it.PageFooterContent,
-                        DisplayName = it.DisplayName,
-                        TabClassName = it.TabClassName,
-                        DynamicWidgets = it.DynamicWidgets
-                    }));
-
-                    long FirstPageId = statement.Pages[0].Identifier;
-                    var firstPage = statement.Pages[0];
-                    var widgets = new List<PageWidget>(firstPage.PageWidgets);
-                    for (int i = 0; i < statement.Pages.Count; i++)
-                    {
-                        var page = statement.Pages[i];
-                        var statementPageContent = newStatementPageContents.Where(item => item.PageTypeId == page.PageTypeId && item.Id == i).FirstOrDefault();
-
-                        var MarketingMessageCounter = 0;
-                        var Messages = _lstMessage?.Where(it => it.Type == page.PageTypeName)?.ToList();
-
-                        //sub page count under current page tab
-                        var PageHeaderContent = new StringBuilder(statementPageContent.PageHeaderContent);
-                        var dynamicWidgets = new List<DynamicWidget>(statementPageContent.DynamicWidgets);
-
-                        string tabClassName = Regex.Replace((statementPageContent.DisplayName + "-" + page.Identifier), @"\s+", "-");
-                        NavItemList.Append("<li class='nav-item" + (i != statement.Pages.Count - 1 ? " nav-rt-border" : string.Empty) + "'><a id='tab" + i + "-tab' data-toggle='tab' data-target='#" + tabClassName + "' role='tab' class='nav-link" + (i == 0 ? " active" : string.Empty) + "'> " + statementPageContent.DisplayName + " </a></li>");
-
-                        string ExtraClassName = string.Empty;
-                        PageHeaderContent.Replace("{{ExtraClass}}", ExtraClassName).Replace("{{DivId}}", tabClassName);
-
-                        var newPageContent = new StringBuilder();
-                        var pagewidgets = new List<PageWidget>(page.PageWidgets);
-                        var pageContent = new StringBuilder(statementPageContent.HtmlContent);
-
-                        for (int j = 0; j < pagewidgets.Count; j++)
-                        {
-                            var widget = pagewidgets[j];
-                            if (!widget.IsDynamicWidget)
-                            {
-                                switch (widget.WidgetName)
-                                {
-                                    case HtmlConstants.CUSTOMER_DETAILS_WIDGET_NAME:
-                                        bool isShowCellNo = false;
-                                        string vatNo = string.Empty;
-                                        if (statement.Pages.Count == 1)
-                                        {
-                                            if (page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE 
-                                             || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE 
-                                             || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE 
-                                             || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE 
-                                             || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE 
-                                             || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE 
-                                             || page.PageTypeName.Trim() == HtmlConstants.PERSONAL_LOAN_PAGE_TYPE)
-                                            {
-                                                isShowCellNo = true;
-                                            }
-                                            if (page.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_FOR_CIB_PAGE_TYPE || page.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_FOR_WEA_PAGE_TYPE)
-                                            {
-                                                if (MCA != null && MCA.Count > 0)
-                                                {
-                                                    vatNo = MCA[0].VatNo;
-                                                }
-                                            }
-                                            this.BindCustomerDetailsWidgetData(pageContent, customer, CorporateSaver, page, widget, isShowCellNo, vatNo);
-                                        }
-                                        break;
-
-                                    case HtmlConstants.BRANCH_DETAILS_WIDGET_NAME:
-                                        if (page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE)
-                                        {
-                                            if (statement.Pages.Count == 1)
-                                            {
-                                                this.BindBondDetailsWidgetData(pageContent, page, widget, HomeLoanAccounts, customer);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            this.BindBranchDetailsWidgetData(pageContent, BranchId, page, widget, tenantCode, customer);
-                                        }
-                                        break;
-
-                                    case HtmlConstants.IMAGE_WIDGET_NAME:
-                                        IsFailed = this.BindImageWidgetData(pageContent, ErrorMessages, customer.CustomerId, customerMedias, statementRawData.BatchDetails, statement, page, batchMaster, widget, tenantCode, statementRawData.OutputLocation);
-                                        break;
-
-                                    case HtmlConstants.VIDEO_WIDGET_NAME:
-                                        IsFailed = this.BindVideoWidgetData(pageContent, ErrorMessages, customer.CustomerId, customerMedias, statementRawData.BatchDetails, statement, page, batchMaster, widget, tenantCode, statementRawData.OutputLocation);
-                                        break;
-
-                                    case HtmlConstants.STATIC_SEGMENT_BASED_CONTENT_NAME:
-                                        IsFailed = this.BindSegmentBasedContentWidgetData(pageContent, customer, page, widget, statement, ErrorMessages, customer.Segment == "WEA" ? true : false);
-                                        break;
-
-                                    case HtmlConstants.STATIC_HTML_WIDGET_NAME:
-                                        IsFailed = this.BindStaticHtmlWidgetData(pageContent, customer, page, widget, statement, ErrorMessages);
-                                        break;
-
-                                    case HtmlConstants.PAGE_BREAK_WIDGET_NAME:
-                                        IsFailed = this.BindPageBreakWidgetData(pageContent, customer, page, widget, statement, ErrorMessages);
-                                        break;
-
-                                    case HtmlConstants.INVESTMENT_PORTFOLIO_STATEMENT_WIDGET_NAME:
-                                        this.BindInvestmentPortfolioStatementWidgetData(pageContent, customer, investmentMasters, page, widget);
-                                        break;
-
-                                    case HtmlConstants.INVESTOR_PERFORMANCE_WIDGET_NAME:
-                                        this.BindInvestorPerformanceWidgetData(pageContent, investmentMasters, page, widget, customer);
-                                        break;
-
-                                    case HtmlConstants.BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_NAME:
-                                        this.BindBreakdownOfInvestmentAccountsWidgetData(pageContent, investmentMasters, page, widget);
-                                        break;
-
-                                    case HtmlConstants.EXPLANATORY_NOTES_WIDGET_NAME:
-                                        this.BindExplanatoryNotesWidgetData(pageContent, ExplanatoryNotes, page, widget);
-                                        break;
-
-                                    case HtmlConstants.SERVICE_WIDGET_NAME:
-                                        this.BindMarketingServiceWidgetData(pageContent, Messages, page, widget, MarketingMessageCounter, customer);
-                                        MarketingMessageCounter++;
-                                        break;
-
-                                    case HtmlConstants.PERSONAL_LOAN_DETAIL_WIDGET_NAME:
-                                        this.BindPersonalLoanDetailWidgetData(pageContent, PersonalLoan, page, widget, tenantCode);
-                                        break;
-
-                                    case HtmlConstants.PERSONAL_LOAN_TRANASCTION_WIDGET_NAME:
-                                        this.BindPersonalLoanTransactionWidgetData(pageContent, PersonalLoan, page, widget);
-                                        break;
-
-                                    case HtmlConstants.PERSONAL_LOAN_PAYMENT_DUE_WIDGET_NAME:
-                                        this.BindPersonalLoanPaymentDueWidgetData(pageContent, PersonalLoan, page, widget);
-                                        break;
-
-                                    case HtmlConstants.SPECIAL_MESSAGE_WIDGET_NAME:
-                                        this.BindSpecialMessageWidgetData(pageContent, SpecialMessage, page, widget, customer);
-                                        break;
-
-                                    case HtmlConstants.PERSONAL_LOAN_INSURANCE_MESSAGE_WIDGET_NAME:
-                                        this.BindPersonalLoanInsuranceMessageWidgetData(pageContent, PersonalLoan, page, widget);
-                                        break;
-
-                                    case HtmlConstants.PERSONAL_LOAN_TOTAL_AMOUNT_DETAIL_WIDGET_NAME:
-                                        this.BindPersonalLoanTotalAmountDetailWidgetData(pageContent, PersonalLoanAccounts, page, widget);
-                                        break;
-
-                                    case HtmlConstants.PERSONAL_LOAN_ACCOUNTS_BREAKDOWN_WIDGET_NAME:
-                                        this.BindPersonalLoanAccountsBreakdownWidgetData(pageContent, scriptHtmlRenderer, PersonalLoanAccounts, page, widget, batchMaster, customer, statementRawData.OutputLocation);
-                                        break;
-
-                                    case HtmlConstants.HOME_LOAN_TOTAL_AMOUNT_DETAIL_WIDGET_NAME:
-                                        this.BindHomeLoanTotalAmountDetailWidgetData(pageContent, HomeLoanAccounts, page, widget, customer);
-                                        break;
-
-                                    case HtmlConstants.HOME_LOAN_ACCOUNTS_BREAKDOWN_WIDGET_NAME:
-                                        this.BindHomeLoanAccountsBreakdownWidgetData(pageContent, HomeLoanAccounts, page, widget, customer);
-                                        break;
-
-                                    case HtmlConstants.HOME_LOAN_SUMMARY_TAX_PURPOSE_WIDGET_NAME:
-                                        this.BindHomeLoanSummaryTaxPurposeWidgetData(pageContent, HomeLoanAccounts, widget);
-                                        break;
-
-                                    case HtmlConstants.HOME_LOAN_INSTALMENT_WIDGET_NAME:
-                                        IsFailed = this.BindHomeLoanInstalmentWidgetData(pageContent, HomeLoanAccounts, customer, page, widget, statement, ErrorMessages);
-                                        break;
-
-                                    case HtmlConstants.WEALTH_HOME_LOAN_TOTAL_AMOUNT_WIDGET_NAME:
-                                        this.BindHomeLoanWealthTotalAmountDetailWidgetData(pageContent, HomeLoanAccounts, page, widget, customer);
-                                        break;
-
-                                    case HtmlConstants.WEALTH_HOME_LOAN_ACCOUNTS_BREAKDOWN_WIDGET_NAME:
-                                        this.BindHomeLoanWealthAccountsBreakdownWidgetData(pageContent, scriptHtmlRenderer, HomeLoanAccounts, page, widget, batchMaster, customer, statementRawData.OutputLocation);
-                                        break;
-
-                                    case HtmlConstants.WEALTH_HOME_LOAN_SUMMARY_TAX_PURPOSE_WIDGET_NAME:
-                                        this.BindHomeLoanWealthSummaryTaxPurposeWidgetData(pageContent, HomeLoanAccounts, widget);
-                                        break;
-
-                                    case HtmlConstants.WEALTH_HOME_LOAN_INSTALMENT_WIDGET_NAME:
-                                        IsFailed = this.BindHomeLoanWealthInstalmentWidgetData(pageContent, HomeLoanAccounts, customer, page, widget, statement, ErrorMessages);
-                                        break;
-
-                                    case HtmlConstants.WEALTH_HOME_LOAN_BRANCH_DETAILS_WIDGET_NAME:
-                                        IsFailed = this.BindHomeLoanWealthBranchDetailsData(pageContent, page, widget, HomeLoanAccounts, ErrorMessages);
-                                        break;
-
-                                    case HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_DETAILS_WIDGET_NAME:
-                                        this.BindPortfolioCustomerDetailsWidgetData(pageContent, customer, page, widget);
-                                        break;
-
-                                    case HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_ADDRESS_WIDGET_NAME:
-                                        this.BindPortfolioCustomerAddressDetailsWidgetData(pageContent, customer, page, widget);
-                                        break;
-
-                                    case HtmlConstants.CORPORATESAVER_AGENT_ADDRESS_NAME:
-                                        this.BindCorporateSaverAgentAddressDetailsWidgetData(pageContent, CorporateSaver[0], page, widget);
-                                        break;
-
-                                    case HtmlConstants.NEDBANK_PORTFOLIO_CLIENT_CONTACT_DETAILS_WIDGET_NAME:
-                                        this.BindPortfolioClientContactDetailsWidgetData(pageContent, page, widget);
-                                        break;
-
-                                    case HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_SUMMARY_WIDGET_NAME:
-                                        this.BindPortfolioAccountSummaryWidgetData(pageContent, AccountsSummaries, page, widget);
-                                        break;
-
-                                    case HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_ANALYSIS_WIDGET_NAME:
-                                        this.BindPortfolioAccountAnalysisWidgetData(pageContent, scriptHtmlRenderer, _lstAccountAnalysis, page, widget);
-                                        break;
-
-                                    case HtmlConstants.NEDBANK_PORTFOLIO_REMINDERS_WIDGET_NAME:
-                                        this.BindPortfolioRemindersWidgetData(pageContent, Reminders, page, widget);
-                                        break;
-
-                                    case HtmlConstants.NEDBANK_PORTFOLIO_NEWS_ALERT_WIDGET_NAME:
-                                        this.BindPortfolioNewsAlertsWidgetData(pageContent, NewsAndAlerts, page, widget);
-                                        break;
-
-                                    case HtmlConstants.NEDBANK_GREENBACKS_TOTAL_REWARDS_POINTS_WIDGET_NAME:
-                                        this.BindGreenbacksTotalRewardPointsWidgetData(pageContent, AccountsSummaries, page, widget);
-                                        break;
-
-                                    case HtmlConstants.NEDBANK_YTD_REWARDS_POINTS_BAR_GRAPH_WIDGET_NAME:
-                                        this.BindGreenbacksYtdRewardsPointsGraphWidgetData(pageContent, scriptHtmlRenderer, GreenbacksRewardPoints, page, widget);
-                                        break;
-
-                                    case HtmlConstants.NEDBANK_POINTS_REDEEMED_YTD_BAR_GRAPH_WIDGET_NAME:
-                                        this.BindGreenbacksPointsRedeemedYtdGraphWidgetData(pageContent, scriptHtmlRenderer, GreenbacksRedeemedPoints, page, widget);
-                                        break;
-
-                                    case HtmlConstants.NEDBANK_PRODUCT_RELATED_POINTS_EARNED_BAR_GRAPH_WIDGET_NAME:
-                                        this.BindGreenbacksProductRelatedPonitsEarnedGraphWidgetData(pageContent, scriptHtmlRenderer, CustProductMonthwiseRewardPoints, page, widget);
-                                        break;
-
-                                    case HtmlConstants.NEDBANK_CATEGORY_SPEND_REWARDS_PIE_CHART_WIDGET_NAME:
-                                        this.BindGreenbacksCategorySpendRewardPointsGraphWidgetData(pageContent, scriptHtmlRenderer, CustRewardSpendByCategory, page, widget);
-                                        break;
-
-                                    case HtmlConstants.WEALTH_BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_NAME:
-                                        this.BindDataToWealthBreakdownOfInvestmentAccountsWidget(pageContent, scriptHtmlRenderer, investmentMasters, page, widget, batchMaster, customer, statementRawData.OutputLocation);
-                                        break;
-                                    case HtmlConstants.INVESTMENT_WEALTH_PORTFOLIO_STATEMENT_WIDGET_NAME:
-                                        BindDataToWealthInvestmentPortfolioStatementWidget(pageContent, customer, investmentMasters, page, widget);
-                                        break;
-                                    case HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_NAME:
-                                        this.BindDataToWealthInvestorPerformanceStatementWidget(pageContent, investmentMasters, page, widget, customer);
-                                        break;
-                                    case HtmlConstants.WEALTH_EXPLANATORY_NOTES_WIDGET_NAME:
-                                        this.BindExplanatoryNotesWidgetData(pageContent, ExplanatoryNotes, page, widget);
-                                        break;
-                                    case HtmlConstants.NEDBANK_MCA_ACCOUNT_SUMMARY_WIDGET_NAME:
-                                        this.BindMCAAccountSummaryDetailWidgetData(pageContent, MCA, widget);
-                                        break;
-
-                                    case HtmlConstants.NEDBANK_MCA_TRANSACTION_WIDGET_NAME:
-                                        this.BindMCATransactionDetailWidgetData(pageContent, MCA, widget, page);
-                                        break;
-
-                                    case HtmlConstants.NEDBANK_MCA_VAT_ANALYSIS_WIDGET_NAME:
-                                        this.BindMCAVATAnalysisDetailWidgetData(pageContent, MCA, widget, page);
-                                        break;
-
-                                    case HtmlConstants.NEDBANK_WEALTH_MCA_ACCOUNT_SUMMARY_WIDGET_NAME:
-                                        this.BindMCAAccountSummaryDetailWidgetData(pageContent, MCA, widget);
-                                        break;
-
-                                    case HtmlConstants.NEDBANK_WEALTH_MCA_TRANSACTION_WIDGET_NAME:
-                                        this.BindMCATransactionDetailWidgetData(pageContent, MCA, widget, page);
-                                        break;
-
-                                    case HtmlConstants.NEDBANK_WEALTH_MCA_VAT_ANALYSIS_WIDGET_NAME:
-                                        this.BindMCAVATAnalysisDetailWidgetData(pageContent, MCA, widget, page);
-                                        break;
-
-                                    case HtmlConstants.NEDBANK_WEALTH_MCA_BRANCH_DETAILS_WIDGET_NAME:
-                                        this.BindBranchDetailsWidgetData(pageContent, BranchId, page, widget, tenantCode, customer);
-                                        break;
-                                    case HtmlConstants.CORPORATESAVER_AGENT_MESSAGE_WIDGET_NAME:
-                                        this.BindCorporateSaverAgentMessageWidgetData(pageContent, BranchId, page, widget, tenantCode, customer);
-                                        break;
-
-                                    case HtmlConstants.NEDBANK_CORPORATESAVER_TRANSACTION_WIDGET_NAME:
-                                        this.BindCorporateSaverTransactionDetailWidgetData(pageContent, CorporateSaver, widget, page, customer);
-                                        break;
-
-                                    case HtmlConstants.NETBANK_CORPORATESAVER_AGENTDETAILS_NAME:
-                                        this.BindCorporateTaxTotalData(pageContent, CorporateSaver, widget, page);
-                                        break;
-
-                                    case HtmlConstants.NEDBANK_CORPORATESAVER_CLIENTANDAGENT_DETAILS_NAME:
-                                        this.BindCorporateSaverClientDetailsWidgetData(pageContent, CorporateSaver, widget);
-                                        break;
-
-                                    case HtmlConstants.NEDBANK_CORPORATESAVER_LASTTOTAL_NAME:
-                                        this.BindCorporateSaverLastTotalWidgetData(pageContent, CorporateSaver, widget, page, customer);
-                                        break;
-
-                                    case HtmlConstants.NEDBANK_WEALTH_CORPORATESAVER_VAT_ANALYSIS_WIDGET_NAME:
-                                        this.BindMCAVATAnalysisDetailWidgetData(pageContent, MCA, widget, page);
-                                        break;
-
-                                    case HtmlConstants.NEDBANK_WEALTH_CORPORATESAVER_BRANCH_DETAILS_WIDGET_NAME:
-                                        this.BindBranchDetailsWidgetData(pageContent, BranchId, page, widget, tenantCode, customer);
-                                        break;
-                                }
-                            }
-                            else
-                            {
-                                var dynaWidgets = dynamicWidgets.Where(item => item.Identifier == widget.WidgetId).ToList();
-                                if (dynaWidgets.Count > 0)
-                                {
-                                    var dynawidget = dynaWidgets.FirstOrDefault();
-                                    var themeDetails = new CustomeTheme();
-                                    if (dynawidget.ThemeType == "Default")
-                                    {
-                                        themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(statementRawData.TenantConfiguration.WidgetThemeSetting);
-                                    }
-                                    else
-                                    {
-                                        themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(dynawidget.ThemeCSS);
-                                    }
-
-                                    //Get data from database for widget
-                                    httpClient = new HttpClient();
-                                    httpClient.BaseAddress = new Uri(statementRawData.TenantConfiguration.BaseUrlForTransactionData);
-                                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ModelConstant.APPLICATION_JSON_MEDIA_TYPE));
-                                    httpClient.DefaultRequestHeaders.Add(ModelConstant.TENANT_CODE_KEY, tenantCode);
-
-                                    //API search parameter
-                                    JObject searchParameter = new JObject();
-                                    searchParameter[ModelConstant.BATCH_ID] = batchMaster.Identifier;
-                                    searchParameter[ModelConstant.CUSTOEMR_ID] = customer.CustomerId;
-                                    searchParameter[ModelConstant.WIDGET_FILTER_SETTING] = dynawidget.WidgetFilterSettings;
-
-                                    switch (dynawidget.WidgetType)
-                                    {
-                                        case HtmlConstants.TABLE_DYNAMICWIDGET:
-                                            this.BindDynamicTableWidgetData(pageContent, page, widget, searchParameter, dynawidget, httpClient);
-                                            break;
-                                        case HtmlConstants.FORM_DYNAMICWIDGET:
-                                            this.BindDynamicFormWidgetData(pageContent, page, widget, searchParameter, dynawidget, httpClient);
-                                            break;
-                                        case HtmlConstants.LINEGRAPH_DYNAMICWIDGET:
-                                            this.BindDynamicLineGraphWidgetData(pageContent, scriptHtmlRenderer, page, widget, searchParameter, dynawidget, httpClient, themeDetails);
-                                            break;
-                                        case HtmlConstants.BARGRAPH_DYNAMICWIDGET:
-                                            this.BindDynamicBarGraphWidgetData(pageContent, scriptHtmlRenderer, page, widget, searchParameter, dynawidget, httpClient, themeDetails);
-                                            break;
-                                        case HtmlConstants.PICHART_DYNAMICWIDGET:
-                                            this.BindDynamicPieChartWidgetData(pageContent, scriptHtmlRenderer, page, widget, searchParameter, dynawidget, httpClient, themeDetails, tenantCode);
-                                            break;
-                                        case HtmlConstants.HTML_DYNAMICWIDGET:
-                                            this.BindDynamicHtmlWidgetData(pageContent, page, widget, searchParameter, dynawidget, httpClient);
-                                            break;
-                                    }
-                                }
-                            }
-                        }
-
-                        newPageContent.Append(pageContent);
-                        statementPageContent.PageHeaderContent = PageHeaderContent.ToString();
-                        statementPageContent.HtmlContent = newPageContent.ToString();
-                    }
-
-                    //to add statement metadata records
-                    if (IsInvestmentPageTypePresent && investmentMasters != null && investmentMasters.Count > 0)
-                    {
-                        investmentMasters.ForEach(invest =>
-                        {
-                            var InvestmentNo = Convert.ToString(invest.InvestorId) + Convert.ToString(invest.InvestmentId);
-                            while (InvestmentNo.Length != 12)
-                            {
-                                InvestmentNo = "0" + InvestmentNo;
-                            }
-
-                            //to separate to string dates values into required date format -- 
-                            //given date format for statement period is //2021-02-10 00:00:00.000 - 2021-03-09 23:00:00.000//
-                            //1st try with string separator, if fails then try with char separator
-                            var statementPeriod = string.Empty;
-                            string[] stringSeparators = new string[] { " - ", "- ", " -" };
-                            string[] dates = invest.StatementPeriod.Split(stringSeparators, StringSplitOptions.None);
-                            if (dates.Length > 0)
-                            {
-                                if (dates.Length > 1)
-                                {
-                                    statementPeriod = Convert.ToDateTime(dates[0]).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + " to " + Convert.ToDateTime(dates[1]).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy);
-                                }
-                                else
-                                {
-                                    dates = investmentMasters[0].StatementPeriod.Split(new Char[] { ' ' });
-                                    if (dates.Length > 2)
-                                    {
-                                        statementPeriod = Convert.ToDateTime(dates[0]).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + " to " + Convert.ToDateTime(dates[2]).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                statementPeriod = investmentMasters[0].StatementPeriod;
-                            }
-
-                            statementMetadataRecords.Add(new StatementMetadata
-                            {
-                                AccountNumber = InvestmentNo,
-                                AccountType = invest.ProductDesc,
-                                CustomerId = customer.CustomerId,
-                                CustomerName = customer.FirstName + " " + customer.SurName,
-                                StatementPeriod = statementPeriod,
-                                StatementId = statement.Identifier,
-                            });
-                        });
-                    }
-                    if (IsPersonalLoanPageTypePresent && PersonalLoanAccounts != null && PersonalLoanAccounts.Count > 0)
-                    {
-                        PersonalLoanAccounts.ForEach(PersonalLoans =>
-                        {
-                            statementMetadataRecords.Add(new StatementMetadata
-                            {
-                                AccountNumber = PersonalLoans.InvestorId.ToString(),
-                                AccountType = (!string.IsNullOrEmpty(PersonalLoans.ProductType) ? PersonalLoans.ProductType : HtmlConstants.PERSONAL_LOAN_PAGE_TYPE),
-                                CustomerId = customer.CustomerId,
-                                CustomerName = customer.FirstName.Trim() + " " + customer.SurName?.Trim(),
-                                StatementPeriod = PersonalLoans.FromDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + " - " + PersonalLoans.ToDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy),
-                                StatementId = statement.Identifier,
-                            });
-                        });
-                    }
-                    if (IsHomeLoanPageTypePresent && HomeLoanAccounts != null && HomeLoanAccounts.Count > 0)
-                    {
-                        HomeLoanAccounts.ForEach(HomeLoan =>
-                        {
-                            statementMetadataRecords.Add(new StatementMetadata
-                            {
-                                AccountNumber = HomeLoan.InvestorId.ToString(),
-                                AccountType = HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE,
-                                CustomerId = customer.CustomerId,
-                                CustomerName = customer.FirstName.Trim() + " " + customer.SurName?.Trim(),
-                                StatementPeriod = "Monthly",
-                                StatementId = statement.Identifier,
-                            });
-                        });
-                    }
-
-                    //NAV bar will append to html statement, only if statement definition have more than 1 pages 
-                    if (statement.Pages.Count > 1)
-                    {
-                        htmlbody.Append(HtmlConstants.NEDBANK_NAV_BAR_HTML.Replace("{{Today}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MMM_yyyy)).Replace("{{NavItemList}}", NavItemList.ToString()));
-                    }
-
-                    htmlbody.Append(HtmlConstants.PAGE_TAB_CONTENT_HEADER);
-                    newStatementPageContents.ToList().ForEach(page =>
-                    {
-                        //htmlbody.Append(page.PageHeaderContent);
-                        htmlbody.Append(page.HtmlContent);
-                        //htmlbody.Append(page.PageFooterContent);
-                        //htmlbody.Append(HtmlConstants.PAGE_FOOTER_HTML);
-                    });
-                    htmlbody.Append(HtmlConstants.END_DIV_TAG); // end tab-content div
-
-                    //if (customer.Segment == "WEA" ? true : false)
-                    //{
-                    //    var footerContent = new StringBuilder(HtmlConstants.WEALTH_NEDBANK_STATEMENT_FOOTER);
-                    //    footerContent.Replace("{{NedbankSloganImage}}", "../common/images/Footer_Image.png");
-                    //    htmlbody.Append(footerContent.ToString());
-                    //}
-                    //else
-                    //{
-                    //    var footerContent = new StringBuilder(HtmlConstants.NEDBANK_STATEMENT_FOOTER);
-                    //    footerContent.Replace("{{NedbankSloganImage}}", "../common/images/See_money_differently.PNG");
-                    //    footerContent.Replace("{{NedbankNameImage}}", "../common/images/NEDBANK_Name.png");
-                    //    footerContent.Replace("{{FooterText}}", HtmlConstants.NEDBANK_STATEMENT_FOOTER_TEXT_STRING);
-                    //    footerContent.Replace("{{LastFooterText}}", string.Empty);
-                    //    htmlbody.Append(footerContent.ToString());
-                    //}
-
-                    //htmlbody.Append(statementRawData.StatementPageContents?.FirstOrDefault().PageFooterContent);
-
-                    //htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER); // end of container-fluid div
-
-                    var finalHtml = new StringBuilder();
-                    finalHtml.Append(HtmlConstants.HTML_HEADER);
-                    finalHtml.Append(htmlbody.ToString());
-                    finalHtml.Append(HtmlConstants.HTML_FOOTER);
-
-                    //replace below variable with actual data in final html string
-                    finalHtml.Replace("{{ChartScripts}}", scriptHtmlRenderer.ToString());
-                    finalHtml.Replace("{{CustomerNumber}}", customer.CustomerId.ToString());
-                    finalHtml.Replace("{{StatementNumber}}", statement.Identifier.ToString());
-                    finalHtml.Replace("{{FirstPageId}}", FirstPageId.ToString());
-                    finalHtml.Replace("{{TenantCode}}", tenantCode);
-
-                    finalHtml = Translate(finalHtml, customer);
-
-                    //If has any error while rendering html statement, then assign status as failed and all collected errors message to log message variable..
-                    //Otherwise write html statement string to actual html file and store it at output location, then assign status as completed
-                    if (IsFailed)
-                    {
-                        logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                        logDetailRecord.LogMessage = "<ul class='pl-4 text-left'>" + ErrorMessages.ToString() + "</ul>";
-                    }
-                    else
-                    {
-                        string productPrefix = string.Empty;
-                        string documentName = string.Empty;
-                        string statementDate = string.Empty;
-                        string endDate = string.Empty;
-                        if (statement.Pages.Where(x => x.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE || x.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE ||
-                                                       x.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || x.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE ||
-                                                       x.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE || x.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE).Count() > 0)
-                        {
-                            productPrefix = "H";
-                            documentName = "Home Loan Statement";
-                            statementDate = HomeLoanAccounts?.FirstOrDefault().StatementDate?.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy3);
-                        }
-                        else if (statement.Pages.Where(x => x.PageTypeName == HtmlConstants.PERSONAL_LOAN_PAGE_TYPE).Count() > 0)
-                        {
-                            productPrefix = "P";
-                            documentName = "Personal Loan Statement";
-                            statementDate = PersonalLoanAccounts?.FirstOrDefault().ToDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy3);
-                        }
-                        else if (statement.Pages.Where(x => x.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_ENGLISH || x.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_AFRICAN ||
-                                                            x.PageTypeName == HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_ENGLISH || x.PageTypeName == HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_AFRICAN).Count() > 0)
-                        {
-                            productPrefix = "I";
-                            documentName = "Investment Statement";
-                            statementDate = investmentMasters?.FirstOrDefault().StatementDate?.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy3);
-                        }
-                        else if (statement.Pages.Where(x => x.PageTypeName == HtmlConstants.MULTI_CURRENCY_FOR_CIB_PAGE_TYPE || x.PageTypeName == HtmlConstants.MULTI_CURRENCY_FOR_WEA_PAGE_TYPE).Count() > 0)
-                        {
-                            productPrefix = "M";
-                            documentName = "MCA Statement";
-                            statementDate = MCA?.FirstOrDefault().StatementDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy3);
-                        }
-                        else if (statement.Pages.Where(x => x.PageTypeName == HtmlConstants.CORPORATE_SAVER_AFR_PAGE_TYPE || x.PageTypeName == HtmlConstants.CORPORATE_SAVER_ENG_PAGE_TYPE).Count() > 0)
-                        {
-                            productPrefix = "C";
-                            documentName = "Corporate Saver Statement";
-                        }
-
-                        string fileName = productPrefix + customer.CustomerId + " _ " + documentName + "  " + customer.Segment + " " + customer.Language + " " + statementDate + " " + DateTime.Now.ToString(ModelConstant.TIME_FORMAT_HH_MM_SS).Replace(".", " ").Replace(":", " ") + ".html";
-                        //string fileName = "Statement_" + customer.Identifier + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
-                        string headerHtml = statement.Pages[0].HeaderHTML;
-                        string footerHtml = statement.Pages[0].FooterHTML;
-
-                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, "",batchMaster.BatchName, customer.CustomerId, statementRawData.BaseURL, statementRawData.OutputLocation, printPdf: true, headerHtml: headerHtml, footerHtml: footerHtml, segment: statement.Pages[0].PageTypeName, language: customer.Language);
-
-                        logDetailRecord.StatementFilePath = filePath;
-                        logDetailRecord.Status = ScheduleLogStatus.Completed.ToString();
-                        logDetailRecord.LogMessage = "Statement generated successfully..!!";
-                        logDetailRecord.statementMetadata = statementMetadataRecords;
-                    }
-                }
-
-                return logDetailRecord;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //private ScheduleLogDetail GenerateNedbankStatements(GenerateStatementRawData statementRawData, string tenantCode)
+        //{
+        //    var logDetailRecord = new ScheduleLogDetail();
+        //    var ErrorMessages = new StringBuilder();
+        //    bool IsFailed = false;
+        //    var statementMetadataRecords = new List<StatementMetadata>();
+
+        //    try
+        //    {
+        //        var customer = statementRawData.DM_Customer;
+        //        var statement = statementRawData.Statement;
+        //        var batchMaster = statementRawData.Batch;
+
+        //        if (statementRawData.StatementPageContents.Count > 0)
+        //        {
+        //            //collecting all media information which is required in html statement for some widgets like image, video and static customer information widgets
+        //            var customerMedias = this.tenantTransactionDataRepository.GetCustomerMediaList(customer.CustomerId, batchMaster.Identifier, statement.Identifier, tenantCode);
+
+        //            long BranchId = 0;
+        //            var investmentMasters = new List<DM_InvestmentMaster>();
+        //            var PersonalLoanAccounts = new List<DM_PersonalLoanMaster>();
+        //            var HomeLoanAccounts = new List<DM_HomeLoanMaster>();
+        //            var MCA = new List<DM_MCAMaster>();
+        //            var CorporateSaver = new List<DM_CorporateSaverMaster>();
+        //            var PersonalLoan = new List<DM_PersonalLoanMaster>();
+
+        //            var AccountsSummaries = new List<DM_AccountsSummary>();
+        //            var _lstAccountAnalysis = new List<DM_AccountAnanlysis>();
+        //            var Reminders = new List<DM_CustomerReminderAndRecommendation>();
+        //            var NewsAndAlerts = new List<DM_CustomerNewsAndAlert>();
+        //            var GreenbackMaster = new DM_GreenbacksMaster();
+        //            var GreenbacksRewardPoints = new List<DM_GreenbacksRewardPoints>();
+        //            var GreenbacksRedeemedPoints = new List<DM_GreenbacksRewardPointsRedeemed>();
+        //            var CustProductMonthwiseRewardPoints = new List<DM_CustomerProductWiseRewardPoints>();
+        //            var CustRewardSpendByCategory = new List<DM_CustomerRewardSpendByCategory>();
+
+        //            var customerSearchParameter = new CustomerSearchParameter() { CustomerId = customer.CustomerId, BatchId = batchMaster.Identifier };
+
+        //            var IsPortFolioPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.AT_A_GLANCE_PAGE_TYPE).ToList().Count > 0;
+        //            var IsInvestmentPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_ENGLISH || it.PageTypeName == HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_ENGLISH || it.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_AFRICAN || it.PageTypeName == HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_AFRICAN).ToList().Count > 0;
+        //            var IsPersonalLoanPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == HtmlConstants.PERSONAL_LOAN_PAGE_TYPE).ToList().Count > 0;
+        //            var IsHomeLoanPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE).ToList().Count > 0;
+        //            var IsRewardPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.GREENBACKS_PAGE_TYPE).ToList().Count > 0;
+        //            var IsMCAPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_FOR_CIB_PAGE_TYPE || it.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_FOR_WEA_PAGE_TYPE).ToList().Count > 0;
+        //            var IsCorporateSaverPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == HtmlConstants.CORPORATE_SAVER_ENG_PAGE_TYPE || it.PageTypeName.Trim() == HtmlConstants.CORPORATE_SAVER_AFR_PAGE_TYPE).ToList().Count > 0;
+        //            // var IsMCAPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == "").ToList().Count > 0;
+        //            // var IsCorporateSaverPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == "").ToList().Count > 0;
+        //            if (IsPortFolioPageTypePresent)
+        //            {
+        //                AccountsSummaries = this.tenantTransactionDataRepository.GET_DM_AccountSummaries(customerSearchParameter, tenantCode)?.ToList();
+        //                _lstAccountAnalysis = this.tenantTransactionDataRepository.GET_DM_AccountAnalysisDetails(customerSearchParameter, tenantCode)?.ToList();
+        //                Reminders = this.tenantTransactionDataRepository.GET_DM_CustomerReminderAndRecommendations(customerSearchParameter, tenantCode)?.ToList();
+        //                NewsAndAlerts = this.tenantTransactionDataRepository.GET_DM_CustomerNewsAndAlert(customerSearchParameter, tenantCode)?.ToList();
+        //            }
+        //            if (IsInvestmentPageTypePresent)
+        //            {
+        //                investmentMasters = this.tenantTransactionDataRepository.Get_NB_InvestmentMaster(new CustomerInvestmentSearchParameter() { InvestorId = customer.CustomerId, BatchId = batchMaster.Identifier }, tenantCode)?.ToList();
+
+        //                if (investmentMasters != null && investmentMasters.Count > 0)
+        //                {
+        //                    //var totalAmount = 0.0m; var res = 0.0m;
+        //                    investmentMasters.ForEach(invest =>
+        //                    {
+        //                        invest.investmentTransactions = this.tenantTransactionDataRepository.Get_DM_InvestmentTransaction(new CustomerInvestmentSearchParameter() { CustomerId = customer.CustomerId, BatchId = batchMaster.Identifier, InvestmentId = invest.InvestmentId, InvestorId = invest.InvestorId }, tenantCode)?.ToList();
+
+        //                        //totalAmount = totalAmount + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains(ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC)).Select(it => decimal.TryParse(it.WJXBFS4_Balance.Replace(",", "."), out res) ? res : 0).ToList().Sum(it => it);
+        //                    });
+
+        //                    BranchId = (investmentMasters != null && investmentMasters.Count > 0) ? investmentMasters[0].BranchId : 0;
+
+        //                    //AccountsSummaries.Add(new DM_AccountsSummary() { AccountType = "Investment", TotalAmount = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, totalAmount) });
+        //                }
+        //            }
+        //            if (IsPersonalLoanPageTypePresent)
+        //            {
+        //                //PersonalLoanAccounts = this.tenantTransactionDataRepository.Get_DM_PersonalLoanMaster(new CustomerPersonalLoanSearchParameter() { BatchId = 753, CustomerId = 151000262666 }, "94461633-b316-42c3-a188-db8d78075ef4")?.ToList();
+        //                PersonalLoanAccounts = this.tenantTransactionDataRepository.Get_DM_PersonalLoanMaster(new CustomerPersonalLoanSearchParameter() { BatchId = batchMaster.Identifier, CustomerId = customer.CustomerId }, tenantCode)?.ToList();
+
+        //                //var totalAmount = 0.0m; var res = 0.0m;
+        //                //totalAmount = PersonalLoanAccounts.Select(it => decimal.TryParse(it.CreditAdvance, out res) ? res : 0).ToList().Sum(it => it);
+        //                //AccountsSummaries.Add(new DM_AccountsSummary() { AccountType = "Personal Loan", TotalAmount = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, totalAmount) });
+
+        //                BranchId = (PersonalLoanAccounts != null && PersonalLoanAccounts.Count > 0) ? PersonalLoanAccounts[0].BranchId : 0;
+        //            }
+        //            if (IsHomeLoanPageTypePresent)
+        //            {
+        //                HomeLoanAccounts = this.tenantTransactionDataRepository.Get_DM_HomeLoanMaster(new CustomerHomeLoanSearchParameter() { BatchId = batchMaster.Identifier, CustomerId = customer.CustomerId }, tenantCode)?.ToList();
+
+        //                //var totalAmount = 0.0m; var res = 0.0m;
+        //                //totalAmount = HomeLoanAccounts.Select(it => decimal.TryParse(it.LoanAmount, out res) ? res : 0).ToList().Sum(it => it);
+        //                //AccountsSummaries.Add(new DM_AccountsSummary() { AccountType = "Home Loan", TotalAmount = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, totalAmount) });
+        //            }
+        //            if (IsRewardPageTypePresent)
+        //            {
+        //                //AccountsSummaries.Add(new DM_AccountsSummary() { AccountType = "Greenback reward points", TotalAmount = "432" });
+        //                GreenbackMaster = this.tenantTransactionDataRepository.GET_DM_GreenbacksMasterDetails(tenantCode)?.ToList()?.FirstOrDefault();
+        //                GreenbacksRewardPoints = this.tenantTransactionDataRepository.GET_DM_GreenbacksRewardPoints(customerSearchParameter, tenantCode)?.ToList();
+        //                GreenbacksRedeemedPoints = this.tenantTransactionDataRepository.GET_DM_GreenbacksRewardPointsRedeemed(customerSearchParameter, tenantCode)?.ToList();
+        //                CustProductMonthwiseRewardPoints = this.tenantTransactionDataRepository.GET_DM_CustomerProductWiseRewardPoints(customerSearchParameter, tenantCode)?.ToList();
+        //                CustRewardSpendByCategory = this.tenantTransactionDataRepository.GET_DM_CustomerRewardSpendByCategory(customerSearchParameter, tenantCode)?.ToList();
+        //            }
+        //            if (IsMCAPageTypePresent)
+        //            {
+        //                MCA = this.mcaDataRepository.Get_DM_MCAMaster(new CustomerMCASearchParameter() { BatchId = batchMaster.Identifier, InvestorId = customer.InvestorId, CustomerId = customer.CustomerId }, tenantCode)?.ToList();
+        //            }
+        //            if (IsCorporateSaverPageTypePresent)
+        //            {
+        //                CorporateSaver = this.corporateSaverDataRepository.Get_DM_CorporateSaverMaster(new CustomerCorporateSaverSearchParameter() { BatchId = batchMaster.Identifier, InvestorId = customer.InvestorId }, tenantCode)?.ToList();
+        //            }
+
+
+        //            if (IsPersonalLoanPageTypePresent)
+        //            {
+        //                PersonalLoan = this.tenantTransactionDataRepository.Get_DM_PersonalLoanMaster(new CustomerPersonalLoanSearchParameter() { BatchId = batchMaster.Identifier, CustomerId = customer.CustomerId, InvestorId = customer.InvestorId }, tenantCode)?.ToList();
+        //            }
+
+        //            var SpecialMessage = this.tenantTransactionDataRepository.Get_DM_SpecialMessages(new MessageAndNoteSearchParameter() { BatchId = batchMaster.Identifier, CustomerId = customer.CustomerId }, tenantCode)?.ToList()?.FirstOrDefault();
+        //            var ExplanatoryNotes = this.tenantTransactionDataRepository.Get_DM_ExplanatoryNotes(new MessageAndNoteSearchParameter() { BatchId = batchMaster.Identifier }, tenantCode)?.ToList();
+        //            var _lstMessage = this.tenantTransactionDataRepository.Get_DM_MarketingMessages(new MessageAndNoteSearchParameter() { BatchId = batchMaster.Identifier }, tenantCode)?.ToList();
+
+        //            var htmlbody = new StringBuilder();
+        //            //htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
+        //            //if (statement.Pages.Count() > 0)
+        //            //{
+        //            //    if (customer.Segment == "WEA" ? true : false)
+        //            //    {
+        //            //        htmlbody.Append(HtmlConstants.NEDBANK_STATEMENT_HEADER.Replace("{{eConfirmLogo}}", "../common/images/eConfirm.png").Replace("{{ImgHeight}}", "100").Replace("{{NedBankLogo}}", "../common/images/NedBankLogoBlack.png").Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd)));
+        //            //    }
+        //            //    else
+        //            //    {
+        //            //        htmlbody.Append(HtmlConstants.NEDBANK_STATEMENT_HEADER.Replace("{{ImgHeight}}", "80").Replace("{{eConfirmLogo}}", "../common/images/eConfirm.png").Replace("{{NedBankLogo}}", "../common/images/NEDBANKLogo.png").Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd)));
+        //            //    }
+        //            //}
+        //            //else
+        //            //{
+        //            //    htmlbody.Append(HtmlConstants.NEDBANK_STATEMENT_HEADER.Replace("{{ImgHeight}}", "80").Replace("{{eConfirmLogo}}", "../common/images/eConfirm.png").Replace("{{NedBankLogo}}", "../common/images/NEDBANKLogo.png").Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd)));
+        //            //}
+
+        //            //htmlbody.Append(statementRawData.StatementPageContents?.FirstOrDefault().PageHeaderContent);
+
+        //            //this variable is used to bind all script to html statement, which helps to render data on chart and graph widgets
+        //            var scriptHtmlRenderer = new StringBuilder();
+        //            HttpClient httpClient = null;
+        //            var NavItemList = new StringBuilder();
+
+        //            var newStatementPageContents = new List<StatementPageContent>();
+        //            statementRawData.StatementPageContents.ToList().ForEach(it => newStatementPageContents.Add(new StatementPageContent()
+        //            {
+        //                Id = it.Id,
+        //                PageId = it.PageId,
+        //                PageTypeId = it.PageTypeId,
+        //                HtmlContent = it.HtmlContent,
+        //                PageHeaderContent = it.PageHeaderContent,
+        //                PageFooterContent = it.PageFooterContent,
+        //                DisplayName = it.DisplayName,
+        //                TabClassName = it.TabClassName,
+        //                DynamicWidgets = it.DynamicWidgets
+        //            }));
+
+        //            long FirstPageId = statement.Pages[0].Identifier;
+        //            var firstPage = statement.Pages[0];
+        //            var widgets = new List<PageWidget>(firstPage.PageWidgets);
+        //            for (int i = 0; i < statement.Pages.Count; i++)
+        //            {
+        //                var page = statement.Pages[i];
+        //                var statementPageContent = newStatementPageContents.Where(item => item.PageTypeId == page.PageTypeId && item.Id == i).FirstOrDefault();
+
+        //                var MarketingMessageCounter = 0;
+        //                var Messages = _lstMessage?.Where(it => it.Type == page.PageTypeName)?.ToList();
+
+        //                //sub page count under current page tab
+        //                var PageHeaderContent = new StringBuilder(statementPageContent.PageHeaderContent);
+        //                var dynamicWidgets = new List<DynamicWidget>(statementPageContent.DynamicWidgets);
+
+        //                string tabClassName = Regex.Replace((statementPageContent.DisplayName + "-" + page.Identifier), @"\s+", "-");
+        //                NavItemList.Append("<li class='nav-item" + (i != statement.Pages.Count - 1 ? " nav-rt-border" : string.Empty) + "'><a id='tab" + i + "-tab' data-toggle='tab' data-target='#" + tabClassName + "' role='tab' class='nav-link" + (i == 0 ? " active" : string.Empty) + "'> " + statementPageContent.DisplayName + " </a></li>");
+
+        //                string ExtraClassName = string.Empty;
+        //                PageHeaderContent.Replace("{{ExtraClass}}", ExtraClassName).Replace("{{DivId}}", tabClassName);
+
+        //                var newPageContent = new StringBuilder();
+        //                var pagewidgets = new List<PageWidget>(page.PageWidgets);
+        //                var pageContent = new StringBuilder(statementPageContent.HtmlContent);
+
+        //                for (int j = 0; j < pagewidgets.Count; j++)
+        //                {
+        //                    var widget = pagewidgets[j];
+        //                    if (!widget.IsDynamicWidget)
+        //                    {
+        //                        switch (widget.WidgetName)
+        //                        {
+        //                            case HtmlConstants.CUSTOMER_DETAILS_WIDGET_NAME:
+        //                                bool isShowCellNo = false;
+        //                                string vatNo = string.Empty;
+        //                                if (statement.Pages.Count == 1)
+        //                                {
+        //                                    if (page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE 
+        //                                     || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE 
+        //                                     || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE 
+        //                                     || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE 
+        //                                     || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE 
+        //                                     || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE 
+        //                                     || page.PageTypeName.Trim() == HtmlConstants.PERSONAL_LOAN_PAGE_TYPE)
+        //                                    {
+        //                                        isShowCellNo = true;
+        //                                    }
+        //                                    if (page.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_FOR_CIB_PAGE_TYPE || page.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_FOR_WEA_PAGE_TYPE)
+        //                                    {
+        //                                        if (MCA != null && MCA.Count > 0)
+        //                                        {
+        //                                            vatNo = MCA[0].VatNo;
+        //                                        }
+        //                                    }
+        //                                    this.BindCustomerDetailsWidgetData(pageContent, customer, CorporateSaver, page, widget, isShowCellNo, vatNo);
+        //                                }
+        //                                break;
+
+        //                            case HtmlConstants.BRANCH_DETAILS_WIDGET_NAME:
+        //                                if (page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE)
+        //                                {
+        //                                    if (statement.Pages.Count == 1)
+        //                                    {
+        //                                        this.BindBondDetailsWidgetData(pageContent, page, widget, HomeLoanAccounts, customer);
+        //                                    }
+        //                                }
+        //                                else
+        //                                {
+        //                                    this.BindBranchDetailsWidgetData(pageContent, BranchId, page, widget, tenantCode, customer);
+        //                                }
+        //                                break;
+
+        //                            case HtmlConstants.IMAGE_WIDGET_NAME:
+        //                                IsFailed = this.BindImageWidgetData(pageContent, ErrorMessages, customer.CustomerId, customerMedias, statementRawData.BatchDetails, statement, page, batchMaster, widget, tenantCode, statementRawData.OutputLocation);
+        //                                break;
+
+        //                            case HtmlConstants.VIDEO_WIDGET_NAME:
+        //                                IsFailed = this.BindVideoWidgetData(pageContent, ErrorMessages, customer.CustomerId, customerMedias, statementRawData.BatchDetails, statement, page, batchMaster, widget, tenantCode, statementRawData.OutputLocation);
+        //                                break;
+
+        //                            case HtmlConstants.STATIC_SEGMENT_BASED_CONTENT_NAME:
+        //                                IsFailed = this.BindSegmentBasedContentWidgetData(pageContent, customer, page, widget, statement, ErrorMessages, customer.Segment == "WEA" ? true : false);
+        //                                break;
+
+        //                            case HtmlConstants.STATIC_HTML_WIDGET_NAME:
+        //                                IsFailed = this.BindStaticHtmlWidgetData(pageContent, customer, page, widget, statement, ErrorMessages);
+        //                                break;
+
+        //                            case HtmlConstants.PAGE_BREAK_WIDGET_NAME:
+        //                                IsFailed = this.BindPageBreakWidgetData(pageContent, customer, page, widget, statement, ErrorMessages);
+        //                                break;
+
+        //                            case HtmlConstants.INVESTMENT_PORTFOLIO_STATEMENT_WIDGET_NAME:
+        //                                this.BindInvestmentPortfolioStatementWidgetData(pageContent, customer, investmentMasters, page, widget);
+        //                                break;
+
+        //                            case HtmlConstants.INVESTOR_PERFORMANCE_WIDGET_NAME:
+        //                                this.BindInvestorPerformanceWidgetData(pageContent, investmentMasters, page, widget, customer);
+        //                                break;
+
+        //                            case HtmlConstants.BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_NAME:
+        //                                this.BindBreakdownOfInvestmentAccountsWidgetData(pageContent, investmentMasters, page, widget);
+        //                                break;
+
+        //                            case HtmlConstants.EXPLANATORY_NOTES_WIDGET_NAME:
+        //                                this.BindExplanatoryNotesWidgetData(pageContent, ExplanatoryNotes, page, widget);
+        //                                break;
+
+        //                            case HtmlConstants.SERVICE_WIDGET_NAME:
+        //                                this.BindMarketingServiceWidgetData(pageContent, Messages, page, widget, MarketingMessageCounter, customer);
+        //                                MarketingMessageCounter++;
+        //                                break;
+
+        //                            case HtmlConstants.PERSONAL_LOAN_DETAIL_WIDGET_NAME:
+        //                                this.BindPersonalLoanDetailWidgetData(pageContent, PersonalLoan, page, widget, tenantCode);
+        //                                break;
+
+        //                            case HtmlConstants.PERSONAL_LOAN_TRANASCTION_WIDGET_NAME:
+        //                                this.BindPersonalLoanTransactionWidgetData(pageContent, PersonalLoan, page, widget);
+        //                                break;
+
+        //                            case HtmlConstants.PERSONAL_LOAN_PAYMENT_DUE_WIDGET_NAME:
+        //                                this.BindPersonalLoanPaymentDueWidgetData(pageContent, PersonalLoan, page, widget);
+        //                                break;
+
+        //                            case HtmlConstants.SPECIAL_MESSAGE_WIDGET_NAME:
+        //                                this.BindSpecialMessageWidgetData(pageContent, SpecialMessage, page, widget, customer);
+        //                                break;
+
+        //                            case HtmlConstants.PERSONAL_LOAN_INSURANCE_MESSAGE_WIDGET_NAME:
+        //                                this.BindPersonalLoanInsuranceMessageWidgetData(pageContent, PersonalLoan, page, widget);
+        //                                break;
+
+        //                            case HtmlConstants.PERSONAL_LOAN_TOTAL_AMOUNT_DETAIL_WIDGET_NAME:
+        //                                this.BindPersonalLoanTotalAmountDetailWidgetData(pageContent, PersonalLoanAccounts, page, widget);
+        //                                break;
+
+        //                            case HtmlConstants.PERSONAL_LOAN_ACCOUNTS_BREAKDOWN_WIDGET_NAME:
+        //                                this.BindPersonalLoanAccountsBreakdownWidgetData(pageContent, scriptHtmlRenderer, PersonalLoanAccounts, page, widget, batchMaster, customer, statementRawData.OutputLocation);
+        //                                break;
+
+        //                            case HtmlConstants.HOME_LOAN_TOTAL_AMOUNT_DETAIL_WIDGET_NAME:
+        //                                this.BindHomeLoanTotalAmountDetailWidgetData(pageContent, HomeLoanAccounts, page, widget, customer);
+        //                                break;
+
+        //                            case HtmlConstants.HOME_LOAN_ACCOUNTS_BREAKDOWN_WIDGET_NAME:
+        //                                this.BindHomeLoanAccountsBreakdownWidgetData(pageContent, HomeLoanAccounts, page, widget, customer);
+        //                                break;
+
+        //                            case HtmlConstants.HOME_LOAN_SUMMARY_TAX_PURPOSE_WIDGET_NAME:
+        //                                this.BindHomeLoanSummaryTaxPurposeWidgetData(pageContent, HomeLoanAccounts, widget);
+        //                                break;
+
+        //                            case HtmlConstants.HOME_LOAN_INSTALMENT_WIDGET_NAME:
+        //                                IsFailed = this.BindHomeLoanInstalmentWidgetData(pageContent, HomeLoanAccounts, customer, page, widget, statement, ErrorMessages);
+        //                                break;
+
+        //                            case HtmlConstants.WEALTH_HOME_LOAN_TOTAL_AMOUNT_WIDGET_NAME:
+        //                                this.BindHomeLoanWealthTotalAmountDetailWidgetData(pageContent, HomeLoanAccounts, page, widget, customer);
+        //                                break;
+
+        //                            case HtmlConstants.WEALTH_HOME_LOAN_ACCOUNTS_BREAKDOWN_WIDGET_NAME:
+        //                                this.BindHomeLoanWealthAccountsBreakdownWidgetData(pageContent, scriptHtmlRenderer, HomeLoanAccounts, page, widget, batchMaster, customer, statementRawData.OutputLocation);
+        //                                break;
+
+        //                            case HtmlConstants.WEALTH_HOME_LOAN_SUMMARY_TAX_PURPOSE_WIDGET_NAME:
+        //                                this.BindHomeLoanWealthSummaryTaxPurposeWidgetData(pageContent, HomeLoanAccounts, widget);
+        //                                break;
+
+        //                            case HtmlConstants.WEALTH_HOME_LOAN_INSTALMENT_WIDGET_NAME:
+        //                                IsFailed = this.BindHomeLoanWealthInstalmentWidgetData(pageContent, HomeLoanAccounts, customer, page, widget, statement, ErrorMessages);
+        //                                break;
+
+        //                            case HtmlConstants.WEALTH_HOME_LOAN_BRANCH_DETAILS_WIDGET_NAME:
+        //                                IsFailed = this.BindHomeLoanWealthBranchDetailsData(pageContent, page, widget, HomeLoanAccounts, ErrorMessages);
+        //                                break;
+
+        //                            case HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_DETAILS_WIDGET_NAME:
+        //                                this.BindPortfolioCustomerDetailsWidgetData(pageContent, customer, page, widget);
+        //                                break;
+
+        //                            case HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_ADDRESS_WIDGET_NAME:
+        //                                this.BindPortfolioCustomerAddressDetailsWidgetData(pageContent, customer, page, widget);
+        //                                break;
+
+        //                            case HtmlConstants.CORPORATESAVER_AGENT_ADDRESS_NAME:
+        //                                this.BindCorporateSaverAgentAddressDetailsWidgetData(pageContent, CorporateSaver[0], page, widget);
+        //                                break;
+
+        //                            case HtmlConstants.NEDBANK_PORTFOLIO_CLIENT_CONTACT_DETAILS_WIDGET_NAME:
+        //                                this.BindPortfolioClientContactDetailsWidgetData(pageContent, page, widget);
+        //                                break;
+
+        //                            case HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_SUMMARY_WIDGET_NAME:
+        //                                this.BindPortfolioAccountSummaryWidgetData(pageContent, AccountsSummaries, page, widget);
+        //                                break;
+
+        //                            case HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_ANALYSIS_WIDGET_NAME:
+        //                                this.BindPortfolioAccountAnalysisWidgetData(pageContent, scriptHtmlRenderer, _lstAccountAnalysis, page, widget);
+        //                                break;
+
+        //                            case HtmlConstants.NEDBANK_PORTFOLIO_REMINDERS_WIDGET_NAME:
+        //                                this.BindPortfolioRemindersWidgetData(pageContent, Reminders, page, widget);
+        //                                break;
+
+        //                            case HtmlConstants.NEDBANK_PORTFOLIO_NEWS_ALERT_WIDGET_NAME:
+        //                                this.BindPortfolioNewsAlertsWidgetData(pageContent, NewsAndAlerts, page, widget);
+        //                                break;
+
+        //                            case HtmlConstants.NEDBANK_GREENBACKS_TOTAL_REWARDS_POINTS_WIDGET_NAME:
+        //                                this.BindGreenbacksTotalRewardPointsWidgetData(pageContent, AccountsSummaries, page, widget);
+        //                                break;
+
+        //                            case HtmlConstants.NEDBANK_YTD_REWARDS_POINTS_BAR_GRAPH_WIDGET_NAME:
+        //                                this.BindGreenbacksYtdRewardsPointsGraphWidgetData(pageContent, scriptHtmlRenderer, GreenbacksRewardPoints, page, widget);
+        //                                break;
+
+        //                            case HtmlConstants.NEDBANK_POINTS_REDEEMED_YTD_BAR_GRAPH_WIDGET_NAME:
+        //                                this.BindGreenbacksPointsRedeemedYtdGraphWidgetData(pageContent, scriptHtmlRenderer, GreenbacksRedeemedPoints, page, widget);
+        //                                break;
+
+        //                            case HtmlConstants.NEDBANK_PRODUCT_RELATED_POINTS_EARNED_BAR_GRAPH_WIDGET_NAME:
+        //                                this.BindGreenbacksProductRelatedPonitsEarnedGraphWidgetData(pageContent, scriptHtmlRenderer, CustProductMonthwiseRewardPoints, page, widget);
+        //                                break;
+
+        //                            case HtmlConstants.NEDBANK_CATEGORY_SPEND_REWARDS_PIE_CHART_WIDGET_NAME:
+        //                                this.BindGreenbacksCategorySpendRewardPointsGraphWidgetData(pageContent, scriptHtmlRenderer, CustRewardSpendByCategory, page, widget);
+        //                                break;
+
+        //                            case HtmlConstants.WEALTH_BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_NAME:
+        //                                this.BindDataToWealthBreakdownOfInvestmentAccountsWidget(pageContent, scriptHtmlRenderer, investmentMasters, page, widget, batchMaster, customer, statementRawData.OutputLocation);
+        //                                break;
+        //                            case HtmlConstants.INVESTMENT_WEALTH_PORTFOLIO_STATEMENT_WIDGET_NAME:
+        //                                BindDataToWealthInvestmentPortfolioStatementWidget(pageContent, customer, investmentMasters, page, widget);
+        //                                break;
+        //                            case HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_NAME:
+        //                                this.BindDataToWealthInvestorPerformanceStatementWidget(pageContent, investmentMasters, page, widget, customer);
+        //                                break;
+        //                            case HtmlConstants.WEALTH_EXPLANATORY_NOTES_WIDGET_NAME:
+        //                                this.BindExplanatoryNotesWidgetData(pageContent, ExplanatoryNotes, page, widget);
+        //                                break;
+        //                            case HtmlConstants.NEDBANK_MCA_ACCOUNT_SUMMARY_WIDGET_NAME:
+        //                                this.BindMCAAccountSummaryDetailWidgetData(pageContent, MCA, widget);
+        //                                break;
+
+        //                            case HtmlConstants.NEDBANK_MCA_TRANSACTION_WIDGET_NAME:
+        //                                this.BindMCATransactionDetailWidgetData(pageContent, MCA, widget, page);
+        //                                break;
+
+        //                            case HtmlConstants.NEDBANK_MCA_VAT_ANALYSIS_WIDGET_NAME:
+        //                                this.BindMCAVATAnalysisDetailWidgetData(pageContent, MCA, widget, page);
+        //                                break;
+
+        //                            case HtmlConstants.NEDBANK_WEALTH_MCA_ACCOUNT_SUMMARY_WIDGET_NAME:
+        //                                this.BindMCAAccountSummaryDetailWidgetData(pageContent, MCA, widget);
+        //                                break;
+
+        //                            case HtmlConstants.NEDBANK_WEALTH_MCA_TRANSACTION_WIDGET_NAME:
+        //                                this.BindMCATransactionDetailWidgetData(pageContent, MCA, widget, page);
+        //                                break;
+
+        //                            case HtmlConstants.NEDBANK_WEALTH_MCA_VAT_ANALYSIS_WIDGET_NAME:
+        //                                this.BindMCAVATAnalysisDetailWidgetData(pageContent, MCA, widget, page);
+        //                                break;
+
+        //                            case HtmlConstants.NEDBANK_WEALTH_MCA_BRANCH_DETAILS_WIDGET_NAME:
+        //                                this.BindBranchDetailsWidgetData(pageContent, BranchId, page, widget, tenantCode, customer);
+        //                                break;
+        //                            case HtmlConstants.CORPORATESAVER_AGENT_MESSAGE_WIDGET_NAME:
+        //                                this.BindCorporateSaverAgentMessageWidgetData(pageContent, BranchId, page, widget, tenantCode, customer);
+        //                                break;
+
+        //                            case HtmlConstants.NEDBANK_CORPORATESAVER_TRANSACTION_WIDGET_NAME:
+        //                                this.BindCorporateSaverTransactionDetailWidgetData(pageContent, CorporateSaver, widget, page, customer);
+        //                                break;
+
+        //                            case HtmlConstants.NETBANK_CORPORATESAVER_AGENTDETAILS_NAME:
+        //                                this.BindCorporateTaxTotalData(pageContent, CorporateSaver, widget, page);
+        //                                break;
+
+        //                            case HtmlConstants.NEDBANK_CORPORATESAVER_CLIENTANDAGENT_DETAILS_NAME:
+        //                                this.BindCorporateSaverClientDetailsWidgetData(pageContent, CorporateSaver, widget);
+        //                                break;
+
+        //                            case HtmlConstants.NEDBANK_CORPORATESAVER_LASTTOTAL_NAME:
+        //                                this.BindCorporateSaverLastTotalWidgetData(pageContent, CorporateSaver, widget, page, customer);
+        //                                break;
+
+        //                            case HtmlConstants.NEDBANK_WEALTH_CORPORATESAVER_VAT_ANALYSIS_WIDGET_NAME:
+        //                                this.BindMCAVATAnalysisDetailWidgetData(pageContent, MCA, widget, page);
+        //                                break;
+
+        //                            case HtmlConstants.NEDBANK_WEALTH_CORPORATESAVER_BRANCH_DETAILS_WIDGET_NAME:
+        //                                this.BindBranchDetailsWidgetData(pageContent, BranchId, page, widget, tenantCode, customer);
+        //                                break;
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        var dynaWidgets = dynamicWidgets.Where(item => item.Identifier == widget.WidgetId).ToList();
+        //                        if (dynaWidgets.Count > 0)
+        //                        {
+        //                            var dynawidget = dynaWidgets.FirstOrDefault();
+        //                            var themeDetails = new CustomeTheme();
+        //                            if (dynawidget.ThemeType == "Default")
+        //                            {
+        //                                themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(statementRawData.TenantConfiguration.WidgetThemeSetting);
+        //                            }
+        //                            else
+        //                            {
+        //                                themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(dynawidget.ThemeCSS);
+        //                            }
+
+        //                            //Get data from database for widget
+        //                            httpClient = new HttpClient();
+        //                            httpClient.BaseAddress = new Uri(statementRawData.TenantConfiguration.BaseUrlForTransactionData);
+        //                            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ModelConstant.APPLICATION_JSON_MEDIA_TYPE));
+        //                            httpClient.DefaultRequestHeaders.Add(ModelConstant.TENANT_CODE_KEY, tenantCode);
+
+        //                            //API search parameter
+        //                            JObject searchParameter = new JObject();
+        //                            searchParameter[ModelConstant.BATCH_ID] = batchMaster.Identifier;
+        //                            searchParameter[ModelConstant.CUSTOEMR_ID] = customer.CustomerId;
+        //                            searchParameter[ModelConstant.WIDGET_FILTER_SETTING] = dynawidget.WidgetFilterSettings;
+
+        //                            switch (dynawidget.WidgetType)
+        //                            {
+        //                                case HtmlConstants.TABLE_DYNAMICWIDGET:
+        //                                    this.BindDynamicTableWidgetData(pageContent, page, widget, searchParameter, dynawidget, httpClient);
+        //                                    break;
+        //                                case HtmlConstants.FORM_DYNAMICWIDGET:
+        //                                    this.BindDynamicFormWidgetData(pageContent, page, widget, searchParameter, dynawidget, httpClient);
+        //                                    break;
+        //                                case HtmlConstants.LINEGRAPH_DYNAMICWIDGET:
+        //                                    this.BindDynamicLineGraphWidgetData(pageContent, scriptHtmlRenderer, page, widget, searchParameter, dynawidget, httpClient, themeDetails);
+        //                                    break;
+        //                                case HtmlConstants.BARGRAPH_DYNAMICWIDGET:
+        //                                    this.BindDynamicBarGraphWidgetData(pageContent, scriptHtmlRenderer, page, widget, searchParameter, dynawidget, httpClient, themeDetails);
+        //                                    break;
+        //                                case HtmlConstants.PICHART_DYNAMICWIDGET:
+        //                                    this.BindDynamicPieChartWidgetData(pageContent, scriptHtmlRenderer, page, widget, searchParameter, dynawidget, httpClient, themeDetails, tenantCode);
+        //                                    break;
+        //                                case HtmlConstants.HTML_DYNAMICWIDGET:
+        //                                    this.BindDynamicHtmlWidgetData(pageContent, page, widget, searchParameter, dynawidget, httpClient);
+        //                                    break;
+        //                            }
+        //                        }
+        //                    }
+        //                }
+
+        //                newPageContent.Append(pageContent);
+        //                statementPageContent.PageHeaderContent = PageHeaderContent.ToString();
+        //                statementPageContent.HtmlContent = newPageContent.ToString();
+        //            }
+
+        //            //to add statement metadata records
+        //            if (IsInvestmentPageTypePresent && investmentMasters != null && investmentMasters.Count > 0)
+        //            {
+        //                investmentMasters.ForEach(invest =>
+        //                {
+        //                    var InvestmentNo = Convert.ToString(invest.InvestorId) + Convert.ToString(invest.InvestmentId);
+        //                    while (InvestmentNo.Length != 12)
+        //                    {
+        //                        InvestmentNo = "0" + InvestmentNo;
+        //                    }
+
+        //                    //to separate to string dates values into required date format -- 
+        //                    //given date format for statement period is //2021-02-10 00:00:00.000 - 2021-03-09 23:00:00.000//
+        //                    //1st try with string separator, if fails then try with char separator
+        //                    var statementPeriod = string.Empty;
+        //                    string[] stringSeparators = new string[] { " - ", "- ", " -" };
+        //                    string[] dates = invest.StatementPeriod.Split(stringSeparators, StringSplitOptions.None);
+        //                    if (dates.Length > 0)
+        //                    {
+        //                        if (dates.Length > 1)
+        //                        {
+        //                            statementPeriod = Convert.ToDateTime(dates[0]).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + " to " + Convert.ToDateTime(dates[1]).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy);
+        //                        }
+        //                        else
+        //                        {
+        //                            dates = investmentMasters[0].StatementPeriod.Split(new Char[] { ' ' });
+        //                            if (dates.Length > 2)
+        //                            {
+        //                                statementPeriod = Convert.ToDateTime(dates[0]).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + " to " + Convert.ToDateTime(dates[2]).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy);
+        //                            }
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        statementPeriod = investmentMasters[0].StatementPeriod;
+        //                    }
+
+        //                    statementMetadataRecords.Add(new StatementMetadata
+        //                    {
+        //                        AccountNumber = InvestmentNo,
+        //                        AccountType = invest.ProductDesc,
+        //                        CustomerId = customer.CustomerId,
+        //                        CustomerName = customer.FirstName + " " + customer.SurName,
+        //                        StatementPeriod = statementPeriod,
+        //                        StatementId = statement.Identifier,
+        //                    });
+        //                });
+        //            }
+        //            if (IsPersonalLoanPageTypePresent && PersonalLoanAccounts != null && PersonalLoanAccounts.Count > 0)
+        //            {
+        //                PersonalLoanAccounts.ForEach(PersonalLoans =>
+        //                {
+        //                    statementMetadataRecords.Add(new StatementMetadata
+        //                    {
+        //                        AccountNumber = PersonalLoans.InvestorId.ToString(),
+        //                        AccountType = (!string.IsNullOrEmpty(PersonalLoans.ProductType) ? PersonalLoans.ProductType : HtmlConstants.PERSONAL_LOAN_PAGE_TYPE),
+        //                        CustomerId = customer.CustomerId,
+        //                        CustomerName = customer.FirstName.Trim() + " " + customer.SurName?.Trim(),
+        //                        StatementPeriod = PersonalLoans.FromDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + " - " + PersonalLoans.ToDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy),
+        //                        StatementId = statement.Identifier,
+        //                    });
+        //                });
+        //            }
+        //            if (IsHomeLoanPageTypePresent && HomeLoanAccounts != null && HomeLoanAccounts.Count > 0)
+        //            {
+        //                HomeLoanAccounts.ForEach(HomeLoan =>
+        //                {
+        //                    statementMetadataRecords.Add(new StatementMetadata
+        //                    {
+        //                        AccountNumber = HomeLoan.InvestorId.ToString(),
+        //                        AccountType = HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE,
+        //                        CustomerId = customer.CustomerId,
+        //                        CustomerName = customer.FirstName.Trim() + " " + customer.SurName?.Trim(),
+        //                        StatementPeriod = "Monthly",
+        //                        StatementId = statement.Identifier,
+        //                    });
+        //                });
+        //            }
+
+        //            //NAV bar will append to html statement, only if statement definition have more than 1 pages 
+        //            if (statement.Pages.Count > 1)
+        //            {
+        //                htmlbody.Append(HtmlConstants.NEDBANK_NAV_BAR_HTML.Replace("{{Today}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MMM_yyyy)).Replace("{{NavItemList}}", NavItemList.ToString()));
+        //            }
+
+        //            htmlbody.Append(HtmlConstants.PAGE_TAB_CONTENT_HEADER);
+        //            newStatementPageContents.ToList().ForEach(page =>
+        //            {
+        //                //htmlbody.Append(page.PageHeaderContent);
+        //                htmlbody.Append(page.HtmlContent);
+        //                //htmlbody.Append(page.PageFooterContent);
+        //                //htmlbody.Append(HtmlConstants.PAGE_FOOTER_HTML);
+        //            });
+        //            htmlbody.Append(HtmlConstants.END_DIV_TAG); // end tab-content div
+
+        //            //if (customer.Segment == "WEA" ? true : false)
+        //            //{
+        //            //    var footerContent = new StringBuilder(HtmlConstants.WEALTH_NEDBANK_STATEMENT_FOOTER);
+        //            //    footerContent.Replace("{{NedbankSloganImage}}", "../common/images/Footer_Image.png");
+        //            //    htmlbody.Append(footerContent.ToString());
+        //            //}
+        //            //else
+        //            //{
+        //            //    var footerContent = new StringBuilder(HtmlConstants.NEDBANK_STATEMENT_FOOTER);
+        //            //    footerContent.Replace("{{NedbankSloganImage}}", "../common/images/See_money_differently.PNG");
+        //            //    footerContent.Replace("{{NedbankNameImage}}", "../common/images/NEDBANK_Name.png");
+        //            //    footerContent.Replace("{{FooterText}}", HtmlConstants.NEDBANK_STATEMENT_FOOTER_TEXT_STRING);
+        //            //    footerContent.Replace("{{LastFooterText}}", string.Empty);
+        //            //    htmlbody.Append(footerContent.ToString());
+        //            //}
+
+        //            //htmlbody.Append(statementRawData.StatementPageContents?.FirstOrDefault().PageFooterContent);
+
+        //            //htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER); // end of container-fluid div
+
+        //            var finalHtml = new StringBuilder();
+        //            finalHtml.Append(HtmlConstants.HTML_HEADER);
+        //            finalHtml.Append(htmlbody.ToString());
+        //            finalHtml.Append(HtmlConstants.HTML_FOOTER);
+
+        //            //replace below variable with actual data in final html string
+        //            finalHtml.Replace("{{ChartScripts}}", scriptHtmlRenderer.ToString());
+        //            finalHtml.Replace("{{CustomerNumber}}", customer.CustomerId.ToString());
+        //            finalHtml.Replace("{{StatementNumber}}", statement.Identifier.ToString());
+        //            finalHtml.Replace("{{FirstPageId}}", FirstPageId.ToString());
+        //            finalHtml.Replace("{{TenantCode}}", tenantCode);
+
+        //            finalHtml = Translate(finalHtml, customer);
+
+        //            //If has any error while rendering html statement, then assign status as failed and all collected errors message to log message variable..
+        //            //Otherwise write html statement string to actual html file and store it at output location, then assign status as completed
+        //            if (IsFailed)
+        //            {
+        //                logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
+        //                logDetailRecord.LogMessage = "<ul class='pl-4 text-left'>" + ErrorMessages.ToString() + "</ul>";
+        //            }
+        //            else
+        //            {
+        //                string productPrefix = string.Empty;
+        //                string documentName = string.Empty;
+        //                string statementDate = string.Empty;
+        //                string endDate = string.Empty;
+        //                if (statement.Pages.Where(x => x.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE || x.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE ||
+        //                                               x.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || x.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE ||
+        //                                               x.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE || x.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE).Count() > 0)
+        //                {
+        //                    productPrefix = "H";
+        //                    documentName = "Home Loan Statement";
+        //                    statementDate = HomeLoanAccounts?.FirstOrDefault().StatementDate?.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy3);
+        //                }
+        //                else if (statement.Pages.Where(x => x.PageTypeName == HtmlConstants.PERSONAL_LOAN_PAGE_TYPE).Count() > 0)
+        //                {
+        //                    productPrefix = "P";
+        //                    documentName = "Personal Loan Statement";
+        //                    statementDate = PersonalLoanAccounts?.FirstOrDefault().ToDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy3);
+        //                }
+        //                else if (statement.Pages.Where(x => x.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_ENGLISH || x.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_AFRICAN ||
+        //                                                    x.PageTypeName == HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_ENGLISH || x.PageTypeName == HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_AFRICAN).Count() > 0)
+        //                {
+        //                    productPrefix = "I";
+        //                    documentName = "Investment Statement";
+        //                    statementDate = investmentMasters?.FirstOrDefault().StatementDate?.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy3);
+        //                }
+        //                else if (statement.Pages.Where(x => x.PageTypeName == HtmlConstants.MULTI_CURRENCY_FOR_CIB_PAGE_TYPE || x.PageTypeName == HtmlConstants.MULTI_CURRENCY_FOR_WEA_PAGE_TYPE).Count() > 0)
+        //                {
+        //                    productPrefix = "M";
+        //                    documentName = "MCA Statement";
+        //                    statementDate = MCA?.FirstOrDefault().StatementDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy3);
+        //                }
+        //                else if (statement.Pages.Where(x => x.PageTypeName == HtmlConstants.CORPORATE_SAVER_AFR_PAGE_TYPE || x.PageTypeName == HtmlConstants.CORPORATE_SAVER_ENG_PAGE_TYPE).Count() > 0)
+        //                {
+        //                    productPrefix = "C";
+        //                    documentName = "Corporate Saver Statement";
+        //                }
+
+        //                string fileName = productPrefix + customer.CustomerId + " _ " + documentName + "  " + customer.Segment + " " + customer.Language + " " + statementDate + " " + DateTime.Now.ToString(ModelConstant.TIME_FORMAT_HH_MM_SS).Replace(".", " ").Replace(":", " ") + ".html";
+        //                //string fileName = "Statement_" + customer.Identifier + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
+        //                string headerHtml = statement.Pages[0].HeaderHTML;
+        //                string footerHtml = statement.Pages[0].FooterHTML;
+
+        //                string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, "",batchMaster.BatchName, customer.CustomerId, statementRawData.BaseURL, statementRawData.OutputLocation, printPdf: true, headerHtml: headerHtml, footerHtml: footerHtml, segment: statement.Pages[0].PageTypeName, language: customer.Language);
+
+        //                logDetailRecord.StatementFilePath = filePath;
+        //                logDetailRecord.Status = ScheduleLogStatus.Completed.ToString();
+        //                logDetailRecord.LogMessage = "Statement generated successfully..!!";
+        //                logDetailRecord.statementMetadata = statementMetadataRecords;
+        //            }
+        //        }
+
+        //        return logDetailRecord;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
         private void BindCustomerInformationWidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<BatchDetail> batchDetails)
         {
@@ -3743,48 +3750,48 @@ namespace nIS
             }
         }
 
-        private void BindMarketingServiceWidgetData(StringBuilder pageContent, List<DM_MarketingMessage> Messages, Page page, PageWidget widget, int MarketingMessageCounter, DM_CustomerMaster customer)
-        {
-            if (page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE)
-            {
-                var specialMsgTxtData = string.Empty;
-                switch (customer.Segment.ToLower())
-                {
-                    case "nbb":
-                        specialMsgTxtData = HtmlConstants.HOME_LOAN_NBB_NEDBANK_SERVICE_MESSAGE;
-                        break;
-                    case "ncb":
-                        specialMsgTxtData = HtmlConstants.HOME_LOAN_NCB_NEDBANK_SERVICE_MESSAGE;
-                        break;
-                    case "pml":
-                        specialMsgTxtData = HtmlConstants.HOME_LOAN_PML_NEDBANK_SERVICE_MESSAGE;
-                        break;
-                    case "prb":
-                        specialMsgTxtData = HtmlConstants.HOME_LOAN_PRB_NEDBANK_SERVICE_MESSAGE;
-                        break;
-                    case "sbs":
-                        specialMsgTxtData = HtmlConstants.HOME_LOAN_SBS_NEDBANK_SERVICE_MESSAGE;
-                        break;
-                    case "wea":
-                        specialMsgTxtData = HtmlConstants.HOME_LOAN_WEA_NEDBANK_SERVICE_MESSAGE;
-                        break;
-                }
-                pageContent.Replace("{{ServiceMessageHeader_" + page.Identifier + "_" + widget.Identifier + "_" + MarketingMessageCounter + "}}", specialMsgTxtData);
-            }
-            else
-            {
-                if (Messages != null && Messages.Count > 0)
-                {
-                    var ServiceMessage = Messages.Count > MarketingMessageCounter ? Messages[MarketingMessageCounter] : null;
-                    if (ServiceMessage != null)
-                    {
-                        var messageTxt = ((!string.IsNullOrEmpty(ServiceMessage.Message1)) ? "<p>" + ServiceMessage.Message1 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.Message2)) ? "<p>" + ServiceMessage.Message2 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.Message3)) ? "<p>" + ServiceMessage.Message3 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.Message4)) ? "<p>" + ServiceMessage.Message4 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.Message5)) ? "<p>" + ServiceMessage.Message5 + "</p>" : string.Empty);
+        //private void BindMarketingServiceWidgetData(StringBuilder pageContent, List<DM_MarketingMessage> Messages, Page page, PageWidget widget, int MarketingMessageCounter, DM_CustomerMaster customer)
+        //{
+        //    if (page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE)
+        //    {
+        //        var specialMsgTxtData = string.Empty;
+        //        switch (customer.Segment.ToLower())
+        //        {
+        //            case "nbb":
+        //                specialMsgTxtData = HtmlConstants.HOME_LOAN_NBB_NEDBANK_SERVICE_MESSAGE;
+        //                break;
+        //            case "ncb":
+        //                specialMsgTxtData = HtmlConstants.HOME_LOAN_NCB_NEDBANK_SERVICE_MESSAGE;
+        //                break;
+        //            case "pml":
+        //                specialMsgTxtData = HtmlConstants.HOME_LOAN_PML_NEDBANK_SERVICE_MESSAGE;
+        //                break;
+        //            case "prb":
+        //                specialMsgTxtData = HtmlConstants.HOME_LOAN_PRB_NEDBANK_SERVICE_MESSAGE;
+        //                break;
+        //            case "sbs":
+        //                specialMsgTxtData = HtmlConstants.HOME_LOAN_SBS_NEDBANK_SERVICE_MESSAGE;
+        //                break;
+        //            case "wea":
+        //                specialMsgTxtData = HtmlConstants.HOME_LOAN_WEA_NEDBANK_SERVICE_MESSAGE;
+        //                break;
+        //        }
+        //        pageContent.Replace("{{ServiceMessageHeader_" + page.Identifier + "_" + widget.Identifier + "_" + MarketingMessageCounter + "}}", specialMsgTxtData);
+        //    }
+        //    else
+        //    {
+        //        if (Messages != null && Messages.Count > 0)
+        //        {
+        //            var ServiceMessage = Messages.Count > MarketingMessageCounter ? Messages[MarketingMessageCounter] : null;
+        //            if (ServiceMessage != null)
+        //            {
+        //                var messageTxt = ((!string.IsNullOrEmpty(ServiceMessage.Message1)) ? "<p>" + ServiceMessage.Message1 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.Message2)) ? "<p>" + ServiceMessage.Message2 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.Message3)) ? "<p>" + ServiceMessage.Message3 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.Message4)) ? "<p>" + ServiceMessage.Message4 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.Message5)) ? "<p>" + ServiceMessage.Message5 + "</p>" : string.Empty);
 
-                        pageContent.Replace("{{ServiceMessageHeader_" + page.Identifier + "_" + widget.Identifier + "_" + MarketingMessageCounter + "}}", ServiceMessage.Header).Replace("{{ServiceMessageText_" + page.Identifier + "_" + widget.Identifier + "_" + MarketingMessageCounter + "}}", messageTxt);
-                    }
-                }
-            }
-        }
+        //                pageContent.Replace("{{ServiceMessageHeader_" + page.Identifier + "_" + widget.Identifier + "_" + MarketingMessageCounter + "}}", ServiceMessage.Header).Replace("{{ServiceMessageText_" + page.Identifier + "_" + widget.Identifier + "_" + MarketingMessageCounter + "}}", messageTxt);
+        //            }
+        //        }
+        //    }
+        //}
 
         private void BindPersonalLoanDetailWidgetData(StringBuilder pageContent, List<DM_PersonalLoanMaster> PersonalLoanList, Page page, PageWidget widget, string tenantCode)
         {
@@ -4158,206 +4165,206 @@ namespace nIS
             }
         }
 
-        private void BindPersonalLoanAccountsBreakdownWidgetData(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, List<DM_PersonalLoanMaster> PersonalLoans, Page page, PageWidget widget, BatchMaster batchMaster, DM_CustomerMaster customer, string outputLocation)
-        {
-            try
-            {
-                if (PersonalLoans != null && PersonalLoans.Count > 0)
-                {
-                    //create tab-content div if accounts is greater than 1, otherwise create simple div
-                    var TabContentHtml = new StringBuilder();
-                    var counter = 0;
-                    TabContentHtml.Append((PersonalLoans.Count > 1) ? "<div class='tab-content'>" : string.Empty);
-                    PersonalLoans.ForEach(PersonalLoan =>
-                    {
-                        var AccountNumber = PersonalLoan.InvestorId.ToString();
-                        string lastFourDigisOfAccountNumber = AccountNumber.Length > 4 ? AccountNumber.Substring(Math.Max(0, AccountNumber.Length - 4)) : AccountNumber;
-                        TabContentHtml.Append("<div id='PersonalLoan-" + lastFourDigisOfAccountNumber + counter + "'>");
+        //private void BindPersonalLoanAccountsBreakdownWidgetData(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, List<DM_PersonalLoanMaster> PersonalLoans, Page page, PageWidget widget, BatchMaster batchMaster, DM_CustomerMaster customer, string outputLocation)
+        //{
+        //    try
+        //    {
+        //        if (PersonalLoans != null && PersonalLoans.Count > 0)
+        //        {
+        //            //create tab-content div if accounts is greater than 1, otherwise create simple div
+        //            var TabContentHtml = new StringBuilder();
+        //            var counter = 0;
+        //            TabContentHtml.Append((PersonalLoans.Count > 1) ? "<div class='tab-content'>" : string.Empty);
+        //            PersonalLoans.ForEach(PersonalLoan =>
+        //            {
+        //                var AccountNumber = PersonalLoan.InvestorId.ToString();
+        //                string lastFourDigisOfAccountNumber = AccountNumber.Length > 4 ? AccountNumber.Substring(Math.Max(0, AccountNumber.Length - 4)) : AccountNumber;
+        //                TabContentHtml.Append("<div id='PersonalLoan-" + lastFourDigisOfAccountNumber + counter + "'>");
 
-                        #region Loan Details
-                        var LoanDetailHtml = new StringBuilder(HtmlConstants.PERSONAL_LOAN_ACCOUNT_DETAIL);
-                        LoanDetailHtml.Replace("{{AccountNumber}}", PersonalLoan.InvestorId.ToString());
-                        LoanDetailHtml.Replace("{{StatementDate}}", PersonalLoan.ToDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
-                        LoanDetailHtml.Replace("{{StatementPeriod}}", PersonalLoan.FromDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + " - " + PersonalLoan.ToDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
+        //                #region Loan Details
+        //                var LoanDetailHtml = new StringBuilder(HtmlConstants.PERSONAL_LOAN_ACCOUNT_DETAIL);
+        //                LoanDetailHtml.Replace("{{AccountNumber}}", PersonalLoan.InvestorId.ToString());
+        //                LoanDetailHtml.Replace("{{StatementDate}}", PersonalLoan.ToDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
+        //                LoanDetailHtml.Replace("{{StatementPeriod}}", PersonalLoan.FromDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + " - " + PersonalLoan.ToDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
 
-                        var res = 0.0m;
-                        if (decimal.TryParse(PersonalLoan.Arrears, out res))
-                        {
-                            LoanDetailHtml.Replace("{{ArrearsAmount}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
-                        }
-                        else
-                        {
-                            LoanDetailHtml.Replace("{{ArrearsAmount}}", "R0.00");
-                        }
+        //                var res = 0.0m;
+        //                if (decimal.TryParse(PersonalLoan.Arrears, out res))
+        //                {
+        //                    LoanDetailHtml.Replace("{{ArrearsAmount}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+        //                }
+        //                else
+        //                {
+        //                    LoanDetailHtml.Replace("{{ArrearsAmount}}", "R0.00");
+        //                }
 
-                        LoanDetailHtml.Replace("{{AnnualRate}}", PersonalLoan.AnnualRate + "% pa");
+        //                LoanDetailHtml.Replace("{{AnnualRate}}", PersonalLoan.AnnualRate + "% pa");
 
-                        res = 0.0m;
-                        if (decimal.TryParse(PersonalLoan.MonthlyInstallment, out res))
-                        {
-                            LoanDetailHtml.Replace("{{MonthlyInstallment}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
-                        }
-                        else
-                        {
-                            LoanDetailHtml.Replace("{{MonthlyInstallment}}", "R0.00");
-                        }
+        //                res = 0.0m;
+        //                if (decimal.TryParse(PersonalLoan.MonthlyInstallment, out res))
+        //                {
+        //                    LoanDetailHtml.Replace("{{MonthlyInstallment}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+        //                }
+        //                else
+        //                {
+        //                    LoanDetailHtml.Replace("{{MonthlyInstallment}}", "R0.00");
+        //                }
 
-                        LoanDetailHtml.Replace("{{Terms}}", PersonalLoan.Term);
-                        LoanDetailHtml.Replace("{{DueByDate}}", PersonalLoan.DueDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
-                        TabContentHtml.Append(LoanDetailHtml.ToString());
-                        #endregion Loan Details
+        //                LoanDetailHtml.Replace("{{Terms}}", PersonalLoan.Term);
+        //                LoanDetailHtml.Replace("{{DueByDate}}", PersonalLoan.DueDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
+        //                TabContentHtml.Append(LoanDetailHtml.ToString());
+        //                #endregion Loan Details
 
-                        #region Loan Transaction
-                        var LoanTransactionHtml = new StringBuilder(HtmlConstants.PERSONAL_LOAN_ACCOUNT_TRANSACTION_DETAIL_SMT);
-                        StringBuilder tableHTML = new StringBuilder();
-                        if (PersonalLoan.LoanTransactions != null && PersonalLoan.LoanTransactions.Count > 0)
-                        {
-                            PersonalLoan.LoanTransactions.ForEach(trans =>
-                            {
-                                res = 0.0m;
-                                if (decimal.TryParse(trans.Debit, out res))
-                                {
-                                    trans.Debit = res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-";
-                                }
-                                else
-                                {
-                                    trans.Debit = "-";
-                                }
+        //                #region Loan Transaction
+        //                var LoanTransactionHtml = new StringBuilder(HtmlConstants.PERSONAL_LOAN_ACCOUNT_TRANSACTION_DETAIL_SMT);
+        //                StringBuilder tableHTML = new StringBuilder();
+        //                if (PersonalLoan.LoanTransactions != null && PersonalLoan.LoanTransactions.Count > 0)
+        //                {
+        //                    PersonalLoan.LoanTransactions.ForEach(trans =>
+        //                    {
+        //                        res = 0.0m;
+        //                        if (decimal.TryParse(trans.Debit, out res))
+        //                        {
+        //                            trans.Debit = res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-";
+        //                        }
+        //                        else
+        //                        {
+        //                            trans.Debit = "-";
+        //                        }
 
-                                if (decimal.TryParse(trans.Credit, out res))
-                                {
-                                    trans.Credit = res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-";
-                                }
-                                else
-                                {
-                                    trans.Credit = "-";
-                                }
+        //                        if (decimal.TryParse(trans.Credit, out res))
+        //                        {
+        //                            trans.Credit = res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-";
+        //                        }
+        //                        else
+        //                        {
+        //                            trans.Credit = "-";
+        //                        }
 
-                                if (decimal.TryParse(trans.OutstandingCapital, out res))
-                                {
-                                    trans.OutstandingCapital = res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-";
-                                }
-                                else
-                                {
-                                    trans.OutstandingCapital = "-";
-                                }
-                                tableHTML.Append("<tr class='ht-20'><td class='w-13 text-center'>" + trans.PostingDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy)
-                                    + "</td><td class='w-13 text-center'>" + trans.EffectiveDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td><td class='w-35'>"
-                                    + trans.Description + "</td><td class='w-12 text-right'>" + trans.Debit
-                                    + "</td><td class='w-12 text-right'>" + trans.Credit + "</td><td class='w-15 text-right'>"
-                                    + trans.OutstandingCapital + "</td></tr>");
-                            });
+        //                        if (decimal.TryParse(trans.OutstandingCapital, out res))
+        //                        {
+        //                            trans.OutstandingCapital = res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-";
+        //                        }
+        //                        else
+        //                        {
+        //                            trans.OutstandingCapital = "-";
+        //                        }
+        //                        tableHTML.Append("<tr class='ht-20'><td class='w-13 text-center'>" + trans.PostingDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy)
+        //                            + "</td><td class='w-13 text-center'>" + trans.EffectiveDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td><td class='w-35'>"
+        //                            + trans.Description + "</td><td class='w-12 text-right'>" + trans.Debit
+        //                            + "</td><td class='w-12 text-right'>" + trans.Credit + "</td><td class='w-15 text-right'>"
+        //                            + trans.OutstandingCapital + "</td></tr>");
+        //                    });
 
-                            LoanTransactionHtml.Replace("PersonalLoanTransactionTable", "PersonalLoanTransactionTable_" + PersonalLoan.InvestorId + "_" + page.Identifier);
-                            LoanTransactionHtml.Replace("PersonalLoanTransactionTablePagination", "PersonalLoanTransactionTablePagination_" + PersonalLoan.InvestorId + "_" + page.Identifier);
-                        }
+        //                    LoanTransactionHtml.Replace("PersonalLoanTransactionTable", "PersonalLoanTransactionTable_" + PersonalLoan.InvestorId + "_" + page.Identifier);
+        //                    LoanTransactionHtml.Replace("PersonalLoanTransactionTablePagination", "PersonalLoanTransactionTablePagination_" + PersonalLoan.InvestorId + "_" + page.Identifier);
+        //                }
 
-                        LoanTransactionHtml.Replace("{{PersonalLoanTransactionsTableBody}}", tableHTML.ToString());
-                        TabContentHtml.Append(LoanTransactionHtml.ToString());
-                        #endregion Loan Transaction
+        //                LoanTransactionHtml.Replace("{{PersonalLoanTransactionsTableBody}}", tableHTML.ToString());
+        //                TabContentHtml.Append(LoanTransactionHtml.ToString());
+        //                #endregion Loan Transaction
 
-                        #region Loan arrear
-                        if (PersonalLoan.LoanArrears != null)
-                        {
-                            var plArrears = PersonalLoan.LoanArrears;
-                            var paddingClass = PersonalLoan.LoanTransactions.Count > 10 ? "pb-2 pt-5" : "py-2";
-                            var LoanArrearHtml = new StringBuilder(HtmlConstants.PERSONAL_LOAN_PAYMENT_DUE_DETAIL).Replace("{{PaddingClass}}", paddingClass);
-                            bool is120 = false, is90 = false, is60 = false, is30 = false, isCurrent = false;
+        //                #region Loan arrear
+        //                if (PersonalLoan.LoanArrears != null)
+        //                {
+        //                    var plArrears = PersonalLoan.LoanArrears;
+        //                    var paddingClass = PersonalLoan.LoanTransactions.Count > 10 ? "pb-2 pt-5" : "py-2";
+        //                    var LoanArrearHtml = new StringBuilder(HtmlConstants.PERSONAL_LOAN_PAYMENT_DUE_DETAIL).Replace("{{PaddingClass}}", paddingClass);
+        //                    bool is120 = false, is90 = false, is60 = false, is30 = false, isCurrent = false;
 
-                            res = 0.0m;
-                            if (decimal.TryParse(plArrears.Arrears_120, out res))
-                            {
-                                LoanArrearHtml.Replace("{{After120Days}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
-                                is120 = res > 0;
-                            }
-                            else
-                            {
-                                LoanArrearHtml.Replace("{{After120Days}}", "R0.00");
-                            }
+        //                    res = 0.0m;
+        //                    if (decimal.TryParse(plArrears.Arrears_120, out res))
+        //                    {
+        //                        LoanArrearHtml.Replace("{{After120Days}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+        //                        is120 = res > 0;
+        //                    }
+        //                    else
+        //                    {
+        //                        LoanArrearHtml.Replace("{{After120Days}}", "R0.00");
+        //                    }
 
-                            res = 0.0m;
-                            if (decimal.TryParse(plArrears.Arrears_90, out res))
-                            {
-                                LoanArrearHtml.Replace("{{After90Days}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
-                                is90 = res > 0;
-                            }
-                            else
-                            {
-                                LoanArrearHtml.Replace("{{After90Days}}", "R0.00");
-                            }
+        //                    res = 0.0m;
+        //                    if (decimal.TryParse(plArrears.Arrears_90, out res))
+        //                    {
+        //                        LoanArrearHtml.Replace("{{After90Days}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+        //                        is90 = res > 0;
+        //                    }
+        //                    else
+        //                    {
+        //                        LoanArrearHtml.Replace("{{After90Days}}", "R0.00");
+        //                    }
 
-                            res = 0.0m;
-                            if (decimal.TryParse(plArrears.Arrears_60, out res))
-                            {
-                                LoanArrearHtml.Replace("{{After60Days}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
-                                is60 = res > 0;
-                            }
-                            else
-                            {
-                                LoanArrearHtml.Replace("{{After60Days}}", "R0.00");
-                            }
+        //                    res = 0.0m;
+        //                    if (decimal.TryParse(plArrears.Arrears_60, out res))
+        //                    {
+        //                        LoanArrearHtml.Replace("{{After60Days}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+        //                        is60 = res > 0;
+        //                    }
+        //                    else
+        //                    {
+        //                        LoanArrearHtml.Replace("{{After60Days}}", "R0.00");
+        //                    }
 
-                            res = 0.0m;
-                            if (decimal.TryParse(plArrears.Arrears_30, out res))
-                            {
-                                LoanArrearHtml.Replace("{{After30Days}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
-                                is30 = res > 0;
-                            }
-                            else
-                            {
-                                LoanArrearHtml.Replace("{{After30Days}}", "R0.00");
-                            }
+        //                    res = 0.0m;
+        //                    if (decimal.TryParse(plArrears.Arrears_30, out res))
+        //                    {
+        //                        LoanArrearHtml.Replace("{{After30Days}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+        //                        is30 = res > 0;
+        //                    }
+        //                    else
+        //                    {
+        //                        LoanArrearHtml.Replace("{{After30Days}}", "R0.00");
+        //                    }
 
-                            res = 0.0m;
-                            if (decimal.TryParse(plArrears.Arrears_0, out res))
-                            {
-                                LoanArrearHtml.Replace("{{Current}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+        //                    res = 0.0m;
+        //                    if (decimal.TryParse(plArrears.Arrears_0, out res))
+        //                    {
+        //                        LoanArrearHtml.Replace("{{Current}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
 
-                                isCurrent = res > 0;
-                            }
-                            else
-                            {
-                                LoanArrearHtml.Replace("{{Current}}", "R0.00");
-                            }
+        //                        isCurrent = res > 0;
+        //                    }
+        //                    else
+        //                    {
+        //                        LoanArrearHtml.Replace("{{Current}}", "R0.00");
+        //                    }
 
-                            if (is30 || is60 || is90 || is120)
-                            {
-                                LoanArrearHtml.Append("<p style='font-family:Mark Pro Regular; font-size: 9pt;'>Your Nedbank personal loan is in arrears. According to your loan agreement with Nedbank, you are required to make regular monthly payments. Failure to do so results in extra interest being charged, and your arrear status and payment history being reported to the credit bureaus. This may have a negative impact on your ability to obtain credit. </p>");
-                                LoanArrearHtml.Append("<p style='font-family:Mark Pro Regular; font-size: 9pt;'>Please settle the arrears by paying at any Nedbank Branch or by arranging a debit order through the Nedbank Contact Centre. If you cannot pay, please call 0860 103 117 urgently to discuss the options available to you.</p>");
-                            }
+        //                    if (is30 || is60 || is90 || is120)
+        //                    {
+        //                        LoanArrearHtml.Append("<p style='font-family:Mark Pro Regular; font-size: 9pt;'>Your Nedbank personal loan is in arrears. According to your loan agreement with Nedbank, you are required to make regular monthly payments. Failure to do so results in extra interest being charged, and your arrear status and payment history being reported to the credit bureaus. This may have a negative impact on your ability to obtain credit. </p>");
+        //                        LoanArrearHtml.Append("<p style='font-family:Mark Pro Regular; font-size: 9pt;'>Please settle the arrears by paying at any Nedbank Branch or by arranging a debit order through the Nedbank Contact Centre. If you cannot pay, please call 0860 103 117 urgently to discuss the options available to you.</p>");
+        //                    }
 
-                            if (decimal.TryParse(plArrears.Arrears_120, out res))
-                            {
-                                if (res > 0)
-                                {
-                                    LoanArrearHtml.Append("<div style=\"font-size: 14pt;font-family: 'Mark Pro Bold';color: rgb(0, 91, 0) !important;\">Insurance</div>");
-                                    LoanArrearHtml.Append("<p style='font-family:Mark Pro Regular; font-size: 9pt;'>We would like to remind you of the credit life insurance benefits available to you through your Nedbank Insurance policy. When you pass away, Nedbank Insurance will cover your outstanding loan amount. If you are permanently employed, you will also enjoy cover for comprehensive disability and loss of income. The disability benefit will cover your monthly instalments if you cannot earn your usual income due to illness or bodily injury.</p>");
-                                    LoanArrearHtml.Append("<p style='font-family:Mark Pro Regular; font-size: 9pt;'>The loss-of-income benefit includes unemployment, retrenchment or any other event where you cannot earn an income. This benefit will cover your monthly instalments for up to 12 months. The disability and loss-of-income benefits end when you turn 65 years old. If you are a pensioner, self-employed, employed in the informal sector, employed by a family-owned business or receiving a social grant, you will be covered for the death benefit only.</p>");
-                                    LoanArrearHtml.Append("<p style='font-family:Mark Pro Regular; font-size: 9pt;'>Your policy document explains the provisions of your benefits, the claim events you are covered for and how the claims process works. If you need information about your policy or want to claim, please call us on 0860 333 111. Nedgroup Life Assurance Company Ltd is a licensed insurer FSP40915</p>");
-                                }
-                            }
+        //                    if (decimal.TryParse(plArrears.Arrears_120, out res))
+        //                    {
+        //                        if (res > 0)
+        //                        {
+        //                            LoanArrearHtml.Append("<div style=\"font-size: 14pt;font-family: 'Mark Pro Bold';color: rgb(0, 91, 0) !important;\">Insurance</div>");
+        //                            LoanArrearHtml.Append("<p style='font-family:Mark Pro Regular; font-size: 9pt;'>We would like to remind you of the credit life insurance benefits available to you through your Nedbank Insurance policy. When you pass away, Nedbank Insurance will cover your outstanding loan amount. If you are permanently employed, you will also enjoy cover for comprehensive disability and loss of income. The disability benefit will cover your monthly instalments if you cannot earn your usual income due to illness or bodily injury.</p>");
+        //                            LoanArrearHtml.Append("<p style='font-family:Mark Pro Regular; font-size: 9pt;'>The loss-of-income benefit includes unemployment, retrenchment or any other event where you cannot earn an income. This benefit will cover your monthly instalments for up to 12 months. The disability and loss-of-income benefits end when you turn 65 years old. If you are a pensioner, self-employed, employed in the informal sector, employed by a family-owned business or receiving a social grant, you will be covered for the death benefit only.</p>");
+        //                            LoanArrearHtml.Append("<p style='font-family:Mark Pro Regular; font-size: 9pt;'>Your policy document explains the provisions of your benefits, the claim events you are covered for and how the claims process works. If you need information about your policy or want to claim, please call us on 0860 333 111. Nedgroup Life Assurance Company Ltd is a licensed insurer FSP40915</p>");
+        //                        }
+        //                    }
 
-                            TabContentHtml.Append(LoanArrearHtml.ToString());
-                        }
-                        TabContentHtml.Append(HtmlConstants.END_DIV_TAG);
-                        #endregion Loan arrear
+        //                    TabContentHtml.Append(LoanArrearHtml.ToString());
+        //                }
+        //                TabContentHtml.Append(HtmlConstants.END_DIV_TAG);
+        //                #endregion Loan arrear
 
-                        counter++;
-                    });
+        //                counter++;
+        //            });
 
-                    TabContentHtml.Append((PersonalLoans.Count > 1) ? HtmlConstants.END_DIV_TAG : string.Empty);
-                    pageContent.Replace("{{TabContentsDiv_" + page.Identifier + "_" + widget.Identifier + "}}", TabContentHtml.ToString());
-                }
-                else
-                {
-                    pageContent.Replace("{{NavTab_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
-                    pageContent.Replace("{{TabContentsDiv_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
-                }
-            }
-            catch
-            {
-            }
-        }
+        //            TabContentHtml.Append((PersonalLoans.Count > 1) ? HtmlConstants.END_DIV_TAG : string.Empty);
+        //            pageContent.Replace("{{TabContentsDiv_" + page.Identifier + "_" + widget.Identifier + "}}", TabContentHtml.ToString());
+        //        }
+        //        else
+        //        {
+        //            pageContent.Replace("{{NavTab_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+        //            pageContent.Replace("{{TabContentsDiv_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+        //        }
+        //    }
+        //    catch
+        //    {
+        //    }
+        //}
 
         private void BindHomeLoanTotalAmountDetailWidgetData(StringBuilder pageContent, List<DM_HomeLoanMaster> HomeLoans, Page page, PageWidget widget, DM_CustomerMaster customer)
         {
@@ -5328,7 +5335,7 @@ namespace nIS
         private void BindPortfolioClientContactDetailsWidgetData(StringBuilder pageContent, Page page, PageWidget widget)
         {
             pageContent.Replace("{{MobileNumber_" + page.Identifier + "_" + widget.Identifier + "}}", "0860 555 111");
-            pageContent.Replace("{{EmailAddress_" + page.Identifier + "_" + widget.Identifier + "}}", "supportdesk@nedbank.com");
+            pageContent.Replace("{{EmailAddress_" + page.Identifier + "_" + widget.Identifier + "}}", "supportdesk@pps.com");
         }
 
         private void BindPortfolioAccountSummaryWidgetData(StringBuilder pageContent, List<DM_AccountsSummary> _AccountsSummaries, Page page, PageWidget widget)

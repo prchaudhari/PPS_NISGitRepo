@@ -2384,344 +2384,344 @@ namespace nIS
                                                     htmlString.Append(htmlWidget.ToString());
                                                 }
                                             }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_DETAILS_WIDGET_NAME)
-                                            {
-                                                string jsonstr = "{'CustomerId': 171001255307, 'Title': 'MR.', 'FirstName':'MATHYS','SurName':'NKHUMISE','AddressLine0':'VERDEAU LIFESTYLE ESTATE', 'AddressLine1':'6 HERCULE CRESCENT DRIVE','AddressLine2':'WELLINGTON','AddressLine3':'7655','AddressLine4':'', 'Mask_Cell_No': '+2367 345 786', 'EmailAddress' : 'mknumise@domain.com', 'BARCODE': 'C:\\\\temp\\barcode.png'}";
-                                                if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
-                                                {
-                                                    var customer = JsonConvert.DeserializeObject<DM_CustomerMaster>(jsonstr);
-                                                    var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_DETAILS_WIDGET_HTML);
-                                                    widgetHtml.Replace("{{CustomerName}}", (customer.Title + " " + customer.FirstName + " " + customer.SurName));
-                                                    widgetHtml.Replace("{{CustomerId}}", customer.CustomerId.ToString());
-                                                    widgetHtml.Replace("{{MobileNumber}}", customer.Mask_Cell_No);
-                                                    widgetHtml.Replace("{{EmailAddress}}", customer.EmailAddress);
-                                                    htmlString.Append(widgetHtml.ToString());
-                                                }
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_ADDRESS_WIDGET_NAME)
-                                            {
-                                                string jsonstr = "{'CustomerId': 171001255307, 'Title': 'MR.', 'FirstName':'MATHYS','SurName':'NKHUMISE','AddressLine0':'VERDEAU LIFESTYLE ESTATE', 'AddressLine1':'6 HERCULE CRESCENT DRIVE','AddressLine2':'WELLINGTON','AddressLine3':'7655','AddressLine4':'', 'Mask_Cell_No': '+2367 345 786', 'EmailAddress' : 'mknumise@domain.com', 'BARCODE': 'C:\\\\temp\\barcode.png'}";
-                                                if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
-                                                {
-                                                    var customer = JsonConvert.DeserializeObject<DM_CustomerMaster>(jsonstr);
-                                                    var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_ADDRESS_WIDGET_HTML);
-                                                    var custAddress = (!string.IsNullOrEmpty(customer.AddressLine0) ? (customer.AddressLine0 + "<br>") : string.Empty) +
-                                                    (!string.IsNullOrEmpty(customer.AddressLine1) ? (customer.AddressLine1 + "<br>") : string.Empty) +
-                                                    (!string.IsNullOrEmpty(customer.AddressLine2) ? (customer.AddressLine2 + "<br>") : string.Empty) +
-                                                    (!string.IsNullOrEmpty(customer.AddressLine3) ? (customer.AddressLine3 + "<br>") : string.Empty) +
-                                                    (!string.IsNullOrEmpty(customer.AddressLine4) ? customer.AddressLine4 : string.Empty);
-                                                    widgetHtml.Replace("{{CustomerAddress}}", custAddress);
-                                                    htmlString.Append(widgetHtml.ToString());
-                                                }
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PORTFOLIO_CLIENT_CONTACT_DETAILS_WIDGET_NAME)
-                                            {
-                                                var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_CLIENT_CONTACT_DETAILS_WIDGET_HTML);
-                                                widgetHtml.Replace("{{MobileNumber}}", "0860 555 111");
-                                                widgetHtml.Replace("{{EmailAddress}}", "supportdesk@nedbank.com");
-                                                htmlString.Append(widgetHtml.ToString());
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_SUMMARY_WIDGET_NAME)
-                                            {
-                                                var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_SUMMARY_WIDGET_HTML);
-                                                string jsonstr = "[{'AccountType': 'Investment', 'TotalCurrentAmount': 'R9 620.98'},{'AccountType': 'Personal Loan', 'TotalCurrentAmount': 'R4 165.00'},{'AccountType': 'Home Loan', 'TotalCurrentAmount': 'R7 969.00'}]";
-                                                if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
-                                                {
-                                                    var _lstAccounts = JsonConvert.DeserializeObject<List<DM_CustomerAccountSummary>>(jsonstr);
-                                                    if (_lstAccounts.Count > 0)
-                                                    {
-                                                        var accountSummaryRows = new StringBuilder();
-                                                        _lstAccounts.ForEach(acc =>
-                                                        {
-                                                            var tr = new StringBuilder();
-                                                            tr.Append("<tr class='ht-30'>");
-                                                            tr.Append("<td class='text-left'>" + acc.AccountType + " </td>");
-                                                            tr.Append("<td class='text-right'>" + acc.TotalCurrentAmount + " </td>");
-                                                            tr.Append("</tr>");
-                                                            accountSummaryRows.Append(tr.ToString());
-                                                        });
-                                                        widgetHtml.Replace("{{AccountSummaryRows}}", accountSummaryRows.ToString());
-                                                    }
-                                                    else
-                                                    {
-                                                        widgetHtml.Replace("{{AccountSummaryRows}}", "<tr class='ht-30'><td class='text-center' colspan='2'>No records found</td></tr>");
-                                                    }
-                                                }
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_DETAILS_WIDGET_NAME)
+                                            //{
+                                            //    string jsonstr = "{'CustomerId': 171001255307, 'Title': 'MR.', 'FirstName':'MATHYS','SurName':'NKHUMISE','AddressLine0':'VERDEAU LIFESTYLE ESTATE', 'AddressLine1':'6 HERCULE CRESCENT DRIVE','AddressLine2':'WELLINGTON','AddressLine3':'7655','AddressLine4':'', 'Mask_Cell_No': '+2367 345 786', 'EmailAddress' : 'mknumise@domain.com', 'BARCODE': 'C:\\\\temp\\barcode.png'}";
+                                            //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                            //    {
+                                            //        var customer = JsonConvert.DeserializeObject<DM_CustomerMaster>(jsonstr);
+                                            //        var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_DETAILS_WIDGET_HTML);
+                                            //        widgetHtml.Replace("{{CustomerName}}", (customer.Title + " " + customer.FirstName + " " + customer.SurName));
+                                            //        widgetHtml.Replace("{{CustomerId}}", customer.CustomerId.ToString());
+                                            //        widgetHtml.Replace("{{MobileNumber}}", customer.Mask_Cell_No);
+                                            //        widgetHtml.Replace("{{EmailAddress}}", customer.EmailAddress);
+                                            //        htmlString.Append(widgetHtml.ToString());
+                                            //    }
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_ADDRESS_WIDGET_NAME)
+                                            //{
+                                            //    string jsonstr = "{'CustomerId': 171001255307, 'Title': 'MR.', 'FirstName':'MATHYS','SurName':'NKHUMISE','AddressLine0':'VERDEAU LIFESTYLE ESTATE', 'AddressLine1':'6 HERCULE CRESCENT DRIVE','AddressLine2':'WELLINGTON','AddressLine3':'7655','AddressLine4':'', 'Mask_Cell_No': '+2367 345 786', 'EmailAddress' : 'mknumise@domain.com', 'BARCODE': 'C:\\\\temp\\barcode.png'}";
+                                            //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                            //    {
+                                            //        var customer = JsonConvert.DeserializeObject<DM_CustomerMaster>(jsonstr);
+                                            //        var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_ADDRESS_WIDGET_HTML);
+                                            //        var custAddress = (!string.IsNullOrEmpty(customer.AddressLine0) ? (customer.AddressLine0 + "<br>") : string.Empty) +
+                                            //        (!string.IsNullOrEmpty(customer.AddressLine1) ? (customer.AddressLine1 + "<br>") : string.Empty) +
+                                            //        (!string.IsNullOrEmpty(customer.AddressLine2) ? (customer.AddressLine2 + "<br>") : string.Empty) +
+                                            //        (!string.IsNullOrEmpty(customer.AddressLine3) ? (customer.AddressLine3 + "<br>") : string.Empty) +
+                                            //        (!string.IsNullOrEmpty(customer.AddressLine4) ? customer.AddressLine4 : string.Empty);
+                                            //        widgetHtml.Replace("{{CustomerAddress}}", custAddress);
+                                            //        htmlString.Append(widgetHtml.ToString());
+                                            //    }
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PORTFOLIO_CLIENT_CONTACT_DETAILS_WIDGET_NAME)
+                                            //{
+                                            //    var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_CLIENT_CONTACT_DETAILS_WIDGET_HTML);
+                                            //    widgetHtml.Replace("{{MobileNumber}}", "0860 555 111");
+                                            //    widgetHtml.Replace("{{EmailAddress}}", "supportdesk@nedbank.com");
+                                            //    htmlString.Append(widgetHtml.ToString());
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_SUMMARY_WIDGET_NAME)
+                                            //{
+                                            //    var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_SUMMARY_WIDGET_HTML);
+                                            //    string jsonstr = "[{'AccountType': 'Investment', 'TotalCurrentAmount': 'R9 620.98'},{'AccountType': 'Personal Loan', 'TotalCurrentAmount': 'R4 165.00'},{'AccountType': 'Home Loan', 'TotalCurrentAmount': 'R7 969.00'}]";
+                                            //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                            //    {
+                                            //        var _lstAccounts = JsonConvert.DeserializeObject<List<DM_CustomerAccountSummary>>(jsonstr);
+                                            //        if (_lstAccounts.Count > 0)
+                                            //        {
+                                            //            var accountSummaryRows = new StringBuilder();
+                                            //            _lstAccounts.ForEach(acc =>
+                                            //            {
+                                            //                var tr = new StringBuilder();
+                                            //                tr.Append("<tr class='ht-30'>");
+                                            //                tr.Append("<td class='text-left'>" + acc.AccountType + " </td>");
+                                            //                tr.Append("<td class='text-right'>" + acc.TotalCurrentAmount + " </td>");
+                                            //                tr.Append("</tr>");
+                                            //                accountSummaryRows.Append(tr.ToString());
+                                            //            });
+                                            //            widgetHtml.Replace("{{AccountSummaryRows}}", accountSummaryRows.ToString());
+                                            //        }
+                                            //        else
+                                            //        {
+                                            //            widgetHtml.Replace("{{AccountSummaryRows}}", "<tr class='ht-30'><td class='text-center' colspan='2'>No records found</td></tr>");
+                                            //        }
+                                            //    }
 
-                                                var rewardPointsDiv = new StringBuilder("<div class='pt-2'><table class='LoanTransactionTable customTable'><thead><tr class='ht-30'><th class='text-left'>{{RewardType}} </th><th class='text-right'>{{RewardPoints}}</th></tr></thead></table></div>");
-                                                rewardPointsDiv.Replace("{{RewardType}}", "Greenbacks rewards points");
-                                                rewardPointsDiv.Replace("{{RewardPoints}}", "234");
-                                                widgetHtml.Replace("{{RewardPointsDiv}}", rewardPointsDiv.ToString());
+                                            //    var rewardPointsDiv = new StringBuilder("<div class='pt-2'><table class='LoanTransactionTable customTable'><thead><tr class='ht-30'><th class='text-left'>{{RewardType}} </th><th class='text-right'>{{RewardPoints}}</th></tr></thead></table></div>");
+                                            //    rewardPointsDiv.Replace("{{RewardType}}", "Greenbacks rewards points");
+                                            //    rewardPointsDiv.Replace("{{RewardPoints}}", "234");
+                                            //    widgetHtml.Replace("{{RewardPointsDiv}}", rewardPointsDiv.ToString());
 
-                                                htmlString.Append(widgetHtml.ToString());
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_ANALYSIS_WIDGET_NAME)
-                                            {
-                                                var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_ANALYSIS_WIDGET_HTML);
-                                                var data = "[{\"AccountType\": \"Investment\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"Amount\": 9456.12}, {\"Month\": \"Feb\", \"Amount\": 9620.98}]},{\"AccountType\": \"Personal Loan\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"Amount\": -4465.00}, {\"Month\": \"Feb\", \"Amount\": -4165.00}]},{\"AccountType\": \"Home Loan\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"Amount\": -8969.00}, {\"Month\": \"Feb\", \"Amount\": -7969.00}]}]";
-                                                widgetHtml.Append("<input type='hidden' id='HiddenAccountAnalysisBarGraphData' value='" + data + "'/>");
-                                                //widgetHtml.Append(HtmlConstants.PORTFOLIO_ACCOUNT_ANALYSIS_BAR_GRAPH_SCRIPT);
-                                                htmlString.Append(widgetHtml.ToString());
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PORTFOLIO_REMINDERS_WIDGET_NAME)
-                                            {
-                                                var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_REMINDER_AND_RECOMMENDATION_WIDGET_HTML);
-                                                string jsonstr = "[{ 'Title': 'Update Missing Inofrmation', 'Action': 'Update' },{ 'Title': 'Your Rewards Video is available', 'Action': 'View' },{ 'Title': 'Payment Due for Home Loan', 'Action': 'Pay' }, { title: 'Need financial planning for savings.', action: 'Call Me' },{ title: 'Subscribe/Unsubscribe Alerts.', action: 'Apply' },{ title: 'Your credit card payment is due now.', action: 'Pay' }]";
-                                                if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
-                                                {
-                                                    IList<ReminderAndRecommendation> reminderAndRecommendations = JsonConvert.DeserializeObject<List<ReminderAndRecommendation>>(jsonstr);
-                                                    StringBuilder reminderstr = new StringBuilder();
-                                                    reminderAndRecommendations.ToList().ForEach(item =>
-                                                    {
-                                                        reminderstr.Append("<div class='row'><div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>" + item.Title + " </p></div><div class='col-lg-3 text-left'><a href='javascript:void(0)' target='_blank'><i class='fa fa-caret-left fa-3x float-left text-success'></i><span class='mt-2 d-inline-block ml-2'>" + item.Action + "</span></a></div></div>");
-                                                    });
-                                                    widgetHtml.Replace("{{ReminderAndRecommendation}}", reminderstr.ToString());
-                                                    htmlString.Append(widgetHtml.ToString());
-                                                }
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PORTFOLIO_NEWS_ALERT_WIDGET_NAME)
-                                            {
-                                                var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_NEWS_ALERT_WIDGET_HTML);
-                                                string jsonstr = "{ \"Message1\": \"Covid 19 and the subsequent lockdown has affected all areas of our daily lives. The way we work, the way we bank and how we interact with each other.\", \"Message2\": \"We want you to know we are in this together. That's why we are sharing advice, tips and news updates with you on ways to bank as well as ways to keep yorself and your loved ones safe.\", \"Message3\": \"We would like to remind you of the credit life insurance benefits available to you through your Nedbank Insurance policy. When you pass away, Nedbank Insurance will cover your outstanding loan amount. If you are permanently employed, you will also enjoy cover for comprehensive disability and loss of income. The disability benefit will cover your monthly instalments if you cannot earn your usual income due to illness or bodily injury.\", \"Message4\": \"\", \"Message5\": \"\" }";
-                                                if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
-                                                {
-                                                    var newsAlert = JsonConvert.DeserializeObject<NewsAlert>(jsonstr);
-                                                    var newsAlertStr = (!string.IsNullOrEmpty(newsAlert.Message1) ? ("<p>" + newsAlert.Message1 + "</p>") : string.Empty) +
-                                                        (!string.IsNullOrEmpty(newsAlert.Message2) ? ("<p>" + newsAlert.Message2 + "</p>") : string.Empty) +
-                                                        (!string.IsNullOrEmpty(newsAlert.Message3) ? ("<p>" + newsAlert.Message3 + "</p>") : string.Empty) +
-                                                        (!string.IsNullOrEmpty(newsAlert.Message4) ? ("<p>" + newsAlert.Message4 + "</p>") : string.Empty) +
-                                                        (!string.IsNullOrEmpty(newsAlert.Message5) ? ("<p>" + newsAlert.Message5 + "</p>") : string.Empty);
-                                                    widgetHtml.Replace("{{NewsAlert}}", newsAlertStr);
-                                                    htmlString.Append(widgetHtml.ToString());
-                                                }
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_GREENBACKS_TOTAL_REWARDS_POINTS_WIDGET_NAME)
-                                            {
-                                                var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_GREENBACKS_TOTAL_REWARDS_POINTS_WIDGET_HTML);
-                                                widgetHtml.Replace("{{TotalRewardsPoints}}", "482");
-                                                htmlString.Append(widgetHtml.ToString());
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_GREENBACKS_CONTACT_US_WIDGET_NAME)
-                                            {
-                                                htmlString.Append(HtmlConstants.NEDBANK_GREENBACKS_CONTACT_US_WIDGET_HTML);
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_YTD_REWARDS_POINTS_BAR_GRAPH_WIDGET_NAME)
-                                            {
-                                                var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_YTD_REWARDS_POINTS_BAR_GRAPH_WIDGET_HTML);
-                                                var data = "[{\"Month\": \"Jan\",\"RewardPoint\" : 98}, {\"Month\": \"Feb\",\"RewardPoint\" : 112}, {\"Month\": \"Mar\",\"RewardPoint\" : 128}, {\"Month\": \"Apr\",\"RewardPoint\" : 144}]";
-                                                widgetHtml.Append("<input type='hidden' id='HiddenYTDRewardPointsBarGraphData' value='" + data + "'/>");
-                                                //widgetHtml.Append(HtmlConstants.PORTFOLIO_ACCOUNT_ANALYSIS_BAR_GRAPH_SCRIPT);
-                                                htmlString.Append(widgetHtml.ToString());
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_POINTS_REDEEMED_YTD_BAR_GRAPH_WIDGET_NAME)
-                                            {
-                                                var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_POINTS_REDEEMED_YTD_BAR_GRAPH_WIDGET_HTML);
-                                                var data = "[{\"Month\": \"Jan\",\"RedeemedPoints\" : 58}, {\"Month\": \"Feb\",\"RedeemedPoints\" : 71}, {\"Month\": \"Mar\",\"RedeemedPoints\" : 63}, {\"Month\": \"Apr\",\"RedeemedPoints\" : 84}]";
-                                                widgetHtml.Append("<input type='hidden' id='HiddenPointsRedeemedBarGraphData' value='" + data + "'/>");
-                                                //widgetHtml.Append(HtmlConstants.PORTFOLIO_ACCOUNT_ANALYSIS_BAR_GRAPH_SCRIPT);
-                                                htmlString.Append(widgetHtml.ToString());
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PRODUCT_RELATED_POINTS_EARNED_BAR_GRAPH_WIDGET_NAME)
-                                            {
-                                                var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_PRODUCT_RELATED_POINTS_EARNED_BAR_GRAPH_WIDGET_HTML);
-                                                var data = "[{\"AccountType\": \"Investment\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"RewardPoint\": 34}, {\"Month\": \"Feb\", \"RewardPoint\": 29},{\"Month\": \"Mar\", \"RewardPoint\": 41}, {\"Month\": \"Apr\", \"RewardPoint\": 48}]}, {\"AccountType\": \"Personal Loan\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"RewardPoint\": 27}, {\"Month\": \"Feb\", \"RewardPoint\": 45},{\"Month\": \"Mar\", \"RewardPoint\": 36}, {\"Month\": \"Apr\", \"RewardPoint\": 51}]}, {\"AccountType\": \"Home Loan\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"RewardPoint\": 37}, {\"Month\": \"Feb\", \"RewardPoint\": 38},{\"Month\": \"Mar\", \"RewardPoint\": 51}, {\"Month\": \"Apr\", \"RewardPoint\": 45}]}]"; ;
-                                                widgetHtml.Append("<input type='hidden' id='HiddenProductRelatedPointsEarnedBarGraphData' value='" + data + "'/>");
-                                                //widgetHtml.Append(HtmlConstants.PORTFOLIO_ACCOUNT_ANALYSIS_BAR_GRAPH_SCRIPT);
-                                                htmlString.Append(widgetHtml.ToString());
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_CATEGORY_SPEND_REWARDS_PIE_CHART_WIDGET_NAME)
-                                            {
-                                                var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_CATEGORY_SPEND_REWARDS_PIE_CHART_WIDGET_HTML);
-                                                var data = "[{\"Category\": \"Fuel\",\"SpendReward\" : 34}, {\"Category\": \"Groceries\",\"SpendReward\" : 15}, {\"Category\": \"Travel\",\"SpendReward\" : 21}, {\"Category\": \"Movies\",\"SpendReward\" : 19}, {\"Category\": \"Shopping\",\"SpendReward\" : 11}]"; ;
-                                                widgetHtml.Append("<input type='hidden' id='HiddenCategorySpendRewardsPieChartData' value='" + data + "'/>");
-                                                //widgetHtml.Append(HtmlConstants.PORTFOLIO_ACCOUNT_ANALYSIS_BAR_GRAPH_SCRIPT);
-                                                htmlString.Append(widgetHtml.ToString());
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_MCA_TRANSACTION_WIDGET_NAME)
-                                            {
-                                                string jsonstr = HtmlConstants.MCA_TRANSACTION_PREVIEW_JSON_STRING;
-                                                var widgetHtml = new StringBuilder(HtmlConstants.MCA_TRANSACTION_DETAIL_DIV_HTML);
-                                                if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
-                                                {
-                                                    var mcaTransaction = JsonConvert.DeserializeObject<List<DM_MCATransaction>>(jsonstr);
-                                                    StringBuilder rowsHTML = new StringBuilder();
-                                                    var res = 0.0m;
-                                                    mcaTransaction.ForEach(trans =>
-                                                    {
-                                                        res = 0.0m;
-                                                        string debit = string.Empty;
-                                                        string credit = string.Empty;
-                                                        if (trans.Debit != null && decimal.TryParse(trans.Debit.ToString(), out res))
-                                                        {
-                                                            debit = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res);
-                                                        }
-                                                        else
-                                                        {
-                                                            debit = "";
-                                                        }
+                                            //    htmlString.Append(widgetHtml.ToString());
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_ANALYSIS_WIDGET_NAME)
+                                            //{
+                                            //    var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_ANALYSIS_WIDGET_HTML);
+                                            //    var data = "[{\"AccountType\": \"Investment\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"Amount\": 9456.12}, {\"Month\": \"Feb\", \"Amount\": 9620.98}]},{\"AccountType\": \"Personal Loan\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"Amount\": -4465.00}, {\"Month\": \"Feb\", \"Amount\": -4165.00}]},{\"AccountType\": \"Home Loan\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"Amount\": -8969.00}, {\"Month\": \"Feb\", \"Amount\": -7969.00}]}]";
+                                            //    widgetHtml.Append("<input type='hidden' id='HiddenAccountAnalysisBarGraphData' value='" + data + "'/>");
+                                            //    //widgetHtml.Append(HtmlConstants.PORTFOLIO_ACCOUNT_ANALYSIS_BAR_GRAPH_SCRIPT);
+                                            //    htmlString.Append(widgetHtml.ToString());
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PORTFOLIO_REMINDERS_WIDGET_NAME)
+                                            //{
+                                            //    var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_REMINDER_AND_RECOMMENDATION_WIDGET_HTML);
+                                            //    string jsonstr = "[{ 'Title': 'Update Missing Inofrmation', 'Action': 'Update' },{ 'Title': 'Your Rewards Video is available', 'Action': 'View' },{ 'Title': 'Payment Due for Home Loan', 'Action': 'Pay' }, { title: 'Need financial planning for savings.', action: 'Call Me' },{ title: 'Subscribe/Unsubscribe Alerts.', action: 'Apply' },{ title: 'Your credit card payment is due now.', action: 'Pay' }]";
+                                            //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                            //    {
+                                            //        IList<ReminderAndRecommendation> reminderAndRecommendations = JsonConvert.DeserializeObject<List<ReminderAndRecommendation>>(jsonstr);
+                                            //        StringBuilder reminderstr = new StringBuilder();
+                                            //        reminderAndRecommendations.ToList().ForEach(item =>
+                                            //        {
+                                            //            reminderstr.Append("<div class='row'><div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>" + item.Title + " </p></div><div class='col-lg-3 text-left'><a href='javascript:void(0)' target='_blank'><i class='fa fa-caret-left fa-3x float-left text-success'></i><span class='mt-2 d-inline-block ml-2'>" + item.Action + "</span></a></div></div>");
+                                            //        });
+                                            //        widgetHtml.Replace("{{ReminderAndRecommendation}}", reminderstr.ToString());
+                                            //        htmlString.Append(widgetHtml.ToString());
+                                            //    }
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PORTFOLIO_NEWS_ALERT_WIDGET_NAME)
+                                            //{
+                                            //    var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_NEWS_ALERT_WIDGET_HTML);
+                                            //    string jsonstr = "{ \"Message1\": \"Covid 19 and the subsequent lockdown has affected all areas of our daily lives. The way we work, the way we bank and how we interact with each other.\", \"Message2\": \"We want you to know we are in this together. That's why we are sharing advice, tips and news updates with you on ways to bank as well as ways to keep yorself and your loved ones safe.\", \"Message3\": \"We would like to remind you of the credit life insurance benefits available to you through your Nedbank Insurance policy. When you pass away, Nedbank Insurance will cover your outstanding loan amount. If you are permanently employed, you will also enjoy cover for comprehensive disability and loss of income. The disability benefit will cover your monthly instalments if you cannot earn your usual income due to illness or bodily injury.\", \"Message4\": \"\", \"Message5\": \"\" }";
+                                            //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                            //    {
+                                            //        var newsAlert = JsonConvert.DeserializeObject<NewsAlert>(jsonstr);
+                                            //        var newsAlertStr = (!string.IsNullOrEmpty(newsAlert.Message1) ? ("<p>" + newsAlert.Message1 + "</p>") : string.Empty) +
+                                            //            (!string.IsNullOrEmpty(newsAlert.Message2) ? ("<p>" + newsAlert.Message2 + "</p>") : string.Empty) +
+                                            //            (!string.IsNullOrEmpty(newsAlert.Message3) ? ("<p>" + newsAlert.Message3 + "</p>") : string.Empty) +
+                                            //            (!string.IsNullOrEmpty(newsAlert.Message4) ? ("<p>" + newsAlert.Message4 + "</p>") : string.Empty) +
+                                            //            (!string.IsNullOrEmpty(newsAlert.Message5) ? ("<p>" + newsAlert.Message5 + "</p>") : string.Empty);
+                                            //        widgetHtml.Replace("{{NewsAlert}}", newsAlertStr);
+                                            //        htmlString.Append(widgetHtml.ToString());
+                                            //    }
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_GREENBACKS_TOTAL_REWARDS_POINTS_WIDGET_NAME)
+                                            //{
+                                            //    var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_GREENBACKS_TOTAL_REWARDS_POINTS_WIDGET_HTML);
+                                            //    widgetHtml.Replace("{{TotalRewardsPoints}}", "482");
+                                            //    htmlString.Append(widgetHtml.ToString());
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_GREENBACKS_CONTACT_US_WIDGET_NAME)
+                                            //{
+                                            //    htmlString.Append(HtmlConstants.NEDBANK_GREENBACKS_CONTACT_US_WIDGET_HTML);
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_YTD_REWARDS_POINTS_BAR_GRAPH_WIDGET_NAME)
+                                            //{
+                                            //    var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_YTD_REWARDS_POINTS_BAR_GRAPH_WIDGET_HTML);
+                                            //    var data = "[{\"Month\": \"Jan\",\"RewardPoint\" : 98}, {\"Month\": \"Feb\",\"RewardPoint\" : 112}, {\"Month\": \"Mar\",\"RewardPoint\" : 128}, {\"Month\": \"Apr\",\"RewardPoint\" : 144}]";
+                                            //    widgetHtml.Append("<input type='hidden' id='HiddenYTDRewardPointsBarGraphData' value='" + data + "'/>");
+                                            //    //widgetHtml.Append(HtmlConstants.PORTFOLIO_ACCOUNT_ANALYSIS_BAR_GRAPH_SCRIPT);
+                                            //    htmlString.Append(widgetHtml.ToString());
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_POINTS_REDEEMED_YTD_BAR_GRAPH_WIDGET_NAME)
+                                            //{
+                                            //    var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_POINTS_REDEEMED_YTD_BAR_GRAPH_WIDGET_HTML);
+                                            //    var data = "[{\"Month\": \"Jan\",\"RedeemedPoints\" : 58}, {\"Month\": \"Feb\",\"RedeemedPoints\" : 71}, {\"Month\": \"Mar\",\"RedeemedPoints\" : 63}, {\"Month\": \"Apr\",\"RedeemedPoints\" : 84}]";
+                                            //    widgetHtml.Append("<input type='hidden' id='HiddenPointsRedeemedBarGraphData' value='" + data + "'/>");
+                                            //    //widgetHtml.Append(HtmlConstants.PORTFOLIO_ACCOUNT_ANALYSIS_BAR_GRAPH_SCRIPT);
+                                            //    htmlString.Append(widgetHtml.ToString());
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PRODUCT_RELATED_POINTS_EARNED_BAR_GRAPH_WIDGET_NAME)
+                                            //{
+                                            //    var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_PRODUCT_RELATED_POINTS_EARNED_BAR_GRAPH_WIDGET_HTML);
+                                            //    var data = "[{\"AccountType\": \"Investment\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"RewardPoint\": 34}, {\"Month\": \"Feb\", \"RewardPoint\": 29},{\"Month\": \"Mar\", \"RewardPoint\": 41}, {\"Month\": \"Apr\", \"RewardPoint\": 48}]}, {\"AccountType\": \"Personal Loan\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"RewardPoint\": 27}, {\"Month\": \"Feb\", \"RewardPoint\": 45},{\"Month\": \"Mar\", \"RewardPoint\": 36}, {\"Month\": \"Apr\", \"RewardPoint\": 51}]}, {\"AccountType\": \"Home Loan\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"RewardPoint\": 37}, {\"Month\": \"Feb\", \"RewardPoint\": 38},{\"Month\": \"Mar\", \"RewardPoint\": 51}, {\"Month\": \"Apr\", \"RewardPoint\": 45}]}]"; ;
+                                            //    widgetHtml.Append("<input type='hidden' id='HiddenProductRelatedPointsEarnedBarGraphData' value='" + data + "'/>");
+                                            //    //widgetHtml.Append(HtmlConstants.PORTFOLIO_ACCOUNT_ANALYSIS_BAR_GRAPH_SCRIPT);
+                                            //    htmlString.Append(widgetHtml.ToString());
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_CATEGORY_SPEND_REWARDS_PIE_CHART_WIDGET_NAME)
+                                            //{
+                                            //    var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_CATEGORY_SPEND_REWARDS_PIE_CHART_WIDGET_HTML);
+                                            //    var data = "[{\"Category\": \"Fuel\",\"SpendReward\" : 34}, {\"Category\": \"Groceries\",\"SpendReward\" : 15}, {\"Category\": \"Travel\",\"SpendReward\" : 21}, {\"Category\": \"Movies\",\"SpendReward\" : 19}, {\"Category\": \"Shopping\",\"SpendReward\" : 11}]"; ;
+                                            //    widgetHtml.Append("<input type='hidden' id='HiddenCategorySpendRewardsPieChartData' value='" + data + "'/>");
+                                            //    //widgetHtml.Append(HtmlConstants.PORTFOLIO_ACCOUNT_ANALYSIS_BAR_GRAPH_SCRIPT);
+                                            //    htmlString.Append(widgetHtml.ToString());
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_MCA_TRANSACTION_WIDGET_NAME)
+                                            //{
+                                            //    string jsonstr = HtmlConstants.MCA_TRANSACTION_PREVIEW_JSON_STRING;
+                                            //    var widgetHtml = new StringBuilder(HtmlConstants.MCA_TRANSACTION_DETAIL_DIV_HTML);
+                                            //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                            //    {
+                                            //        var mcaTransaction = JsonConvert.DeserializeObject<List<DM_MCATransaction>>(jsonstr);
+                                            //        StringBuilder rowsHTML = new StringBuilder();
+                                            //        var res = 0.0m;
+                                            //        mcaTransaction.ForEach(trans =>
+                                            //        {
+                                            //            res = 0.0m;
+                                            //            string debit = string.Empty;
+                                            //            string credit = string.Empty;
+                                            //            if (trans.Debit != null && decimal.TryParse(trans.Debit.ToString(), out res))
+                                            //            {
+                                            //                debit = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res);
+                                            //            }
+                                            //            else
+                                            //            {
+                                            //                debit = "";
+                                            //            }
 
-                                                        if (trans.Credit != null && decimal.TryParse(trans.Credit.ToString(), out res))
-                                                        {
-                                                            credit = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res);
-                                                        }
-                                                        else
-                                                        {
-                                                            credit = "";
-                                                        }
+                                            //            if (trans.Credit != null && decimal.TryParse(trans.Credit.ToString(), out res))
+                                            //            {
+                                            //                credit = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res);
+                                            //            }
+                                            //            else
+                                            //            {
+                                            //                credit = "";
+                                            //            }
 
-                                                        rowsHTML.Append("<tr class='ht-20'>" +
-                                                            "<td class='w-15 text-center'>" + trans.Transaction_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
-                                                            "<td class='w-35 text-left'>" + trans.Description + "</td>" +
-                                                            "<td class='w-12 text-right'>" + debit + "</td>" +
-                                                            "<td class='w-12 text-right'>" + credit + "</td>" +
-                                                            "<td class='w-7 text-center'>" + trans.Rate + "</td>" +
-                                                            "<td class='w-7 text-center'>" + trans.Days + "</td>" +
-                                                            "<td class='w-12 text-right'>" + trans.AccuredInterest + "</td>" +
-                                                            "</tr>"
-                                                            );
-                                                    });
-                                                    widgetHtml.Replace("{{MCATransactionRow}}", rowsHTML.ToString());
-                                                    htmlString.Append(widgetHtml);
-                                                }
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_MCA_VAT_ANALYSIS_WIDGET_NAME)
-                                            {
-                                                string jsonstr = HtmlConstants.MCA_TRANSACTION_PREVIEW_JSON_STRING;
-                                                var widgetHtml = new StringBuilder(HtmlConstants.MCA_VAT_ANALYSIS_DETAIL_DIV_HTML);
-                                                if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
-                                                {
-                                                    var mcaTransaction = JsonConvert.DeserializeObject<List<DM_MCATransaction>>(jsonstr);
-                                                    StringBuilder rowsHTML = new StringBuilder();
-                                                    if (mcaTransaction.Count > 0)
-                                                    {
-                                                        var trans = mcaTransaction[0];
-                                                        rowsHTML.Append("<tr class='ht-20'>" +
-                                                            "<td class='w-25 text-left'>" + DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
-                                                            "<td class='w-25 text-right'>" + DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
-                                                            "<td class='w-25 text-center'>" + trans.Rate + "</td>" +
-                                                            "<td class='w-25 text-center'>" + trans.Credit + "</td>" +
-                                                            "</tr>"
-                                                            );
-                                                    }
-                                                    widgetHtml.Replace("{{MCAVATTable}}", rowsHTML.ToString());
-                                                    htmlString.Append(widgetHtml);
-                                                }
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_MCA_ACCOUNT_SUMMARY_WIDGET_NAME)
-                                            {
-                                                string jsonstr = HtmlConstants.MCA_ACCOUNT_SUMMARY_PREVIEW_JSON_STRING;
-                                                if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
-                                                {
-                                                    var mcaMaster = JsonConvert.DeserializeObject<DM_MCAMaster>(jsonstr);
-                                                    var htmlWidget = new StringBuilder(HtmlConstants.MCA_ACCOUNT_SUMMARY_DETAILS_WIDGET_HTML);
-                                                    htmlWidget.Replace("{{AccountNo}}", mcaMaster.CustomerId.ToString());
-                                                    htmlWidget.Replace("{{StatementNo}}", mcaMaster.StatementNo);
-                                                    htmlWidget.Replace("{{OverdraftLimit}}", mcaMaster.OverdraftLimit != null ? mcaMaster.OverdraftLimit.ToString() : "0.00");
-                                                    htmlWidget.Replace("{{StatementDate}}", mcaMaster.StatementDate != null ? mcaMaster.StatementDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) : DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
-                                                    htmlWidget.Replace("{{Currency}}", mcaMaster.Currency);
-                                                    htmlWidget.Replace("{{Statementfrequency}}", mcaMaster.StatementFrequency);
-                                                    htmlWidget.Replace("{{FreeBalance}}", mcaMaster.FreeBalance != null ? mcaMaster.FreeBalance.ToString() : "0.00");
-                                                    htmlString.Append(htmlWidget);
-                                                }
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_WEALTH_MCA_TRANSACTION_WIDGET_NAME)
-                                            {
-                                                string jsonstr = HtmlConstants.MCA_TRANSACTION_PREVIEW_JSON_STRING;
-                                                var widgetHtml = new StringBuilder(HtmlConstants.MCA_WEALTH_TRANSACTION_DETAIL_DIV_HTML);
-                                                if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
-                                                {
-                                                    var mcaTransaction = JsonConvert.DeserializeObject<List<DM_MCATransaction>>(jsonstr);
-                                                    StringBuilder rowsHTML = new StringBuilder();
-                                                    var res = 0.0m;
-                                                    mcaTransaction.ForEach(trans =>
-                                                    {
-                                                        res = 0.0m;
-                                                        string debit = string.Empty;
-                                                        string credit = string.Empty;
-                                                        if (trans.Debit != null && decimal.TryParse(trans.Debit.ToString(), out res))
-                                                        {
-                                                            debit = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res);
-                                                        }
-                                                        else
-                                                        {
-                                                            debit = "";
-                                                        }
+                                            //            rowsHTML.Append("<tr class='ht-20'>" +
+                                            //                "<td class='w-15 text-center'>" + trans.Transaction_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
+                                            //                "<td class='w-35 text-left'>" + trans.Description + "</td>" +
+                                            //                "<td class='w-12 text-right'>" + debit + "</td>" +
+                                            //                "<td class='w-12 text-right'>" + credit + "</td>" +
+                                            //                "<td class='w-7 text-center'>" + trans.Rate + "</td>" +
+                                            //                "<td class='w-7 text-center'>" + trans.Days + "</td>" +
+                                            //                "<td class='w-12 text-right'>" + trans.AccuredInterest + "</td>" +
+                                            //                "</tr>"
+                                            //                );
+                                            //        });
+                                            //        widgetHtml.Replace("{{MCATransactionRow}}", rowsHTML.ToString());
+                                            //        htmlString.Append(widgetHtml);
+                                            //    }
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_MCA_VAT_ANALYSIS_WIDGET_NAME)
+                                            //{
+                                            //    string jsonstr = HtmlConstants.MCA_TRANSACTION_PREVIEW_JSON_STRING;
+                                            //    var widgetHtml = new StringBuilder(HtmlConstants.MCA_VAT_ANALYSIS_DETAIL_DIV_HTML);
+                                            //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                            //    {
+                                            //        var mcaTransaction = JsonConvert.DeserializeObject<List<DM_MCATransaction>>(jsonstr);
+                                            //        StringBuilder rowsHTML = new StringBuilder();
+                                            //        if (mcaTransaction.Count > 0)
+                                            //        {
+                                            //            var trans = mcaTransaction[0];
+                                            //            rowsHTML.Append("<tr class='ht-20'>" +
+                                            //                "<td class='w-25 text-left'>" + DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
+                                            //                "<td class='w-25 text-right'>" + DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
+                                            //                "<td class='w-25 text-center'>" + trans.Rate + "</td>" +
+                                            //                "<td class='w-25 text-center'>" + trans.Credit + "</td>" +
+                                            //                "</tr>"
+                                            //                );
+                                            //        }
+                                            //        widgetHtml.Replace("{{MCAVATTable}}", rowsHTML.ToString());
+                                            //        htmlString.Append(widgetHtml);
+                                            //    }
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_MCA_ACCOUNT_SUMMARY_WIDGET_NAME)
+                                            //{
+                                            //    string jsonstr = HtmlConstants.MCA_ACCOUNT_SUMMARY_PREVIEW_JSON_STRING;
+                                            //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                            //    {
+                                            //        var mcaMaster = JsonConvert.DeserializeObject<DM_MCAMaster>(jsonstr);
+                                            //        var htmlWidget = new StringBuilder(HtmlConstants.MCA_ACCOUNT_SUMMARY_DETAILS_WIDGET_HTML);
+                                            //        htmlWidget.Replace("{{AccountNo}}", mcaMaster.CustomerId.ToString());
+                                            //        htmlWidget.Replace("{{StatementNo}}", mcaMaster.StatementNo);
+                                            //        htmlWidget.Replace("{{OverdraftLimit}}", mcaMaster.OverdraftLimit != null ? mcaMaster.OverdraftLimit.ToString() : "0.00");
+                                            //        htmlWidget.Replace("{{StatementDate}}", mcaMaster.StatementDate != null ? mcaMaster.StatementDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) : DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
+                                            //        htmlWidget.Replace("{{Currency}}", mcaMaster.Currency);
+                                            //        htmlWidget.Replace("{{Statementfrequency}}", mcaMaster.StatementFrequency);
+                                            //        htmlWidget.Replace("{{FreeBalance}}", mcaMaster.FreeBalance != null ? mcaMaster.FreeBalance.ToString() : "0.00");
+                                            //        htmlString.Append(htmlWidget);
+                                            //    }
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_WEALTH_MCA_TRANSACTION_WIDGET_NAME)
+                                            //{
+                                            //    string jsonstr = HtmlConstants.MCA_TRANSACTION_PREVIEW_JSON_STRING;
+                                            //    var widgetHtml = new StringBuilder(HtmlConstants.MCA_WEALTH_TRANSACTION_DETAIL_DIV_HTML);
+                                            //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                            //    {
+                                            //        var mcaTransaction = JsonConvert.DeserializeObject<List<DM_MCATransaction>>(jsonstr);
+                                            //        StringBuilder rowsHTML = new StringBuilder();
+                                            //        var res = 0.0m;
+                                            //        mcaTransaction.ForEach(trans =>
+                                            //        {
+                                            //            res = 0.0m;
+                                            //            string debit = string.Empty;
+                                            //            string credit = string.Empty;
+                                            //            if (trans.Debit != null && decimal.TryParse(trans.Debit.ToString(), out res))
+                                            //            {
+                                            //                debit = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res);
+                                            //            }
+                                            //            else
+                                            //            {
+                                            //                debit = "";
+                                            //            }
 
-                                                        if (trans.Credit != null && decimal.TryParse(trans.Credit.ToString(), out res))
-                                                        {
-                                                            credit = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res);
-                                                        }
-                                                        else
-                                                        {
-                                                            credit = "";
-                                                        }
+                                            //            if (trans.Credit != null && decimal.TryParse(trans.Credit.ToString(), out res))
+                                            //            {
+                                            //                credit = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res);
+                                            //            }
+                                            //            else
+                                            //            {
+                                            //                credit = "";
+                                            //            }
 
-                                                        rowsHTML.Append("<tr class='ht-20'>" +
-                                                            "<td class='w-15 text-center'>" + trans.Transaction_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
-                                                            "<td class='w-35 text-left'>" + trans.Description + "</td>" +
-                                                            "<td class='w-12 text-right'>" + debit + "</td>" +
-                                                            "<td class='w-12 text-right'>" + credit + "</td>" +
-                                                            "<td class='w-7 text-center'>" + trans.Rate + "</td>" +
-                                                            "<td class='w-7 text-center'>" + trans.Days + "</td>" +
-                                                            "<td class='w-12 text-right'>" + trans.AccuredInterest + "</td>" +
-                                                            "</tr>"
-                                                            );
-                                                    });
-                                                    widgetHtml.Replace("{{MCATransactionRow}}", rowsHTML.ToString());
-                                                    htmlString.Append(widgetHtml);
-                                                }
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_WEALTH_MCA_VAT_ANALYSIS_WIDGET_NAME)
-                                            {
-                                                string jsonstr = HtmlConstants.MCA_TRANSACTION_PREVIEW_JSON_STRING;
-                                                var widgetHtml = new StringBuilder(HtmlConstants.MCA_WEALTH_VAT_ANALYSIS_DETAIL_DIV_HTML);
-                                                if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
-                                                {
-                                                    var mcaTransaction = JsonConvert.DeserializeObject<List<DM_MCATransaction>>(jsonstr);
-                                                    StringBuilder rowsHTML = new StringBuilder();
-                                                    if (mcaTransaction.Count > 0)
-                                                    {
-                                                        var trans = mcaTransaction[0];
-                                                        rowsHTML.Append("<tr class='ht-20'>" +
-                                                            "<td class='w-25 text-left'>" + DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
-                                                            "<td class='w-25 text-right'>" + DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
-                                                            "<td class='w-25 text-center'>" + trans.Rate + "</td>" +
-                                                            "<td class='w-25 text-center'>" + trans.Credit + "</td>" +
-                                                            "</tr>"
-                                                            );
-                                                    }
-                                                    widgetHtml.Replace("{{MCAVATTable}}", rowsHTML.ToString());
-                                                    htmlString.Append(widgetHtml);
-                                                }
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_WEALTH_MCA_ACCOUNT_SUMMARY_WIDGET_NAME)
-                                            {
-                                                string jsonstr = HtmlConstants.MCA_ACCOUNT_SUMMARY_PREVIEW_JSON_STRING;
-                                                if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
-                                                {
-                                                    var mcaMaster = JsonConvert.DeserializeObject<DM_MCAMaster>(jsonstr);
-                                                    var htmlWidget = new StringBuilder(HtmlConstants.MCA_WEALTH_ACCOUNT_SUMMARY_DETAILS_WIDGET_HTML);
-                                                    htmlWidget.Replace("{{AccountNo}}", mcaMaster.CustomerId.ToString());
-                                                    htmlWidget.Replace("{{StatementNo}}", mcaMaster.StatementNo);
-                                                    htmlWidget.Replace("{{OverdraftLimit}}", mcaMaster.OverdraftLimit != null ? mcaMaster.OverdraftLimit.ToString() : "0.00");
-                                                    htmlWidget.Replace("{{StatementDate}}", mcaMaster.StatementDate != null ? mcaMaster.StatementDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) : DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
-                                                    htmlWidget.Replace("{{Currency}}", mcaMaster.Currency);
-                                                    htmlWidget.Replace("{{Statementfrequency}}", mcaMaster.StatementFrequency);
-                                                    htmlWidget.Replace("{{FreeBalance}}", mcaMaster.FreeBalance != null ? mcaMaster.FreeBalance.ToString() : "0.00");
-                                                    htmlString.Append(htmlWidget);
-                                                }
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_WEALTH_MCA_BRANCH_DETAILS_WIDGET_NAME)
-                                            {
-                                                var htmlWidget = new StringBuilder(HtmlConstants.MCA_WEALTH_BRANCH_DETAILS_WIDGET_HTML);
-                                                StringBuilder htmlBankDetails = new StringBuilder();
-                                                htmlBankDetails.Append(HtmlConstants.BANK_DETAILS);
-                                                htmlBankDetails.Replace("{{TodayDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd));
+                                            //            rowsHTML.Append("<tr class='ht-20'>" +
+                                            //                "<td class='w-15 text-center'>" + trans.Transaction_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
+                                            //                "<td class='w-35 text-left'>" + trans.Description + "</td>" +
+                                            //                "<td class='w-12 text-right'>" + debit + "</td>" +
+                                            //                "<td class='w-12 text-right'>" + credit + "</td>" +
+                                            //                "<td class='w-7 text-center'>" + trans.Rate + "</td>" +
+                                            //                "<td class='w-7 text-center'>" + trans.Days + "</td>" +
+                                            //                "<td class='w-12 text-right'>" + trans.AccuredInterest + "</td>" +
+                                            //                "</tr>"
+                                            //                );
+                                            //        });
+                                            //        widgetHtml.Replace("{{MCATransactionRow}}", rowsHTML.ToString());
+                                            //        htmlString.Append(widgetHtml);
+                                            //    }
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_WEALTH_MCA_VAT_ANALYSIS_WIDGET_NAME)
+                                            //{
+                                            //    string jsonstr = HtmlConstants.MCA_TRANSACTION_PREVIEW_JSON_STRING;
+                                            //    var widgetHtml = new StringBuilder(HtmlConstants.MCA_WEALTH_VAT_ANALYSIS_DETAIL_DIV_HTML);
+                                            //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                            //    {
+                                            //        var mcaTransaction = JsonConvert.DeserializeObject<List<DM_MCATransaction>>(jsonstr);
+                                            //        StringBuilder rowsHTML = new StringBuilder();
+                                            //        if (mcaTransaction.Count > 0)
+                                            //        {
+                                            //            var trans = mcaTransaction[0];
+                                            //            rowsHTML.Append("<tr class='ht-20'>" +
+                                            //                "<td class='w-25 text-left'>" + DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
+                                            //                "<td class='w-25 text-right'>" + DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
+                                            //                "<td class='w-25 text-center'>" + trans.Rate + "</td>" +
+                                            //                "<td class='w-25 text-center'>" + trans.Credit + "</td>" +
+                                            //                "</tr>"
+                                            //                );
+                                            //        }
+                                            //        widgetHtml.Replace("{{MCAVATTable}}", rowsHTML.ToString());
+                                            //        htmlString.Append(widgetHtml);
+                                            //    }
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_WEALTH_MCA_ACCOUNT_SUMMARY_WIDGET_NAME)
+                                            //{
+                                            //    string jsonstr = HtmlConstants.MCA_ACCOUNT_SUMMARY_PREVIEW_JSON_STRING;
+                                            //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                            //    {
+                                            //        var mcaMaster = JsonConvert.DeserializeObject<DM_MCAMaster>(jsonstr);
+                                            //        var htmlWidget = new StringBuilder(HtmlConstants.MCA_WEALTH_ACCOUNT_SUMMARY_DETAILS_WIDGET_HTML);
+                                            //        htmlWidget.Replace("{{AccountNo}}", mcaMaster.CustomerId.ToString());
+                                            //        htmlWidget.Replace("{{StatementNo}}", mcaMaster.StatementNo);
+                                            //        htmlWidget.Replace("{{OverdraftLimit}}", mcaMaster.OverdraftLimit != null ? mcaMaster.OverdraftLimit.ToString() : "0.00");
+                                            //        htmlWidget.Replace("{{StatementDate}}", mcaMaster.StatementDate != null ? mcaMaster.StatementDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) : DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
+                                            //        htmlWidget.Replace("{{Currency}}", mcaMaster.Currency);
+                                            //        htmlWidget.Replace("{{Statementfrequency}}", mcaMaster.StatementFrequency);
+                                            //        htmlWidget.Replace("{{FreeBalance}}", mcaMaster.FreeBalance != null ? mcaMaster.FreeBalance.ToString() : "0.00");
+                                            //        htmlString.Append(htmlWidget);
+                                            //    }
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_WEALTH_MCA_BRANCH_DETAILS_WIDGET_NAME)
+                                            //{
+                                            //    var htmlWidget = new StringBuilder(HtmlConstants.MCA_WEALTH_BRANCH_DETAILS_WIDGET_HTML);
+                                            //    StringBuilder htmlBankDetails = new StringBuilder();
+                                            //    htmlBankDetails.Append(HtmlConstants.BANK_DETAILS);
+                                            //    htmlBankDetails.Replace("{{TodayDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd));
 
-                                                htmlWidget.Replace("{{BranchDetails}}", htmlBankDetails.ToString());
-                                                htmlWidget.Replace("{{ContactCenter}}", HtmlConstants.WEA_BANKING);
-                                                htmlString.Append(htmlWidget.ToString());
-                                            }
+                                            //    htmlWidget.Replace("{{BranchDetails}}", htmlBankDetails.ToString());
+                                            //    htmlWidget.Replace("{{ContactCenter}}", HtmlConstants.WEA_BANKING);
+                                            //    htmlString.Append(htmlWidget.ToString());
+                                            //}
                                             else if (mergedlst[i].WidgetName == HtmlConstants.CORPORATESAVER_AGENT_MESSAGE_WIDGET_NAME)
                                             {
                                                 //string jsonstr = HtmlConstants.CORPORATESAVER_TRANSACTION_PREVIEW_JSON_STRING;
@@ -2740,28 +2740,28 @@ namespace nIS
                                                     htmlString.Append(htmlWidget);
                                                 }
                                             }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_CORPORATESAVER_CLIENTANDAGENT_DETAILS_NAME)
-                                            {
-                                                //string jsonstr = HtmlConstants.CORPORATESAVER_TRANSACTION_PREVIEW_JSON_STRING;
-                                                var pageContent = new StringBuilder(HtmlConstants.CORPORATESAVER_CLIENT_DETAILS_HTML);
-                                                pageContent.Replace("{{TaxInvoiceNo}}", "3563136");
-                                                pageContent.Replace("{{ContactPerson}}", "Louise Taylor");
-                                                pageContent.Replace("{{EmailAddress}}", "louise@robchap.co.za");
-                                                pageContent.Replace("{{RegNo}}", "1986/012848/23");
-                                                pageContent.Replace("{{VATRegNo}}", "4900153653");
-                                                pageContent.Replace("{{FSPLicNo}}", "16616");
-                                                pageContent.Replace("{{AgentRefNo}}", "WALLI");
-                                                pageContent.Replace("{{StatementNo}}", "184");
-                                                pageContent.Replace("{{AccountNo}}", "9000082385");
-                                                pageContent.Replace("{{Branchcode}}", "198765");
-                                                pageContent.Replace("{{Agentprofile}}", "PRO315");
-                                                pageContent.Replace("{{CIFNo}}", "5786407");
-                                                pageContent.Replace("{{ClientCode}}", "292598");
-                                                pageContent.Replace("{{RelationshipManager}}", "Umhlali Agencies CC");
-                                                pageContent.Replace("{{VATCalculation}}", "VAT inclusive");
-                                                pageContent.Replace("{{ClientVATNo}}", "Not provided");
-                                                htmlString.Append(pageContent);
-                                            }
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_CORPORATESAVER_CLIENTANDAGENT_DETAILS_NAME)
+                                            //{
+                                            //    //string jsonstr = HtmlConstants.CORPORATESAVER_TRANSACTION_PREVIEW_JSON_STRING;
+                                            //    var pageContent = new StringBuilder(HtmlConstants.CORPORATESAVER_CLIENT_DETAILS_HTML);
+                                            //    pageContent.Replace("{{TaxInvoiceNo}}", "3563136");
+                                            //    pageContent.Replace("{{ContactPerson}}", "Louise Taylor");
+                                            //    pageContent.Replace("{{EmailAddress}}", "louise@robchap.co.za");
+                                            //    pageContent.Replace("{{RegNo}}", "1986/012848/23");
+                                            //    pageContent.Replace("{{VATRegNo}}", "4900153653");
+                                            //    pageContent.Replace("{{FSPLicNo}}", "16616");
+                                            //    pageContent.Replace("{{AgentRefNo}}", "WALLI");
+                                            //    pageContent.Replace("{{StatementNo}}", "184");
+                                            //    pageContent.Replace("{{AccountNo}}", "9000082385");
+                                            //    pageContent.Replace("{{Branchcode}}", "198765");
+                                            //    pageContent.Replace("{{Agentprofile}}", "PRO315");
+                                            //    pageContent.Replace("{{CIFNo}}", "5786407");
+                                            //    pageContent.Replace("{{ClientCode}}", "292598");
+                                            //    pageContent.Replace("{{RelationshipManager}}", "Umhlali Agencies CC");
+                                            //    pageContent.Replace("{{VATCalculation}}", "VAT inclusive");
+                                            //    pageContent.Replace("{{ClientVATNo}}", "Not provided");
+                                            //    htmlString.Append(pageContent);
+                                            //}
                                             else if (mergedlst[i].WidgetName == HtmlConstants.CORPORATESAVER_AGENT_ADDRESS_NAME)
                                             {
                                                 //string jsonstr = HtmlConstants.CORPORATESAVER_TRANSACTION_PREVIEW_JSON_STRING;
@@ -2796,187 +2796,187 @@ namespace nIS
                                             //        htmlString.Append(widgetHtml);
                                             //    }
                                             //}                     
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_CORPORATESAVER_TRANSACTION_WIDGET_NAME)
-                                            {
-                                                //string jsonstr = HtmlConstants.MCA_TRANSACTION_PREVIEW_JSON_STRING;
-                                                var pageContent = new StringBuilder(HtmlConstants.NEDBANK_CORPORATESAVER_TRANSACTION_WIDGET_HTML);
-                                                if (true)//jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
-                                                {
-                                                    //var mcaTransaction = JsonConvert.DeserializeObject<List<DM_MCATransaction>>(jsonstr);
-                                                    //StringBuilder rowsHTML = new StringBuilder();
-                                                    //var res = 0.0m;
-                                                    //mcaTransaction.ForEach(trans =>
-                                                    //{
-                                                    //    res = 0.0m;
-                                                    //    string debit = string.Empty;
-                                                    //    string credit = string.Empty;
-                                                    //    if (trans.Debit != null && decimal.TryParse(trans.Debit.ToString(), out res))
-                                                    //    {
-                                                    //        debit = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res);
-                                                    //    }
-                                                    //    else
-                                                    //    {
-                                                    //        debit = "";
-                                                    //    }
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_CORPORATESAVER_TRANSACTION_WIDGET_NAME)
+                                            //{
+                                            //    //string jsonstr = HtmlConstants.MCA_TRANSACTION_PREVIEW_JSON_STRING;
+                                            //    var pageContent = new StringBuilder(HtmlConstants.NEDBANK_CORPORATESAVER_TRANSACTION_WIDGET_HTML);
+                                            //    if (true)//jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                            //    {
+                                            //        //var mcaTransaction = JsonConvert.DeserializeObject<List<DM_MCATransaction>>(jsonstr);
+                                            //        //StringBuilder rowsHTML = new StringBuilder();
+                                            //        //var res = 0.0m;
+                                            //        //mcaTransaction.ForEach(trans =>
+                                            //        //{
+                                            //        //    res = 0.0m;
+                                            //        //    string debit = string.Empty;
+                                            //        //    string credit = string.Empty;
+                                            //        //    if (trans.Debit != null && decimal.TryParse(trans.Debit.ToString(), out res))
+                                            //        //    {
+                                            //        //        debit = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res);
+                                            //        //    }
+                                            //        //    else
+                                            //        //    {
+                                            //        //        debit = "";
+                                            //        //    }
 
-                                                    //    if (trans.Credit != null && decimal.TryParse(trans.Credit.ToString(), out res))
-                                                    //    {
-                                                    //        credit = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res);
-                                                    //    }
-                                                    //    else
-                                                    //    {
-                                                    //        credit = "";
-                                                    //    }
+                                            //        //    if (trans.Credit != null && decimal.TryParse(trans.Credit.ToString(), out res))
+                                            //        //    {
+                                            //        //        credit = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res);
+                                            //        //    }
+                                            //        //    else
+                                            //        //    {
+                                            //        //        credit = "";
+                                            //        //    }
 
-                                                    //    rowsHTML.Append("<tr class='ht-20'>" +
-                                                    //        "<td class='w-15 text-center'>" + trans.Transaction_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
-                                                    //        "<td class='w-35 text-left'>" + trans.Description + "</td>" +
-                                                    //        "<td class='w-12 text-right'>" + debit + "</td>" +
-                                                    //        "<td class='w-12 text-right'>" + credit + "</td>" +
-                                                    //        "<td class='w-7 text-center'>" + trans.Rate + "</td>" +
-                                                    //        "<td class='w-7 text-center'>" + trans.Days + "</td>" +
-                                                    //        "<td class='w-12 text-right'>" + trans.AccuredInterest + "</td>" +
-                                                    //        "</tr>"
-                                                    //        );
-                                                    //});
-                                                    //widgetHtml.Replace("{{MCATransactionRow}}", rowsHTML.ToString());
-                                                    //htmlString.Append(widgetHtml);
-                                                    StringBuilder tableHTML = new StringBuilder();
+                                            //        //    rowsHTML.Append("<tr class='ht-20'>" +
+                                            //        //        "<td class='w-15 text-center'>" + trans.Transaction_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
+                                            //        //        "<td class='w-35 text-left'>" + trans.Description + "</td>" +
+                                            //        //        "<td class='w-12 text-right'>" + debit + "</td>" +
+                                            //        //        "<td class='w-12 text-right'>" + credit + "</td>" +
+                                            //        //        "<td class='w-7 text-center'>" + trans.Rate + "</td>" +
+                                            //        //        "<td class='w-7 text-center'>" + trans.Days + "</td>" +
+                                            //        //        "<td class='w-12 text-right'>" + trans.AccuredInterest + "</td>" +
+                                            //        //        "</tr>"
+                                            //        //        );
+                                            //        //});
+                                            //        //widgetHtml.Replace("{{MCATransactionRow}}", rowsHTML.ToString());
+                                            //        //htmlString.Append(widgetHtml);
+                                            //        StringBuilder tableHTML = new StringBuilder();
 
-                                                    tableHTML.Append("<tr class='ht-20'>");
-                                                    tableHTML.Append("<td class='w-12 text-center'>01/02/2022</td>");
-                                                    tableHTML.Append("<td class='text-center'  style='width: 25%'></td>");
-                                                    tableHTML.Append("<td class='text-center'  style='width: 25%'>	Balance brought forward</td>");
-                                                    tableHTML.Append("<td class='w-15 text-center'> </td>");
-                                                    tableHTML.Append("<td class='text-center'  style='width: 25%'>2.30%	</td>");
-                                                    tableHTML.Append("<td class='text-center'  style='width: 25%'>R100602.32</td>");
-                                                    tableHTML.Append("</tr>");
+                                            //        tableHTML.Append("<tr class='ht-20'>");
+                                            //        tableHTML.Append("<td class='w-12 text-center'>01/02/2022</td>");
+                                            //        tableHTML.Append("<td class='text-center'  style='width: 25%'></td>");
+                                            //        tableHTML.Append("<td class='text-center'  style='width: 25%'>	Balance brought forward</td>");
+                                            //        tableHTML.Append("<td class='w-15 text-center'> </td>");
+                                            //        tableHTML.Append("<td class='text-center'  style='width: 25%'>2.30%	</td>");
+                                            //        tableHTML.Append("<td class='text-center'  style='width: 25%'>R100602.32</td>");
+                                            //        tableHTML.Append("</tr>");
 
-                                                    tableHTML.Append("<tr class='ht-20'>");
-                                                    tableHTML.Append("<td class='w-12 text-center'>01/02/2022</td>");
-                                                    tableHTML.Append("<td class='text-center'  style='width: 25%'></td>");
-                                                    tableHTML.Append("<td class='text-center'  style='width: 25%'>January interest paid</td>");
-                                                    tableHTML.Append("<td class='w-15 text-center'> R202.20</td>");
-                                                    tableHTML.Append("<td class='text-center'  style='width: 25%'></td>");
-                                                    tableHTML.Append("<td class='text-center'  style='width: 25%'>R100804.52</td>");
-                                                    tableHTML.Append("</tr>");
-                                                    tableHTML.Append("<tr class='ht-20'>");
-                                                    tableHTML.Append("<td class='w-12 text-center'>28/02/2022</td>");
-                                                    tableHTML.Append("<td class='text-center'  style='width: 25%'></td>");
-                                                    tableHTML.Append("<td class='text-center'  style='width: 25%'>Balance carried forward</td>");
-                                                    tableHTML.Append("<td class='w-15 text-center'> </td>");
-                                                    tableHTML.Append("<td class='text-center'  style='width: 25%'>2.30%	</td>");
-                                                    tableHTML.Append("<td class='text-center'  style='width: 25%'>R89030.44</ td>");
-                                                    tableHTML.Append("</tr>");
+                                            //        tableHTML.Append("<tr class='ht-20'>");
+                                            //        tableHTML.Append("<td class='w-12 text-center'>01/02/2022</td>");
+                                            //        tableHTML.Append("<td class='text-center'  style='width: 25%'></td>");
+                                            //        tableHTML.Append("<td class='text-center'  style='width: 25%'>January interest paid</td>");
+                                            //        tableHTML.Append("<td class='w-15 text-center'> R202.20</td>");
+                                            //        tableHTML.Append("<td class='text-center'  style='width: 25%'></td>");
+                                            //        tableHTML.Append("<td class='text-center'  style='width: 25%'>R100804.52</td>");
+                                            //        tableHTML.Append("</tr>");
+                                            //        tableHTML.Append("<tr class='ht-20'>");
+                                            //        tableHTML.Append("<td class='w-12 text-center'>28/02/2022</td>");
+                                            //        tableHTML.Append("<td class='text-center'  style='width: 25%'></td>");
+                                            //        tableHTML.Append("<td class='text-center'  style='width: 25%'>Balance carried forward</td>");
+                                            //        tableHTML.Append("<td class='w-15 text-center'> </td>");
+                                            //        tableHTML.Append("<td class='text-center'  style='width: 25%'>2.30%	</td>");
+                                            //        tableHTML.Append("<td class='text-center'  style='width: 25%'>R89030.44</ td>");
+                                            //        tableHTML.Append("</tr>");
 
-                                                    pageContent.Replace("{{CorporateSaverTransactions}}", tableHTML.ToString());
-                                                    pageContent.Replace("{{FromDate}}", "01/02/2022");
-                                                    pageContent.Replace("{{ToDate}}", "28/02/2022");
-                                                    htmlString.Append(pageContent.ToString());
-                                                }
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.NETBANK_CORPORATESAVER_AGENTDETAILS_NAME)
-                                            {
-                                                //string jsonstr = HtmlConstants.CORPORATESAVER_TRANSACTION_PREVIEW_JSON_STRING;
-                                                var pageContent = new StringBuilder(HtmlConstants.NETBANK_CORPORATESAVER_AGENTDETAILS_HTML);
+                                            //        pageContent.Replace("{{CorporateSaverTransactions}}", tableHTML.ToString());
+                                            //        pageContent.Replace("{{FromDate}}", "01/02/2022");
+                                            //        pageContent.Replace("{{ToDate}}", "28/02/2022");
+                                            //        htmlString.Append(pageContent.ToString());
+                                            //    }
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.NETBANK_CORPORATESAVER_AGENTDETAILS_NAME)
+                                            //{
+                                            //    //string jsonstr = HtmlConstants.CORPORATESAVER_TRANSACTION_PREVIEW_JSON_STRING;
+                                            //    var pageContent = new StringBuilder(HtmlConstants.NETBANK_CORPORATESAVER_AGENTDETAILS_HTML);
 
-                                                pageContent.Replace("{{Interest}}", "R1 397.51");
+                                            //    pageContent.Replace("{{Interest}}", "R1 397.51");
 
-                                                pageContent.Replace("{{VATonfee}}", "R84.33");
-                                                pageContent.Replace("{{Agentfeededucted}}", "R562.14");
-                                                pageContent.Replace("min-height: 66px;", "min-height: 74px;");
-
-
-                                                htmlString.Append(pageContent);
-
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_CORPORATESAVER_LASTTOTAL_NAME)
-                                            {
-                                                var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_LASTTOTAL_HTML);
-                                                //StringBuilder htmlBankDetails = new StringBuilder();
-                                                //htmlBankDetails.Append(HtmlConstants.BANK_DETAILS);
-                                                //htmlBankDetails.Replace("{{TodayDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd));
-
-                                                //htmlWidget.Replace("{{BranchDetails}}", htmlBankDetails.ToString());
-                                                //htmlWidget.Replace("{{ContactCenter}}", HtmlConstants.WEA_BANKING);
-                                                //htmlString.Append(htmlWidget.ToString());
-                                                StringBuilder tableHTML = new StringBuilder();
-                                                StringBuilder tableHTML2 = new StringBuilder();
-
-                                                tableHTML.Append("<div class='CSTotalAmountDetailsDiv' style='height: 40px !important; text-align: center; padding: 6px !important;'><span class='fnt-14pt'> Current investment details </span ></div>");
+                                            //    pageContent.Replace("{{VATonfee}}", "R84.33");
+                                            //    pageContent.Replace("{{Agentfeededucted}}", "R562.14");
+                                            //    pageContent.Replace("min-height: 66px;", "min-height: 74px;");
 
 
-                                                tableHTML.Append("<table class= 'CScustomTable HomeLoanDetailDiv' border = '0' style = 'height: auto;margin-bottom:2%;' ><tbody>");
-                                                tableHTML.Append("<tr><td colspan='2' class='w-25' style='font-weight: bold;padding-bottom: 8px !important;padding-top: 8px !important;'>Call account @ 2,30% per annum</td></tr>");
-                                                tableHTML.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Interest instruction</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'>Capitalised</td><td class='w-25' style='padding-bottom: 8px !important'>Date Invested</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>08-10-2006</td></tr>");
-                                                tableHTML.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Capital</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'>R89 030.44 </td><td class='w-25' style='padding-bottom: 8px !important'>Agent fee deducted</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>R59.17 </td></tr>");
-                                                tableHTML.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Interest</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'>R122.63</td><td class='w-25' style='padding-bottom: 8px !important'>VAT on fee</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>R8.88</td></tr>");
-                                                tableHTML.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Agent fee structure</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'>1.18% on capital</td><td class='w-25' style='padding-bottom: 8px !important'>Interest (less agent fee and VAT)</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>R11.27</td></tr>");
-                                                tableHTML.Append("</tbody></table>");
+                                            //    htmlString.Append(pageContent);
+
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_CORPORATESAVER_LASTTOTAL_NAME)
+                                            //{
+                                            //    var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_LASTTOTAL_HTML);
+                                            //    //StringBuilder htmlBankDetails = new StringBuilder();
+                                            //    //htmlBankDetails.Append(HtmlConstants.BANK_DETAILS);
+                                            //    //htmlBankDetails.Replace("{{TodayDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd));
+
+                                            //    //htmlWidget.Replace("{{BranchDetails}}", htmlBankDetails.ToString());
+                                            //    //htmlWidget.Replace("{{ContactCenter}}", HtmlConstants.WEA_BANKING);
+                                            //    //htmlString.Append(htmlWidget.ToString());
+                                            //    StringBuilder tableHTML = new StringBuilder();
+                                            //    StringBuilder tableHTML2 = new StringBuilder();
+
+                                            //    tableHTML.Append("<div class='CSTotalAmountDetailsDiv' style='height: 40px !important; text-align: center; padding: 6px !important;'><span class='fnt-14pt'> Current investment details </span ></div>");
 
 
-                                                tableHTML.Append("<div class='d-flex flex-row' style='margin-top: -1.5%;'>");
-                                                tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='font-weight: bold;margin-right:3px; margin-bottom:1px; '>Total capital</div>");
-                                                tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='font-weight: bold;margin-right:3px; margin-bottom:1px; '>Total interest</div>");
-                                                tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='font-weight: bold;margin-right:3px; margin-bottom:1px; '>Total agent fee </br>(deducted)</div>");
-                                                tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='font-weight: bold;margin-right:3px; margin-bottom:1px; '>VAT on fee</div>");
-                                                tableHTML.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold;margin-bottom:1px'>Interest</br>(less agent fee & VAT)</div>");
-                                                tableHTML.Append("</div>");
-                                                tableHTML.Append("<div class='d-flex flex-row' style='margin-top: 2px !important;margin-bottom: 1%;'>");
-                                                tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='margin-right:3px; margin-bottom:1px; '>R89 030.44</div>");
-                                                tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='margin-right:3px; margin-bottom:1px; '>R190.68</div>");
-                                                tableHTML.Append("<div class='paymentDueHeaderBlock1' style='margin-right:3px; margin-bottom:1px; '>R59.17</div>");
-                                                tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='margin-right:3px; margin-bottom:1px; '>R8.88</div>");
-                                                tableHTML.Append("<div class='paymentDueHeaderBlock1' style='margin-bottom:1px; '>R122.63</div>");
-                                                tableHTML.Append("</div>");
+                                            //    tableHTML.Append("<table class= 'CScustomTable HomeLoanDetailDiv' border = '0' style = 'height: auto;margin-bottom:2%;' ><tbody>");
+                                            //    tableHTML.Append("<tr><td colspan='2' class='w-25' style='font-weight: bold;padding-bottom: 8px !important;padding-top: 8px !important;'>Call account @ 2,30% per annum</td></tr>");
+                                            //    tableHTML.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Interest instruction</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'>Capitalised</td><td class='w-25' style='padding-bottom: 8px !important'>Date Invested</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>08-10-2006</td></tr>");
+                                            //    tableHTML.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Capital</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'>R89 030.44 </td><td class='w-25' style='padding-bottom: 8px !important'>Agent fee deducted</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>R59.17 </td></tr>");
+                                            //    tableHTML.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Interest</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'>R122.63</td><td class='w-25' style='padding-bottom: 8px !important'>VAT on fee</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>R8.88</td></tr>");
+                                            //    tableHTML.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Agent fee structure</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'>1.18% on capital</td><td class='w-25' style='padding-bottom: 8px !important'>Interest (less agent fee and VAT)</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>R11.27</td></tr>");
+                                            //    tableHTML.Append("</tbody></table>");
+
+
+                                            //    tableHTML.Append("<div class='d-flex flex-row' style='margin-top: -1.5%;'>");
+                                            //    tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='font-weight: bold;margin-right:3px; margin-bottom:1px; '>Total capital</div>");
+                                            //    tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='font-weight: bold;margin-right:3px; margin-bottom:1px; '>Total interest</div>");
+                                            //    tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='font-weight: bold;margin-right:3px; margin-bottom:1px; '>Total agent fee </br>(deducted)</div>");
+                                            //    tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='font-weight: bold;margin-right:3px; margin-bottom:1px; '>VAT on fee</div>");
+                                            //    tableHTML.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold;margin-bottom:1px'>Interest</br>(less agent fee & VAT)</div>");
+                                            //    tableHTML.Append("</div>");
+                                            //    tableHTML.Append("<div class='d-flex flex-row' style='margin-top: 2px !important;margin-bottom: 1%;'>");
+                                            //    tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='margin-right:3px; margin-bottom:1px; '>R89 030.44</div>");
+                                            //    tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='margin-right:3px; margin-bottom:1px; '>R190.68</div>");
+                                            //    tableHTML.Append("<div class='paymentDueHeaderBlock1' style='margin-right:3px; margin-bottom:1px; '>R59.17</div>");
+                                            //    tableHTML.Append("<div class='paymentDueHeaderBlock1 ' style='margin-right:3px; margin-bottom:1px; '>R8.88</div>");
+                                            //    tableHTML.Append("<div class='paymentDueHeaderBlock1' style='margin-bottom:1px; '>R122.63</div>");
+                                            //    tableHTML.Append("</div>");
 
 
 
 
-                                                tableHTML2.Append("<div class='CSTotalAmountDetailsDiv' style='height: 40px !important; text-align: center; padding: 6px !important;'><span class='fnt-14pt'>Matured investment details</span ></div>");
+                                            //    tableHTML2.Append("<div class='CSTotalAmountDetailsDiv' style='height: 40px !important; text-align: center; padding: 6px !important;'><span class='fnt-14pt'>Matured investment details</span ></div>");
 
 
-                                                tableHTML2.Append("<table class= 'CScustomTable HomeLoanDetailDiv' border = '0' style = 'height: auto;margin-bottom:2%;' ><tbody>");
-                                                tableHTML2.Append("<tr><td colspan='2' class='w-25' style='font-weight: bold;padding-bottom: 8px !important;padding-top: 8px !important;'>10 month fixed deposit @ 3,91% per annum</td></tr>");
-                                                tableHTML2.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Interest instruction</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'> Capitalised</td><td class='w-25' style='padding-bottom: 8px !important'>Date Invested</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>03-05-2021</td></tr>");
-                                                tableHTML2.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Capital</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'>R861 100.49</td><td class='w-25' style='padding-bottom: 8px !important'>Agent fee deducted</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>R477.73</td></tr>");
-                                                tableHTML2.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Interest</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'>R2 489.95</td><td class='w-25' style='padding-bottom: 8px !important'>VAT on fee</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>R71.66</td></tr>");
-                                                tableHTML2.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Agent fee structure</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'>0.75% on capital</td><td class='w-25' style='padding-bottom: 8px !important'>Interest (less agent fee and VAT)</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>R71.66</td></tr>");
-                                                tableHTML2.Append("</tbody></table>");
+                                            //    tableHTML2.Append("<table class= 'CScustomTable HomeLoanDetailDiv' border = '0' style = 'height: auto;margin-bottom:2%;' ><tbody>");
+                                            //    tableHTML2.Append("<tr><td colspan='2' class='w-25' style='font-weight: bold;padding-bottom: 8px !important;padding-top: 8px !important;'>10 month fixed deposit @ 3,91% per annum</td></tr>");
+                                            //    tableHTML2.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Interest instruction</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'> Capitalised</td><td class='w-25' style='padding-bottom: 8px !important'>Date Invested</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>03-05-2021</td></tr>");
+                                            //    tableHTML2.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Capital</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'>R861 100.49</td><td class='w-25' style='padding-bottom: 8px !important'>Agent fee deducted</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>R477.73</td></tr>");
+                                            //    tableHTML2.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Interest</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'>R2 489.95</td><td class='w-25' style='padding-bottom: 8px !important'>VAT on fee</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>R71.66</td></tr>");
+                                            //    tableHTML2.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Agent fee structure</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'>0.75% on capital</td><td class='w-25' style='padding-bottom: 8px !important'>Interest (less agent fee and VAT)</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>R71.66</td></tr>");
+                                            //    tableHTML2.Append("</tbody></table>");
 
 
-                                                tableHTML2.Append("<div class='d-flex flex-row' style='margin-top: -1.5%;'>");
-                                                tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold;margin-right:3px; margin-bottom:1px;'>Total capital</div>");
-                                                tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold;margin-right:3px; margin-bottom:1px;'>Total interest</div>");
-                                                tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold;margin-right:3px; margin-bottom:1px;'>Total agent fee </br>(deducted)</div>");
-                                                tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold;margin-right:3px; margin-bottom:1px;'>VAT on fee</div>");
-                                                tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold; margin-bottom:1px'>Interest</br>(less agent fee & VAT)</div>");
-                                                tableHTML2.Append("</div>");
-                                                tableHTML2.Append("<div class='d-flex flex-row' style='margin-top: 2px !important;margin-bottom: 1%;'>");
-                                                tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='margin-right:3px; margin-bottom:1px;'>R861 100.49</div>");
-                                                tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='margin-right:3px; margin-bottom:1px;'>R2 489.95</div>");
-                                                tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='margin-right:3px; margin-bottom:1px;'>R477.73</div>");
-                                                tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='margin-right:3px; margin-bottom:1px;'>R71.66</div>");
-                                                tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='margin-bottom:1px;'>R1 940.56</div>");
-                                                tableHTML2.Append("</div>");
+                                            //    tableHTML2.Append("<div class='d-flex flex-row' style='margin-top: -1.5%;'>");
+                                            //    tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold;margin-right:3px; margin-bottom:1px;'>Total capital</div>");
+                                            //    tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold;margin-right:3px; margin-bottom:1px;'>Total interest</div>");
+                                            //    tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold;margin-right:3px; margin-bottom:1px;'>Total agent fee </br>(deducted)</div>");
+                                            //    tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold;margin-right:3px; margin-bottom:1px;'>VAT on fee</div>");
+                                            //    tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='font-weight: bold; margin-bottom:1px'>Interest</br>(less agent fee & VAT)</div>");
+                                            //    tableHTML2.Append("</div>");
+                                            //    tableHTML2.Append("<div class='d-flex flex-row' style='margin-top: 2px !important;margin-bottom: 1%;'>");
+                                            //    tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='margin-right:3px; margin-bottom:1px;'>R861 100.49</div>");
+                                            //    tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='margin-right:3px; margin-bottom:1px;'>R2 489.95</div>");
+                                            //    tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='margin-right:3px; margin-bottom:1px;'>R477.73</div>");
+                                            //    tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='margin-right:3px; margin-bottom:1px;'>R71.66</div>");
+                                            //    tableHTML2.Append("<div class='paymentDueHeaderBlock1'style='margin-bottom:1px;'>R1 940.56</div>");
+                                            //    tableHTML2.Append("</div>");
 
-                                                tableHTML.Append(tableHTML2);
-                                                // if (customerMaster.InvestorId == 9018933796)
-                                                if (pageIdentifier == 203)
-                                                {
-                                                    htmlWidget.Replace("{{dynamicMsg}}", "<div class='card border-0'><div class='card-body text-left'style='padding: 0;'><div class='card-body-header mt-3-2' style='font-family: \"Arial\";font-weight: 700;'>Important information</div> <div class='' style='font-size: 9pt; font-family: \"Arial\";'><p>Rente (min agentadministrasiegelde en BTW) word in Maart op u rekening gekrediteer. Die agentadministrasiegelde en BTW word in Maart afgetrek en namens u aan u agent betaal, in ooreenstemming met die mandaat wat gehou word. </p><p> Artikel 86(4) - rekenings wat voor 1 November 2018 geopen is, is aan die bepalings van die Prokureurswet, 53 van 1979, onderworpe.Ingevolge artikel 86(4) van die Wet op Regspraktyk, 28 van 2014, is 5 % van die rente verdien vanaf 1 Maart 2019 aan die Getrouheidsfonds vir Regspraktisyns betaal.</p></div></div></div>");
-                                                }
-                                                if (pageIdentifier == 198)
-                                                {
-                                                    htmlWidget.Replace("{{dynamicMsg}}", "<div class='card border-0'><div class='card-body text-left'style='padding: 0;'><div class='card-body-header mt-3-2' style='font-family: \"Arial\";font-weight: 700;'>Important information</div> <div class='' style='font-size: 9pt; font-family: \"Arial\";'><p>Interest(less agent administration fee and VAT) is credited to your account in March.The agent administration fee and VAT are deducted in March and paid on your behalf to your agent, in accordance with the mandate held.</p></div></div></div>");
-                                                }
-
-
-                                                htmlWidget.Replace("{{dynemicTables}}", tableHTML.ToString());
-                                                htmlString.Append(htmlWidget);
+                                            //    tableHTML.Append(tableHTML2);
+                                            //    // if (customerMaster.InvestorId == 9018933796)
+                                            //    if (pageIdentifier == 203)
+                                            //    {
+                                            //        htmlWidget.Replace("{{dynamicMsg}}", "<div class='card border-0'><div class='card-body text-left'style='padding: 0;'><div class='card-body-header mt-3-2' style='font-family: \"Arial\";font-weight: 700;'>Important information</div> <div class='' style='font-size: 9pt; font-family: \"Arial\";'><p>Rente (min agentadministrasiegelde en BTW) word in Maart op u rekening gekrediteer. Die agentadministrasiegelde en BTW word in Maart afgetrek en namens u aan u agent betaal, in ooreenstemming met die mandaat wat gehou word. </p><p> Artikel 86(4) - rekenings wat voor 1 November 2018 geopen is, is aan die bepalings van die Prokureurswet, 53 van 1979, onderworpe.Ingevolge artikel 86(4) van die Wet op Regspraktyk, 28 van 2014, is 5 % van die rente verdien vanaf 1 Maart 2019 aan die Getrouheidsfonds vir Regspraktisyns betaal.</p></div></div></div>");
+                                            //    }
+                                            //    if (pageIdentifier == 198)
+                                            //    {
+                                            //        htmlWidget.Replace("{{dynamicMsg}}", "<div class='card border-0'><div class='card-body text-left'style='padding: 0;'><div class='card-body-header mt-3-2' style='font-family: \"Arial\";font-weight: 700;'>Important information</div> <div class='' style='font-size: 9pt; font-family: \"Arial\";'><p>Interest(less agent administration fee and VAT) is credited to your account in March.The agent administration fee and VAT are deducted in March and paid on your behalf to your agent, in accordance with the mandate held.</p></div></div></div>");
+                                            //    }
 
 
-                                            }
+                                            //    htmlWidget.Replace("{{dynemicTables}}", tableHTML.ToString());
+                                            //    htmlString.Append(htmlWidget);
+
+
+                                            //}
                                         //else if (mergedlst[i].WidgetName == HtmlConstants.NETBANK_CORPORATESAVER_AGENTDETAILS_NAME)
                                         //{
                                         //    string jsonstr = HtmlConstants.CORPORATESAVER_TRANSACTION_PREVIEW_JSON_STRING;
