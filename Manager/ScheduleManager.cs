@@ -6,7 +6,7 @@
 namespace nIS
 {
     using Newtonsoft.Json;
-    using nIS.NedBank;
+    using nIS.PPS;
     #region References
 
     using System;
@@ -1072,45 +1072,45 @@ namespace nIS
             }
         }
 
-        /// <summary>
-        /// This method helps to approve batch of the respective schedule.
-        /// </summary>
-        /// <param name="BatchIdentifier">The batch identifier.</param>
-        /// <param name="tenantCode">The tenant code.</param>
-        /// <returns>
-        /// True if success, otherwise false
-        /// </returns>
-        public bool ApproveScheduleBatch(long BatchIdentifier, string tenantCode)
-        {
-            try
-            {
-                return this.scheduleRepository.ApproveScheduleBatch(BatchIdentifier, tenantCode);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        ///// <summary>
+        ///// This method helps to approve batch of the respective schedule.
+        ///// </summary>
+        ///// <param name="BatchIdentifier">The batch identifier.</param>
+        ///// <param name="tenantCode">The tenant code.</param>
+        ///// <returns>
+        ///// True if success, otherwise false
+        ///// </returns>
+        //public bool ApproveScheduleBatch(long BatchIdentifier, string tenantCode)
+        //{
+        //    try
+        //    {
+        //        return this.scheduleRepository.ApproveScheduleBatch(BatchIdentifier, tenantCode);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
-        /// <summary>
-        /// This method helps to approve batch of the respective schedule.
-        /// </summary>
-        /// <param name="BatchIdentifier">The batch identifier.</param>
-        /// <param name="tenantCode">The tenant code.</param>
-        /// <returns>
-        /// True if success, otherwise false
-        /// </returns>
-        public bool ValidateApproveScheduleBatch(long BatchIdentifier, string tenantCode)
-        {
-            try
-            {
-                return this.scheduleRepository.ValidateApproveScheduleBatch(BatchIdentifier, tenantCode);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        ///// <summary>
+        ///// This method helps to approve batch of the respective schedule.
+        ///// </summary>
+        ///// <param name="BatchIdentifier">The batch identifier.</param>
+        ///// <param name="tenantCode">The tenant code.</param>
+        ///// <returns>
+        ///// True if success, otherwise false
+        ///// </returns>
+        //public bool ValidateApproveScheduleBatch(long BatchIdentifier, string tenantCode)
+        //{
+        //    try
+        //    {
+        //        return this.scheduleRepository.ValidateApproveScheduleBatch(BatchIdentifier, tenantCode);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
         public bool ValidateApproveScheduleBatches(List<long> BatchIdentifier, string tenantCode)
         {
@@ -2461,25 +2461,25 @@ namespace nIS
             public RenderEngine RenderEngine { get; set; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public class DM_CustomerParallelRequest
-        {
-            /// <summary>
-            /// Gets or sets the dm customers.
-            /// </summary>
-            /// <value>
-            /// The dm customers.
-            /// </value>
-            public List<DM_CustomerMaster> DM_Customers { get; set; }
-            /// <summary>
-            /// Gets or sets the render engine.
-            /// </summary>
-            /// <value>
-            /// The render engine.
-            /// </value>
-            public RenderEngine RenderEngine { get; set; }
-        }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public class DM_CustomerParallelRequest
+        //{
+        //    /// <summary>
+        //    /// Gets or sets the dm customers.
+        //    /// </summary>
+        //    /// <value>
+        //    /// The dm customers.
+        //    /// </value>
+        //    public List<DM_CustomerMaster> DM_Customers { get; set; }
+        //    /// <summary>
+        //    /// Gets or sets the render engine.
+        //    /// </summary>
+        //    /// <value>
+        //    /// The render engine.
+        //    /// </value>
+        //    public RenderEngine RenderEngine { get; set; }
+        //}
     }
 }

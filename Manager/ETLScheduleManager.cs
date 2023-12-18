@@ -5,8 +5,8 @@
 
 namespace nIS
 {
-    using nIS.Models.NedBank;
-    using nIS.NedBank;
+    using nIS.Models.PPS;
+    using nIS.PPS;
     #region References
 
     using System;

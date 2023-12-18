@@ -17,9 +17,9 @@ namespace nIS
     {
         #region MCA Data
 
-        IList<DM_MCAMaster> Get_DM_MCAMaster(CustomerMCASearchParameter searchParameter, string tenantCode);
+        //IList<DM_MCAMaster> Get_DM_MCAMaster(CustomerMCASearchParameter searchParameter, string tenantCode);
 
-        IList<DM_MCATransaction> Get_DM_MCATransaction(CustomerMCASearchParameter searchParameter, string tenantCode);
+        //IList<DM_MCATransaction> Get_DM_MCATransaction(CustomerMCASearchParameter searchParameter, string tenantCode);
 
         #endregion
     }

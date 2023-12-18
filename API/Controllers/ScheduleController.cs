@@ -5,7 +5,7 @@
 
 namespace nIS
 {
-    using nIS.NedBank;
+    using nIS.PPS;
     #region References
 
     using System;
@@ -492,47 +492,47 @@ namespace nIS
             return batchMasters;
         }
 
-        /// <summary>
-        /// This method helps to approve batch of the respective schedule.
-        /// </summary>
-        /// <param name="BatchIdentifier">The batch identifier.</param>
-        /// <returns>
-        /// True if success, otherwise false
-        /// </returns>
-        [HttpPost]
-        public bool ValidateApproveScheduleBatch(long BatchIdentifier)
-        {
-            try
-            {
-                string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                return this.scheduleManager.ValidateApproveScheduleBatch(BatchIdentifier, tenantCode);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        ///// <summary>
+        ///// This method helps to approve batch of the respective schedule.
+        ///// </summary>
+        ///// <param name="BatchIdentifier">The batch identifier.</param>
+        ///// <returns>
+        ///// True if success, otherwise false
+        ///// </returns>
+        //[HttpPost]
+        //public bool ValidateApproveScheduleBatch(long BatchIdentifier)
+        //{
+        //    try
+        //    {
+        //        string tenantCode = Helper.CheckTenantCode(Request.Headers);
+        //        return this.scheduleManager.ValidateApproveScheduleBatch(BatchIdentifier, tenantCode);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
-        /// <summary>
-        /// This method helps to approve batch of the respective schedule.
-        /// </summary>
-        /// <param name="BatchIdentifier">The batch identifier.</param>
-        /// <returns>
-        /// True if success, otherwise false
-        /// </returns>
-        [HttpPost]
-        public bool ApproveScheduleBatch(long BatchIdentifier)
-        {
-            try
-            {
-                string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                return this.scheduleManager.ApproveScheduleBatch(BatchIdentifier, tenantCode);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        ///// <summary>
+        ///// This method helps to approve batch of the respective schedule.
+        ///// </summary>
+        ///// <param name="BatchIdentifier">The batch identifier.</param>
+        ///// <returns>
+        ///// True if success, otherwise false
+        ///// </returns>
+        //[HttpPost]
+        //public bool ApproveScheduleBatch(long BatchIdentifier)
+        //{
+        //    try
+        //    {
+        //        string tenantCode = Helper.CheckTenantCode(Request.Headers);
+        //        return this.scheduleManager.ApproveScheduleBatch(BatchIdentifier, tenantCode);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
         [HttpPost]
         public bool ValidateApproveScheduleBatches(string batchIdentifiers)

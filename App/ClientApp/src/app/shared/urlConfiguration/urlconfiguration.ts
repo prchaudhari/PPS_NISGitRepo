@@ -127,8 +127,8 @@ export class URLConfiguration {
   public static get scheduleHistoryGetUrl(): string { return "Schedule/GetScheduleRunHistories" };
   public static get RunScheduleNow(): string { return "Schedule/RunScheduleNow" };
   public static get RunScheduleNowWithMultipleBatches(): string { return "Schedule/RunScheduleNowWithMultipleBatches" };
-  public static get ValidateApproveScheduleBatch(): string { return "Schedule/ValidateApproveScheduleBatch" };
-  public static get ApproveScheduleBatch(): string { return "Schedule/ApproveScheduleBatch" };
+  //public static get ValidateApproveScheduleBatch(): string { return "Schedule/ValidateApproveScheduleBatch" };
+  //public static get ApproveScheduleBatch(): string { return "Schedule/ApproveScheduleBatch" };
   public static get ValidateApproveScheduleBatches(): string { return "Schedule/ValidateApproveScheduleBatches" };
   public static get ApproveScheduleBatches(): string { return "Schedule/ApproveScheduleBatch" };
  // public static get CleanScheduleBatch(): string { return "Schedule/CleanScheduleBatch" };

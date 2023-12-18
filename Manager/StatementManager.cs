@@ -36,8 +36,8 @@ namespace nIS
         IStatementRepository StatementRepository = null;
 
         IPageRepository pageRepository = null;
-        IInvestmentRepository investmentRepository = null;
-        ICustomerRepository customerRepository = null;
+        //IInvestmentRepository investmentRepository = null;
+        //ICustomerRepository customerRepository = null;
 
         /// <summary>
         /// The validation engine object
@@ -86,8 +86,8 @@ namespace nIS
                 this.StatementRepository = this.unityContainer.Resolve<IStatementRepository>();
                 this.pageRepository = this.unityContainer.Resolve<IPageRepository>();
                 this.assetLibraryRepository = this.unityContainer.Resolve<IAssetLibraryRepository>();
-                this.customerRepository = this.unityContainer.Resolve<ICustomerRepository>();
-                this.investmentRepository = this.unityContainer.Resolve<IInvestmentRepository>();
+                //this.customerRepository = this.unityContainer.Resolve<ICustomerRepository>();
+                //this.investmentRepository = this.unityContainer.Resolve<IInvestmentRepository>();
                 this.tenantConfigurationManager = new TenantConfigurationManager(unityContainer);
                 this.dynamicWidgetManager = new DynamicWidgetManager(unityContainer);
                 this.tenantTransactionDataManager = new TenantTransactionDataManager(unityContainer);
@@ -5690,560 +5690,560 @@ namespace nIS
 
         #endregion
 
-        #region Nedbank Tenant static widget formatting
+        //#region Nedbank Tenant static widget formatting
 
-        private string CustomerDetailsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
-        {
-            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            StringBuilder HtmlWidget = new StringBuilder(HtmlConstants.CUSTOMER_DETAILS_WIDGET_HTML_SMT);
-            if(page.PageTypeName == HtmlConstants.CORPORATE_SAVER_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.CORPORATE_SAVER_AFR_PAGE_TYPE)
-            {
-                HtmlWidget = new StringBuilder(HtmlConstants.CUSTOMER_DETAILS_WIDGET_HTML_SMT_CORPORATE_SAVER);
-            }
-            else
-            {
-                HtmlWidget = new StringBuilder(HtmlConstants.CUSTOMER_DETAILS_WIDGET_HTML_SMT);
-            }
-            HtmlWidget.Replace("{{CustomerDetails}}", "{{CustomerDetails_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            //HtmlWidget.Replace("{{MaskCellNo}}", "{{MaskCellNo_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            HtmlWidget.Replace("{{MaskCellNo}}", "");
-            HtmlWidget.Replace("{{WidgetId}}", widgetId);
-            return HtmlWidget.ToString();
-        }
-
-        private string BranchDetailsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
-        {
-            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            var htmlWidget = new StringBuilder(HtmlConstants.BRANCH_DETAILS_WIDGET_HTML_SMT);
-            htmlWidget.Replace("{{BranchDetails}}", "{{BranchDetails_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{ContactCenter}}", "{{ContactCenter_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{WidgetId}}", widgetId);
-            return htmlWidget.ToString();
-        }
-
-        //private string InvestmentPortfolioStatementWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        //private string CustomerDetailsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
         //{
         //    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-        //    var InvestmentPortfolioHtmlWidget = new StringBuilder(HtmlConstants.INVESTMENT_PORTFOLIO_STATEMENT_WIDGET_HTML);
-        //    InvestmentPortfolioHtmlWidget.Replace("{{DSName}}", "{{DSName_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    InvestmentPortfolioHtmlWidget.Replace("{{TotalClosingBalance}}", "{{TotalClosingBalance_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    InvestmentPortfolioHtmlWidget.Replace("{{DayOfStatement}}", "{{DayOfStatement_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    InvestmentPortfolioHtmlWidget.Replace("{{InvestorID}}", "{{InvestorID_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    InvestmentPortfolioHtmlWidget.Replace("{{StatementPeriod}}", "{{StatementPeriod_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    InvestmentPortfolioHtmlWidget.Replace("{{StatementDate}}", "{{StatementDate_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    InvestmentPortfolioHtmlWidget.Replace("{{WidgetId}}", widgetId);
-        //    InvestmentPortfolioHtmlWidget.Replace("{{FirstName}}", "{{FirstName_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    InvestmentPortfolioHtmlWidget.Replace("{{SurName}}", "{{SurName_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    return InvestmentPortfolioHtmlWidget.ToString();
-        //}
-
-        //private string WealthInvestmentPortfolioStatementWidgetFormatting(PageWidget pageWidget, int counter, Page page)
-        //{
-        //    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-        //    var InvestmentPortfolioHtmlWidget = new StringBuilder(HtmlConstants.INVESTMENT_WEALTH_PORTFOLIO_STATEMENT_WIDGET_HTML);
-        //    InvestmentPortfolioHtmlWidget.Replace("{{DSName}}", "{{DSName_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    InvestmentPortfolioHtmlWidget.Replace("{{TotalClosingBalance}}", "{{TotalClosingBalance_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    InvestmentPortfolioHtmlWidget.Replace("{{DayOfStatement}}", "{{DayOfStatement_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    InvestmentPortfolioHtmlWidget.Replace("{{InvestorID}}", "{{InvestorID_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    InvestmentPortfolioHtmlWidget.Replace("{{StatementPeriod}}", "{{StatementPeriod_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    InvestmentPortfolioHtmlWidget.Replace("{{StatementDate}}", "{{StatementDate_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    InvestmentPortfolioHtmlWidget.Replace("{{WidgetId}}", widgetId);
-        //    InvestmentPortfolioHtmlWidget.Replace("{{FirstName}}", "{{FirstName_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    InvestmentPortfolioHtmlWidget.Replace("{{SurName}}", "{{SurName_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    return InvestmentPortfolioHtmlWidget.ToString();
-        //}
-
-        private string InvestorPerformanceWidgetFormatting(PageWidget pageWidget, int counter, Page page)
-        {
-            return "{{" + HtmlConstants.INVESTOR_PERFORMANCE_WIDGET_NAME + "_" + page.Identifier + "_" + pageWidget.Identifier + "}}";
-
-            //var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            //var InvestorPerformanceHtmlWidget = HtmlConstants.INVESTOR_PERFORMANCE_WIDGET_HTML;
-            //InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ProductType}}", "{{ProductType_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            //InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{OpeningBalanceAmount}}", "{{OpeningBalanceAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            //InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ClosingBalanceAmount}}", "{{ClosingBalanceAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            //InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{WidgetId}}", widgetId);
-            //return InvestorPerformanceHtmlWidget;
-        }
-
-        private string WealthInvestorPerformanceWidgetFormatting(PageWidget pageWidget, int counter, Page page)
-        {
-            return "{{" + HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_NAME + "_" + page.Identifier + "_" + pageWidget.Identifier + "}}";
-
-            //var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            //var InvestorPerformanceHtmlWidget = HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_HTML;
-            //InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ProductType}}", "{{ProductType_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            //InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{OpeningBalanceAmount}}", "{{OpeningBalanceAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            //InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ClosingBalanceAmount}}", "{{ClosingBalanceAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            //InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{WidgetId}}", widgetId);
-            //return InvestorPerformanceHtmlWidget;
-        }
-
-        private string BreakdownOfInvestmentAccountsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
-        {
-            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            var htmlWidget = HtmlConstants.BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_HTML.Replace("{{NavTab}}", "{{NavTab_" + page.Identifier + "_" + pageWidget.Identifier + "}}").Replace("{{TabContentsDiv}}", "{{TabContentsDiv_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget = htmlWidget.Replace("{{WidgetId}}", widgetId);
-            return htmlWidget;
-        }
-
-        private string ExplanatoryNotesWidgetFormatting(PageWidget pageWidget, int counter, Page page)
-        {
-            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            var htmlWidget = HtmlConstants.EXPLANATORY_NOTES_WIDGET_HTML.Replace("{{Notes}}", "{{Notes_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget = htmlWidget.Replace("{{WidgetId}}", widgetId);
-            return htmlWidget;
-        }
-
-        private string WealthExplanatoryNotesWidgetFormatting(PageWidget pageWidget, int counter, Page page)
-        {
-            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            var htmlWidget = HtmlConstants.WEALTH_EXPLANATORY_NOTES_WIDGET_HTML.Replace("{{Notes}}", "{{Notes_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget = htmlWidget.Replace("{{WidgetId}}", widgetId);
-            return htmlWidget;
-        }
-
-        private string MarketingServiceMessageWidgetFormatting(PageWidget pageWidget, int counter, Page page, int MarketingMessageCounter)
-        {
-            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            var htmlWidget = HtmlConstants.SERVICE_WIDGET_HTML.Replace("{{ServiceMessageHeader}}", "{{ServiceMessageHeader_" + page.Identifier + "_" + pageWidget.Identifier + "_" + MarketingMessageCounter + "}}").Replace("{{ServiceMessageText}}", "{{ServiceMessageText_" + page.Identifier + "_" + pageWidget.Identifier + "_" + MarketingMessageCounter + "}}");
-            htmlWidget = htmlWidget.Replace("{{WidgetId}}", widgetId);
-            return htmlWidget;
-        }
-
-        private string PersonalLoanDetailWidgetFormatting(PageWidget pageWidget, int counter, Page page)
-        {
-            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            var htmlWidget = new StringBuilder(HtmlConstants.PERSONAL_LOAN_DETAIL_HTML);
-            htmlWidget.Replace("{{TotalLoanAmount}}", "{{TotalLoanAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{OutstandingBalance}}", "{{OutstandingBalance_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{DueAmount}}", "{{DueAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{AccountNumber}}", "{{AccountNumber_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{StatementDate}}", "{{StatementDate_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{StatementPeriod}}", "{{StatementPeriod_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{ArrearsAmount}}", "{{ArrearsAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{AnnualRate}}", "{{AnnualRate_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{MonthlyInstallment}}", "{{MonthlyInstallment_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{Terms}}", "{{Terms_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{DueByDate}}", "{{DueByDate_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget = htmlWidget.Replace("{{WidgetId}}", widgetId);
-            return htmlWidget.ToString();
-        }
-
-        private string PersonalLoanTransactionWidgetFormatting(PageWidget pageWidget, int counter, Page page)
-        {
-            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            var htmlWidget = new StringBuilder(HtmlConstants.PERSONAL_LOAN_TRANSACTION_HTML);
-            htmlWidget.Replace("{{PersonalLoanTransactionRow}}", "{{PersonalLoanTransactionRow_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget = htmlWidget.Replace("{{WidgetId}}", widgetId);
-            return htmlWidget.ToString();
-        }
-
-        private string PersonalLoanPaymentDueWidgetFormatting(PageWidget pageWidget, int counter, Page page)
-        {
-            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            var htmlWidget = new StringBuilder(HtmlConstants.PERSONAL_LOAN_PAYMENT_DUE_HTML);
-            htmlWidget.Replace("{{After120Days}}", "{{After120Days_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{After90Days}}", "{{After90Days_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{After60Days}}", "{{After60Days_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{After30Days}}", "{{After30Days_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{Current}}", "{{Current_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget = htmlWidget.Replace("{{WidgetId}}", widgetId);
-            return htmlWidget.ToString();
-        }
-
-        private string SpecialMessageWidgetFormatting(PageWidget pageWidget, Page page)
-        {
-            return "{{SpecialMessageTextDataDiv_" + page.Identifier + "_" + pageWidget.Identifier + "}}";
-        }
-
-        private string PersonalLoanInsuranceMessageWidgetFormatting(PageWidget pageWidget, Page page)
-        {
-            return "{{PersonalLoanInsuranceMessagesDiv_" + page.Identifier + "_" + pageWidget.Identifier + "}}";
-        }
-
-        private string PersonalLoanTotalAmountDetailWidgetFormatting(PageWidget pageWidget, int counter, Page page)
-        {
-            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            var htmlWidget = new StringBuilder(HtmlConstants.PERSONAL_LOAN_TOTAL_AMOUNT_DETAIL_WIDGET_HTML);
-            htmlWidget.Replace("{{TotalLoanAmount}}", "{{TotalLoanAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{OutstandingBalance}}", "{{OutstandingBalance_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{DueAmount}}", "{{DueAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{InstalmentType}}", "{{InstalmentType_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{WidgetId}}", widgetId);
-            return htmlWidget.ToString();
-        }
-
-        private string PersonalLoanAccountsBreakdownsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
-        {
-            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            var htmlWidget = new StringBuilder(HtmlConstants.PERSONAL_LOAN_ACCOUNTS_BREAKDOWN_WIDGET_HTML).Replace("{{TabContentsDiv}}", "{{TabContentsDiv_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{WidgetId}}", widgetId);
-            return htmlWidget.ToString();
-        }
-
-        private string HomeLoanTotalAmountDetailWidgetFormatting(PageWidget pageWidget, int counter, Page page)
-        {
-            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_TOTAL_AMOUNT_DETAIL_WIDGET_HTML);
-            htmlWidget.Replace("{{TotalHomeLoansAmount}}", "{{TotalHomeLoansAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{TotalHomeLoansBalanceOutstanding}}", "{{TotalHomeLoansBalanceOutstanding_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{InstalmentType}}", "{{InstalmentType_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{WidgetId}}", widgetId);
-            return htmlWidget.ToString();
-        }
-
-        private string WealthHomeLoanTotalAmountDetailWidgetFormatting(PageWidget pageWidget, int counter, Page page)
-        {
-            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_WEALTH_TOTAL_AMOUNT_DETAIL_WIDGET_HTML);
-            htmlWidget.Replace("{{TotalHomeLoansAmount}}", "{{TotalHomeLoansAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{TotalHomeLoansBalanceOutstanding}}", "{{TotalHomeLoansBalanceOutstanding_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{InstalmentType}}", "{{InstalmentType_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{WidgetId}}", widgetId);
-            return htmlWidget.ToString();
-        }
-
-        private string HomeLoanSummaryTaxPurpose(PageWidget pageWidget)
-        {
-            var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_SUMMARY_TAX_PURPOSE_HTML);
-            htmlWidget.Replace("{{Interest}}", "{{Interest_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{Insurance}}", "{{Insurance_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{Servicefee}}", "{{Servicefee_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{Legalcosts}}", "{{Legalcosts_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{AmountReceived}}", "{{AmountReceived_" + pageWidget.Identifier + "}}");
-            return htmlWidget.ToString();
-        }
-
-        private string WealthHomeLoanSummaryTaxPurpose(PageWidget pageWidget)
-        {
-            var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_WEALTH_SUMMARY_TAX_PURPOSE_HTML);
-            htmlWidget.Replace("{{Interest}}", "{{Interest_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{Insurance}}", "{{Insurance_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{Servicefee}}", "{{Servicefee_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{Legalcosts}}", "{{Legalcosts_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{AmountReceived}}", "{{AmountReceived_" + pageWidget.Identifier + "}}");
-            return htmlWidget.ToString();
-        }
-
-        private string HomeLoanInstalment(PageWidget pageWidget)
-        {
-            var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_INSTALMENT_DETAILS_WIDGET_HTML);
-            htmlWidget.Replace("{{Home_Loan_Instalment_Details}}", "{{Home_Loan_Instalment_Details_" + pageWidget.Identifier + "}}");
-            return htmlWidget.ToString();
-        }
-
-        private string WealthHomeLoanInstalment(PageWidget pageWidget)
-        {
-            var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_INSTALMENT_DETAILS_WIDGET_HTML);
-            htmlWidget.Replace("{{Home_Loan_Instalment_Details}}", "{{Home_Loan_Instalment_Details_" + pageWidget.Identifier + "}}");
-            return htmlWidget.ToString();
-        }
-
-        private string WealthBranchDetailsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
-        {
-            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_WEALTH_BRANCH_DETAILS_WIDGET_HTML);
-            htmlWidget.Replace("{{BranchDetails}}", "{{BranchDetails_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{ContactCenter}}", "{{ContactCenter_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{WidgetId}}", widgetId);
-            return htmlWidget.ToString();
-        }
-
-        private string HomeLoanAccountsBreakdownsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
-        {
-            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_ACCOUNTS_BREAKDOWN_HTML).Replace("{{TabContentsDiv}}", "{{TabContentsDiv_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{WidgetId}}", widgetId);
-            return htmlWidget.ToString();
-        }
-
-        private string WealthHomeLoanAccountsBreakdownsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
-        {
-            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_ACCOUNTS_BREAKDOWN_HTML).Replace("{{TabContentsDiv}}", "{{TabContentsDiv_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{WidgetId}}", widgetId);
-            return htmlWidget.ToString();
-        }
-
-        //private string PortfolioCustomerDetailsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
-        //{
-        //    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-        //    var htmlwidget = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_DETAILS_WIDGET_HTML);
-        //    htmlwidget.Replace("{{CustomerName}}", "{{CustomerName_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    htmlwidget.Replace("{{CustomerId}}", "{{CustomerId_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    htmlwidget.Replace("{{MobileNumber}}", "{{MobileNumber_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    htmlwidget.Replace("{{EmailAddress}}", "{{EmailAddress_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    htmlwidget.Replace("{{WidgetId}}", widgetId);
-        //    return htmlwidget.ToString();
-        //}
-
-        //private string PortfolioCustomerAddressDetailsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
-        //{
-        //    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-        //    var htmlwidget = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_ADDRESS_WIDGET_HTML);
-        //    htmlwidget.Replace("{{CustomerAddress}}", "{{CustomerAddress_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    htmlwidget.Replace("{{WidgetId}}", widgetId);
-        //    return htmlwidget.ToString();
-        //}
-
-        //private string PortfolioClientContactDetailsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
-        //{
-        //    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-        //    var htmlwidget = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_CLIENT_CONTACT_DETAILS_WIDGET_HTML);
-        //    htmlwidget.Replace("{{MobileNumber}}", "{{MobileNumber_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    htmlwidget.Replace("{{EmailAddress}}", "{{EmailAddress_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    htmlwidget.Replace("{{WidgetId}}", widgetId);
-        //    return htmlwidget.ToString();
-        //}
-
-        //private string PortfolioAccountSummaryWidgetFormatting(PageWidget pageWidget, int counter, Page page)
-        //{
-        //    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-        //    var htmlwidget = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_SUMMARY_WIDGET_HTML);
-        //    htmlwidget.Replace("{{AccountSummaryRows}}", "{{AccountSummaryRows_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    htmlwidget.Replace("{{RewardPointsDiv}}", "{{RewardPointsDiv_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    htmlwidget.Replace("{{WidgetId}}", widgetId);
-        //    return htmlwidget.ToString();
-        //}
-
-        //private string PortfolioAccountAnalysisWidgetFormatting(PageWidget pageWidget, int counter, Page page)
-        //{
-        //    var htmlWidget = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_ANALYSIS_WIDGET_HTML);
-        //    htmlWidget.Replace("AccountAnalysisBarGraphcontainer", "AccountAnalysisBarGraphcontainer_" + page.Identifier + "_" + pageWidget.Identifier + "");
-        //    htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString());
-        //    htmlWidget.Append("<input type='hidden' id='HiddenAccountAnalysisGraph_" + page.Identifier + "_" + pageWidget.Identifier + "' value='HiddenAccountAnalysisGraphValue_" + page.Identifier + "_" + pageWidget.Identifier + "'>");
-        //    return htmlWidget.ToString();
-        //}
-
-        //private string PortfolioRemindersWidgetFormatting(PageWidget pageWidget, int counter, Page page)
-        //{
-        //    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-        //    var htmlwidget = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_REMINDER_AND_RECOMMENDATION_WIDGET_HTML);
-        //    htmlwidget.Replace("{{ReminderAndRecommendation}}", "{{ReminderAndRecommendation_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    htmlwidget.Replace("{{WidgetId}}", widgetId);
-        //    return htmlwidget.ToString();
-        //}
-
-        //private string PortfolioNewsAlertWidgetFormatting(PageWidget pageWidget, int counter, Page page)
-        //{
-        //    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-        //    var htmlwidget = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_NEWS_ALERT_WIDGET_HTML);
-        //    htmlwidget.Replace("{{NewsAlert}}", "{{NewsAlert_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    htmlwidget.Replace("{{WidgetId}}", widgetId);
-        //    return htmlwidget.ToString();
-        //}
-
-        //private string GreenbacksTotalRewardPointsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
-        //{
-        //    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-        //    var htmlwidget = new StringBuilder(HtmlConstants.NEDBANK_GREENBACKS_TOTAL_REWARDS_POINTS_WIDGET_HTML);
-        //    htmlwidget.Replace("{{TotalRewardsPoints}}", "{{TotalRewardsPoints_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    htmlwidget.Replace("{{WidgetId}}", widgetId);
-        //    return htmlwidget.ToString();
-        //}
-
-        //private string GreenbacksContactUsWidgetFormatting(PageWidget pageWidget, int counter, string tenantCode)
-        //{
-        //    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-        //    var htmlwidget = new StringBuilder(HtmlConstants.NEDBANK_GREENBACKS_CONTACT_US_WIDGET_HTML_SMT);
-        //    var greenbackmaster = this.tenantTransactionDataManager.GET_DM_GreenbacksMasterDetails(tenantCode)?.FirstOrDefault();
-        //    if (greenbackmaster != null)
+        //    StringBuilder HtmlWidget = new StringBuilder(HtmlConstants.CUSTOMER_DETAILS_WIDGET_HTML_SMT);
+        //    if(page.PageTypeName == HtmlConstants.CORPORATE_SAVER_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.CORPORATE_SAVER_AFR_PAGE_TYPE)
         //    {
-        //        htmlwidget.Replace("{{JoinGreenbackUrl}}", (!string.IsNullOrEmpty(greenbackmaster.JoinUsUrl) ? greenbackmaster.JoinUsUrl : "javascript:void(0)"));
-        //        htmlwidget.Replace("{{UseGreenbackUrl}}", (!string.IsNullOrEmpty(greenbackmaster.UseUsUrl) ? greenbackmaster.JoinUsUrl : "javascript:void(0)"));
-        //        htmlwidget.Replace("{{SupportDeskContactNumber}}", (!string.IsNullOrEmpty(greenbackmaster.ContactNumber) ? greenbackmaster.ContactNumber : "0860 553 111"));
+        //        HtmlWidget = new StringBuilder(HtmlConstants.CUSTOMER_DETAILS_WIDGET_HTML_SMT_CORPORATE_SAVER);
         //    }
         //    else
         //    {
-        //        htmlwidget.Replace("{{JoinGreenbackUrl}}", "javascript:void(0)");
-        //        htmlwidget.Replace("{{UseGreenbackUrl}}", "javascript:void(0)");
-        //        htmlwidget.Replace("{{SupportDeskContactNumber}}", "0860 553 111");
+        //        HtmlWidget = new StringBuilder(HtmlConstants.CUSTOMER_DETAILS_WIDGET_HTML_SMT);
         //    }
-        //    htmlwidget.Replace("{{WidgetId}}", widgetId);
-        //    return htmlwidget.ToString();
+        //    HtmlWidget.Replace("{{CustomerDetails}}", "{{CustomerDetails_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    //HtmlWidget.Replace("{{MaskCellNo}}", "{{MaskCellNo_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    HtmlWidget.Replace("{{MaskCellNo}}", "");
+        //    HtmlWidget.Replace("{{WidgetId}}", widgetId);
+        //    return HtmlWidget.ToString();
         //}
 
-        //private string GreenbacksYTDRewardPointsGraphWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        //private string BranchDetailsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
         //{
-        //    var htmlWidget = new StringBuilder(HtmlConstants.NEDBANK_YTD_REWARDS_POINTS_BAR_GRAPH_WIDGET_HTML);
-        //    htmlWidget.Replace("YTDRewardPointsBarGraphcontainer", "YTDRewardPointsBarGraphcontainer_" + page.Identifier + "_" + pageWidget.Identifier + "");
-        //    htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString());
-        //    htmlWidget.Append("<input type='hidden' id='HiddenYTDRewardPointsGraph_" + page.Identifier + "_" + pageWidget.Identifier + "' value='HiddenYTDRewardPointsGraphValue_" + page.Identifier + "_" + pageWidget.Identifier + "'>");
+        //    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        //    var htmlWidget = new StringBuilder(HtmlConstants.BRANCH_DETAILS_WIDGET_HTML_SMT);
+        //    htmlWidget.Replace("{{BranchDetails}}", "{{BranchDetails_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{ContactCenter}}", "{{ContactCenter_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{WidgetId}}", widgetId);
         //    return htmlWidget.ToString();
         //}
 
-        //private string GreenbacksPointsRedeemedYTDGraphWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        ////private string InvestmentPortfolioStatementWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        ////{
+        ////    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        ////    var InvestmentPortfolioHtmlWidget = new StringBuilder(HtmlConstants.INVESTMENT_PORTFOLIO_STATEMENT_WIDGET_HTML);
+        ////    InvestmentPortfolioHtmlWidget.Replace("{{DSName}}", "{{DSName_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    InvestmentPortfolioHtmlWidget.Replace("{{TotalClosingBalance}}", "{{TotalClosingBalance_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    InvestmentPortfolioHtmlWidget.Replace("{{DayOfStatement}}", "{{DayOfStatement_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    InvestmentPortfolioHtmlWidget.Replace("{{InvestorID}}", "{{InvestorID_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    InvestmentPortfolioHtmlWidget.Replace("{{StatementPeriod}}", "{{StatementPeriod_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    InvestmentPortfolioHtmlWidget.Replace("{{StatementDate}}", "{{StatementDate_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    InvestmentPortfolioHtmlWidget.Replace("{{WidgetId}}", widgetId);
+        ////    InvestmentPortfolioHtmlWidget.Replace("{{FirstName}}", "{{FirstName_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    InvestmentPortfolioHtmlWidget.Replace("{{SurName}}", "{{SurName_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    return InvestmentPortfolioHtmlWidget.ToString();
+        ////}
+
+        ////private string WealthInvestmentPortfolioStatementWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        ////{
+        ////    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        ////    var InvestmentPortfolioHtmlWidget = new StringBuilder(HtmlConstants.INVESTMENT_WEALTH_PORTFOLIO_STATEMENT_WIDGET_HTML);
+        ////    InvestmentPortfolioHtmlWidget.Replace("{{DSName}}", "{{DSName_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    InvestmentPortfolioHtmlWidget.Replace("{{TotalClosingBalance}}", "{{TotalClosingBalance_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    InvestmentPortfolioHtmlWidget.Replace("{{DayOfStatement}}", "{{DayOfStatement_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    InvestmentPortfolioHtmlWidget.Replace("{{InvestorID}}", "{{InvestorID_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    InvestmentPortfolioHtmlWidget.Replace("{{StatementPeriod}}", "{{StatementPeriod_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    InvestmentPortfolioHtmlWidget.Replace("{{StatementDate}}", "{{StatementDate_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    InvestmentPortfolioHtmlWidget.Replace("{{WidgetId}}", widgetId);
+        ////    InvestmentPortfolioHtmlWidget.Replace("{{FirstName}}", "{{FirstName_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    InvestmentPortfolioHtmlWidget.Replace("{{SurName}}", "{{SurName_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    return InvestmentPortfolioHtmlWidget.ToString();
+        ////}
+
+        //private string InvestorPerformanceWidgetFormatting(PageWidget pageWidget, int counter, Page page)
         //{
-        //    var htmlWidget = new StringBuilder(HtmlConstants.NEDBANK_POINTS_REDEEMED_YTD_BAR_GRAPH_WIDGET_HTML);
-        //    htmlWidget.Replace("PointsRedeemedYTDBarGraphcontainer", "PointsRedeemedYTDBarGraphcontainer_" + page.Identifier + "_" + pageWidget.Identifier + "");
-        //    htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString());
-        //    htmlWidget.Append("<input type='hidden' id='HiddenPointsRedeemedGraph_" + page.Identifier + "_" + pageWidget.Identifier + "' value='HiddenPointsRedeemedGraphValue_" + page.Identifier + "_" + pageWidget.Identifier + "'>");
+        //    return "{{" + HtmlConstants.INVESTOR_PERFORMANCE_WIDGET_NAME + "_" + page.Identifier + "_" + pageWidget.Identifier + "}}";
+
+        //    //var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        //    //var InvestorPerformanceHtmlWidget = HtmlConstants.INVESTOR_PERFORMANCE_WIDGET_HTML;
+        //    //InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ProductType}}", "{{ProductType_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    //InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{OpeningBalanceAmount}}", "{{OpeningBalanceAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    //InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ClosingBalanceAmount}}", "{{ClosingBalanceAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    //InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{WidgetId}}", widgetId);
+        //    //return InvestorPerformanceHtmlWidget;
+        //}
+
+        //private string WealthInvestorPerformanceWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        //{
+        //    return "{{" + HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_NAME + "_" + page.Identifier + "_" + pageWidget.Identifier + "}}";
+
+        //    //var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        //    //var InvestorPerformanceHtmlWidget = HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_HTML;
+        //    //InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ProductType}}", "{{ProductType_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    //InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{OpeningBalanceAmount}}", "{{OpeningBalanceAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    //InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ClosingBalanceAmount}}", "{{ClosingBalanceAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    //InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{WidgetId}}", widgetId);
+        //    //return InvestorPerformanceHtmlWidget;
+        //}
+
+        //private string BreakdownOfInvestmentAccountsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        //{
+        //    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        //    var htmlWidget = HtmlConstants.BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_HTML.Replace("{{NavTab}}", "{{NavTab_" + page.Identifier + "_" + pageWidget.Identifier + "}}").Replace("{{TabContentsDiv}}", "{{TabContentsDiv_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget = htmlWidget.Replace("{{WidgetId}}", widgetId);
+        //    return htmlWidget;
+        //}
+
+        //private string ExplanatoryNotesWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        //{
+        //    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        //    var htmlWidget = HtmlConstants.EXPLANATORY_NOTES_WIDGET_HTML.Replace("{{Notes}}", "{{Notes_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget = htmlWidget.Replace("{{WidgetId}}", widgetId);
+        //    return htmlWidget;
+        //}
+
+        //private string WealthExplanatoryNotesWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        //{
+        //    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        //    var htmlWidget = HtmlConstants.WEALTH_EXPLANATORY_NOTES_WIDGET_HTML.Replace("{{Notes}}", "{{Notes_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget = htmlWidget.Replace("{{WidgetId}}", widgetId);
+        //    return htmlWidget;
+        //}
+
+        //private string MarketingServiceMessageWidgetFormatting(PageWidget pageWidget, int counter, Page page, int MarketingMessageCounter)
+        //{
+        //    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        //    var htmlWidget = HtmlConstants.SERVICE_WIDGET_HTML.Replace("{{ServiceMessageHeader}}", "{{ServiceMessageHeader_" + page.Identifier + "_" + pageWidget.Identifier + "_" + MarketingMessageCounter + "}}").Replace("{{ServiceMessageText}}", "{{ServiceMessageText_" + page.Identifier + "_" + pageWidget.Identifier + "_" + MarketingMessageCounter + "}}");
+        //    htmlWidget = htmlWidget.Replace("{{WidgetId}}", widgetId);
+        //    return htmlWidget;
+        //}
+
+        //private string PersonalLoanDetailWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        //{
+        //    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        //    var htmlWidget = new StringBuilder(HtmlConstants.PERSONAL_LOAN_DETAIL_HTML);
+        //    htmlWidget.Replace("{{TotalLoanAmount}}", "{{TotalLoanAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{OutstandingBalance}}", "{{OutstandingBalance_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{DueAmount}}", "{{DueAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{AccountNumber}}", "{{AccountNumber_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{StatementDate}}", "{{StatementDate_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{StatementPeriod}}", "{{StatementPeriod_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{ArrearsAmount}}", "{{ArrearsAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{AnnualRate}}", "{{AnnualRate_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{MonthlyInstallment}}", "{{MonthlyInstallment_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{Terms}}", "{{Terms_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{DueByDate}}", "{{DueByDate_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget = htmlWidget.Replace("{{WidgetId}}", widgetId);
         //    return htmlWidget.ToString();
         //}
 
-        //private string GreenbacksProductRelatedPointsEarnedGraphWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        //private string PersonalLoanTransactionWidgetFormatting(PageWidget pageWidget, int counter, Page page)
         //{
-        //    var htmlWidget = new StringBuilder(HtmlConstants.NEDBANK_PRODUCT_RELATED_POINTS_EARNED_BAR_GRAPH_WIDGET_HTML);
-        //    htmlWidget.Replace("ProductRelatedPointsEarnedBarGraphcontainer", "ProductRelatedPointsEarnedBarGraphcontainer_" + page.Identifier + "_" + pageWidget.Identifier + "");
-        //    htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString());
-        //    htmlWidget.Append("<input type='hidden' id='HiddenProductRelatedPointsEarnedGraph_" + page.Identifier + "_" + pageWidget.Identifier + "' value='HiddenProductRelatedPointsEarnedGraphValue_" + page.Identifier + "_" + pageWidget.Identifier + "'>");
+        //    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        //    var htmlWidget = new StringBuilder(HtmlConstants.PERSONAL_LOAN_TRANSACTION_HTML);
+        //    htmlWidget.Replace("{{PersonalLoanTransactionRow}}", "{{PersonalLoanTransactionRow_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget = htmlWidget.Replace("{{WidgetId}}", widgetId);
         //    return htmlWidget.ToString();
         //}
 
-        //private string GreenbacksCategorySpendPointsGraphWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        //private string PersonalLoanPaymentDueWidgetFormatting(PageWidget pageWidget, int counter, Page page)
         //{
-        //    var htmlWidget = new StringBuilder(HtmlConstants.NEDBANK_CATEGORY_SPEND_REWARDS_PIE_CHART_WIDGET_HTML);
-        //    htmlWidget.Replace("CategorySpendRewardsPieChartcontainer", "CategorySpendRewardsPieChartcontainer_" + page.Identifier + "_" + pageWidget.Identifier + "");
-        //    htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString());
-        //    htmlWidget.Append("<input type='hidden' id='HiddenCategorySpendRewardsGraph_" + page.Identifier + "_" + pageWidget.Identifier + "' value='HiddenCategorySpendRewardsGraphValue_" + page.Identifier + "_" + pageWidget.Identifier + "'>");
+        //    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        //    var htmlWidget = new StringBuilder(HtmlConstants.PERSONAL_LOAN_PAYMENT_DUE_HTML);
+        //    htmlWidget.Replace("{{After120Days}}", "{{After120Days_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{After90Days}}", "{{After90Days_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{After60Days}}", "{{After60Days_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{After30Days}}", "{{After30Days_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{Current}}", "{{Current_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget = htmlWidget.Replace("{{WidgetId}}", widgetId);
         //    return htmlWidget.ToString();
         //}
 
-        //private string MCAAccountSummaryWidgetFormatting(PageWidget pageWidget)
+        //private string SpecialMessageWidgetFormatting(PageWidget pageWidget, Page page)
         //{
-        //    var htmlWidget = new StringBuilder(HtmlConstants.MCA_ACCOUNT_SUMMARY_DETAILS_WIDGET_HTML);
-        //    htmlWidget.Replace("{{AccountNo}}", "{{AccountNo_" + pageWidget.Identifier + "}}");
-        //    htmlWidget.Replace("{{StatementNo}}", "{{StatementNo_" + pageWidget.Identifier + "}}");
-        //    htmlWidget.Replace("{{OverdraftLimit}}", "{{OverdraftLimit_" + pageWidget.Identifier + "}}");
-        //    htmlWidget.Replace("{{StatementDate}}", "{{StatementDate_" + pageWidget.Identifier + "}}");
-        //    htmlWidget.Replace("{{Currency}}", "{{Currency_" + pageWidget.Identifier + "}}");
-        //    htmlWidget.Replace("{{Statementfrequency}}", "{{Statementfrequency_" + pageWidget.Identifier + "}}");
-        //    htmlWidget.Replace("{{FreeBalance}}", "{{FreeBalance_" + pageWidget.Identifier + "}}");
-        //    htmlWidget.Replace("{{WidgetId}}", "{{WidgetId_" + pageWidget.Identifier + "}}");
+        //    return "{{SpecialMessageTextDataDiv_" + page.Identifier + "_" + pageWidget.Identifier + "}}";
+        //}
+
+        //private string PersonalLoanInsuranceMessageWidgetFormatting(PageWidget pageWidget, Page page)
+        //{
+        //    return "{{PersonalLoanInsuranceMessagesDiv_" + page.Identifier + "_" + pageWidget.Identifier + "}}";
+        //}
+
+        //private string PersonalLoanTotalAmountDetailWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        //{
+        //    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        //    var htmlWidget = new StringBuilder(HtmlConstants.PERSONAL_LOAN_TOTAL_AMOUNT_DETAIL_WIDGET_HTML);
+        //    htmlWidget.Replace("{{TotalLoanAmount}}", "{{TotalLoanAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{OutstandingBalance}}", "{{OutstandingBalance_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{DueAmount}}", "{{DueAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{InstalmentType}}", "{{InstalmentType_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{WidgetId}}", widgetId);
         //    return htmlWidget.ToString();
         //}
 
-        //private string MCATransactionWidgetFormatting(PageWidget pageWidget, Page page)
+        //private string PersonalLoanAccountsBreakdownsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
         //{
-        //    var htmlWidget = new StringBuilder(HtmlConstants.MCA_TRANSACTION_DETAIL_DIV_HTML);
-        //    htmlWidget.Replace("{{MCATransactionRow}}", "{{MCATransactionRow_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        //    var htmlWidget = new StringBuilder(HtmlConstants.PERSONAL_LOAN_ACCOUNTS_BREAKDOWN_WIDGET_HTML).Replace("{{TabContentsDiv}}", "{{TabContentsDiv_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{WidgetId}}", widgetId);
         //    return htmlWidget.ToString();
         //}
+
+        //private string HomeLoanTotalAmountDetailWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        //{
+        //    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        //    var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_TOTAL_AMOUNT_DETAIL_WIDGET_HTML);
+        //    htmlWidget.Replace("{{TotalHomeLoansAmount}}", "{{TotalHomeLoansAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{TotalHomeLoansBalanceOutstanding}}", "{{TotalHomeLoansBalanceOutstanding_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{InstalmentType}}", "{{InstalmentType_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{WidgetId}}", widgetId);
+        //    return htmlWidget.ToString();
+        //}
+
+        //private string WealthHomeLoanTotalAmountDetailWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        //{
+        //    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        //    var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_WEALTH_TOTAL_AMOUNT_DETAIL_WIDGET_HTML);
+        //    htmlWidget.Replace("{{TotalHomeLoansAmount}}", "{{TotalHomeLoansAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{TotalHomeLoansBalanceOutstanding}}", "{{TotalHomeLoansBalanceOutstanding_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{InstalmentType}}", "{{InstalmentType_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{WidgetId}}", widgetId);
+        //    return htmlWidget.ToString();
+        //}
+
+        //private string HomeLoanSummaryTaxPurpose(PageWidget pageWidget)
+        //{
+        //    var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_SUMMARY_TAX_PURPOSE_HTML);
+        //    htmlWidget.Replace("{{Interest}}", "{{Interest_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{Insurance}}", "{{Insurance_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{Servicefee}}", "{{Servicefee_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{Legalcosts}}", "{{Legalcosts_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{AmountReceived}}", "{{AmountReceived_" + pageWidget.Identifier + "}}");
+        //    return htmlWidget.ToString();
+        //}
+
+        //private string WealthHomeLoanSummaryTaxPurpose(PageWidget pageWidget)
+        //{
+        //    var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_WEALTH_SUMMARY_TAX_PURPOSE_HTML);
+        //    htmlWidget.Replace("{{Interest}}", "{{Interest_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{Insurance}}", "{{Insurance_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{Servicefee}}", "{{Servicefee_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{Legalcosts}}", "{{Legalcosts_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{AmountReceived}}", "{{AmountReceived_" + pageWidget.Identifier + "}}");
+        //    return htmlWidget.ToString();
+        //}
+
+        //private string HomeLoanInstalment(PageWidget pageWidget)
+        //{
+        //    var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_INSTALMENT_DETAILS_WIDGET_HTML);
+        //    htmlWidget.Replace("{{Home_Loan_Instalment_Details}}", "{{Home_Loan_Instalment_Details_" + pageWidget.Identifier + "}}");
+        //    return htmlWidget.ToString();
+        //}
+
+        //private string WealthHomeLoanInstalment(PageWidget pageWidget)
+        //{
+        //    var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_INSTALMENT_DETAILS_WIDGET_HTML);
+        //    htmlWidget.Replace("{{Home_Loan_Instalment_Details}}", "{{Home_Loan_Instalment_Details_" + pageWidget.Identifier + "}}");
+        //    return htmlWidget.ToString();
+        //}
+
+        //private string WealthBranchDetailsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        //{
+        //    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        //    var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_WEALTH_BRANCH_DETAILS_WIDGET_HTML);
+        //    htmlWidget.Replace("{{BranchDetails}}", "{{BranchDetails_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{ContactCenter}}", "{{ContactCenter_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{WidgetId}}", widgetId);
+        //    return htmlWidget.ToString();
+        //}
+
+        //private string HomeLoanAccountsBreakdownsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        //{
+        //    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        //    var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_ACCOUNTS_BREAKDOWN_HTML).Replace("{{TabContentsDiv}}", "{{TabContentsDiv_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{WidgetId}}", widgetId);
+        //    return htmlWidget.ToString();
+        //}
+
+        //private string WealthHomeLoanAccountsBreakdownsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        //{
+        //    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        //    var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_ACCOUNTS_BREAKDOWN_HTML).Replace("{{TabContentsDiv}}", "{{TabContentsDiv_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{WidgetId}}", widgetId);
+        //    return htmlWidget.ToString();
+        //}
+
+        ////private string PortfolioCustomerDetailsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        ////{
+        ////    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        ////    var htmlwidget = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_DETAILS_WIDGET_HTML);
+        ////    htmlwidget.Replace("{{CustomerName}}", "{{CustomerName_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    htmlwidget.Replace("{{CustomerId}}", "{{CustomerId_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    htmlwidget.Replace("{{MobileNumber}}", "{{MobileNumber_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    htmlwidget.Replace("{{EmailAddress}}", "{{EmailAddress_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    htmlwidget.Replace("{{WidgetId}}", widgetId);
+        ////    return htmlwidget.ToString();
+        ////}
+
+        ////private string PortfolioCustomerAddressDetailsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        ////{
+        ////    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        ////    var htmlwidget = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_ADDRESS_WIDGET_HTML);
+        ////    htmlwidget.Replace("{{CustomerAddress}}", "{{CustomerAddress_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    htmlwidget.Replace("{{WidgetId}}", widgetId);
+        ////    return htmlwidget.ToString();
+        ////}
+
+        ////private string PortfolioClientContactDetailsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        ////{
+        ////    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        ////    var htmlwidget = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_CLIENT_CONTACT_DETAILS_WIDGET_HTML);
+        ////    htmlwidget.Replace("{{MobileNumber}}", "{{MobileNumber_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    htmlwidget.Replace("{{EmailAddress}}", "{{EmailAddress_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    htmlwidget.Replace("{{WidgetId}}", widgetId);
+        ////    return htmlwidget.ToString();
+        ////}
+
+        ////private string PortfolioAccountSummaryWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        ////{
+        ////    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        ////    var htmlwidget = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_SUMMARY_WIDGET_HTML);
+        ////    htmlwidget.Replace("{{AccountSummaryRows}}", "{{AccountSummaryRows_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    htmlwidget.Replace("{{RewardPointsDiv}}", "{{RewardPointsDiv_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    htmlwidget.Replace("{{WidgetId}}", widgetId);
+        ////    return htmlwidget.ToString();
+        ////}
+
+        ////private string PortfolioAccountAnalysisWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        ////{
+        ////    var htmlWidget = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_ANALYSIS_WIDGET_HTML);
+        ////    htmlWidget.Replace("AccountAnalysisBarGraphcontainer", "AccountAnalysisBarGraphcontainer_" + page.Identifier + "_" + pageWidget.Identifier + "");
+        ////    htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString());
+        ////    htmlWidget.Append("<input type='hidden' id='HiddenAccountAnalysisGraph_" + page.Identifier + "_" + pageWidget.Identifier + "' value='HiddenAccountAnalysisGraphValue_" + page.Identifier + "_" + pageWidget.Identifier + "'>");
+        ////    return htmlWidget.ToString();
+        ////}
+
+        ////private string PortfolioRemindersWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        ////{
+        ////    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        ////    var htmlwidget = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_REMINDER_AND_RECOMMENDATION_WIDGET_HTML);
+        ////    htmlwidget.Replace("{{ReminderAndRecommendation}}", "{{ReminderAndRecommendation_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    htmlwidget.Replace("{{WidgetId}}", widgetId);
+        ////    return htmlwidget.ToString();
+        ////}
+
+        ////private string PortfolioNewsAlertWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        ////{
+        ////    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        ////    var htmlwidget = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_NEWS_ALERT_WIDGET_HTML);
+        ////    htmlwidget.Replace("{{NewsAlert}}", "{{NewsAlert_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    htmlwidget.Replace("{{WidgetId}}", widgetId);
+        ////    return htmlwidget.ToString();
+        ////}
+
+        ////private string GreenbacksTotalRewardPointsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        ////{
+        ////    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        ////    var htmlwidget = new StringBuilder(HtmlConstants.NEDBANK_GREENBACKS_TOTAL_REWARDS_POINTS_WIDGET_HTML);
+        ////    htmlwidget.Replace("{{TotalRewardsPoints}}", "{{TotalRewardsPoints_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    htmlwidget.Replace("{{WidgetId}}", widgetId);
+        ////    return htmlwidget.ToString();
+        ////}
+
+        ////private string GreenbacksContactUsWidgetFormatting(PageWidget pageWidget, int counter, string tenantCode)
+        ////{
+        ////    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        ////    var htmlwidget = new StringBuilder(HtmlConstants.NEDBANK_GREENBACKS_CONTACT_US_WIDGET_HTML_SMT);
+        ////    var greenbackmaster = this.tenantTransactionDataManager.GET_DM_GreenbacksMasterDetails(tenantCode)?.FirstOrDefault();
+        ////    if (greenbackmaster != null)
+        ////    {
+        ////        htmlwidget.Replace("{{JoinGreenbackUrl}}", (!string.IsNullOrEmpty(greenbackmaster.JoinUsUrl) ? greenbackmaster.JoinUsUrl : "javascript:void(0)"));
+        ////        htmlwidget.Replace("{{UseGreenbackUrl}}", (!string.IsNullOrEmpty(greenbackmaster.UseUsUrl) ? greenbackmaster.JoinUsUrl : "javascript:void(0)"));
+        ////        htmlwidget.Replace("{{SupportDeskContactNumber}}", (!string.IsNullOrEmpty(greenbackmaster.ContactNumber) ? greenbackmaster.ContactNumber : "0860 553 111"));
+        ////    }
+        ////    else
+        ////    {
+        ////        htmlwidget.Replace("{{JoinGreenbackUrl}}", "javascript:void(0)");
+        ////        htmlwidget.Replace("{{UseGreenbackUrl}}", "javascript:void(0)");
+        ////        htmlwidget.Replace("{{SupportDeskContactNumber}}", "0860 553 111");
+        ////    }
+        ////    htmlwidget.Replace("{{WidgetId}}", widgetId);
+        ////    return htmlwidget.ToString();
+        ////}
+
+        ////private string GreenbacksYTDRewardPointsGraphWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        ////{
+        ////    var htmlWidget = new StringBuilder(HtmlConstants.NEDBANK_YTD_REWARDS_POINTS_BAR_GRAPH_WIDGET_HTML);
+        ////    htmlWidget.Replace("YTDRewardPointsBarGraphcontainer", "YTDRewardPointsBarGraphcontainer_" + page.Identifier + "_" + pageWidget.Identifier + "");
+        ////    htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString());
+        ////    htmlWidget.Append("<input type='hidden' id='HiddenYTDRewardPointsGraph_" + page.Identifier + "_" + pageWidget.Identifier + "' value='HiddenYTDRewardPointsGraphValue_" + page.Identifier + "_" + pageWidget.Identifier + "'>");
+        ////    return htmlWidget.ToString();
+        ////}
+
+        ////private string GreenbacksPointsRedeemedYTDGraphWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        ////{
+        ////    var htmlWidget = new StringBuilder(HtmlConstants.NEDBANK_POINTS_REDEEMED_YTD_BAR_GRAPH_WIDGET_HTML);
+        ////    htmlWidget.Replace("PointsRedeemedYTDBarGraphcontainer", "PointsRedeemedYTDBarGraphcontainer_" + page.Identifier + "_" + pageWidget.Identifier + "");
+        ////    htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString());
+        ////    htmlWidget.Append("<input type='hidden' id='HiddenPointsRedeemedGraph_" + page.Identifier + "_" + pageWidget.Identifier + "' value='HiddenPointsRedeemedGraphValue_" + page.Identifier + "_" + pageWidget.Identifier + "'>");
+        ////    return htmlWidget.ToString();
+        ////}
+
+        ////private string GreenbacksProductRelatedPointsEarnedGraphWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        ////{
+        ////    var htmlWidget = new StringBuilder(HtmlConstants.NEDBANK_PRODUCT_RELATED_POINTS_EARNED_BAR_GRAPH_WIDGET_HTML);
+        ////    htmlWidget.Replace("ProductRelatedPointsEarnedBarGraphcontainer", "ProductRelatedPointsEarnedBarGraphcontainer_" + page.Identifier + "_" + pageWidget.Identifier + "");
+        ////    htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString());
+        ////    htmlWidget.Append("<input type='hidden' id='HiddenProductRelatedPointsEarnedGraph_" + page.Identifier + "_" + pageWidget.Identifier + "' value='HiddenProductRelatedPointsEarnedGraphValue_" + page.Identifier + "_" + pageWidget.Identifier + "'>");
+        ////    return htmlWidget.ToString();
+        ////}
+
+        ////private string GreenbacksCategorySpendPointsGraphWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        ////{
+        ////    var htmlWidget = new StringBuilder(HtmlConstants.NEDBANK_CATEGORY_SPEND_REWARDS_PIE_CHART_WIDGET_HTML);
+        ////    htmlWidget.Replace("CategorySpendRewardsPieChartcontainer", "CategorySpendRewardsPieChartcontainer_" + page.Identifier + "_" + pageWidget.Identifier + "");
+        ////    htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString());
+        ////    htmlWidget.Append("<input type='hidden' id='HiddenCategorySpendRewardsGraph_" + page.Identifier + "_" + pageWidget.Identifier + "' value='HiddenCategorySpendRewardsGraphValue_" + page.Identifier + "_" + pageWidget.Identifier + "'>");
+        ////    return htmlWidget.ToString();
+        ////}
+
+        ////private string MCAAccountSummaryWidgetFormatting(PageWidget pageWidget)
+        ////{
+        ////    var htmlWidget = new StringBuilder(HtmlConstants.MCA_ACCOUNT_SUMMARY_DETAILS_WIDGET_HTML);
+        ////    htmlWidget.Replace("{{AccountNo}}", "{{AccountNo_" + pageWidget.Identifier + "}}");
+        ////    htmlWidget.Replace("{{StatementNo}}", "{{StatementNo_" + pageWidget.Identifier + "}}");
+        ////    htmlWidget.Replace("{{OverdraftLimit}}", "{{OverdraftLimit_" + pageWidget.Identifier + "}}");
+        ////    htmlWidget.Replace("{{StatementDate}}", "{{StatementDate_" + pageWidget.Identifier + "}}");
+        ////    htmlWidget.Replace("{{Currency}}", "{{Currency_" + pageWidget.Identifier + "}}");
+        ////    htmlWidget.Replace("{{Statementfrequency}}", "{{Statementfrequency_" + pageWidget.Identifier + "}}");
+        ////    htmlWidget.Replace("{{FreeBalance}}", "{{FreeBalance_" + pageWidget.Identifier + "}}");
+        ////    htmlWidget.Replace("{{WidgetId}}", "{{WidgetId_" + pageWidget.Identifier + "}}");
+        ////    return htmlWidget.ToString();
+        ////}
+
+        ////private string MCATransactionWidgetFormatting(PageWidget pageWidget, Page page)
+        ////{
+        ////    var htmlWidget = new StringBuilder(HtmlConstants.MCA_TRANSACTION_DETAIL_DIV_HTML);
+        ////    htmlWidget.Replace("{{MCATransactionRow}}", "{{MCATransactionRow_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    return htmlWidget.ToString();
+        ////}
        
 
-        //private string MCAVATAnalysisWidgetFormatting(PageWidget pageWidget, Page page)
+        ////private string MCAVATAnalysisWidgetFormatting(PageWidget pageWidget, Page page)
+        ////{
+        ////    var htmlWidget = new StringBuilder(HtmlConstants.MCA_VAT_ANALYSIS_DETAIL_DIV_HTML);
+        ////    htmlWidget.Replace("{{MCAVATTable}}", "{{MCAVATTable_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    return htmlWidget.ToString();
+        ////}
+
+        ////private string MCAWealthAccountSummaryWidgetFormatting(PageWidget pageWidget)
+        ////{
+        ////    var htmlWidget = new StringBuilder(HtmlConstants.MCA_WEALTH_ACCOUNT_SUMMARY_DETAILS_WIDGET_HTML);
+        ////    htmlWidget.Replace("{{AccountNo}}", "{{AccountNo_" + pageWidget.Identifier + "}}");
+        ////    htmlWidget.Replace("{{StatementNo}}", "{{StatementNo_" + pageWidget.Identifier + "}}");
+        ////    htmlWidget.Replace("{{OverdraftLimit}}", "{{OverdraftLimit_" + pageWidget.Identifier + "}}");
+        ////    htmlWidget.Replace("{{StatementDate}}", "{{StatementDate_" + pageWidget.Identifier + "}}");
+        ////    htmlWidget.Replace("{{Currency}}", "{{Currency_" + pageWidget.Identifier + "}}");
+        ////    htmlWidget.Replace("{{Statementfrequency}}", "{{Statementfrequency_" + pageWidget.Identifier + "}}");
+        ////    htmlWidget.Replace("{{FreeBalance}}", "{{FreeBalance_" + pageWidget.Identifier + "}}");
+        ////    htmlWidget.Replace("{{WidgetId}}", "{{WidgetId_" + pageWidget.Identifier + "}}");
+        ////    return htmlWidget.ToString();
+        ////}
+
+        ////private string MCAWealthTransactionWidgetFormatting(PageWidget pageWidget, Page page)
+        ////{
+        ////    var htmlWidget = new StringBuilder(HtmlConstants.MCA_WEALTH_TRANSACTION_DETAIL_DIV_HTML);
+        ////    htmlWidget.Replace("{{MCATransactionRow}}", "{{MCATransactionRow_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    return htmlWidget.ToString();
+        ////}
+
+        ////private string MCAWealthVATAnalysisWidgetFormatting(PageWidget pageWidget, Page page)
+        ////{
+        ////    var htmlWidget = new StringBuilder(HtmlConstants.MCA_WEALTH_VAT_ANALYSIS_DETAIL_DIV_HTML);
+        ////    htmlWidget.Replace("{{MCAVATTable}}", "{{MCAVATTable_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    return htmlWidget.ToString();
+        ////}
+
+        ////private string MCAWealthBranchDetailsWidgetFormatting(PageWidget pageWidget, Page page, int counter)
+        ////{
+        ////    var htmlWidget = new StringBuilder(HtmlConstants.MCA_WEALTH_BRANCH_DETAILS_WIDGET_HTML);
+        ////    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+        ////    htmlWidget.Replace("{{BranchDetails}}", "{{BranchDetails_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    htmlWidget.Replace("{{ContactCenter}}", "{{ContactCenter_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    htmlWidget.Replace("{{WidgetId}}", widgetId);
+        ////    return htmlWidget.ToString();
+        ////}
+        //private string CorporateSaverAgentMessageWidgetFormatting(PageWidget pageWidget)
         //{
-        //    var htmlWidget = new StringBuilder(HtmlConstants.MCA_VAT_ANALYSIS_DETAIL_DIV_HTML);
-        //    htmlWidget.Replace("{{MCAVATTable}}", "{{MCAVATTable_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_AGENT_MESSAGE_HTML);
         //    return htmlWidget.ToString();
         //}
 
-        //private string MCAWealthAccountSummaryWidgetFormatting(PageWidget pageWidget)
+        ////private string CorporateSaverTransactionWidgetFormatting(PageWidget pageWidget, Page page)
+        ////{
+        ////    var htmlWidget = new StringBuilder(HtmlConstants.NEDBANK_CORPORATESAVER_TRANSACTION_WIDGET_HTML);
+        ////    htmlWidget.Replace("{{CorporateSaverTransactions}}", "{{CorporateSaverTransactions_" + pageWidget.Identifier + "}}");
+        ////    htmlWidget.Replace("{{AgentMessage}}", "{{AgentMessage_" + pageWidget.Identifier + "}}");
+        ////    return htmlWidget.ToString();
+        ////}
+        //private string CorporateSaverAgentAddressFormatting(PageWidget pageWidget, Page page)
         //{
-        //    var htmlWidget = new StringBuilder(HtmlConstants.MCA_WEALTH_ACCOUNT_SUMMARY_DETAILS_WIDGET_HTML);
-        //    htmlWidget.Replace("{{AccountNo}}", "{{AccountNo_" + pageWidget.Identifier + "}}");
+        //    var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_AGENT_ADDRESS_HTML);
+        //    htmlWidget.Replace("{{AgentAddress}}", "{{AgentAddress_" + page.Identifier+ "_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{AgentContact}}", "{{AgentContact_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    return htmlWidget.ToString();
+        //}
+
+        ////private string CorporateAgentDetailsFormatting(PageWidget pageWidget, Page page)
+        ////{
+        ////    var htmlWidget = new StringBuilder(HtmlConstants.NETBANK_CORPORATESAVER_AGENTDETAILS_HTML);
+        ////    htmlWidget.Replace("{{Interest}}", "{{Interest_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    htmlWidget.Replace("{{VATonfee}}", "{{VATonfee_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    htmlWidget.Replace("{{Agentfeededucted}}", "{{Agentfeededucted_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    htmlWidget.Replace("{{yeartodate}}", "{{yeartodate_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        ////    return htmlWidget.ToString();
+        ////}
+
+        //private string CorporateSaverClientDetailsFormatting(PageWidget pageWidget)
+        //{
+        //    var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_CLIENT_DETAILS_HTML);
+        //    htmlWidget.Replace("{{TaxInvoiceNo}}", "{{TaxInvoiceNo_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{ContactPerson}}", "{{ContactPerson_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{EmailAddress}}", "{{EmailAddress_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{RegNo}}", "{{RegNo_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{VATRegNo}}", "{{VATRegNo_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{FSPLicNo}}", "{{FSPLicNo_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{AgentRefNo}}", "{{AgentRefNo_" + pageWidget.Identifier + "}}");
         //    htmlWidget.Replace("{{StatementNo}}", "{{StatementNo_" + pageWidget.Identifier + "}}");
-        //    htmlWidget.Replace("{{OverdraftLimit}}", "{{OverdraftLimit_" + pageWidget.Identifier + "}}");
-        //    htmlWidget.Replace("{{StatementDate}}", "{{StatementDate_" + pageWidget.Identifier + "}}");
-        //    htmlWidget.Replace("{{Currency}}", "{{Currency_" + pageWidget.Identifier + "}}");
-        //    htmlWidget.Replace("{{Statementfrequency}}", "{{Statementfrequency_" + pageWidget.Identifier + "}}");
-        //    htmlWidget.Replace("{{FreeBalance}}", "{{FreeBalance_" + pageWidget.Identifier + "}}");
-        //    htmlWidget.Replace("{{WidgetId}}", "{{WidgetId_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{AccountNo}}", "{{AccountNo_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{Branchcode}}", "{{Branchcode_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{Agentprofile}}", "{{Agentprofile_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{CIFNo}}", "{{CIFNo_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{ClientCode}}", "{{ClientCode_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{RelationshipManager}}", "{{RelationshipManager_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{VATCalculation}}", "{{VATCalculation_" + pageWidget.Identifier + "}}");
+        //    htmlWidget.Replace("{{ClientVATNo}}", "{{ClientVATNo_" + pageWidget.Identifier + "}}");
         //    return htmlWidget.ToString();
         //}
 
-        //private string MCAWealthTransactionWidgetFormatting(PageWidget pageWidget, Page page)
+        //private string CorporateSaverLastTotalWidgetFormatting(PageWidget pageWidget, Page page)
         //{
-        //    var htmlWidget = new StringBuilder(HtmlConstants.MCA_WEALTH_TRANSACTION_DETAIL_DIV_HTML);
-        //    htmlWidget.Replace("{{MCATransactionRow}}", "{{MCATransactionRow_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+        //    var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_LASTTOTAL_HTML);
+        //                htmlWidget.Replace("{{dynemicTables}}", "{{dynemicTables_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
         //    return htmlWidget.ToString();
         //}
 
-        //private string MCAWealthVATAnalysisWidgetFormatting(PageWidget pageWidget, Page page)
+        //private string CorporateSaverWealthVATAnalysisWidgetFormatting(PageWidget pageWidget, Page page)
         //{
-        //    var htmlWidget = new StringBuilder(HtmlConstants.MCA_WEALTH_VAT_ANALYSIS_DETAIL_DIV_HTML);
+        //    var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_WEALTH_VAT_ANALYSIS_DETAIL_DIV_HTML);
         //    htmlWidget.Replace("{{MCAVATTable}}", "{{MCAVATTable_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
         //    return htmlWidget.ToString();
         //}
 
-        //private string MCAWealthBranchDetailsWidgetFormatting(PageWidget pageWidget, Page page, int counter)
+        //private string CorporateSaverWealthBranchDetailsWidgetFormatting(PageWidget pageWidget, Page page, int counter)
         //{
-        //    var htmlWidget = new StringBuilder(HtmlConstants.MCA_WEALTH_BRANCH_DETAILS_WIDGET_HTML);
+        //    var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_WEALTH_BRANCH_DETAILS_WIDGET_HTML);
         //    var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
         //    htmlWidget.Replace("{{BranchDetails}}", "{{BranchDetails_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
         //    htmlWidget.Replace("{{ContactCenter}}", "{{ContactCenter_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
         //    htmlWidget.Replace("{{WidgetId}}", widgetId);
         //    return htmlWidget.ToString();
         //}
-        private string CorporateSaverAgentMessageWidgetFormatting(PageWidget pageWidget)
-        {
-            var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_AGENT_MESSAGE_HTML);
-            return htmlWidget.ToString();
-        }
 
-        //private string CorporateSaverTransactionWidgetFormatting(PageWidget pageWidget, Page page)
-        //{
-        //    var htmlWidget = new StringBuilder(HtmlConstants.NEDBANK_CORPORATESAVER_TRANSACTION_WIDGET_HTML);
-        //    htmlWidget.Replace("{{CorporateSaverTransactions}}", "{{CorporateSaverTransactions_" + pageWidget.Identifier + "}}");
-        //    htmlWidget.Replace("{{AgentMessage}}", "{{AgentMessage_" + pageWidget.Identifier + "}}");
-        //    return htmlWidget.ToString();
-        //}
-        private string CorporateSaverAgentAddressFormatting(PageWidget pageWidget, Page page)
-        {
-            var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_AGENT_ADDRESS_HTML);
-            htmlWidget.Replace("{{AgentAddress}}", "{{AgentAddress_" + page.Identifier+ "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{AgentContact}}", "{{AgentContact_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            return htmlWidget.ToString();
-        }
-
-        //private string CorporateAgentDetailsFormatting(PageWidget pageWidget, Page page)
-        //{
-        //    var htmlWidget = new StringBuilder(HtmlConstants.NETBANK_CORPORATESAVER_AGENTDETAILS_HTML);
-        //    htmlWidget.Replace("{{Interest}}", "{{Interest_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    htmlWidget.Replace("{{VATonfee}}", "{{VATonfee_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    htmlWidget.Replace("{{Agentfeededucted}}", "{{Agentfeededucted_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    htmlWidget.Replace("{{yeartodate}}", "{{yeartodate_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-        //    return htmlWidget.ToString();
-        //}
-
-        private string CorporateSaverClientDetailsFormatting(PageWidget pageWidget)
-        {
-            var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_CLIENT_DETAILS_HTML);
-            htmlWidget.Replace("{{TaxInvoiceNo}}", "{{TaxInvoiceNo_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{ContactPerson}}", "{{ContactPerson_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{EmailAddress}}", "{{EmailAddress_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{RegNo}}", "{{RegNo_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{VATRegNo}}", "{{VATRegNo_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{FSPLicNo}}", "{{FSPLicNo_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{AgentRefNo}}", "{{AgentRefNo_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{StatementNo}}", "{{StatementNo_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{AccountNo}}", "{{AccountNo_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{Branchcode}}", "{{Branchcode_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{Agentprofile}}", "{{Agentprofile_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{CIFNo}}", "{{CIFNo_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{ClientCode}}", "{{ClientCode_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{RelationshipManager}}", "{{RelationshipManager_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{VATCalculation}}", "{{VATCalculation_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{ClientVATNo}}", "{{ClientVATNo_" + pageWidget.Identifier + "}}");
-            return htmlWidget.ToString();
-        }
-
-        private string CorporateSaverLastTotalWidgetFormatting(PageWidget pageWidget, Page page)
-        {
-            var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_LASTTOTAL_HTML);
-                        htmlWidget.Replace("{{dynemicTables}}", "{{dynemicTables_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            return htmlWidget.ToString();
-        }
-
-        private string CorporateSaverWealthVATAnalysisWidgetFormatting(PageWidget pageWidget, Page page)
-        {
-            var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_WEALTH_VAT_ANALYSIS_DETAIL_DIV_HTML);
-            htmlWidget.Replace("{{MCAVATTable}}", "{{MCAVATTable_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            return htmlWidget.ToString();
-        }
-
-        private string CorporateSaverWealthBranchDetailsWidgetFormatting(PageWidget pageWidget, Page page, int counter)
-        {
-            var htmlWidget = new StringBuilder(HtmlConstants.CORPORATESAVER_WEALTH_BRANCH_DETAILS_WIDGET_HTML);
-            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            htmlWidget.Replace("{{BranchDetails}}", "{{BranchDetails_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{ContactCenter}}", "{{ContactCenter_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{WidgetId}}", widgetId);
-            return htmlWidget.ToString();
-        }
-
-        #endregion
+        //#endregion
 
         #region Image and Video Widget formatting
 

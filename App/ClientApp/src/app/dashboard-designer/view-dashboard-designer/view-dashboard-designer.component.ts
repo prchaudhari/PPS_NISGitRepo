@@ -14,12 +14,10 @@ import {
   SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
   SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
   DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent, CorporateSaverAgentAddressComponent, CustomerDetailsComponent, BankDetailsComponent, WealthBankDetailsComponent,
-  InvestmentPortfolioStatementComponent, InvestmentWealthPortfolioStatementComponent, InvestorPerformanceComponent, WealthInvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, WealthBreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, WealthExplanatoryNotesComponent, NedbankServiceComponent, WealthNedbankServiceComponent, HomeLoanSummaryTaxPurposeComponent, HomeLoanInstalmentComponent,
-  PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
-  PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent, HomeLoanTotalAmountDetailComponent, HomeLoanAccountsBreakdownComponent, HomeLoanPaymentDueSpecialMsgComponent,
-  HomeLoanInstalmentDetailComponent, PortfolioCustomerDetailsComponent, PortfolioCustomerAddressDetailsComponent, PortfolioClientContactDetailsComponent, PortfolioAccountSummaryDetailsComponent,
-  PortfolioAccountAnalysisComponent, PortfolioRemindersComponent, PortfolioNewsAlertsComponent, GreenbacksContactUsComponent, YTDRewardPointsComponent, PointsRedeemedYTDComponent, ProductRelatedPointsEarnedComponent, CategorySpendRewardsComponent, GreenbacksTotalRewardPointsComponent, WealthHomeLoanTotalAmountDetailComponent, WealthHomeLoanAccountsBreakdownComponent, WealthHomeLoanSummaryTaxPurposeComponent, WealthHomeLoanInstalmentComponent, WealthHomeLoanBankDetailsComponent,
-  MCAAccountSummaryComponent, MCATransactionComponent, MCAVATAnalysisComponent, WealthMCAVATAnalysisComponent, WealthMCATransactionComponent, WealthMCAAccountSummaryComponent
+  InvestmentPortfolioStatementComponent, InvestmentWealthPortfolioStatementComponent, InvestorPerformanceComponent, WealthInvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, WealthBreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, WealthExplanatoryNotesComponent, 
+  PersonalLoanDetailComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,  
+  PortfolioCustomerAddressDetailsComponent, PortfolioClientContactDetailsComponent, PortfolioAccountSummaryDetailsComponent,
+  PortfolioAccountAnalysisComponent
 } from '../widgetComponent/widgetComponent';
 import { FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -390,45 +388,45 @@ export class ViewDashboardDesignerComponent implements OnInit {
       else if (widgetName == 'PersonalLoanDetail') {
         gridObj.component = PersonalLoanDetailComponent;
       }
-      else if (widgetName == 'PersonalLoanTransaction') {
-        gridObj.component = PersonalLoanTransactionComponent;
-      }
-      else if (widgetName == 'PersonalLoanPaymentDue') {
-        gridObj.component = PersonalLoanPaymentDueComponent;
-      }
+      //else if (widgetName == 'PersonalLoanTransaction') {
+      //  gridObj.component = PersonalLoanTransactionComponent;
+      //}
+      //else if (widgetName == 'PersonalLoanPaymentDue') {
+      //  gridObj.component = PersonalLoanPaymentDueComponent;
+      //}
       else if (widgetName == 'SpecialMessage') {
         gridObj.component = SpecialMessageComponent;
       }
       else if (widgetName == 'PL_InsuranceMessage') {
         gridObj.component = PersonalLoanInsuranceMessageComponent;
       }
-      else if (widgetName == 'NedbankService') {
-        gridObj.component = NedbankServiceComponent;
-      }
-      else if (widgetName == 'WealthNedbankService') {
-        gridObj.component = WealthNedbankServiceComponent;
-      }
-      else if (widgetName == 'PersonalLoanTotalAmountDetail') {
-        gridObj.component = PersonalLoanTotalAmountDetailComponent;
-      }
-      else if (widgetName == 'PersonalLoanAccountsBreakdown') {
-        gridObj.component = PersonalLoanAccountsBreakdownComponent;
-      }
-      else if (widget.WidgetName == "HomeLoanTotalAmountDetail") {
-        gridObj.component = HomeLoanTotalAmountDetailComponent;
-      }
-      else if (widget.WidgetName == "HomeLoanAccountsBreakdown") {
-        gridObj.component = HomeLoanAccountsBreakdownComponent
-      }
-      else if (widget.WidgetName == "HomeLoanPaymentDueSpecialMsg") {
-        gridObj.component = HomeLoanPaymentDueSpecialMsgComponent
-      }
-      else if (widget.WidgetName == "HomeLoanInstalmentDetail") {
-        gridObj.component = HomeLoanInstalmentDetailComponent
-      }
-      else if (widget.WidgetName == "PortfolioCustomerDetails") {
-        gridObj.component = PortfolioCustomerDetailsComponent
-      }
+      //else if (widgetName == 'NedbankService') {
+      //  gridObj.component = NedbankServiceComponent;
+      //}
+      //else if (widgetName == 'WealthNedbankService') {
+      //  gridObj.component = WealthNedbankServiceComponent;
+      //}
+      //else if (widgetName == 'PersonalLoanTotalAmountDetail') {
+      //  gridObj.component = PersonalLoanTotalAmountDetailComponent;
+      //}
+      //else if (widgetName == 'PersonalLoanAccountsBreakdown') {
+      //  gridObj.component = PersonalLoanAccountsBreakdownComponent;
+      //}
+      //else if (widget.WidgetName == "HomeLoanTotalAmountDetail") {
+      //  gridObj.component = HomeLoanTotalAmountDetailComponent;
+      //}
+      //else if (widget.WidgetName == "HomeLoanAccountsBreakdown") {
+      //  gridObj.component = HomeLoanAccountsBreakdownComponent
+      //}
+      //else if (widget.WidgetName == "HomeLoanPaymentDueSpecialMsg") {
+      //  gridObj.component = HomeLoanPaymentDueSpecialMsgComponent
+      //}
+      //else if (widget.WidgetName == "HomeLoanInstalmentDetail") {
+      //  gridObj.component = HomeLoanInstalmentDetailComponent
+      //}
+      //else if (widget.WidgetName == "PortfolioCustomerDetails") {
+      //  gridObj.component = PortfolioCustomerDetailsComponent
+      //}
       else if (widget.WidgetName == "CustomerAddressDetails") {
         gridObj.component = PortfolioCustomerAddressDetailsComponent
       }
@@ -441,30 +439,30 @@ export class ViewDashboardDesignerComponent implements OnInit {
       else if (widget.WidgetName == "AccountAnalysis") {
         gridObj.component = PortfolioAccountAnalysisComponent
       }
-      else if (widget.WidgetName == "PortfolioReminders") {
-        gridObj.component = PortfolioRemindersComponent
-      }
-      else if (widget.WidgetName == "PortfolioNewsAlerts") {
-        gridObj.component = PortfolioNewsAlertsComponent
-      }
-      else if (widget.WidgetName == "GreenbacksTotalRewardPoints") {
-        gridObj.component = GreenbacksTotalRewardPointsComponent
-      }
-      else if (widget.WidgetName == "GreenbacksContactUs") {
-        gridObj.component = GreenbacksContactUsComponent
-      }
-      else if (widget.WidgetName == "YTDRewardsPoints") {
-        gridObj.component = YTDRewardPointsComponent
-      }
-      else if (widget.WidgetName == "PointsRedeemedYTD") {
-        gridObj.component = PointsRedeemedYTDComponent
-      }
-      else if (widget.WidgetName == "ProductRelatedPointsEarned") {
-        gridObj.component = ProductRelatedPointsEarnedComponent
-      }
-      else if (widget.WidgetName == "CategorySpendRewards") {
-        gridObj.component = CategorySpendRewardsComponent
-      }
+      //else if (widget.WidgetName == "PortfolioReminders") {
+      //  gridObj.component = PortfolioRemindersComponent
+      //}
+      //else if (widget.WidgetName == "PortfolioNewsAlerts") {
+      //  gridObj.component = PortfolioNewsAlertsComponent
+      //}
+      //else if (widget.WidgetName == "GreenbacksTotalRewardPoints") {
+      //  gridObj.component = GreenbacksTotalRewardPointsComponent
+      //}
+      //else if (widget.WidgetName == "GreenbacksContactUs") {
+      //  gridObj.component = GreenbacksContactUsComponent
+      //}
+      //else if (widget.WidgetName == "YTDRewardsPoints") {
+      //  gridObj.component = YTDRewardPointsComponent
+      //}
+      //else if (widget.WidgetName == "PointsRedeemedYTD") {
+      //  gridObj.component = PointsRedeemedYTDComponent
+      //}
+      //else if (widget.WidgetName == "ProductRelatedPointsEarned") {
+      //  gridObj.component = ProductRelatedPointsEarnedComponent
+      //}
+      //else if (widget.WidgetName == "CategorySpendRewards") {
+      //  gridObj.component = CategorySpendRewardsComponent
+      //}
       else if (widget.WidgetName == "StaticHtml") {
         gridObj.component = StaticHtmlComponent
       }
@@ -474,45 +472,45 @@ export class ViewDashboardDesignerComponent implements OnInit {
       else if (widget.WidgetName == "SegmentBasedContent") {
         gridObj.component = SegmentBasedContentComponent
       }
-      else if (widgetName == "HomeLoanSummaryTaxPurpose") {
-        gridObj.component = HomeLoanSummaryTaxPurposeComponent
-      }
-      else if (widgetName == "HomeLoanInstalment") {
-        gridObj.component = HomeLoanInstalmentComponent
-      }
-      else if (widgetName == "WealthHomeLoanTotalAmountDetail") {
-        gridObj.component = WealthHomeLoanTotalAmountDetailComponent
-      }
-      else if (widgetName == "WealthHomeLoanAccountsBreakdown") {
-        gridObj.component = WealthHomeLoanAccountsBreakdownComponent
-      }
-      else if (widgetName == "WealthHomeLoanSummaryTaxPurpose") {
-        gridObj.component = WealthHomeLoanSummaryTaxPurposeComponent
-      }
-      else if (widgetName == "WealthHomeLoanInstalment") {
-        gridObj.component = WealthHomeLoanInstalmentComponent
-      }
-      else if (widgetName == "WealthHomeLoanBranchDetails") {
-        gridObj.component = WealthHomeLoanBankDetailsComponent
-      }
-      else if (widgetName == "MCAAccountSummary") {
-        gridObj.component = MCAAccountSummaryComponent
-      }
-      else if (widgetName == "MCATransaction") {
-        gridObj.component = MCATransactionComponent
-      }
-      else if (widgetName == "MCAVATAnalysis") {
-        gridObj.component = MCAVATAnalysisComponent
-      }
-      else if (widgetName == "WealthMCAAccountSummary") {
-        gridObj.component = WealthMCAAccountSummaryComponent
-      }
-      else if (widgetName == "WealthMCATransaction") {
-        gridObj.component = WealthMCATransactionComponent
-      }
-      else if (widgetName == "WealthMCAVATAnalysis") {
-        gridObj.component = WealthMCAVATAnalysisComponent
-      }
+      //else if (widgetName == "HomeLoanSummaryTaxPurpose") {
+      //  gridObj.component = HomeLoanSummaryTaxPurposeComponent
+      //}
+      //else if (widgetName == "HomeLoanInstalment") {
+      //  gridObj.component = HomeLoanInstalmentComponent
+      //}
+      //else if (widgetName == "WealthHomeLoanTotalAmountDetail") {
+      //  gridObj.component = WealthHomeLoanTotalAmountDetailComponent
+      //}
+      //else if (widgetName == "WealthHomeLoanAccountsBreakdown") {
+      //  gridObj.component = WealthHomeLoanAccountsBreakdownComponent
+      //}
+      //else if (widgetName == "WealthHomeLoanSummaryTaxPurpose") {
+      //  gridObj.component = WealthHomeLoanSummaryTaxPurposeComponent
+      //}
+      //else if (widgetName == "WealthHomeLoanInstalment") {
+      //  gridObj.component = WealthHomeLoanInstalmentComponent
+      //}
+      //else if (widgetName == "WealthHomeLoanBranchDetails") {
+      //  gridObj.component = WealthHomeLoanBankDetailsComponent
+      //}
+      //else if (widgetName == "MCAAccountSummary") {
+      //  gridObj.component = MCAAccountSummaryComponent
+      //}
+      //else if (widgetName == "MCATransaction") {
+      //  gridObj.component = MCATransactionComponent
+      //}
+      //else if (widgetName == "MCAVATAnalysis") {
+      //  gridObj.component = MCAVATAnalysisComponent
+      //}
+      //else if (widgetName == "WealthMCAAccountSummary") {
+      //  gridObj.component = WealthMCAAccountSummaryComponent
+      //}
+      //else if (widgetName == "WealthMCATransaction") {
+      //  gridObj.component = WealthMCATransactionComponent
+      //}
+      //else if (widgetName == "WealthMCAVATAnalysis") {
+      //  gridObj.component = WealthMCAVATAnalysisComponent
+      //}
     }
     else {
       let dynaWidgets = this.widgetsArray.filter(item => item.Identifier == widget.WidgetId && item.WidgetName == widgetName && item.WidgetType != 'Static');

@@ -9,7 +9,7 @@
     using System.Text;
     using Unity;
     #endregion
-    public class SQLMCARepository : IMCARepository
+    public class SQLProductRepository : IProductRepository
     {
         #region Private Members
 
@@ -41,7 +41,7 @@
         /// Initializing instance of class.
         /// </summary>
         /// <param name="unityContainer">The unity container.</param>
-        public SQLMCARepository(IUnityContainer unityContainer)
+        public SQLProductRepository(IUnityContainer unityContainer)
         {
             this.unityContainer = unityContainer;
             this.validationEngine = new ValidationEngine();
@@ -52,39 +52,20 @@
 
         #region Public Functions
 
-        public IList<DM_MCAMaster> Get_DM_MCAMaster(CustomerMCASearchParameter searchParameter, string tenantCode)
+        public IList<ProductViewModel> Get_Products(string tenantCode)
         {
-            IList<DM_MCAMaster> Records = new List<DM_MCAMaster>();
+            IList<ProductViewModel> Records = new List<ProductViewModel>();
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
-                string whereClause = this.WhereClauseGeneratorForCustomerMCA(searchParameter, tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    var MCAMasterRecords = nISEntitiesDataContext.NB_MCAMaster.Where(whereClause).ToList();
-                    if (MCAMasterRecords != null && MCAMasterRecords.Count > 0)
+                    return nISEntitiesDataContext.Products.Select(x => new ProductViewModel()
                     {
-                        MCAMasterRecords.ForEach(item =>
-                        {
-                            Records.Add(new DM_MCAMaster()
-                            {
-                                Identifier = item.Id,
-                                BatchId = item.BatchId,
-                                CustomerId = item.CustomerId,
-                                InvestorId = item.InvestorId,
-                                Currency = item.Currency,
-                                VatNo = item.VatNo,
-                                OverdraftLimit = item.OverdraftLimit,
-                                FreeBalance = item.FreeBalance,
-                                StatementNo = item.StatementNo,
-                                StatementDate = item.StatementDate,
-                                StatementFrequency = item.StatementFrequency,
-                                MCATransactions = this.Get_DM_MCATransaction(new CustomerMCASearchParameter() { InvestorId = item.InvestorId, BatchId = searchParameter.BatchId, CustomerId = item.CustomerId }, tenantCode)?.ToList()
-                            });
-                        });
-                    }
+                        Id = x.Id,
+                        Name = x.Name
+                    }).OrderBy(m => m.Name).ToList();
                 }
-                return Records;
             }
             catch (Exception ex)
             {
@@ -92,53 +73,66 @@
             }
         }
 
-        /// <summary>
-        /// This method gets the specified list of customer home loan transaction records from personal loan transaction repository.
-        /// </summary>
-        /// <param name="searchParameter">The customer home loan search parameter</param>
-        /// <param name="tenantCode">The tenant code</param>
-        /// <returns>
-        /// Returns the list of customer home loan transaction record
-        /// </returns>
-        public IList<DM_MCATransaction> Get_DM_MCATransaction(CustomerMCASearchParameter searchParameter, string tenantCode)
+        public ProductViewModel Get_ProductById(int id, string tenantCode)
         {
-            IList<DM_MCATransaction> Records = new List<DM_MCATransaction>();
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
-                string whereClause = this.WhereClauseGeneratorForCustomerMCA(searchParameter, tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    var MCATransactionRecords = nISEntitiesDataContext.NB_MCATransaction.Where(whereClause)?.OrderBy(it => it.TransactionDate)?.ToList();
-                    if (MCATransactionRecords != null && MCATransactionRecords.Count > 0)
-                    {
-                        MCATransactionRecords.ForEach(item =>
-                        {
-                            Records.Add(new DM_MCATransaction()
-                            {
-                                Identifier = item.Id,
-                                BatchId = item.BatchId,
-                                CustomerId = item.CustomerId,
-                                InvestorId = item.InvestorId,
-                                Credit = item.Credit,
-                                Debit = item.Debit,
-                                Description = item.TransactionDescription,
-                                Transaction_Date = item.TransactionDate ?? DateTime.Now,
-                                Rate = item.Rate,
-                                Days = item.Days,
-                                AccuredInterest = item.AccuredInterest,
-                                TenantCode = item.TenantCode
-                            });
-                        });
-                    }
+                    return nISEntitiesDataContext.Products.Where(m => m.Id == id).Select(x => new ProductViewModel() { Id = x.Id, Name = x.Name }).FirstOrDefault();
                 }
-                return Records;
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
+
+        public IList<ProductPageTypeMappingViewModel> Get_ProductPageTypeMappingByProductId(int productId, string tenantCode)
+        {
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var result = nISEntitiesDataContext.ProductPageTypeMappings.Join(nISEntitiesDataContext.PageTypeRecords, ppt => ppt.PageTypeId, pt => pt.Id,
+                        (ppt, pt) => new ProductPageTypeMappingViewModel()
+                        {
+                            ProductId = ppt.ProductId,
+                            PageTypeId = ppt.PageTypeId,
+                            PageTypeName = pt.Name
+                        }
+                    ).Where(m => m.ProductId == productId).ToList();
+
+                    foreach (var item in result)
+                    {
+                        var statementViewModel = (from spm in nISEntitiesDataContext.StatementPageMapRecords
+                                                  join pr in nISEntitiesDataContext.PageRecords on spm.ReferencePageId equals pr.Id
+                                                  join ppt in nISEntitiesDataContext.ProductPageTypeMappings on pr.PageTypeId equals ppt.PageTypeId
+                                                  join st in nISEntitiesDataContext.StatementRecords on spm.StatementId equals st.Id
+                                                  where ppt.PageTypeId == item.PageTypeId && st.IsDeleted == false && st.IsActive == true
+                                                  select new Statement
+                                                  {
+                                                      Identifier = st.Id,
+                                                      Name = st.Name
+                                                  }).ToList();
+                        var distinctStatements = statementViewModel
+                                              .GroupBy(x => x.Identifier)
+                                              .Select(group => group.First())
+                                              .ToList();
+
+                        item.StatementViewModel = distinctStatements;
+                    }
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
 
         #region Private Method
@@ -165,7 +159,7 @@
             }
         }
 
-        private string WhereClauseGeneratorForCustomerMCA(CustomerMCASearchParameter searchParameter, string tenantCode)
+        private string WhereClauseGeneratorForCustomerCorporateSaver(CustomerCorporateSaverSearchParameter searchParameter, string tenantCode)
         {
             StringBuilder queryString = new StringBuilder();
 
@@ -175,12 +169,12 @@
                 queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
             }
 
-            if (validationEngine.IsValidLong(searchParameter.CustomerId))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") and ");
-            }
+            //if (validationEngine.IsValidLong(searchParameter.CustomerId))
+            //{
+            //    queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") and ");
+            //}
 
-            if (validationEngine.IsValidLong(searchParameter.InvestorId))
+            if (validationEngine.IsValidLong(Convert.ToInt64(searchParameter.InvestorId)))
             {
                 queryString.Append("(" + string.Join("or ", searchParameter.InvestorId.ToString().Split(',').Select(item => string.Format("InvestorId.Equals({0}) ", item))) + ") and ");
             }
@@ -236,6 +230,7 @@
             }
             return queryString;
         }
+
         #endregion
     }
 }

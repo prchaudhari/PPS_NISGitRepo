@@ -98,31 +98,31 @@ namespace nIS
         public virtual DbSet<View_ScheduleLog> View_ScheduleLog { get; set; }
         //public virtual DbSet<View_UserRecord> View_UserRecord { get; set; }
         public virtual DbSet<TenantConfigurationRecord> TenantConfigurationRecords { get; set; }
-        public virtual DbSet<DM_BranchMasterRecord> DM_BranchMasterRecord { get; set; }
-        public virtual DbSet<DM_CustomerMasterRecord> DM_CustomerMasterRecord { get; set; }
-        public virtual DbSet<DM_ExplanatoryNotesRecord> DM_ExplanatoryNotesRecord { get; set; }
-        public virtual DbSet<DM_InvestmentMasterRecord> DM_InvestmentMasterRecord { get; set; }
-        //public virtual DbSet<DM_InvestmentTransactionRecord> DM_InvestmentTransactionRecord { get; set; }
-        public virtual DbSet<DM_PersonalLoanArrearsRecord> DM_PersonalLoanArrearsRecord { get; set; }
-        public virtual DbSet<DM_PersonalLoanMasterRecord> DM_PersonalLoanMasterRecord { get; set; }
-        public virtual DbSet<DM_PersonalLoanTransactionRecord> DM_PersonalLoanTransactionRecord { get; set; }
-        public virtual DbSet<DM_SpecialMessagesRecord> DM_SpecialMessagesRecord { get; set; }
+        //public virtual DbSet<DM_BranchMasterRecord> DM_BranchMasterRecord { get; set; }
+        //public virtual DbSet<DM_CustomerMasterRecord> DM_CustomerMasterRecord { get; set; }
+        //public virtual DbSet<DM_ExplanatoryNotesRecord> DM_ExplanatoryNotesRecord { get; set; }
+        //public virtual DbSet<DM_InvestmentMasterRecord> DM_InvestmentMasterRecord { get; set; }
+        ////public virtual DbSet<DM_InvestmentTransactionRecord> DM_InvestmentTransactionRecord { get; set; }
+        //public virtual DbSet<DM_PersonalLoanArrearsRecord> DM_PersonalLoanArrearsRecord { get; set; }
+        //public virtual DbSet<DM_PersonalLoanMasterRecord> DM_PersonalLoanMasterRecord { get; set; }
+        //public virtual DbSet<DM_PersonalLoanTransactionRecord> DM_PersonalLoanTransactionRecord { get; set; }
+        //public virtual DbSet<DM_SpecialMessagesRecord> DM_SpecialMessagesRecord { get; set; }
         //public virtual DbSet<DM_HomeLoanArrearsRecord> DM_HomeLoanArrearsRecord { get; set; }
         //public virtual DbSet<DM_HomeLoanMasterRecord> DM_HomeLoanMasterRecord { get; set; }
         //public virtual DbSet<DM_HomeLoanSummaryRecord> DM_HomeLoanSummaryRecord { get; set; }
         //public virtual DbSet<DM_HomeLoanTransactionRecord> DM_HomeLoanTransactionRecord { get; set; }
-        public virtual DbSet<DM_MarketingMessagesRecord> DM_MarketingMessagesRecord { get; set; }
-        public virtual DbSet<DM_AccountAnalysisRecord> DM_AccountAnalysisRecord { get; set; }
-        public virtual DbSet<DM_AccountSummaryRecord> DM_AccountSummaryRecord { get; set; }
-        public virtual DbSet<DM_CustomerNewsAndAlertsRecord> DM_CustomerNewsAndAlertsRecord { get; set; }
-        public virtual DbSet<DM_CustomerProductWiseRewardPointsRecord> DM_CustomerProductWiseRewardPointsRecord { get; set; }
-        public virtual DbSet<DM_CustomerReminderRecosRecord> DM_CustomerReminderRecosRecord { get; set; }
-        public virtual DbSet<DM_CustomerRewardPointsRecord> DM_CustomerRewardPointsRecord { get; set; }
-        public virtual DbSet<DM_CustomerRewardPointsRedeemedRecord> DM_CustomerRewardPointsRedeemedRecord { get; set; }
-        public virtual DbSet<DM_CustomerRewardSpendByCategoryRecord> DM_CustomerRewardSpendByCategoryRecord { get; set; }
-        public virtual DbSet<DM_GreenbacksMasterRecord> DM_GreenbacksMasterRecord { get; set; }
-        public virtual DbSet<DM_NewsAndAlertsRecord> DM_NewsAndAlertsRecord { get; set; }
-        public virtual DbSet<DM_ReminderRecosRecord> DM_ReminderRecosRecord { get; set; }
+        //public virtual DbSet<DM_MarketingMessagesRecord> DM_MarketingMessagesRecord { get; set; }
+        //public virtual DbSet<DM_AccountAnalysisRecord> DM_AccountAnalysisRecord { get; set; }
+        //public virtual DbSet<DM_AccountSummaryRecord> DM_AccountSummaryRecord { get; set; }
+        //public virtual DbSet<DM_CustomerNewsAndAlertsRecord> DM_CustomerNewsAndAlertsRecord { get; set; }
+        //public virtual DbSet<DM_CustomerProductWiseRewardPointsRecord> DM_CustomerProductWiseRewardPointsRecord { get; set; }
+        //public virtual DbSet<DM_CustomerReminderRecosRecord> DM_CustomerReminderRecosRecord { get; set; }
+        //public virtual DbSet<DM_CustomerRewardPointsRecord> DM_CustomerRewardPointsRecord { get; set; }
+        //public virtual DbSet<DM_CustomerRewardPointsRedeemedRecord> DM_CustomerRewardPointsRedeemedRecord { get; set; }
+        //public virtual DbSet<DM_CustomerRewardSpendByCategoryRecord> DM_CustomerRewardSpendByCategoryRecord { get; set; }
+        //public virtual DbSet<DM_GreenbacksMasterRecord> DM_GreenbacksMasterRecord { get; set; }
+        //public virtual DbSet<DM_NewsAndAlertsRecord> DM_NewsAndAlertsRecord { get; set; }
+        //public virtual DbSet<DM_ReminderRecosRecord> DM_ReminderRecosRecord { get; set; }
         public virtual DbSet<SystemActivityHistoryRecord> SystemActivityHistoryRecords { get; set; }
         //public virtual DbSet<NB_BatchMaster_Source> NB_BatchMaster_Source { get; set; }
         //public virtual DbSet<NB_BranchMaster> NB_BranchMaster { get; set; }
@@ -131,47 +131,53 @@ namespace nIS
         //public virtual DbSet<NB_InvestmentMaster_Old> NB_InvestmentMaster_Old { get; set; }
         //public virtual DbSet<NB_InvestmentTransaction_Old> NB_InvestmentTransaction_Old { get; set; }
         public virtual DbSet<NB_SegmentMaster> NB_SegmentMaster { get; set; }
-        public virtual DbSet<NB_SegmentTypeMaster> NB_SegmentTypeMaster { get; set; }
-        public virtual DbSet<NB_ServiceMessagesAndContacts> NB_ServiceMessagesAndContacts { get; set; }
-        public virtual DbSet<NB_HomeLoanArrears> NB_HomeLoanArrears { get; set; }
-        public virtual DbSet<NB_HomeLoanMaster> NB_HomeLoanMaster { get; set; }
-        public virtual DbSet<NB_HomeLoanSummary> NB_HomeLoanSummary { get; set; }
-        public virtual DbSet<NB_HomeLoanTransaction> NB_HomeLoanTransaction { get; set; }
-        public virtual DbSet<NB_CorporateSaverMaster> NB_CorporateSaverMaster { get; set; }
-        public virtual DbSet<NB_CorporateSaverTax> NB_CorporateSaverTax { get; set; }
-        public virtual DbSet<NB_CorporateSaverTransactions> NB_CorporateSaverTransactions { get; set; }
-        public virtual DbSet<NB_MCATransaction> NB_MCATransaction { get; set; }
-        public virtual DbSet<NB_MCAMaster> NB_MCAMaster { get; set; }
-        public virtual DbSet<NB_CustomerMaster> NB_CustomerMaster { get; set; }
+        //public virtual DbSet<NB_CorporateSaverMaster> NB_CorporateSaverMaster { get; set; }
+        //public virtual DbSet<NB_CorporateSaverTax> NB_CorporateSaverTax { get; set; }
+        //public virtual DbSet<NB_CorporateSaverTransactions> NB_CorporateSaverTransactions { get; set; }
+        //public virtual DbSet<NB_MCATransaction> NB_MCATransaction { get; set; }
+        //public virtual DbSet<NB_MCAMaster> NB_MCAMaster { get; set; }
+        //public virtual DbSet<NB_CustomerMaster> NB_CustomerMaster { get; set; }
         public virtual DbSet<ProductPageTypeMapping> ProductPageTypeMappings { get; set; }
         public virtual DbSet<Product> Products { get; set; }
-        public virtual DbSet<NB_InvestmentMaster> NB_InvestmentMaster { get; set; }
-        public virtual DbSet<NB_InvestmentTransaction> NB_InvestmentTransaction { get; set; }
+        //public virtual DbSet<NB_InvestmentMaster> NB_InvestmentMaster { get; set; }
+        //public virtual DbSet<NB_InvestmentTransaction> NB_InvestmentTransaction { get; set; }
         public virtual DbSet<EtlSchedules> EtlSchedules { get; set; }
         public virtual DbSet<EtlBatches> EtlBatches { get; set; }
         public virtual DbSet<SystemActivityHistory> SystemActivityHistory { get; set; }
         public virtual DbSet<View_ETLScheduleLog> View_ETLScheduleLog { get; set; }
 
-        [DbFunction("NISEntities", "FnUserTenant")]
-        public virtual IQueryable<FnUserTenant_Result> FnUserTenant(Nullable<int> userId)
-        {
-            var userIdParameter = userId.HasValue ?
-                new ObjectParameter("UserId", userId) :
-                new ObjectParameter("UserId", typeof(int));
+        //[DbFunction("NISEntities", "FnUserTenant")]
+        //public virtual IQueryable<FnUserTenant_Result> FnUserTenant(Nullable<int> userId)
+        //{
+        //    var userIdParameter = userId.HasValue ?
+        //        new ObjectParameter("UserId", userId) :
+        //        new ObjectParameter("UserId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<FnUserTenant_Result>("[NISEntities].[FnUserTenant](@UserId)", userIdParameter);
-        }
-    
-        [DbFunction("NISEntities", "FnGetParentAndChildTenant")]
-        public virtual IQueryable<FnGetParentAndChildTenant_Result> FnGetParentAndChildTenant(string parentTenantCode)
-        {
-            var parentTenantCodeParameter = parentTenantCode != null ?
-                new ObjectParameter("ParentTenantCode", parentTenantCode) :
-                new ObjectParameter("ParentTenantCode", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<FnGetParentAndChildTenant_Result>("[NISEntities].[FnGetParentAndChildTenant](@ParentTenantCode)", parentTenantCodeParameter);
-        }
+        //    return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<FnUserTenant_Result>("[NIS].[FnUserTenant](@UserId)", userIdParameter);
+        //}
 
+        public virtual List<FnUserTenant_Result> FnUserTenant(Nullable<int> userId)
+        {
+            var result = this.Database.SqlQuery<FnUserTenant_Result>($"select * from [NIS].[FnUserTenant]({userId.Value})").ToList();
+            return result;
+
+        }
+        //[DbFunction("NISEntities", "FnGetParentAndChildTenant")]
+        //public virtual IQueryable<FnGetParentAndChildTenant_Result> FnGetParentAndChildTenant(string parentTenantCode)
+        //{
+        //    var parentTenantCodeParameter = parentTenantCode != null ?
+        //        new ObjectParameter("ParentTenantCode", parentTenantCode) :
+        //        new ObjectParameter("ParentTenantCode", typeof(string));
+
+        //    return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<FnGetParentAndChildTenant_Result>("[NIS].[FnGetParentAndChildTenant](@ParentTenantCode)", parentTenantCodeParameter);
+        //}
+
+        public virtual List<FnGetParentAndChildTenant_Result> FnGetParentAndChildTenant(string parentTenantCode)
+        {
+            var result = this.Database.SqlQuery<FnGetParentAndChildTenant_Result>($"select * from [NIS].[FnGetParentAndChildTenant]('{parentTenantCode}')").ToList();
+
+            return result;
+        }
         ////[DbFunction("NISEntities", "FnGetStaticAndDynamicWidgets")]
         //public virtual IQueryable<FnGetStaticAndDynamicWidgets_Result> FnGetStaticAndDynamicWidgets(Nullable<long> pageTypeId, string tenantCode)
         //{

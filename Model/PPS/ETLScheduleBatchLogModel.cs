@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace nIS.NedBank
+namespace nIS.PPS
 {
     public class ETLScheduleBatchLogModel
     {
