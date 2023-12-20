@@ -441,24 +441,24 @@ namespace nIS
                                         }
 
                                         var PaddingClass = i != 0 ? " pl-0" : string.Empty;
-                                        if (MarketingMessages.Length > 0 && mergedlst[i].WidgetName == HtmlConstants.SERVICE_WIDGET_NAME)
-                                        {
-                                            //to add Nedbank services header... to do-- Create separate static widgets for widget's header label
-                                            if (MarketingMessageCounter == 0)
-                                            {
-                                                //htmlString.Append("<div class='col-lg-12'><div class='card border-0'><div class='card-body text-left py-0'><div class='card-body-header pb-2'>Nedbank Services</div></div></div></div></div><div class='row'>");
-                                            }
-                                            PaddingClass = MarketingMessageCounter % 2 == 0 ? " pr-1 pl-35px" : " pl-1 pr-35px";
-                                        }
-                                        else if (MarketingMessages.Length > 0 && mergedlst[i].WidgetName == HtmlConstants.WEALTH_SERVICE_WIDGET_NAME)
-                                        {
-                                            //to add Nedbank services header... to do-- Create separate static widgets for widget's header label
-                                            if (MarketingMessageCounter == 0)
-                                            {
-                                                //htmlString.Append("<div class='col-lg-12'><div class='card border-0'><div class='card-body text-left py-0'><div class='card-body-header-w pb-2'>Nedbank Services</div></div></div></div></div><div class='row'>");
-                                            }
-                                            PaddingClass = MarketingMessageCounter % 2 == 0 ? " pr-1 pl-35px" : " pl-1 pr-35px";
-                                        }
+                                        //if (MarketingMessages.Length > 0 && mergedlst[i].WidgetName == HtmlConstants.SERVICE_WIDGET_NAME)
+                                        //{
+                                        //    //to add Nedbank services header... to do-- Create separate static widgets for widget's header label
+                                        //    if (MarketingMessageCounter == 0)
+                                        //    {
+                                        //        //htmlString.Append("<div class='col-lg-12'><div class='card border-0'><div class='card-body text-left py-0'><div class='card-body-header pb-2'>Nedbank Services</div></div></div></div></div><div class='row'>");
+                                        //    }
+                                        //    PaddingClass = MarketingMessageCounter % 2 == 0 ? " pr-1 pl-35px" : " pl-1 pr-35px";
+                                        //}
+                                        //else if (MarketingMessages.Length > 0 && mergedlst[i].WidgetName == HtmlConstants.WEALTH_SERVICE_WIDGET_NAME)
+                                        //{
+                                        //    //to add Nedbank services header... to do-- Create separate static widgets for widget's header label
+                                        //    if (MarketingMessageCounter == 0)
+                                        //    {
+                                        //        //htmlString.Append("<div class='col-lg-12'><div class='card border-0'><div class='card-body text-left py-0'><div class='card-body-header-w pb-2'>Nedbank Services</div></div></div></div></div><div class='row'>");
+                                        //    }
+                                        //    PaddingClass = MarketingMessageCounter % 2 == 0 ? " pr-1 pl-35px" : " pl-1 pr-35px";
+                                        //}
                                         htmlString.Append("<div class='col-lg-" + divLength + PaddingClass + "'>");
 
                                         if (!mergedlst[i].IsDynamicWidget)
@@ -783,86 +783,86 @@ namespace nIS
                                                     htmlString.Append(widgetstr);
                                                 }
                                             }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.CUSTOMER_DETAILS_WIDGET_NAME)
-                                            {
-                                                //IList<CustomerInformation> customers = this.customerRepository.GetCustomersByInvesterId(11083, tenantCode);
-                                                var customerHtmlWidget = HtmlConstants.CUSTOMER_DETAILS_WIDGET_HTML;
-                                                //CustomerInformation customerInfo = customers.FirstOrDefault();
-                                                customerHtmlWidget = customerHtmlWidget.Replace("{{Title}}", "Title");
-                                                customerHtmlWidget = customerHtmlWidget.Replace("{{FirstName}}", "FirstName");
-                                                customerHtmlWidget = customerHtmlWidget.Replace("{{SurName}}", "SurName");
-                                                customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine0}}", "Line0");
-                                                customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine1}}", "Line1");
-                                                customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine2}}", "Line2");
-                                                customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine3}}", "Line3");
-                                                customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine4}}", "Line4");
-                                                customerHtmlWidget = customerHtmlWidget.Replace("{{MaskCellNo}}", "0123456789");
-                                                //customerHtmlWidget = customerHtmlWidget.Replace("{{Barcode}}", customerInfo.Barcode != string.Empty ? customerInfo.Barcode : string.Empty);
-                                                htmlString.Append(customerHtmlWidget);
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.BRANCH_DETAILS_WIDGET_NAME)
-                                            {
-                                                var htmlWidget = new StringBuilder(HtmlConstants.BRANCH_DETAILS_WIDGET_HTML);
-                                                //if ((page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE
-                                                //    || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE
-                                                //    || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE))
-                                                //{
-                                                //    htmlWidget.Replace("{{BankName}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd));
-                                                //    htmlWidget.Replace("{{AddressLine0}}", string.Empty);
-                                                //    htmlWidget.Replace("{{AddressLine1}}", string.Empty);
-                                                //    htmlWidget.Replace("{{AddressLine2}}", string.Empty);
-                                                //    htmlWidget.Replace("{{AddressLine3}}", string.Empty);
-                                                //    htmlWidget.Replace("{{BankVATRegNo}}", string.Empty);
-                                                //    htmlWidget.Replace("{{ContactCenter}}", "Professional Banking 24/7 Contact centre " + "0860 555 111");
-                                                //    htmlString.Append(htmlWidget.ToString());
-                                                //}
-                                                //else
-                                                //{
-                                                //    string jsonstr = "{'BranchName': 'NEDBANK', 'AddressLine0':'Second Floor, Newtown Campus', 'AddressLine1':'141 Lilian Ngoyi Street, Newtown, Johannesburg 2001', 'AddressLine2':'PO Box 1144, Johannesburg, 2000','AddressLine3':'South Africa','VatRegNo':'4320116074','ContactNo':'0860 555 111'}";
-                                                //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
-                                                //    {
-                                                //        var branchDetails = JsonConvert.DeserializeObject<DM_BranchMaster>(jsonstr);
-                                                //        htmlWidget.Replace("{{BankName}}", branchDetails.BranchName.ToUpper());
-                                                //        htmlWidget.Replace("{{AddressLine0}}", branchDetails.AddressLine0.ToUpper());
-                                                //        htmlWidget.Replace("{{AddressLine1}}", branchDetails.AddressLine1.ToUpper());
-                                                //        htmlWidget.Replace("{{AddressLine2}}", branchDetails.AddressLine2.ToUpper());
-                                                //        htmlWidget.Replace("{{AddressLine3}}", branchDetails.AddressLine3.ToUpper());
-                                                //        htmlWidget.Replace("{{BankVATRegNo}}", "Bank VAT Reg No " + branchDetails.VatRegNo);
-                                                //        htmlWidget.Replace("{{ContactCenter}}", "Nedbank Private Wealth Service Suite: " + branchDetails.ContactNo);
-                                                //        htmlString.Append(htmlWidget.ToString());
-                                                //    }
-                                                //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.CUSTOMER_DETAILS_WIDGET_NAME)
+                                            //{
+                                            //    //IList<CustomerInformation> customers = this.customerRepository.GetCustomersByInvesterId(11083, tenantCode);
+                                            //    var customerHtmlWidget = HtmlConstants.CUSTOMER_DETAILS_WIDGET_HTML;
+                                            //    //CustomerInformation customerInfo = customers.FirstOrDefault();
+                                            //    customerHtmlWidget = customerHtmlWidget.Replace("{{Title}}", "Title");
+                                            //    customerHtmlWidget = customerHtmlWidget.Replace("{{FirstName}}", "FirstName");
+                                            //    customerHtmlWidget = customerHtmlWidget.Replace("{{SurName}}", "SurName");
+                                            //    customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine0}}", "Line0");
+                                            //    customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine1}}", "Line1");
+                                            //    customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine2}}", "Line2");
+                                            //    customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine3}}", "Line3");
+                                            //    customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine4}}", "Line4");
+                                            //    customerHtmlWidget = customerHtmlWidget.Replace("{{MaskCellNo}}", "0123456789");
+                                            //    //customerHtmlWidget = customerHtmlWidget.Replace("{{Barcode}}", customerInfo.Barcode != string.Empty ? customerInfo.Barcode : string.Empty);
+                                            //    htmlString.Append(customerHtmlWidget);
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.BRANCH_DETAILS_WIDGET_NAME)
+                                            //{
+                                            //    var htmlWidget = new StringBuilder(HtmlConstants.BRANCH_DETAILS_WIDGET_HTML);
+                                            //    //if ((page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE
+                                            //    //    || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE
+                                            //    //    || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE))
+                                            //    //{
+                                            //    //    htmlWidget.Replace("{{BankName}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd));
+                                            //    //    htmlWidget.Replace("{{AddressLine0}}", string.Empty);
+                                            //    //    htmlWidget.Replace("{{AddressLine1}}", string.Empty);
+                                            //    //    htmlWidget.Replace("{{AddressLine2}}", string.Empty);
+                                            //    //    htmlWidget.Replace("{{AddressLine3}}", string.Empty);
+                                            //    //    htmlWidget.Replace("{{BankVATRegNo}}", string.Empty);
+                                            //    //    htmlWidget.Replace("{{ContactCenter}}", "Professional Banking 24/7 Contact centre " + "0860 555 111");
+                                            //    //    htmlString.Append(htmlWidget.ToString());
+                                            //    //}
+                                            //    //else
+                                            //    //{
+                                            //    //    string jsonstr = "{'BranchName': 'NEDBANK', 'AddressLine0':'Second Floor, Newtown Campus', 'AddressLine1':'141 Lilian Ngoyi Street, Newtown, Johannesburg 2001', 'AddressLine2':'PO Box 1144, Johannesburg, 2000','AddressLine3':'South Africa','VatRegNo':'4320116074','ContactNo':'0860 555 111'}";
+                                            //    //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                            //    //    {
+                                            //    //        var branchDetails = JsonConvert.DeserializeObject<DM_BranchMaster>(jsonstr);
+                                            //    //        htmlWidget.Replace("{{BankName}}", branchDetails.BranchName.ToUpper());
+                                            //    //        htmlWidget.Replace("{{AddressLine0}}", branchDetails.AddressLine0.ToUpper());
+                                            //    //        htmlWidget.Replace("{{AddressLine1}}", branchDetails.AddressLine1.ToUpper());
+                                            //    //        htmlWidget.Replace("{{AddressLine2}}", branchDetails.AddressLine2.ToUpper());
+                                            //    //        htmlWidget.Replace("{{AddressLine3}}", branchDetails.AddressLine3.ToUpper());
+                                            //    //        htmlWidget.Replace("{{BankVATRegNo}}", "Bank VAT Reg No " + branchDetails.VatRegNo);
+                                            //    //        htmlWidget.Replace("{{ContactCenter}}", "Nedbank Private Wealth Service Suite: " + branchDetails.ContactNo);
+                                            //    //        htmlString.Append(htmlWidget.ToString());
+                                            //    //    }
+                                            //    //}
 
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.WEALTH_BRANCH_DETAILS_WIDGET_NAME)
-                                            {
-                                                var htmlWidget = new StringBuilder(HtmlConstants.WEALTH_BRANCH_DETAILS_WIDGET_HTML);
-                                                //if ((page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE
-                                                //    || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE
-                                                //    || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE))
-                                                //{
-                                                //    htmlWidget.Replace("{{BranchDetails}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd));
-                                                //    htmlWidget.Replace("{{ContactCenter}}", "Professional Banking 24/7 Contact centre " + "0860 555 111");
-                                                //    htmlString.Append(htmlWidget.ToString());
-                                                //}
-                                                //else
-                                                //{
-                                                //    string jsonstr = "{'BranchName': 'NEDBANK', 'AddressLine0':'Second Floor, Newtown Campus', 'AddressLine1':'141 Lilian Ngoyi Street, Newtown, Johannesburg 2001', 'AddressLine2':'PO Box 1144, Johannesburg, 2000','AddressLine3':'South Africa','VatRegNo':'4320116074','ContactNo':'0860 555 111'}";
-                                                //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
-                                                //    {
-                                                //        var branchDetails = JsonConvert.DeserializeObject<DM_BranchMaster>(jsonstr);
-                                                //        htmlWidget.Replace("{{BankName}}", branchDetails.BranchName.ToUpper());
-                                                //        htmlWidget.Replace("{{AddressLine0}}", branchDetails.AddressLine0.ToUpper());
-                                                //        htmlWidget.Replace("{{AddressLine1}}", branchDetails.AddressLine1.ToUpper());
-                                                //        htmlWidget.Replace("{{AddressLine2}}", branchDetails.AddressLine2.ToUpper());
-                                                //        htmlWidget.Replace("{{AddressLine3}}", branchDetails.AddressLine3.ToUpper());
-                                                //        htmlWidget.Replace("{{BankVATRegNo}}", "Bank VAT Reg No " + branchDetails.VatRegNo);
-                                                //        htmlWidget.Replace("{{ContactCenter}}", "Nedbank Private Wealth Service Suite: " + branchDetails.ContactNo);
-                                                //        htmlString.Append(htmlWidget.ToString());
-                                                //    }
-                                                //}
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.WEALTH_BRANCH_DETAILS_WIDGET_NAME)
+                                            //{
+                                            //    var htmlWidget = new StringBuilder(HtmlConstants.WEALTH_BRANCH_DETAILS_WIDGET_HTML);
+                                            //    //if ((page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE
+                                            //    //    || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE
+                                            //    //    || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || page.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE))
+                                            //    //{
+                                            //    //    htmlWidget.Replace("{{BranchDetails}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd));
+                                            //    //    htmlWidget.Replace("{{ContactCenter}}", "Professional Banking 24/7 Contact centre " + "0860 555 111");
+                                            //    //    htmlString.Append(htmlWidget.ToString());
+                                            //    //}
+                                            //    //else
+                                            //    //{
+                                            //    //    string jsonstr = "{'BranchName': 'NEDBANK', 'AddressLine0':'Second Floor, Newtown Campus', 'AddressLine1':'141 Lilian Ngoyi Street, Newtown, Johannesburg 2001', 'AddressLine2':'PO Box 1144, Johannesburg, 2000','AddressLine3':'South Africa','VatRegNo':'4320116074','ContactNo':'0860 555 111'}";
+                                            //    //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                            //    //    {
+                                            //    //        var branchDetails = JsonConvert.DeserializeObject<DM_BranchMaster>(jsonstr);
+                                            //    //        htmlWidget.Replace("{{BankName}}", branchDetails.BranchName.ToUpper());
+                                            //    //        htmlWidget.Replace("{{AddressLine0}}", branchDetails.AddressLine0.ToUpper());
+                                            //    //        htmlWidget.Replace("{{AddressLine1}}", branchDetails.AddressLine1.ToUpper());
+                                            //    //        htmlWidget.Replace("{{AddressLine2}}", branchDetails.AddressLine2.ToUpper());
+                                            //    //        htmlWidget.Replace("{{AddressLine3}}", branchDetails.AddressLine3.ToUpper());
+                                            //    //        htmlWidget.Replace("{{BankVATRegNo}}", "Bank VAT Reg No " + branchDetails.VatRegNo);
+                                            //    //        htmlWidget.Replace("{{ContactCenter}}", "Nedbank Private Wealth Service Suite: " + branchDetails.ContactNo);
+                                            //    //        htmlString.Append(htmlWidget.ToString());
+                                            //    //    }
+                                            //    //}
 
-                                            }
+                                            //}
                                             //else if (mergedlst[i].WidgetName == HtmlConstants.INVESTMENT_PORTFOLIO_STATEMENT_WIDGET_NAME)
                                             //{
                                             //    string jsonstr = "{'Currency': 'R', 'TotalClosingBalance': '23 920.98', 'DayOfStatement':'21', 'InvestorId':'204626','StatementPeriod':'22/12/2020 to 21/01/2021','StatementDate':'21/01/2021', 'DsInvestorName' : '' }";
@@ -905,232 +905,232 @@ namespace nIS
                                             //        htmlString.Append(InvestmentPortfolioHtmlWidget);
                                             //    }
                                             //}
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.INVESTOR_PERFORMANCE_WIDGET_NAME)
-                                            {
-                                                string jsonstr = "{'Currency': 'R', 'ProductType': 'Notice deposits', 'OpeningBalanceAmount':'23 875.36', 'ClosingBalanceAmount':'23 920.98'}";
-                                                if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
-                                                {
-                                                    dynamic InvestmentPerformance = JObject.Parse(jsonstr);
-                                                    var InvestorPerformanceHtmlWidget = HtmlConstants.INVESTOR_PERFORMANCE_WIDGET_HTML;
-                                                    InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ProductType}}", Convert.ToString(InvestmentPerformance.ProductType));
-                                                    InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{OpeningBalanceAmount}}", (Convert.ToString(InvestmentPerformance.Currency) + Convert.ToString(InvestmentPerformance.OpeningBalanceAmount)));
-                                                    InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ClosingBalanceAmount}}", (Convert.ToString(InvestmentPerformance.Currency) + Convert.ToString(InvestmentPerformance.ClosingBalanceAmount)));
-                                                    htmlString.Append(InvestorPerformanceHtmlWidget);
-                                                }
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_NAME)
-                                            {
-                                                string jsonstr = "{'Currency': 'R', 'ProductType': 'Notice deposits', 'OpeningBalanceAmount':'23 875.36', 'ClosingBalanceAmount':'23 920.98'}";
-                                                if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
-                                                {
-                                                    dynamic InvestmentPerformance = JObject.Parse(jsonstr);
-                                                    var InvestorPerformanceHtmlWidget = HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_HTML;
-                                                    InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ProductType}}", Convert.ToString(InvestmentPerformance.ProductType));
-                                                    InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{OpeningBalanceAmount}}", (Convert.ToString(InvestmentPerformance.Currency) + Convert.ToString(InvestmentPerformance.OpeningBalanceAmount)));
-                                                    InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ClosingBalanceAmount}}", (Convert.ToString(InvestmentPerformance.Currency) + Convert.ToString(InvestmentPerformance.ClosingBalanceAmount)));
-                                                    htmlString.Append(InvestorPerformanceHtmlWidget);
-                                                }
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_NAME)
-                                            {
-                                                string jsonstr = HtmlConstants.BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_PREVIEW_JSON_STRING;
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.INVESTOR_PERFORMANCE_WIDGET_NAME)
+                                            //{
+                                            //    string jsonstr = "{'Currency': 'R', 'ProductType': 'Notice deposits', 'OpeningBalanceAmount':'23 875.36', 'ClosingBalanceAmount':'23 920.98'}";
+                                            //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                            //    {
+                                            //        dynamic InvestmentPerformance = JObject.Parse(jsonstr);
+                                            //        var InvestorPerformanceHtmlWidget = HtmlConstants.INVESTOR_PERFORMANCE_WIDGET_HTML;
+                                            //        InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ProductType}}", Convert.ToString(InvestmentPerformance.ProductType));
+                                            //        InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{OpeningBalanceAmount}}", (Convert.ToString(InvestmentPerformance.Currency) + Convert.ToString(InvestmentPerformance.OpeningBalanceAmount)));
+                                            //        InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ClosingBalanceAmount}}", (Convert.ToString(InvestmentPerformance.Currency) + Convert.ToString(InvestmentPerformance.ClosingBalanceAmount)));
+                                            //        htmlString.Append(InvestorPerformanceHtmlWidget);
+                                            //    }
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_NAME)
+                                            //{
+                                            //    string jsonstr = "{'Currency': 'R', 'ProductType': 'Notice deposits', 'OpeningBalanceAmount':'23 875.36', 'ClosingBalanceAmount':'23 920.98'}";
+                                            //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                            //    {
+                                            //        dynamic InvestmentPerformance = JObject.Parse(jsonstr);
+                                            //        var InvestorPerformanceHtmlWidget = HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_HTML;
+                                            //        InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ProductType}}", Convert.ToString(InvestmentPerformance.ProductType));
+                                            //        InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{OpeningBalanceAmount}}", (Convert.ToString(InvestmentPerformance.Currency) + Convert.ToString(InvestmentPerformance.OpeningBalanceAmount)));
+                                            //        InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ClosingBalanceAmount}}", (Convert.ToString(InvestmentPerformance.Currency) + Convert.ToString(InvestmentPerformance.ClosingBalanceAmount)));
+                                            //        htmlString.Append(InvestorPerformanceHtmlWidget);
+                                            //    }
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_NAME)
+                                            //{
+                                            //    string jsonstr = HtmlConstants.BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_PREVIEW_JSON_STRING;
 
-                                                if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
-                                                {
-                                                    var InvestmentAccountBreakdownHtml = new StringBuilder(HtmlConstants.BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_HTML);
-                                                    IList<InvestmentAccount> InvestmentAccounts = JsonConvert.DeserializeObject<List<InvestmentAccount>>(jsonstr);
+                                            //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                            //    {
+                                            //        var InvestmentAccountBreakdownHtml = new StringBuilder(HtmlConstants.BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_HTML);
+                                            //        IList<InvestmentAccount> InvestmentAccounts = JsonConvert.DeserializeObject<List<InvestmentAccount>>(jsonstr);
 
-                                                    //Create Nav tab if investment accounts is more than 1
-                                                    var NavTabs = new StringBuilder();
-                                                    var InvestmentAccountsCount = InvestmentAccounts.Count;
-                                                    InvestmentAccountBreakdownHtml.Replace("{{NavTab}}", NavTabs.ToString());
+                                            //        //Create Nav tab if investment accounts is more than 1
+                                            //        var NavTabs = new StringBuilder();
+                                            //        var InvestmentAccountsCount = InvestmentAccounts.Count;
+                                            //        InvestmentAccountBreakdownHtml.Replace("{{NavTab}}", NavTabs.ToString());
 
-                                                    //create tab-content div if accounts is greater than 1, otherwise create simple div
-                                                    var TabContentHtml = new StringBuilder();
-                                                    var counter = 0;
-                                                    TabContentHtml.Append((InvestmentAccountsCount > 1) ? "<div class='tab-content'>" : string.Empty);
-                                                    InvestmentAccounts.ToList().ForEach(acc =>
-                                                    {
-                                                        var InvestmentAccountDetailHtml = new StringBuilder(HtmlConstants.INVESTMENT_ACCOUNT_DETAILS_HTML);
-                                                        InvestmentAccountDetailHtml.Replace("{{ProductDesc}}", acc.ProductDesc);
-                                                        InvestmentAccountDetailHtml.Replace("{{InvestmentId}}", acc.InvestmentId);
-                                                        InvestmentAccountDetailHtml.Replace("{{TabPaneClass}}", string.Empty);
+                                            //        //create tab-content div if accounts is greater than 1, otherwise create simple div
+                                            //        var TabContentHtml = new StringBuilder();
+                                            //        var counter = 0;
+                                            //        TabContentHtml.Append((InvestmentAccountsCount > 1) ? "<div class='tab-content'>" : string.Empty);
+                                            //        InvestmentAccounts.ToList().ForEach(acc =>
+                                            //        {
+                                            //            var InvestmentAccountDetailHtml = new StringBuilder(HtmlConstants.INVESTMENT_ACCOUNT_DETAILS_HTML);
+                                            //            InvestmentAccountDetailHtml.Replace("{{ProductDesc}}", acc.ProductDesc);
+                                            //            InvestmentAccountDetailHtml.Replace("{{InvestmentId}}", acc.InvestmentId);
+                                            //            InvestmentAccountDetailHtml.Replace("{{TabPaneClass}}", string.Empty);
 
-                                                        var InvestmentNo = acc.InvestorId + " " + acc.InvestmentId;
-                                                        //actual length is 12, due to space in between investor id and investment id we comparing for 13 characters
-                                                        while (InvestmentNo.Length != 13)
-                                                        {
-                                                            InvestmentNo = "0" + InvestmentNo;
-                                                        }
-                                                        InvestmentAccountDetailHtml.Replace("{{InvestmentNo}}", InvestmentNo);
-                                                        InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.OpenDate);
+                                            //            var InvestmentNo = acc.InvestorId + " " + acc.InvestmentId;
+                                            //            //actual length is 12, due to space in between investor id and investment id we comparing for 13 characters
+                                            //            while (InvestmentNo.Length != 13)
+                                            //            {
+                                            //                InvestmentNo = "0" + InvestmentNo;
+                                            //            }
+                                            //            InvestmentAccountDetailHtml.Replace("{{InvestmentNo}}", InvestmentNo);
+                                            //            InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.OpenDate);
 
-                                                        InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.OpenDate);
-                                                        InvestmentAccountDetailHtml.Replace("{{InterestRate}}", acc.CurrentInterestRate + "% pa");
-                                                        InvestmentAccountDetailHtml.Replace("{{MaturityDate}}", acc.ExpiryDate);
-                                                        InvestmentAccountDetailHtml.Replace("{{InterestDisposal}}", acc.InterestDisposalDesc);
-                                                        InvestmentAccountDetailHtml.Replace("{{NoticePeriod}}", acc.NoticePeriod);
-                                                        InvestmentAccountDetailHtml.Replace("{{InterestDue}}", acc.Currency + acc.AccuredInterest);
+                                            //            InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.OpenDate);
+                                            //            InvestmentAccountDetailHtml.Replace("{{InterestRate}}", acc.CurrentInterestRate + "% pa");
+                                            //            InvestmentAccountDetailHtml.Replace("{{MaturityDate}}", acc.ExpiryDate);
+                                            //            InvestmentAccountDetailHtml.Replace("{{InterestDisposal}}", acc.InterestDisposalDesc);
+                                            //            InvestmentAccountDetailHtml.Replace("{{NoticePeriod}}", acc.NoticePeriod);
+                                            //            InvestmentAccountDetailHtml.Replace("{{InterestDue}}", acc.Currency + acc.AccuredInterest);
 
-                                                        InvestmentAccountDetailHtml.Replace("{{LastTransactionDate}}", "25 November 2020");
-                                                        InvestmentAccountDetailHtml.Replace("{{BalanceOfLastTransactionDate}}", acc.Currency + (counter == 0 ? "5 307.14" : "18 613.84"));
+                                            //            InvestmentAccountDetailHtml.Replace("{{LastTransactionDate}}", "25 November 2020");
+                                            //            InvestmentAccountDetailHtml.Replace("{{BalanceOfLastTransactionDate}}", acc.Currency + (counter == 0 ? "5 307.14" : "18 613.84"));
 
-                                                        var InvestmentTransactionRows = new StringBuilder();
-                                                        acc.Transactions.ForEach(trans =>
-                                                        {
-                                                            var tr = new StringBuilder();
-                                                            tr.Append("<tr class='ht-20'>");
-                                                            tr.Append("<td class='w-15 pt-1'>" + trans.TransactionDate + "</td>");
-                                                            tr.Append("<td class='w-40 pt-1'>" + trans.TransactionDesc + "</td>");
-                                                            tr.Append("<td class='w-15 text-right pt-1'>" + (trans.Debit == "0" ? "-" : acc.Currency + trans.Debit) + "</td>");
-                                                            tr.Append("<td class='w-15 text-right pt-1'>" + (trans.Credit == "0" ? "-" : acc.Currency + trans.Credit) + "</td>");
-                                                            tr.Append("<td class='w-15 text-right pt-1'>" + (trans.Balance == "0" ? "-" : acc.Currency + trans.Balance) + "</td>");
-                                                            tr.Append("</tr>");
-                                                            InvestmentTransactionRows.Append(tr.ToString());
-                                                        });
-                                                        InvestmentAccountDetailHtml.Replace("{{InvestmentTransactionRows}}", InvestmentTransactionRows.ToString());
-                                                        TabContentHtml.Append(InvestmentAccountDetailHtml.ToString());
-                                                        counter++;
-                                                    });
-                                                    TabContentHtml.Append((InvestmentAccountsCount > 1) ? HtmlConstants.END_DIV_TAG : string.Empty);
+                                            //            var InvestmentTransactionRows = new StringBuilder();
+                                            //            acc.Transactions.ForEach(trans =>
+                                            //            {
+                                            //                var tr = new StringBuilder();
+                                            //                tr.Append("<tr class='ht-20'>");
+                                            //                tr.Append("<td class='w-15 pt-1'>" + trans.TransactionDate + "</td>");
+                                            //                tr.Append("<td class='w-40 pt-1'>" + trans.TransactionDesc + "</td>");
+                                            //                tr.Append("<td class='w-15 text-right pt-1'>" + (trans.Debit == "0" ? "-" : acc.Currency + trans.Debit) + "</td>");
+                                            //                tr.Append("<td class='w-15 text-right pt-1'>" + (trans.Credit == "0" ? "-" : acc.Currency + trans.Credit) + "</td>");
+                                            //                tr.Append("<td class='w-15 text-right pt-1'>" + (trans.Balance == "0" ? "-" : acc.Currency + trans.Balance) + "</td>");
+                                            //                tr.Append("</tr>");
+                                            //                InvestmentTransactionRows.Append(tr.ToString());
+                                            //            });
+                                            //            InvestmentAccountDetailHtml.Replace("{{InvestmentTransactionRows}}", InvestmentTransactionRows.ToString());
+                                            //            TabContentHtml.Append(InvestmentAccountDetailHtml.ToString());
+                                            //            counter++;
+                                            //        });
+                                            //        TabContentHtml.Append((InvestmentAccountsCount > 1) ? HtmlConstants.END_DIV_TAG : string.Empty);
 
-                                                    InvestmentAccountBreakdownHtml.Replace("{{TabContentsDiv}}", TabContentHtml.ToString());
-                                                    htmlString.Append(InvestmentAccountBreakdownHtml.ToString());
-                                                }
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.WEALTH_BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_NAME)
-                                            {
-                                                string jsonstr = HtmlConstants.WEALTH_BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_PREVIEW_JSON_STRING;
+                                            //        InvestmentAccountBreakdownHtml.Replace("{{TabContentsDiv}}", TabContentHtml.ToString());
+                                            //        htmlString.Append(InvestmentAccountBreakdownHtml.ToString());
+                                            //    }
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.WEALTH_BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_NAME)
+                                            //{
+                                            //    string jsonstr = HtmlConstants.WEALTH_BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_PREVIEW_JSON_STRING;
 
-                                                if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
-                                                {
-                                                    var InvestmentAccountBreakdownHtml = new StringBuilder(HtmlConstants.WEALTH_BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_HTML);
-                                                    IList<InvestmentAccount> InvestmentAccounts = JsonConvert.DeserializeObject<List<InvestmentAccount>>(jsonstr);
+                                            //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                            //    {
+                                            //        var InvestmentAccountBreakdownHtml = new StringBuilder(HtmlConstants.WEALTH_BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_HTML);
+                                            //        IList<InvestmentAccount> InvestmentAccounts = JsonConvert.DeserializeObject<List<InvestmentAccount>>(jsonstr);
 
-                                                    //Create Nav tab if investment accounts is more than 1
-                                                    var NavTabs = new StringBuilder();
-                                                    var InvestmentAccountsCount = InvestmentAccounts.Count;
-                                                    InvestmentAccountBreakdownHtml.Replace("{{NavTab}}", NavTabs.ToString());
+                                            //        //Create Nav tab if investment accounts is more than 1
+                                            //        var NavTabs = new StringBuilder();
+                                            //        var InvestmentAccountsCount = InvestmentAccounts.Count;
+                                            //        InvestmentAccountBreakdownHtml.Replace("{{NavTab}}", NavTabs.ToString());
 
-                                                    //create tab-content div if accounts is greater than 1, otherwise create simple div
-                                                    var TabContentHtml = new StringBuilder();
-                                                    var counter = 0;
-                                                    TabContentHtml.Append((InvestmentAccountsCount > 1) ? "<div class='tab-content'>" : string.Empty);
-                                                    InvestmentAccounts.ToList().ForEach(acc =>
-                                                    {
-                                                        var InvestmentAccountDetailHtml = new StringBuilder(HtmlConstants.WEALTH_INVESTMENT_ACCOUNT_DETAILS_HTML);
-                                                        InvestmentAccountDetailHtml.Replace("{{ProductDesc}}", acc.ProductDesc);
-                                                        InvestmentAccountDetailHtml.Replace("{{InvestmentId}}", acc.InvestmentId);
-                                                        InvestmentAccountDetailHtml.Replace("{{TabPaneClass}}", string.Empty);
+                                            //        //create tab-content div if accounts is greater than 1, otherwise create simple div
+                                            //        var TabContentHtml = new StringBuilder();
+                                            //        var counter = 0;
+                                            //        TabContentHtml.Append((InvestmentAccountsCount > 1) ? "<div class='tab-content'>" : string.Empty);
+                                            //        InvestmentAccounts.ToList().ForEach(acc =>
+                                            //        {
+                                            //            var InvestmentAccountDetailHtml = new StringBuilder(HtmlConstants.WEALTH_INVESTMENT_ACCOUNT_DETAILS_HTML);
+                                            //            InvestmentAccountDetailHtml.Replace("{{ProductDesc}}", acc.ProductDesc);
+                                            //            InvestmentAccountDetailHtml.Replace("{{InvestmentId}}", acc.InvestmentId);
+                                            //            InvestmentAccountDetailHtml.Replace("{{TabPaneClass}}", string.Empty);
 
-                                                        var InvestmentNo = acc.InvestorId + " " + acc.InvestmentId;
-                                                        //actual length is 12, due to space in between investor id and investment id we comparing for 13 characters
-                                                        while (InvestmentNo.Length != 13)
-                                                        {
-                                                            InvestmentNo = "0" + InvestmentNo;
-                                                        }
-                                                        InvestmentAccountDetailHtml.Replace("{{InvestmentNo}}", InvestmentNo);
-                                                        InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.OpenDate);
+                                            //            var InvestmentNo = acc.InvestorId + " " + acc.InvestmentId;
+                                            //            //actual length is 12, due to space in between investor id and investment id we comparing for 13 characters
+                                            //            while (InvestmentNo.Length != 13)
+                                            //            {
+                                            //                InvestmentNo = "0" + InvestmentNo;
+                                            //            }
+                                            //            InvestmentAccountDetailHtml.Replace("{{InvestmentNo}}", InvestmentNo);
+                                            //            InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.OpenDate);
 
-                                                        InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.OpenDate);
-                                                        InvestmentAccountDetailHtml.Replace("{{InterestRate}}", acc.CurrentInterestRate + "% pa");
-                                                        InvestmentAccountDetailHtml.Replace("{{MaturityDate}}", acc.ExpiryDate);
-                                                        InvestmentAccountDetailHtml.Replace("{{InterestDisposal}}", acc.InterestDisposalDesc);
-                                                        InvestmentAccountDetailHtml.Replace("{{NoticePeriod}}", acc.NoticePeriod);
-                                                        InvestmentAccountDetailHtml.Replace("{{InterestDue}}", acc.Currency + acc.AccuredInterest);
+                                            //            InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.OpenDate);
+                                            //            InvestmentAccountDetailHtml.Replace("{{InterestRate}}", acc.CurrentInterestRate + "% pa");
+                                            //            InvestmentAccountDetailHtml.Replace("{{MaturityDate}}", acc.ExpiryDate);
+                                            //            InvestmentAccountDetailHtml.Replace("{{InterestDisposal}}", acc.InterestDisposalDesc);
+                                            //            InvestmentAccountDetailHtml.Replace("{{NoticePeriod}}", acc.NoticePeriod);
+                                            //            InvestmentAccountDetailHtml.Replace("{{InterestDue}}", acc.Currency + acc.AccuredInterest);
 
-                                                        InvestmentAccountDetailHtml.Replace("{{LastTransactionDate}}", "25 November 2020");
-                                                        InvestmentAccountDetailHtml.Replace("{{BalanceOfLastTransactionDate}}", acc.Currency + (counter == 0 ? "5 307.14" : "18 613.84"));
+                                            //            InvestmentAccountDetailHtml.Replace("{{LastTransactionDate}}", "25 November 2020");
+                                            //            InvestmentAccountDetailHtml.Replace("{{BalanceOfLastTransactionDate}}", acc.Currency + (counter == 0 ? "5 307.14" : "18 613.84"));
 
-                                                        var InvestmentTransactionRows = new StringBuilder();
-                                                        acc.Transactions.ForEach(trans =>
-                                                        {
-                                                            var tr = new StringBuilder();
-                                                            tr.Append("<tr class='ht-20'>");
-                                                            tr.Append("<td class='w-15 pt-1'>" + trans.TransactionDate + "</td>");
-                                                            tr.Append("<td class='w-40 pt-1'>" + trans.TransactionDesc + "</td>");
-                                                            tr.Append("<td class='w-15 text-right pt-1'>" + (trans.Debit == "0" ? "-" : acc.Currency + trans.Debit) + "</td>");
-                                                            tr.Append("<td class='w-15 text-right pt-1'>" + (trans.Credit == "0" ? "-" : acc.Currency + trans.Credit) + "</td>");
-                                                            tr.Append("<td class='w-15 text-right pt-1'>" + (trans.Balance == "0" ? "-" : acc.Currency + trans.Balance) + "</td>");
-                                                            tr.Append("</tr>");
-                                                            InvestmentTransactionRows.Append(tr.ToString());
-                                                        });
-                                                        InvestmentAccountDetailHtml.Replace("{{InvestmentTransactionRows}}", InvestmentTransactionRows.ToString());
-                                                        TabContentHtml.Append(InvestmentAccountDetailHtml.ToString());
-                                                        counter++;
-                                                    });
-                                                    TabContentHtml.Append((InvestmentAccountsCount > 1) ? HtmlConstants.END_DIV_TAG : string.Empty);
+                                            //            var InvestmentTransactionRows = new StringBuilder();
+                                            //            acc.Transactions.ForEach(trans =>
+                                            //            {
+                                            //                var tr = new StringBuilder();
+                                            //                tr.Append("<tr class='ht-20'>");
+                                            //                tr.Append("<td class='w-15 pt-1'>" + trans.TransactionDate + "</td>");
+                                            //                tr.Append("<td class='w-40 pt-1'>" + trans.TransactionDesc + "</td>");
+                                            //                tr.Append("<td class='w-15 text-right pt-1'>" + (trans.Debit == "0" ? "-" : acc.Currency + trans.Debit) + "</td>");
+                                            //                tr.Append("<td class='w-15 text-right pt-1'>" + (trans.Credit == "0" ? "-" : acc.Currency + trans.Credit) + "</td>");
+                                            //                tr.Append("<td class='w-15 text-right pt-1'>" + (trans.Balance == "0" ? "-" : acc.Currency + trans.Balance) + "</td>");
+                                            //                tr.Append("</tr>");
+                                            //                InvestmentTransactionRows.Append(tr.ToString());
+                                            //            });
+                                            //            InvestmentAccountDetailHtml.Replace("{{InvestmentTransactionRows}}", InvestmentTransactionRows.ToString());
+                                            //            TabContentHtml.Append(InvestmentAccountDetailHtml.ToString());
+                                            //            counter++;
+                                            //        });
+                                            //        TabContentHtml.Append((InvestmentAccountsCount > 1) ? HtmlConstants.END_DIV_TAG : string.Empty);
 
-                                                    InvestmentAccountBreakdownHtml.Replace("{{TabContentsDiv}}", TabContentHtml.ToString());
-                                                    htmlString.Append(InvestmentAccountBreakdownHtml.ToString());
-                                                }
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.EXPLANATORY_NOTES_WIDGET_NAME)
-                                            {
-                                                string jsonstr = "{'Note1': 'Fixed deposits — Total balance of all your fixed-type accounts.', 'Note2': 'Notice deposits — Total balance of all your notice deposit accounts.', 'Note3':'Linked deposits — Total balance of all your linked-type accounts.'}";
-                                                if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
-                                                {
-                                                    dynamic noteObj = JObject.Parse(jsonstr);
-                                                    var NotesHtmlWidget = HtmlConstants.EXPLANATORY_NOTES_WIDGET_HTML;
-                                                    var notes = new StringBuilder();
-                                                    notes.Append("<span> " + Convert.ToString(noteObj.Note1) + " </span> <br/>");
-                                                    notes.Append("<span> " + Convert.ToString(noteObj.Note2) + " </span> <br/>");
-                                                    notes.Append("<span> " + Convert.ToString(noteObj.Note3) + " </span> ");
-                                                    NotesHtmlWidget = NotesHtmlWidget.Replace("{{Notes}}", notes.ToString());
-                                                    htmlString.Append(NotesHtmlWidget);
-                                                }
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.WEALTH_EXPLANATORY_NOTES_WIDGET_NAME)
-                                            {
-                                                string jsonstr = "{'Note1': 'Fixed deposits — Total balance of all your fixed-type accounts.', 'Note2': 'Notice deposits — Total balance of all your notice deposit accounts.', 'Note3':'Linked deposits — Total balance of all your linked-type accounts.'}";
-                                                if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
-                                                {
-                                                    dynamic noteObj = JObject.Parse(jsonstr);
-                                                    var NotesHtmlWidget = HtmlConstants.WEALTH_EXPLANATORY_NOTES_WIDGET_HTML;
-                                                    var notes = new StringBuilder();
-                                                    notes.Append("<span> " + Convert.ToString(noteObj.Note1) + " </span> <br/>");
-                                                    notes.Append("<span> " + Convert.ToString(noteObj.Note2) + " </span> <br/>");
-                                                    notes.Append("<span> " + Convert.ToString(noteObj.Note3) + " </span> ");
-                                                    NotesHtmlWidget = NotesHtmlWidget.Replace("{{Notes}}", notes.ToString());
-                                                    htmlString.Append(NotesHtmlWidget);
-                                                }
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.SERVICE_WIDGET_NAME)
-                                            {
-                                                if (MarketingMessages != string.Empty && validationEngine.IsValidJson(MarketingMessages))
-                                                {
-                                                    IList<MarketingMessage> _lstMarketingMessage = JsonConvert.DeserializeObject<List<MarketingMessage>>(MarketingMessages);
-                                                    var ServiceMessage = _lstMarketingMessage[MarketingMessageCounter];
-                                                    if (ServiceMessage != null)
-                                                    {
-                                                        var messageTxt = ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText1)) ? "<p>" + ServiceMessage.MarketingMessageText1 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText2)) ? "<p>" + ServiceMessage.MarketingMessageText2 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText3)) ? "<p>" + ServiceMessage.MarketingMessageText3 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText4)) ? "<p>" + ServiceMessage.MarketingMessageText4 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText5)) ? "<p>" + ServiceMessage.MarketingMessageText5 + "</p>" : string.Empty);
+                                            //        InvestmentAccountBreakdownHtml.Replace("{{TabContentsDiv}}", TabContentHtml.ToString());
+                                            //        htmlString.Append(InvestmentAccountBreakdownHtml.ToString());
+                                            //    }
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.EXPLANATORY_NOTES_WIDGET_NAME)
+                                            //{
+                                            //    string jsonstr = "{'Note1': 'Fixed deposits — Total balance of all your fixed-type accounts.', 'Note2': 'Notice deposits — Total balance of all your notice deposit accounts.', 'Note3':'Linked deposits — Total balance of all your linked-type accounts.'}";
+                                            //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                            //    {
+                                            //        dynamic noteObj = JObject.Parse(jsonstr);
+                                            //        var NotesHtmlWidget = HtmlConstants.EXPLANATORY_NOTES_WIDGET_HTML;
+                                            //        var notes = new StringBuilder();
+                                            //        notes.Append("<span> " + Convert.ToString(noteObj.Note1) + " </span> <br/>");
+                                            //        notes.Append("<span> " + Convert.ToString(noteObj.Note2) + " </span> <br/>");
+                                            //        notes.Append("<span> " + Convert.ToString(noteObj.Note3) + " </span> ");
+                                            //        NotesHtmlWidget = NotesHtmlWidget.Replace("{{Notes}}", notes.ToString());
+                                            //        htmlString.Append(NotesHtmlWidget);
+                                            //    }
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.WEALTH_EXPLANATORY_NOTES_WIDGET_NAME)
+                                            //{
+                                            //    string jsonstr = "{'Note1': 'Fixed deposits — Total balance of all your fixed-type accounts.', 'Note2': 'Notice deposits — Total balance of all your notice deposit accounts.', 'Note3':'Linked deposits — Total balance of all your linked-type accounts.'}";
+                                            //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                            //    {
+                                            //        dynamic noteObj = JObject.Parse(jsonstr);
+                                            //        var NotesHtmlWidget = HtmlConstants.WEALTH_EXPLANATORY_NOTES_WIDGET_HTML;
+                                            //        var notes = new StringBuilder();
+                                            //        notes.Append("<span> " + Convert.ToString(noteObj.Note1) + " </span> <br/>");
+                                            //        notes.Append("<span> " + Convert.ToString(noteObj.Note2) + " </span> <br/>");
+                                            //        notes.Append("<span> " + Convert.ToString(noteObj.Note3) + " </span> ");
+                                            //        NotesHtmlWidget = NotesHtmlWidget.Replace("{{Notes}}", notes.ToString());
+                                            //        htmlString.Append(NotesHtmlWidget);
+                                            //    }
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.SERVICE_WIDGET_NAME)
+                                            //{
+                                            //    if (MarketingMessages != string.Empty && validationEngine.IsValidJson(MarketingMessages))
+                                            //    {
+                                            //        IList<MarketingMessage> _lstMarketingMessage = JsonConvert.DeserializeObject<List<MarketingMessage>>(MarketingMessages);
+                                            //        var ServiceMessage = _lstMarketingMessage[MarketingMessageCounter];
+                                            //        if (ServiceMessage != null)
+                                            //        {
+                                            //            var messageTxt = ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText1)) ? "<p>" + ServiceMessage.MarketingMessageText1 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText2)) ? "<p>" + ServiceMessage.MarketingMessageText2 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText3)) ? "<p>" + ServiceMessage.MarketingMessageText3 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText4)) ? "<p>" + ServiceMessage.MarketingMessageText4 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText5)) ? "<p>" + ServiceMessage.MarketingMessageText5 + "</p>" : string.Empty);
 
-                                                        var htmlWidget = HtmlConstants.SERVICE_WIDGET_HTML;
-                                                        htmlWidget = htmlWidget.Replace("{{ServiceMessageHeader}}", ServiceMessage.MarketingMessageHeader);
-                                                        htmlWidget = htmlWidget.Replace("{{ServiceMessageText}}", messageTxt);
-                                                        htmlString.Append(htmlWidget);
-                                                    }
-                                                }
-                                                MarketingMessageCounter++;
-                                            }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.WEALTH_SERVICE_WIDGET_NAME)
-                                            {
-                                                if (MarketingMessages != string.Empty && validationEngine.IsValidJson(MarketingMessages))
-                                                {
-                                                    IList<MarketingMessage> _lstMarketingMessage = JsonConvert.DeserializeObject<List<MarketingMessage>>(MarketingMessages);
-                                                    var ServiceMessage = _lstMarketingMessage[MarketingMessageCounter];
-                                                    if (ServiceMessage != null)
-                                                    {
-                                                        var messageTxt = ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText1)) ? "<p>" + ServiceMessage.MarketingMessageText1 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText2)) ? "<p>" + ServiceMessage.MarketingMessageText2 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText3)) ? "<p>" + ServiceMessage.MarketingMessageText3 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText4)) ? "<p>" + ServiceMessage.MarketingMessageText4 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText5)) ? "<p>" + ServiceMessage.MarketingMessageText5 + "</p>" : string.Empty);
+                                            //            var htmlWidget = HtmlConstants.SERVICE_WIDGET_HTML;
+                                            //            htmlWidget = htmlWidget.Replace("{{ServiceMessageHeader}}", ServiceMessage.MarketingMessageHeader);
+                                            //            htmlWidget = htmlWidget.Replace("{{ServiceMessageText}}", messageTxt);
+                                            //            htmlString.Append(htmlWidget);
+                                            //        }
+                                            //    }
+                                            //    MarketingMessageCounter++;
+                                            //}
+                                            //else if (mergedlst[i].WidgetName == HtmlConstants.WEALTH_SERVICE_WIDGET_NAME)
+                                            //{
+                                            //    if (MarketingMessages != string.Empty && validationEngine.IsValidJson(MarketingMessages))
+                                            //    {
+                                            //        IList<MarketingMessage> _lstMarketingMessage = JsonConvert.DeserializeObject<List<MarketingMessage>>(MarketingMessages);
+                                            //        var ServiceMessage = _lstMarketingMessage[MarketingMessageCounter];
+                                            //        if (ServiceMessage != null)
+                                            //        {
+                                            //            var messageTxt = ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText1)) ? "<p>" + ServiceMessage.MarketingMessageText1 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText2)) ? "<p>" + ServiceMessage.MarketingMessageText2 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText3)) ? "<p>" + ServiceMessage.MarketingMessageText3 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText4)) ? "<p>" + ServiceMessage.MarketingMessageText4 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText5)) ? "<p>" + ServiceMessage.MarketingMessageText5 + "</p>" : string.Empty);
 
-                                                        var htmlWidget = HtmlConstants.WEALTH_SERVICE_WIDGET_HTML;
-                                                        htmlWidget = htmlWidget.Replace("{{ServiceMessageHeader}}", ServiceMessage.MarketingMessageHeader);
-                                                        htmlWidget = htmlWidget.Replace("{{ServiceMessageText}}", messageTxt);
-                                                        htmlString.Append(htmlWidget);
-                                                    }
-                                                }
-                                                MarketingMessageCounter++;
-                                            }
+                                            //            var htmlWidget = HtmlConstants.WEALTH_SERVICE_WIDGET_HTML;
+                                            //            htmlWidget = htmlWidget.Replace("{{ServiceMessageHeader}}", ServiceMessage.MarketingMessageHeader);
+                                            //            htmlWidget = htmlWidget.Replace("{{ServiceMessageText}}", messageTxt);
+                                            //            htmlString.Append(htmlWidget);
+                                            //        }
+                                            //    }
+                                            //    MarketingMessageCounter++;
+                                            //}
                                             //else if (mergedlst[i].WidgetName == HtmlConstants.PERSONAL_LOAN_DETAIL_WIDGET_NAME)
                                             //{
                                             //    string jsonstr = "{'Identifier': 1,'CustomerId': 211135146504,'InvestorId': 8004334234001,'Currency': 'R','ProductType': 'Personal Loan','BranchId': 1,'CreditAdvance': '71258','OutstandingBalance': '68169','AmountDue': '3297','ToDate': '2021-02-28 00:00:00','FromDate': '2020-12-01 00:00:00', 'MonthlyInstallment': '3297','DueDate': '2021-03-31 00:00:00','Arrears': '0','AnnualRate': '24','Term': '36'}";

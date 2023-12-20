@@ -13,11 +13,8 @@ import {
   CustomerInformationComponent, PageBreakComponent, FSPDetailsComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
   SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
   SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
-  DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent, CorporateSaverAgentAddressComponent, CustomerDetailsComponent, BankDetailsComponent, WealthBankDetailsComponent,
-  InvestmentPortfolioStatementComponent, InvestmentWealthPortfolioStatementComponent, InvestorPerformanceComponent, WealthInvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, WealthBreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, WealthExplanatoryNotesComponent, 
-  PersonalLoanDetailComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,  
-  PortfolioCustomerAddressDetailsComponent, PortfolioClientContactDetailsComponent, PortfolioAccountSummaryDetailsComponent,
-  PortfolioAccountAnalysisComponent
+  DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent, 
+  SpecialMessageComponent, PersonalLoanInsuranceMessageComponent
 } from '../widgetComponent/widgetComponent';
 import { FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -349,45 +346,45 @@ export class ViewDashboardDesignerComponent implements OnInit {
       else if (widgetName == 'ReminderaAndRecommendation') {
         gridObj.component = ReminderAndRecommComponent;
       }
-      else if (widgetName == 'CustomerDetails') {
-        gridObj.component = CustomerDetailsComponent;
-      }
-      else if (widgetName == 'CorporateSaverAgentAddress') {
-        gridObj.component = CorporateSaverAgentAddressComponent;
-      }
-      else if (widgetName == 'BranchDetails') {
-        gridObj.component = BankDetailsComponent;
-      }
-      else if (widgetName == 'WealthBranchDetails') {
-        gridObj.component = WealthBankDetailsComponent;
-      }
-      else if (widgetName == 'InvestmentPortfolioStatement') {
-        gridObj.component = InvestmentPortfolioStatementComponent;
-      }
-      else if (widgetName == 'InvestmentWealthPortfolioStatement') {
-        gridObj.component = InvestmentWealthPortfolioStatementComponent;
-      }
-      else if (widgetName == 'InvestorPerformance') {
-        gridObj.component = InvestorPerformanceComponent;
-      }
-      else if (widgetName == 'WealthInvestorPerformance') {
-        gridObj.component = WealthInvestorPerformanceComponent;
-      }
-      else if (widgetName == 'BreakdownOfInvestmentAccounts') {
-        gridObj.component = BreakdownOfInvestmentAccountsComponent;
-      }
-      else if (widgetName == 'WealthBreakdownOfInvestmentAccounts') {
-        gridObj.component = WealthBreakdownOfInvestmentAccountsComponent;
-      }
-      else if (widgetName == 'ExplanatoryNotes') {
-        gridObj.component = ExplanatoryNotesComponent;
-      }
-      else if (widgetName == 'WealthExplanatoryNotes') {
-        gridObj.component = WealthExplanatoryNotesComponent;
-      }
-      else if (widgetName == 'PersonalLoanDetail') {
-        gridObj.component = PersonalLoanDetailComponent;
-      }
+      //else if (widgetName == 'CustomerDetails') {
+      //  gridObj.component = CustomerDetailsComponent;
+      //}
+      //else if (widgetName == 'CorporateSaverAgentAddress') {
+      //  gridObj.component = CorporateSaverAgentAddressComponent;
+      //}
+      //else if (widgetName == 'BranchDetails') {
+      //  gridObj.component = BankDetailsComponent;
+      //}
+      //else if (widgetName == 'WealthBranchDetails') {
+      //  gridObj.component = WealthBankDetailsComponent;
+      //}
+      //else if (widgetName == 'InvestmentPortfolioStatement') {
+      //  gridObj.component = InvestmentPortfolioStatementComponent;
+      //}
+      //else if (widgetName == 'InvestmentWealthPortfolioStatement') {
+      //  gridObj.component = InvestmentWealthPortfolioStatementComponent;
+      //}
+      //else if (widgetName == 'InvestorPerformance') {
+      //  gridObj.component = InvestorPerformanceComponent;
+      //}
+      //else if (widgetName == 'WealthInvestorPerformance') {
+      //  gridObj.component = WealthInvestorPerformanceComponent;
+      //}
+      //else if (widgetName == 'BreakdownOfInvestmentAccounts') {
+      //  gridObj.component = BreakdownOfInvestmentAccountsComponent;
+      //}
+      //else if (widgetName == 'WealthBreakdownOfInvestmentAccounts') {
+      //  gridObj.component = WealthBreakdownOfInvestmentAccountsComponent;
+      //}
+      //else if (widgetName == 'ExplanatoryNotes') {
+      //  gridObj.component = ExplanatoryNotesComponent;
+      //}
+      //else if (widgetName == 'WealthExplanatoryNotes') {
+      //  gridObj.component = WealthExplanatoryNotesComponent;
+      //}
+      //else if (widgetName == 'PersonalLoanDetail') {
+      //  gridObj.component = PersonalLoanDetailComponent;
+      //}
       //else if (widgetName == 'PersonalLoanTransaction') {
       //  gridObj.component = PersonalLoanTransactionComponent;
       //}
@@ -397,9 +394,9 @@ export class ViewDashboardDesignerComponent implements OnInit {
       else if (widgetName == 'SpecialMessage') {
         gridObj.component = SpecialMessageComponent;
       }
-      else if (widgetName == 'PL_InsuranceMessage') {
-        gridObj.component = PersonalLoanInsuranceMessageComponent;
-      }
+      //else if (widgetName == 'PL_InsuranceMessage') {
+      //  gridObj.component = PersonalLoanInsuranceMessageComponent;
+      //}
       //else if (widgetName == 'NedbankService') {
       //  gridObj.component = NedbankServiceComponent;
       //}
@@ -427,18 +424,18 @@ export class ViewDashboardDesignerComponent implements OnInit {
       //else if (widget.WidgetName == "PortfolioCustomerDetails") {
       //  gridObj.component = PortfolioCustomerDetailsComponent
       //}
-      else if (widget.WidgetName == "CustomerAddressDetails") {
-        gridObj.component = PortfolioCustomerAddressDetailsComponent
-      }
-      else if (widget.WidgetName == "ClientContactDetails") {
-        gridObj.component = PortfolioClientContactDetailsComponent
-      }
-      else if (widget.WidgetName == "AccountSummary") {
-        gridObj.component = PortfolioAccountSummaryDetailsComponent
-      }
-      else if (widget.WidgetName == "AccountAnalysis") {
-        gridObj.component = PortfolioAccountAnalysisComponent
-      }
+      //else if (widget.WidgetName == "CustomerAddressDetails") {
+      //  gridObj.component = PortfolioCustomerAddressDetailsComponent
+      //}
+      //else if (widget.WidgetName == "ClientContactDetails") {
+      //  gridObj.component = PortfolioClientContactDetailsComponent
+      //}
+      //else if (widget.WidgetName == "AccountSummary") {
+      //  gridObj.component = PortfolioAccountSummaryDetailsComponent
+      //}
+      //else if (widget.WidgetName == "AccountAnalysis") {
+      //  gridObj.component = PortfolioAccountAnalysisComponent
+      //}
       //else if (widget.WidgetName == "PortfolioReminders") {
       //  gridObj.component = PortfolioRemindersComponent
       //}

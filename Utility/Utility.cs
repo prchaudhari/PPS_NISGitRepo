@@ -1290,7 +1290,7 @@
                 client.setTitle("PDF statement");
 
                 //Set the author of the PDF.
-                client.setAuthor("NedBank");
+                client.setAuthor("PPS");
 
                 if (password != string.Empty)
                 {

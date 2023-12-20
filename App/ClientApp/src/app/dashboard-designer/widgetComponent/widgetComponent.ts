@@ -2111,754 +2111,754 @@ export class DynamicPieChartWidgetPreviewComponent {
 
 }
 
-// Component Created for Customer Details Widget -- Nedbank
-@Component({
-  selector: 'CustomerDetails',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-       <div class='card border-0'>
-          <div class="card-body CustomerDetails">
-          MR KOENA SOLOMON MOLOTO <br>1917 THAGE STREET <br>MAMELODI GARDENS <br>PRETORIA <br>0122<br>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class CustomerDetailsComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
-@Component({
-  selector: 'corporate-saver-agent-address',
-  template: `<div class='widget'><div class='card border-0' style='padding-right: 2%;'><div class='card-body py-1' style='font-size: 8pt;text-align: right; font-family: "arial";'><br><br>Wanderers Office park<br>52 Corlett Drive<br>Illovo<br>2196<br>Address Line1<br><br><p style='color:rgb(0, 91, 65) !important;'>Agent contact details | 0331243213</p></div></div></div>`
-})
-export class CorporateSaverAgentAddressComponent {
-}
+//// Component Created for Customer Details Widget -- Nedbank
+//@Component({
+//  selector: 'CustomerDetails',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//       <div class='card border-0'>
+//          <div class="card-body CustomerDetails">
+//          MR KOENA SOLOMON MOLOTO <br>1917 THAGE STREET <br>MAMELODI GARDENS <br>PRETORIA <br>0122<br>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class CustomerDetailsComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
+//@Component({
+//  selector: 'corporate-saver-agent-address',
+//  template: `<div class='widget'><div class='card border-0' style='padding-right: 2%;'><div class='card-body py-1' style='font-size: 8pt;text-align: right; font-family: "arial";'><br><br>Wanderers Office park<br>52 Corlett Drive<br>Illovo<br>2196<br>Address Line1<br><br><p style='color:rgb(0, 91, 65) !important;'>Agent contact details | 0331243213</p></div></div></div>`
+//})
+//export class CorporateSaverAgentAddressComponent {
+//}
 
-// Component Created for Bank Details Widget -- Nedbank
-@Component({
-  selector: 'BankDetails',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0'>
-          <div class="card-body BranchDetails">
-              BankName<br>Address Line1, City, ZipCode<br>Address Line2, City, ZipCode<br>Country Name
-              <br>Bank VAT Reg No XXXXXXXXXX
-          </div>
-          <div class="ConactCenterDiv text-success float-right pt-3">
-              Nedbank Private Wealth Service Suite: XXXX XXX XXX
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class BankDetailsComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Bank Details Widget -- Nedbank
+//@Component({
+//  selector: 'BankDetails',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0'>
+//          <div class="card-body BranchDetails">
+//              BankName<br>Address Line1, City, ZipCode<br>Address Line2, City, ZipCode<br>Country Name
+//              <br>Bank VAT Reg No XXXXXXXXXX
+//          </div>
+//          <div class="ConactCenterDiv text-success float-right pt-3">
+//              Nedbank Private Wealth Service Suite: XXXX XXX XXX
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class BankDetailsComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Bank Details Widget -- Nedbank
-@Component({
-  selector: 'WealthBankDetails',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0'>
-          <div class="card-body BranchDetails">
-              BankName<br>Address Line1, City, ZipCode<br>Address Line2, City, ZipCode<br>Country Name
-              <br>Bank VAT Reg No XXXXXXXXXX
-          </div>
-          <div class="ConactCenterDiv text-success-w float-right pt-3">
-              Nedbank Private Wealth Service Suite: XXXX XXX XXX
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class WealthBankDetailsComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Bank Details Widget -- Nedbank
+//@Component({
+//  selector: 'WealthBankDetails',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0'>
+//          <div class="card-body BranchDetails">
+//              BankName<br>Address Line1, City, ZipCode<br>Address Line2, City, ZipCode<br>Country Name
+//              <br>Bank VAT Reg No XXXXXXXXXX
+//          </div>
+//          <div class="ConactCenterDiv text-success-w float-right pt-3">
+//              Nedbank Private Wealth Service Suite: XXXX XXX XXX
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class WealthBankDetailsComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
 
-// Component Created for Investment Portfolio Statement Widget -- Nedbank
-@Component({
-  selector: 'InvestmentPortfolioStatement',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class="row">
-          <div class='col-lg-12'>
-              <div class='card border-0'>
-                  <div class='card-body text-left'>
-                      <div class="card-body-header-name pb-3">Dear Customer Name</div>
-                      <div class='card-body-header pb-2'>Investment portfolio statement</div>
-                      <div class='row pb-1'>
-                          <div class='col-lg-4 pr-1'>
-                              <div class='TotalAmountDetailsDiv'>
-                                  <span class='fnt-14'>Current investor balance</span><br><span class="fnt-20">Total Closing Balance</span>&nbsp;<br>
-                              </div>
-                          </div>
-                          <div class='col-lg-8 pl-0'>
-                              <div class='TotalAmountDetailsDiv'></div>
-                          </div>
-                      </div>
+//// Component Created for Investment Portfolio Statement Widget -- Nedbank
+//@Component({
+//  selector: 'InvestmentPortfolioStatement',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class="row">
+//          <div class='col-lg-12'>
+//              <div class='card border-0'>
+//                  <div class='card-body text-left'>
+//                      <div class="card-body-header-name pb-3">Dear Customer Name</div>
+//                      <div class='card-body-header pb-2'>Investment portfolio statement</div>
+//                      <div class='row pb-1'>
+//                          <div class='col-lg-4 pr-1'>
+//                              <div class='TotalAmountDetailsDiv'>
+//                                  <span class='fnt-14'>Current investor balance</span><br><span class="fnt-20">Total Closing Balance</span>&nbsp;<br>
+//                              </div>
+//                          </div>
+//                          <div class='col-lg-8 pl-0'>
+//                              <div class='TotalAmountDetailsDiv'></div>
+//                          </div>
+//                      </div>
 
-                      <div class="pt-1 pb-2" style="background-color:#F2F2F2">
-                          <table class="customTable mt-2" border="0" id="portfolio">
-                              <tbody class="fnt-13">
-                                  <tr>
-                                      <td class="w-25">Account type:</td>
-                                      <td class="w-25 text-right pr-4 text-success">Investment</td>
-                                      <td class="w-25">Statement Day:</td>
-                                      <td class="w-25 text-right text-success">Day of Statement</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-25">Investor no:</td>
-                                      <td class="w-25 text-right pr-4 text-success">Investor ID</td>
-                                      <td class="w-25">Statement Period:</td>
-                                      <td class="w-25 text-right text-success">Min to Max Transaction Date</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-25">Statement date:</td>
-                                      <td class="w-25 text-right pr-4 text-success">Statement Date</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class InvestmentPortfolioStatementComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//                      <div class="pt-1 pb-2" style="background-color:#F2F2F2">
+//                          <table class="customTable mt-2" border="0" id="portfolio">
+//                              <tbody class="fnt-13">
+//                                  <tr>
+//                                      <td class="w-25">Account type:</td>
+//                                      <td class="w-25 text-right pr-4 text-success">Investment</td>
+//                                      <td class="w-25">Statement Day:</td>
+//                                      <td class="w-25 text-right text-success">Day of Statement</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-25">Investor no:</td>
+//                                      <td class="w-25 text-right pr-4 text-success">Investor ID</td>
+//                                      <td class="w-25">Statement Period:</td>
+//                                      <td class="w-25 text-right text-success">Min to Max Transaction Date</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-25">Statement date:</td>
+//                                      <td class="w-25 text-right pr-4 text-success">Statement Date</td>
+//                                  </tr>
+//                              </tbody>
+//                          </table>
+//                      </div>
+//                  </div>
+//              </div>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class InvestmentPortfolioStatementComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Investment Wealth Portfolio Statement Widget -- Nedbank
-@Component({
-  selector: 'InvestmentWealthPortfolioStatementComponent',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class="row">
-          <div class='col-lg-12'>
-              <div class='card border-0'>
-                  <div class='card-body text-left'>
-                      <div class="card-body-header-w pb-3">Dear Customer Name</div>
-                      <div class='card-body-header-w pb-2'>Investment portfolio statement</div>
-                      <div class='row pb-1'>
-                          <div class='col-lg-4 pr-1'>
-                              <div class='TotalAmountDetailsDivW'>
-                                  <span class='fnt-14'>Current investor balance</span><br><span class="fnt-20">Total Closing Balance</span>&nbsp;<br>
-                              </div>
-                          </div>
-                          <div class='col-lg-8 pl-0'>
-                              <div class='TotalAmountDetailsDivW'></div>
-                          </div>
-                      </div>
+//// Component Created for Investment Wealth Portfolio Statement Widget -- Nedbank
+//@Component({
+//  selector: 'InvestmentWealthPortfolioStatementComponent',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class="row">
+//          <div class='col-lg-12'>
+//              <div class='card border-0'>
+//                  <div class='card-body text-left'>
+//                      <div class="card-body-header-w pb-3">Dear Customer Name</div>
+//                      <div class='card-body-header-w pb-2'>Investment portfolio statement</div>
+//                      <div class='row pb-1'>
+//                          <div class='col-lg-4 pr-1'>
+//                              <div class='TotalAmountDetailsDivW'>
+//                                  <span class='fnt-14'>Current investor balance</span><br><span class="fnt-20">Total Closing Balance</span>&nbsp;<br>
+//                              </div>
+//                          </div>
+//                          <div class='col-lg-8 pl-0'>
+//                              <div class='TotalAmountDetailsDivW'></div>
+//                          </div>
+//                      </div>
 
-                      <div class="pt-1 pb-2" style="background-color:#F2F2F2">
-                          <table class="customTable mt-2" border="0" id="portfolio">
-                              <tbody class="fnt-13">
-                                  <tr>
-                                      <td class="w-25">Account type:</td>
-                                      <td class="w-25 text-right pr-4 text-success">Investment</td>
-                                      <td class="w-25">Statement Day:</td>
-                                      <td class="w-25 text-right text-success">Day of Statement</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-25">Investor no:</td>
-                                      <td class="w-25 text-right pr-4 text-success">Investor ID</td>
-                                      <td class="w-25">Statement Period:</td>
-                                      <td class="w-25 text-right text-success">Min to Max Transaction Date</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-25">Statement date:</td>
-                                      <td class="w-25 text-right pr-4 text-success">Statement Date</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class InvestmentWealthPortfolioStatementComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//                      <div class="pt-1 pb-2" style="background-color:#F2F2F2">
+//                          <table class="customTable mt-2" border="0" id="portfolio">
+//                              <tbody class="fnt-13">
+//                                  <tr>
+//                                      <td class="w-25">Account type:</td>
+//                                      <td class="w-25 text-right pr-4 text-success">Investment</td>
+//                                      <td class="w-25">Statement Day:</td>
+//                                      <td class="w-25 text-right text-success">Day of Statement</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-25">Investor no:</td>
+//                                      <td class="w-25 text-right pr-4 text-success">Investor ID</td>
+//                                      <td class="w-25">Statement Period:</td>
+//                                      <td class="w-25 text-right text-success">Min to Max Transaction Date</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-25">Statement date:</td>
+//                                      <td class="w-25 text-right pr-4 text-success">Statement Date</td>
+//                                  </tr>
+//                              </tbody>
+//                          </table>
+//                      </div>
+//                  </div>
+//              </div>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class InvestmentWealthPortfolioStatementComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Investor Performance Widget -- Nedbank
-@Component({
-  selector: 'InvestorPerformance',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0'>
-          <div class='card-body text-left'>
-              <div class='card-body-header pb-2'>Investor performance</div>
-              <div class='InvestmentPermanaceDiv'>
-                  <table class='InvestorPermanaceTable' border='0' id='InvestorPerformance'>
-                      <tbody>
-                          <tr>
-                              <td class='w-50' colspan='2'><span class='text-success fnt-18'>Notice deposits</span></td>
-                          </tr>
-                          <tr>
-                              <td class='w-50 fnt-14'>Opening balance</td>
-                              <td class='w-50 fnt-14'>Closing balance</td>
-                          </tr>
-                          <tr>
-                              <td class='w-50 fnt-20'>xxx.xx</td>
-                              <td class='w-50 fnt-20'>xxx.xx</td>
-                          </tr>
-                      </tbody>
-                  </table>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class InvestorPerformanceComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Investor Performance Widget -- Nedbank
+//@Component({
+//  selector: 'InvestorPerformance',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0'>
+//          <div class='card-body text-left'>
+//              <div class='card-body-header pb-2'>Investor performance</div>
+//              <div class='InvestmentPermanaceDiv'>
+//                  <table class='InvestorPermanaceTable' border='0' id='InvestorPerformance'>
+//                      <tbody>
+//                          <tr>
+//                              <td class='w-50' colspan='2'><span class='text-success fnt-18'>Notice deposits</span></td>
+//                          </tr>
+//                          <tr>
+//                              <td class='w-50 fnt-14'>Opening balance</td>
+//                              <td class='w-50 fnt-14'>Closing balance</td>
+//                          </tr>
+//                          <tr>
+//                              <td class='w-50 fnt-20'>xxx.xx</td>
+//                              <td class='w-50 fnt-20'>xxx.xx</td>
+//                          </tr>
+//                      </tbody>
+//                  </table>
+//              </div>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class InvestorPerformanceComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Investor Performance Widget -- Nedbank
-@Component({
-  selector: 'WealthInvestorPerformance',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0'>
-          <div class='card-body text-left'>
-              <div class='card-body-header-w pb-2'>Investor performance</div>
-              <div class='InvestmentPermanaceDiv'>
-                  <table class='InvestorPermanaceTable' border='0' id='InvestorPerformance'>
-                      <tbody>
-                          <tr>
-                              <td class='w-50' colspan='2'><span class='text-success-w fnt-18'>Notice deposits</span></td>
-                          </tr>
-                          <tr>
-                              <td class='w-50 fnt-14'>Opening balance</td>
-                              <td class='w-50 fnt-14'>Closing balance</td>
-                          </tr>
-                          <tr>
-                              <td class='w-50 fnt-20'>xxx.xx</td>
-                              <td class='w-50 fnt-20'>xxx.xx</td>
-                          </tr>
-                      </tbody>
-                  </table>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class WealthInvestorPerformanceComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Investor Performance Widget -- Nedbank
+//@Component({
+//  selector: 'WealthInvestorPerformance',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0'>
+//          <div class='card-body text-left'>
+//              <div class='card-body-header-w pb-2'>Investor performance</div>
+//              <div class='InvestmentPermanaceDiv'>
+//                  <table class='InvestorPermanaceTable' border='0' id='InvestorPerformance'>
+//                      <tbody>
+//                          <tr>
+//                              <td class='w-50' colspan='2'><span class='text-success-w fnt-18'>Notice deposits</span></td>
+//                          </tr>
+//                          <tr>
+//                              <td class='w-50 fnt-14'>Opening balance</td>
+//                              <td class='w-50 fnt-14'>Closing balance</td>
+//                          </tr>
+//                          <tr>
+//                              <td class='w-50 fnt-20'>xxx.xx</td>
+//                              <td class='w-50 fnt-20'>xxx.xx</td>
+//                          </tr>
+//                      </tbody>
+//                  </table>
+//              </div>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class WealthInvestorPerformanceComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Breakdown Of Investment Accounts Widget -- Nedbank
-@Component({
-  selector: 'BreakdownOfInvestmentAccounts',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0'>
-          <div class='card-body text-left'>
-              <div class="card-body-header pb-2">Breakdown of your investment accounts</div>
+//// Component Created for Breakdown Of Investment Accounts Widget -- Nedbank
+//@Component({
+//  selector: 'BreakdownOfInvestmentAccounts',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0'>
+//          <div class='card-body text-left'>
+//              <div class="card-body-header pb-2">Breakdown of your investment accounts</div>
               
-                  <div id='JustInvest-9929' class='tab-pane fade in active show'>
-                      <div style="background-color: #F2F2F2;padding:10px 0px">
-                          <h4 class="pl-25px"><span class='InvestmentProdDesc'>Product Desc</span></h4>
-                          <table border="0" class="InvestmentDetail customTable">
-                              <tbody>
-                                  <tr>
-                                      <td class="w-25">Investment no:</td>
-                                      <td class="text-right w-25"><span>Investor ID + Investoment ID</span></td>
-                                      <td class='w-25'>Opening date:</td>
-                                      <td class="text-right w-25"><span>Account Open Date</span></td>
-                                  </tr>
-                                  <tr>
-                                      <td class='w-25'>Current interest rate:</td>
-                                      <td class="text-right w-25"><span>Interest rate % pa</span></td>
-                                      <td class='w-25'>Maturity date:</td>
-                                      <td class="text-right w-25"><span>Maturity date</span></td>
-                                  </tr>
-                                  <tr>
-                                      <td class='w-25'>Interest disposal:</td>
-                                      <td class="text-right w-25"><span>Interest Disposal value</span></td>
-                                      <td class='w-25'>Notice period:</td>
-                                      <td class="text-right w-25" ><span>Notice Period value</span></td>
-                                  </tr>
-                                  <tr>
-                                      <td class='w-25'>Interest due:</td>
-                                      <td class="text-right w-25" ><span>Accured Interest</span></td>
-                                      <td class='w-25'>&nbsp;</td>
-                                      <td class="text-right w-25" >&nbsp;</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                          <div class="InvestmentClosingBalanceDiv">
-                              <span class='fn-14'>Balance at&nbsp;</span> <span class="text-success">Max Transaction date</span><br>
-                              <span class="text-success fnt-20">Total Closing Balance</span>
-                          </div>
-                      </div>
+//                  <div id='JustInvest-9929' class='tab-pane fade in active show'>
+//                      <div style="background-color: #F2F2F2;padding:10px 0px">
+//                          <h4 class="pl-25px"><span class='InvestmentProdDesc'>Product Desc</span></h4>
+//                          <table border="0" class="InvestmentDetail customTable">
+//                              <tbody>
+//                                  <tr>
+//                                      <td class="w-25">Investment no:</td>
+//                                      <td class="text-right w-25"><span>Investor ID + Investoment ID</span></td>
+//                                      <td class='w-25'>Opening date:</td>
+//                                      <td class="text-right w-25"><span>Account Open Date</span></td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class='w-25'>Current interest rate:</td>
+//                                      <td class="text-right w-25"><span>Interest rate % pa</span></td>
+//                                      <td class='w-25'>Maturity date:</td>
+//                                      <td class="text-right w-25"><span>Maturity date</span></td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class='w-25'>Interest disposal:</td>
+//                                      <td class="text-right w-25"><span>Interest Disposal value</span></td>
+//                                      <td class='w-25'>Notice period:</td>
+//                                      <td class="text-right w-25" ><span>Notice Period value</span></td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class='w-25'>Interest due:</td>
+//                                      <td class="text-right w-25" ><span>Accured Interest</span></td>
+//                                      <td class='w-25'>&nbsp;</td>
+//                                      <td class="text-right w-25" >&nbsp;</td>
+//                                  </tr>
+//                              </tbody>
+//                          </table>
+//                          <div class="InvestmentClosingBalanceDiv">
+//                              <span class='fn-14'>Balance at&nbsp;</span> <span class="text-success">Max Transaction date</span><br>
+//                              <span class="text-success fnt-20">Total Closing Balance</span>
+//                          </div>
+//                      </div>
 
-                      <div class="pt-1">
-                          <table id="TableWidget" style="width:100%;" class="table-striped InvestmentBreakdown customTable">
-                              <thead>
-                                  <tr class='ht-30'>
-                                      <th class="w-15">Date</th>
-                                      <th class="w-40">Description</th>
-                                      <th class="w-15 text-right">Debit</th>
-                                      <th class="w-15 text-right">Credit</th>
-                                      <th class="w-15 text-right">Balance</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.xx</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">x.xx</td>
-                                      <td class="w-15 text-right">-</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.x</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">x.xx</td>
-                                      <td class="w-15 text-right">-</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.xx</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">x.xx</td>
-                                      <td class="w-15 text-right">-</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.x</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                      </div>
+//                      <div class="pt-1">
+//                          <table id="TableWidget" style="width:100%;" class="table-striped InvestmentBreakdown customTable">
+//                              <thead>
+//                                  <tr class='ht-30'>
+//                                      <th class="w-15">Date</th>
+//                                      <th class="w-40">Description</th>
+//                                      <th class="w-15 text-right">Debit</th>
+//                                      <th class="w-15 text-right">Credit</th>
+//                                      <th class="w-15 text-right">Balance</th>
+//                                  </tr>
+//                              </thead>
+//                              <tbody>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.xx</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">x.xx</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.x</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">x.xx</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.xx</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">x.xx</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.x</td>
+//                                  </tr>
+//                              </tbody>
+//                          </table>
+//                      </div>
 
-                      <br/><br/>
+//                      <br/><br/>
 
-                      <div style="background-color: #F2F2F2;padding:10px 0px">
-                          <h4 class="pl-25px"><span class="InvestmentProdDesc">Product Desc</span></h4>
-                          <table border="0" class="InvestmentDetail customTable">
-                              <tbody>
-                                  <tr>
-                                      <td class="w-25">Investment no:</td>
-                                      <td class="text-right w-25"><span>Investor ID with Investoment ID</span></td>
-                                      <td class='w-25'>Opening date:</td>
-                                      <td class="text-right w-25"><span>Acc Open Date</span></td>
-                                  </tr>
-                                  <tr>
-                                      <td class='w-25'>Current interest rate:</td>
-                                      <td class="text-right w-25"><span>Interest rate % pa</span></td>
-                                      <td class='w-25'>Maturity date:</td>
-                                      <td class="text-right w-25"><span>Maturity date</span></td>
-                                  </tr>
-                                  <tr>
-                                      <td class='w-25'>Interest disposal:</td>
-                                      <td class="text-right w-25"><span>Interest Disposal value</span></td>
-                                      <td class='w-25'>Notice period:</td>
-                                      <td class="text-right w-25"><span>Notice Period value</span></td>
-                                  </tr>
-                                  <tr>
-                                      <td class='w-25'>Interest due:</td>
-                                      <td class="text-right w-25"><span>Accured Interest</span></td>
-                                      <td class='w-25'>&nbsp;</td>
-                                      <td class="text-right w-25">&nbsp;</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                          <div class="InvestmentClosingBalanceDiv">
-                              <span class='fn-14'>Balance at&nbsp;</span> <span class="text-success">Max Transaction date</span><br>
-                              <span class="text-success fnt-20">Total Closing Balance</span>
-                          </div>
-                      </div>
+//                      <div style="background-color: #F2F2F2;padding:10px 0px">
+//                          <h4 class="pl-25px"><span class="InvestmentProdDesc">Product Desc</span></h4>
+//                          <table border="0" class="InvestmentDetail customTable">
+//                              <tbody>
+//                                  <tr>
+//                                      <td class="w-25">Investment no:</td>
+//                                      <td class="text-right w-25"><span>Investor ID with Investoment ID</span></td>
+//                                      <td class='w-25'>Opening date:</td>
+//                                      <td class="text-right w-25"><span>Acc Open Date</span></td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class='w-25'>Current interest rate:</td>
+//                                      <td class="text-right w-25"><span>Interest rate % pa</span></td>
+//                                      <td class='w-25'>Maturity date:</td>
+//                                      <td class="text-right w-25"><span>Maturity date</span></td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class='w-25'>Interest disposal:</td>
+//                                      <td class="text-right w-25"><span>Interest Disposal value</span></td>
+//                                      <td class='w-25'>Notice period:</td>
+//                                      <td class="text-right w-25"><span>Notice Period value</span></td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class='w-25'>Interest due:</td>
+//                                      <td class="text-right w-25"><span>Accured Interest</span></td>
+//                                      <td class='w-25'>&nbsp;</td>
+//                                      <td class="text-right w-25">&nbsp;</td>
+//                                  </tr>
+//                              </tbody>
+//                          </table>
+//                          <div class="InvestmentClosingBalanceDiv">
+//                              <span class='fn-14'>Balance at&nbsp;</span> <span class="text-success">Max Transaction date</span><br>
+//                              <span class="text-success fnt-20">Total Closing Balance</span>
+//                          </div>
+//                      </div>
 
-                      <div class="pt-1">
-                          <table id="TableWidget" style="width:100%;" class="table-striped InvestmentBreakdown customTable">
-                              <thead>
-                                  <tr class='ht-30'>
-                                      <th class="w-15">Date</th>
-                                      <th class="w-40">Description</th>
-                                      <th class="w-15 text-right">Debit</th>
-                                      <th class="w-15 text-right">Credit</th>
-                                      <th class="w-15 text-right">Balance</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.xx</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">x.xx</td>
-                                      <td class="w-15 text-right">-</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.x</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">x.xx</td>
-                                      <td class="w-15 text-right">-</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.xx</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">x.xx</td>
-                                      <td class="w-15 text-right">-</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.x</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                      </div>
+//                      <div class="pt-1">
+//                          <table id="TableWidget" style="width:100%;" class="table-striped InvestmentBreakdown customTable">
+//                              <thead>
+//                                  <tr class='ht-30'>
+//                                      <th class="w-15">Date</th>
+//                                      <th class="w-40">Description</th>
+//                                      <th class="w-15 text-right">Debit</th>
+//                                      <th class="w-15 text-right">Credit</th>
+//                                      <th class="w-15 text-right">Balance</th>
+//                                  </tr>
+//                              </thead>
+//                              <tbody>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.xx</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">x.xx</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.x</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">x.xx</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.xx</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">x.xx</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.x</td>
+//                                  </tr>
+//                              </tbody>
+//                          </table>
+//                      </div>
                   
-              </div>
+//              </div>
 
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class BreakdownOfInvestmentAccountsComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class BreakdownOfInvestmentAccountsComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Wealth Breakdown Of Investment Accounts Widget -- Nedbank
-@Component({
-  selector: 'WealthBreakdownOfInvestmentAccounts',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0'>
-          <div class='card-body text-left'>
-              <div class="card-body-header-w pb-2">Breakdown of your investment accounts</div>
+//// Component Created for Wealth Breakdown Of Investment Accounts Widget -- Nedbank
+//@Component({
+//  selector: 'WealthBreakdownOfInvestmentAccounts',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0'>
+//          <div class='card-body text-left'>
+//              <div class="card-body-header-w pb-2">Breakdown of your investment accounts</div>
               
-                  <div id='JustInvest-9929' class='tab-pane fade in active show'>
-                      <div style="background-color: #F2F2F2;padding:10px 0px">
-                          <h4 class="pl-25px"><span class='InvestmentProdDescW'>Product Desc</span></h4>
-                          <table border="0" class="InvestmentDetailW customTable">
-                              <tbody>
-                                  <tr>
-                                      <td class="w-25">Investment no:</td>
-                                      <td class="text-right w-25"><span>Investor ID + Investoment ID</span></td>
-                                      <td class='w-25'>Opening date:</td>
-                                      <td class="text-right w-25"><span>Account Open Date</span></td>
-                                  </tr>
-                                  <tr>
-                                      <td class='w-25'>Current interest rate:</td>
-                                      <td class="text-right w-25"><span>Interest rate % pa</span></td>
-                                      <td class='w-25'>Maturity date:</td>
-                                      <td class="text-right w-25"><span>Maturity date</span></td>
-                                  </tr>
-                                  <tr>
-                                      <td class='w-25'>Interest disposal:</td>
-                                      <td class="text-right w-25"><span>Interest Disposal value</span></td>
-                                      <td class='w-25'>Notice period:</td>
-                                      <td class="text-right w-25" ><span>Notice Period value</span></td>
-                                  </tr>
-                                  <tr>
-                                      <td class='w-25'>Interest due:</td>
-                                      <td class="text-right w-25" ><span>Accured Interest</span></td>
-                                      <td class='w-25'>&nbsp;</td>
-                                      <td class="text-right w-25" >&nbsp;</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                          <div class="InvestmentClosingBalanceDiv">
-                              <span class='fn-14'>Balance at&nbsp;</span> <span class="text-success-w">Max Transaction date</span><br>
-                              <span class="text-success-w fnt-20">Total Closing Balance</span>
-                          </div>
-                      </div>
+//                  <div id='JustInvest-9929' class='tab-pane fade in active show'>
+//                      <div style="background-color: #F2F2F2;padding:10px 0px">
+//                          <h4 class="pl-25px"><span class='InvestmentProdDescW'>Product Desc</span></h4>
+//                          <table border="0" class="InvestmentDetailW customTable">
+//                              <tbody>
+//                                  <tr>
+//                                      <td class="w-25">Investment no:</td>
+//                                      <td class="text-right w-25"><span>Investor ID + Investoment ID</span></td>
+//                                      <td class='w-25'>Opening date:</td>
+//                                      <td class="text-right w-25"><span>Account Open Date</span></td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class='w-25'>Current interest rate:</td>
+//                                      <td class="text-right w-25"><span>Interest rate % pa</span></td>
+//                                      <td class='w-25'>Maturity date:</td>
+//                                      <td class="text-right w-25"><span>Maturity date</span></td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class='w-25'>Interest disposal:</td>
+//                                      <td class="text-right w-25"><span>Interest Disposal value</span></td>
+//                                      <td class='w-25'>Notice period:</td>
+//                                      <td class="text-right w-25" ><span>Notice Period value</span></td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class='w-25'>Interest due:</td>
+//                                      <td class="text-right w-25" ><span>Accured Interest</span></td>
+//                                      <td class='w-25'>&nbsp;</td>
+//                                      <td class="text-right w-25" >&nbsp;</td>
+//                                  </tr>
+//                              </tbody>
+//                          </table>
+//                          <div class="InvestmentClosingBalanceDiv">
+//                              <span class='fn-14'>Balance at&nbsp;</span> <span class="text-success-w">Max Transaction date</span><br>
+//                              <span class="text-success-w fnt-20">Total Closing Balance</span>
+//                          </div>
+//                      </div>
 
-                      <div class="pt-1">
-                          <table id="TableWidget" style="width:100%;" class="table-striped InvestmentBreakdownW customTable">
-                              <thead>
-                                  <tr class='ht-30'>
-                                      <th class="w-15">Date</th>
-                                      <th class="w-40">Description</th>
-                                      <th class="w-15 text-right">Debit</th>
-                                      <th class="w-15 text-right">Credit</th>
-                                      <th class="w-15 text-right">Balance</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.xx</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">x.xx</td>
-                                      <td class="w-15 text-right">-</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.x</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">x.xx</td>
-                                      <td class="w-15 text-right">-</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.xx</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">x.xx</td>
-                                      <td class="w-15 text-right">-</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.x</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                      </div>
+//                      <div class="pt-1">
+//                          <table id="TableWidget" style="width:100%;" class="table-striped InvestmentBreakdownW customTable">
+//                              <thead>
+//                                  <tr class='ht-30'>
+//                                      <th class="w-15">Date</th>
+//                                      <th class="w-40">Description</th>
+//                                      <th class="w-15 text-right">Debit</th>
+//                                      <th class="w-15 text-right">Credit</th>
+//                                      <th class="w-15 text-right">Balance</th>
+//                                  </tr>
+//                              </thead>
+//                              <tbody>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.xx</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">x.xx</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.x</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">x.xx</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.xx</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">x.xx</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.x</td>
+//                                  </tr>
+//                              </tbody>
+//                          </table>
+//                      </div>
 
-                      <br/><br/>
+//                      <br/><br/>
 
-                      <div style="background-color: #F2F2F2;padding:10px 0px">
-                          <h4 class="pl-25px"><span class="InvestmentProdDescW">Product Desc</span></h4>
-                          <table border="0" class="InvestmentDetailW customTable">
-                              <tbody>
-                                  <tr>
-                                      <td class="w-25">Investment no:</td>
-                                      <td class="text-right w-25"><span>Investor ID with Investoment ID</span></td>
-                                      <td class='w-25'>Opening date:</td>
-                                      <td class="text-right w-25"><span>Acc Open Date</span></td>
-                                  </tr>
-                                  <tr>
-                                      <td class='w-25'>Current interest rate:</td>
-                                      <td class="text-right w-25"><span>Interest rate % pa</span></td>
-                                      <td class='w-25'>Maturity date:</td>
-                                      <td class="text-right w-25"><span>Maturity date</span></td>
-                                  </tr>
-                                  <tr>
-                                      <td class='w-25'>Interest disposal:</td>
-                                      <td class="text-right w-25"><span>Interest Disposal value</span></td>
-                                      <td class='w-25'>Notice period:</td>
-                                      <td class="text-right w-25"><span>Notice Period value</span></td>
-                                  </tr>
-                                  <tr>
-                                      <td class='w-25'>Interest due:</td>
-                                      <td class="text-right w-25"><span>Accured Interest</span></td>
-                                      <td class='w-25'>&nbsp;</td>
-                                      <td class="text-right w-25">&nbsp;</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                          <div class="InvestmentClosingBalanceDiv">
-                              <span class='fn-14'>Balance at&nbsp;</span> <span class="text-success">Max Transaction date</span><br>
-                              <span class="text-success fnt-20">Total Closing Balance</span>
-                          </div>
-                      </div>
+//                      <div style="background-color: #F2F2F2;padding:10px 0px">
+//                          <h4 class="pl-25px"><span class="InvestmentProdDescW">Product Desc</span></h4>
+//                          <table border="0" class="InvestmentDetailW customTable">
+//                              <tbody>
+//                                  <tr>
+//                                      <td class="w-25">Investment no:</td>
+//                                      <td class="text-right w-25"><span>Investor ID with Investoment ID</span></td>
+//                                      <td class='w-25'>Opening date:</td>
+//                                      <td class="text-right w-25"><span>Acc Open Date</span></td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class='w-25'>Current interest rate:</td>
+//                                      <td class="text-right w-25"><span>Interest rate % pa</span></td>
+//                                      <td class='w-25'>Maturity date:</td>
+//                                      <td class="text-right w-25"><span>Maturity date</span></td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class='w-25'>Interest disposal:</td>
+//                                      <td class="text-right w-25"><span>Interest Disposal value</span></td>
+//                                      <td class='w-25'>Notice period:</td>
+//                                      <td class="text-right w-25"><span>Notice Period value</span></td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class='w-25'>Interest due:</td>
+//                                      <td class="text-right w-25"><span>Accured Interest</span></td>
+//                                      <td class='w-25'>&nbsp;</td>
+//                                      <td class="text-right w-25">&nbsp;</td>
+//                                  </tr>
+//                              </tbody>
+//                          </table>
+//                          <div class="InvestmentClosingBalanceDiv">
+//                              <span class='fn-14'>Balance at&nbsp;</span> <span class="text-success">Max Transaction date</span><br>
+//                              <span class="text-success fnt-20">Total Closing Balance</span>
+//                          </div>
+//                      </div>
 
-                      <div class="pt-1">
-                          <table id="TableWidget" style="width:100%;" class="table-striped InvestmentBreakdownW customTable">
-                              <thead>
-                                  <tr class='ht-30'>
-                                      <th class="w-15">Date</th>
-                                      <th class="w-40">Description</th>
-                                      <th class="w-15 text-right">Debit</th>
-                                      <th class="w-15 text-right">Credit</th>
-                                      <th class="w-15 text-right">Balance</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.xx</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">x.xx</td>
-                                      <td class="w-15 text-right">-</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.x</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">x.xx</td>
-                                      <td class="w-15 text-right">-</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.xx</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">x.xx</td>
-                                      <td class="w-15 text-right">-</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.x</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                      </div>
+//                      <div class="pt-1">
+//                          <table id="TableWidget" style="width:100%;" class="table-striped InvestmentBreakdownW customTable">
+//                              <thead>
+//                                  <tr class='ht-30'>
+//                                      <th class="w-15">Date</th>
+//                                      <th class="w-40">Description</th>
+//                                      <th class="w-15 text-right">Debit</th>
+//                                      <th class="w-15 text-right">Credit</th>
+//                                      <th class="w-15 text-right">Balance</th>
+//                                  </tr>
+//                              </thead>
+//                              <tbody>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.xx</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">x.xx</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.x</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">x.xx</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.xx</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">x.xx</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.x</td>
+//                                  </tr>
+//                              </tbody>
+//                          </table>
+//                      </div>
                   
-              </div>
+//              </div>
 
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class WealthBreakdownOfInvestmentAccountsComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class WealthBreakdownOfInvestmentAccountsComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Explanatory Notes Widget -- Nedbank
-@Component({
-  selector: 'ExplanatoryNotes',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0'>
-          <div class='card-body text-left'>
-              <div class="card-body-header pb-2">Explanatory notes</div>
-              <div class='ExplanatoryNotes'>
-                  <span>Fixed deposits — Total balance of all your fixed-type accounts.</span><br />
-                  <span>Notice deposits — Total balance of all your notice deposit accounts.</span><br />
-                  <span>Linked deposits — Total balance of all your linked-type accounts.</span>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class ExplanatoryNotesComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Explanatory Notes Widget -- Nedbank
+//@Component({
+//  selector: 'ExplanatoryNotes',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0'>
+//          <div class='card-body text-left'>
+//              <div class="card-body-header pb-2">Explanatory notes</div>
+//              <div class='ExplanatoryNotes'>
+//                  <span>Fixed deposits — Total balance of all your fixed-type accounts.</span><br />
+//                  <span>Notice deposits — Total balance of all your notice deposit accounts.</span><br />
+//                  <span>Linked deposits — Total balance of all your linked-type accounts.</span>
+//              </div>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class ExplanatoryNotesComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Explanatory Notes Widget -- Nedbank
-@Component({
-  selector: 'WealthExplanatoryNotes',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0'>
-          <div class='card-body text-left'>
-              <div class="card-body-header-w pb-2">Explanatory notes</div>
-              <div class='ExplanatoryNotes'>
-                  <span>Fixed deposits — Total balance of all your fixed-type accounts.</span><br />
-                  <span>Notice deposits — Total balance of all your notice deposit accounts.</span><br />
-                  <span>Linked deposits — Total balance of all your linked-type accounts.</span>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class WealthExplanatoryNotesComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Explanatory Notes Widget -- Nedbank
+//@Component({
+//  selector: 'WealthExplanatoryNotes',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0'>
+//          <div class='card-body text-left'>
+//              <div class="card-body-header-w pb-2">Explanatory notes</div>
+//              <div class='ExplanatoryNotes'>
+//                  <span>Fixed deposits — Total balance of all your fixed-type accounts.</span><br />
+//                  <span>Notice deposits — Total balance of all your notice deposit accounts.</span><br />
+//                  <span>Linked deposits — Total balance of all your linked-type accounts.</span>
+//              </div>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class WealthExplanatoryNotesComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
 //// Component Created for Nedbank service Widget -- Nedbank
 //@Component({
@@ -2903,168 +2903,168 @@ export class WealthExplanatoryNotesComponent {
 //  widgetsGridsterItemArray: any[] = [];
 //}
 
-// Component Created for Personal loan detail Widget -- Nedbank
-@Component({
-  selector: 'PersonalLoanDetail',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0'>
-          <div class='card-body text-left pb-1 pt-1'>
-              <div class='card-body-header pb-2'>Personal loan statement</div>
-              <div class='row pb-1'>
-                  <div class='col-lg-4 col-sm-4 pr-1'>
-                      <div class='LoanAmountDetailsDiv'>
-                          <span class="fnt-10pt">Loan Amount</span><br><span class="fnt-14pt">Loan Amount</span>&nbsp;<br>
-                      </div>
-                  </div>
-                  <div class='col-lg-4 col-sm-4 pr-1 pl-0'>
-                      <div class='LoanAmountDetailsDiv'>
-                          <span class="fnt-10pt">Balance outstanding</span><br><span class="fnt-14pt">Outstanding balance</span>&nbsp;<br>
-                      </div>
-                  </div>
-                  <div class='col-lg-4 col-sm-4 pl-0'>
-                      <div class='LoanAmountDetailsDiv'>
-                          <span class="fnt-10pt">Now due</span><br><span class="fnt-14pt">Now Due value</span>&nbsp;<br>
-                      </div>
-                  </div>
-              </div>
+//// Component Created for Personal loan detail Widget -- Nedbank
+//@Component({
+//  selector: 'PersonalLoanDetail',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0'>
+//          <div class='card-body text-left pb-1 pt-1'>
+//              <div class='card-body-header pb-2'>Personal loan statement</div>
+//              <div class='row pb-1'>
+//                  <div class='col-lg-4 col-sm-4 pr-1'>
+//                      <div class='LoanAmountDetailsDiv'>
+//                          <span class="fnt-10pt">Loan Amount</span><br><span class="fnt-14pt">Loan Amount</span>&nbsp;<br>
+//                      </div>
+//                  </div>
+//                  <div class='col-lg-4 col-sm-4 pr-1 pl-0'>
+//                      <div class='LoanAmountDetailsDiv'>
+//                          <span class="fnt-10pt">Balance outstanding</span><br><span class="fnt-14pt">Outstanding balance</span>&nbsp;<br>
+//                      </div>
+//                  </div>
+//                  <div class='col-lg-4 col-sm-4 pl-0'>
+//                      <div class='LoanAmountDetailsDiv'>
+//                          <span class="fnt-10pt">Now due</span><br><span class="fnt-14pt">Now Due value</span>&nbsp;<br>
+//                      </div>
+//                  </div>
+//              </div>
 
-              <div class="pt-2 pb-2" style="background-color:#F2F2F2">
-                  <h4 class="pl-25px"><span class="NedbankPersonalLoanTxt">Nedbank personal loan</span></h4>
-                  <table class="customTable mt-2" border="0">
-                      <tbody>
-                          <tr>
-                              <td class="w-25">Account Number:</td>
-                              <td class="w-25 text-right pr-4 text-success">Account Number</td>
-                              <td class="w-25"></td>
-                              <td class="w-25 text-right text-success"></td>
-                          </tr>
-                          <tr>
-                              <td class="w-25">Statement date:</td>
-                              <td class="w-25 text-right pr-4 text-success">Statement date</td>
-                              <td class="w-25">Arrears:</td>
-                              <td class="w-25 text-right text-success">Arrears amount</td>
-                          </tr>
-                          <tr>
-                              <td class="w-25">Statement period:</td>
-                              <td class="w-25 text-right pr-4 text-success">Min to Max Transaction Date</td>
-                              <td class="w-25">Annual rate of interest:</td>
-                              <td class="w-25 text-right pr-4 text-success">annual rate value</td>
-                          </tr>
-                          <tr>
-                              <td class="w-25">Monthly instalment:</td>
-                              <td class="w-25 text-right pr-4 text-success">Monthly instalment amount</td>
-                              <td class="w-25">Original term (months):</td>
-                              <td class="w-25 text-right pr-4 text-success">Month value</td>
-                          </tr>
-                          <tr>
-                              <td class="w-25">Due by date:</td>
-                              <td class="w-25 text-right pr-4 text-success">DD/MM/YYYY</td>
-                              <td class="w-25"></td>
-                              <td class="w-25 text-right pr-4 text-success"></td>
-                          </tr>
-                      </tbody>
-                  </table>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class PersonalLoanDetailComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//              <div class="pt-2 pb-2" style="background-color:#F2F2F2">
+//                  <h4 class="pl-25px"><span class="NedbankPersonalLoanTxt">Nedbank personal loan</span></h4>
+//                  <table class="customTable mt-2" border="0">
+//                      <tbody>
+//                          <tr>
+//                              <td class="w-25">Account Number:</td>
+//                              <td class="w-25 text-right pr-4 text-success">Account Number</td>
+//                              <td class="w-25"></td>
+//                              <td class="w-25 text-right text-success"></td>
+//                          </tr>
+//                          <tr>
+//                              <td class="w-25">Statement date:</td>
+//                              <td class="w-25 text-right pr-4 text-success">Statement date</td>
+//                              <td class="w-25">Arrears:</td>
+//                              <td class="w-25 text-right text-success">Arrears amount</td>
+//                          </tr>
+//                          <tr>
+//                              <td class="w-25">Statement period:</td>
+//                              <td class="w-25 text-right pr-4 text-success">Min to Max Transaction Date</td>
+//                              <td class="w-25">Annual rate of interest:</td>
+//                              <td class="w-25 text-right pr-4 text-success">annual rate value</td>
+//                          </tr>
+//                          <tr>
+//                              <td class="w-25">Monthly instalment:</td>
+//                              <td class="w-25 text-right pr-4 text-success">Monthly instalment amount</td>
+//                              <td class="w-25">Original term (months):</td>
+//                              <td class="w-25 text-right pr-4 text-success">Month value</td>
+//                          </tr>
+//                          <tr>
+//                              <td class="w-25">Due by date:</td>
+//                              <td class="w-25 text-right pr-4 text-success">DD/MM/YYYY</td>
+//                              <td class="w-25"></td>
+//                              <td class="w-25 text-right pr-4 text-success"></td>
+//                          </tr>
+//                      </tbody>
+//                  </table>
+//              </div>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class PersonalLoanDetailComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Personal loan transaction Widget -- Nedbank
-@Component({
-  selector: 'PersonalLoanTransaction',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0'>
-          <div class='card-body text-left pb-1 pt-1'>
-              <div class="pt-1">
-                  <table id="TableWidget" class="LoanTransactionTable customTable">
-                      <thead>
-                          <tr class="ht-30">
-                              <th class="w-12">Post date</th>
-                              <th class="w-12">Effective date</th>
-                              <th class="w-40">Transaction</th>
-                              <th class="w-12 text-right">Debit</th>
-                              <th class="w-12 text-right">Credit</th>
-                              <th class="w-12 text-right">Balance outstanding</th>
-                          </tr>
-                      </thead>
-                  </table>
+//// Component Created for Personal loan transaction Widget -- Nedbank
+//@Component({
+//  selector: 'PersonalLoanTransaction',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0'>
+//          <div class='card-body text-left pb-1 pt-1'>
+//              <div class="pt-1">
+//                  <table id="TableWidget" class="LoanTransactionTable customTable">
+//                      <thead>
+//                          <tr class="ht-30">
+//                              <th class="w-12">Post date</th>
+//                              <th class="w-12">Effective date</th>
+//                              <th class="w-40">Transaction</th>
+//                              <th class="w-12 text-right">Debit</th>
+//                              <th class="w-12 text-right">Credit</th>
+//                              <th class="w-12 text-right">Balance outstanding</th>
+//                          </tr>
+//                      </thead>
+//                  </table>
 
-                  <div class="pt-0 overflow-auto" style="max-height:125px;">
-                      <table class="LoanTransactionTable customTable">
-                          <tbody>
-                              <tr>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-40">Transaction Description</td>
-                                  <td class="w-12 text-right">xxx.x</td>
-                                  <td class="w-12 text-right">-</td>
-                                  <td class="w-12 text-right">xxx.xx</td>
-                              </tr>
-                              <tr>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-40">Transaction Description</td>
-                                  <td class="w-12 text-right">-</td>
-                                  <td class="w-12 text-right">x.xx</td>
-                                  <td class="w-12 text-right">xxx.xx</td>
-                              </tr>
-                              <tr>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-40">Transaction Description</td>
-                                  <td class="w-12 text-right">-</td>
-                                  <td class="w-12 text-right">xxx.xx</td>
-                                  <td class="w-12 text-right">xxx.xx</td>
-                              </tr>
-                              <tr>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-40">Transaction Description</td>
-                                  <td class="w-12 text-right">-</td>
-                                  <td class="w-12 text-right">x.xx</td>
-                                  <td class="w-12 text-right">xxx.xx</td>
-                              </tr>
-                              <tr>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-40">Transaction Description</td>
-                                  <td class="w-12 text-right">xxx.xx</td>
-                                  <td class="w-12 text-right">-</td>
-                                  <td class="w-12 text-right">xxx.xx</td>
-                              </tr>
-                              <tr>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-40">Transaction Description</td>
-                                  <td class="w-12 text-right">-</td>
-                                  <td class="w-12 text-right">xx.xx</td>
-                                  <td class="w-12 text-right">xxx.xx</td>
-                              </tr>
-                              <tr>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-40">Transaction Description</td>
-                                  <td class="w-12 text-right">xx.xx</td>
-                                  <td class="w-12 text-right">-</td>
-                                  <td class="w-12 text-right">xxx.xx</td>
-                              </tr>
-                          </tbody>
-                      </table>
-                  </div>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
+//                  <div class="pt-0 overflow-auto" style="max-height:125px;">
+//                      <table class="LoanTransactionTable customTable">
+//                          <tbody>
+//                              <tr>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-40">Transaction Description</td>
+//                                  <td class="w-12 text-right">xxx.x</td>
+//                                  <td class="w-12 text-right">-</td>
+//                                  <td class="w-12 text-right">xxx.xx</td>
+//                              </tr>
+//                              <tr>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-40">Transaction Description</td>
+//                                  <td class="w-12 text-right">-</td>
+//                                  <td class="w-12 text-right">x.xx</td>
+//                                  <td class="w-12 text-right">xxx.xx</td>
+//                              </tr>
+//                              <tr>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-40">Transaction Description</td>
+//                                  <td class="w-12 text-right">-</td>
+//                                  <td class="w-12 text-right">xxx.xx</td>
+//                                  <td class="w-12 text-right">xxx.xx</td>
+//                              </tr>
+//                              <tr>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-40">Transaction Description</td>
+//                                  <td class="w-12 text-right">-</td>
+//                                  <td class="w-12 text-right">x.xx</td>
+//                                  <td class="w-12 text-right">xxx.xx</td>
+//                              </tr>
+//                              <tr>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-40">Transaction Description</td>
+//                                  <td class="w-12 text-right">xxx.xx</td>
+//                                  <td class="w-12 text-right">-</td>
+//                                  <td class="w-12 text-right">xxx.xx</td>
+//                              </tr>
+//                              <tr>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-40">Transaction Description</td>
+//                                  <td class="w-12 text-right">-</td>
+//                                  <td class="w-12 text-right">xx.xx</td>
+//                                  <td class="w-12 text-right">xxx.xx</td>
+//                              </tr>
+//                              <tr>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-40">Transaction Description</td>
+//                                  <td class="w-12 text-right">xx.xx</td>
+//                                  <td class="w-12 text-right">-</td>
+//                                  <td class="w-12 text-right">xxx.xx</td>
+//                              </tr>
+//                          </tbody>
+//                      </table>
+//                  </div>
+//              </div>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
 //export class PersonalLoanTransactionComponent {
 //  @Input()
 //  widgetsGridsterItemArray: any[] = [];
@@ -3943,179 +3943,179 @@ export class PersonalLoanInsuranceMessageComponent {
 //  widgetsGridsterItemArray: any[] = [];
 //}
 
-// Component Created for Portfolio product level Customer address details Widget -- Nedbank
-@Component({
-  selector: 'PortfolioCustomerAddressDetails',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-       <div class='card border-0'>
-          <div class="card-body CustomerDetails">
-              <span class="fnt-14pt">Address</span> <br />
-              VERDEAU LIFESTYLE ESTATE <br />
-              6 HERCULE CRESCENT DRIVE <br />
-              WELLINGTON, 7655
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class PortfolioCustomerAddressDetailsComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Portfolio product level Customer address details Widget -- Nedbank
+//@Component({
+//  selector: 'PortfolioCustomerAddressDetails',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//       <div class='card border-0'>
+//          <div class="card-body CustomerDetails">
+//              <span class="fnt-14pt">Address</span> <br />
+//              VERDEAU LIFESTYLE ESTATE <br />
+//              6 HERCULE CRESCENT DRIVE <br />
+//              WELLINGTON, 7655
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class PortfolioCustomerAddressDetailsComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Portfolio product level client contact details Widget -- Nedbank
-@Component({
-  selector: 'PortfolioClientContactDetails',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-       <div class='card border-0'>
-          <div class="card-body ClientDetails">
-              <span class="fnt-14pt">Client contact details</span><br />
-              <p>Mobile No: 0860 555 111</p>
-              <p>Email: supportdesk@nedbank.com</p>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class PortfolioClientContactDetailsComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Portfolio product level client contact details Widget -- Nedbank
+//@Component({
+//  selector: 'PortfolioClientContactDetails',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//       <div class='card border-0'>
+//          <div class="card-body ClientDetails">
+//              <span class="fnt-14pt">Client contact details</span><br />
+//              <p>Mobile No: 0860 555 111</p>
+//              <p>Email: supportdesk@nedbank.com</p>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class PortfolioClientContactDetailsComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Portfolio product level account summary details Widget -- Nedbank
-@Component({
-  selector: 'PortfolioAccountSummaryDetails',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-       <div class='card border-0'>
-          <div class="card-body">
-              <div class="card-body-header pb-2">Account Summary</div>
-              <div class="pt-1">
-                  <table class="LoanTransactionTable customTable">
-                      <thead>
-                          <tr class="ht-30">
-                              <th class="w-50">Account</th>
-                              <th class="w-50 text-right">Total Amount</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                          <tr class="ht-30">
-                              <td class="text-left">Investment </td>
-                              <td class="text-right">R9 620.98</td>
-                          </tr>
-                          <tr class="ht-30">
-                              <td class="text-left">Personal Loan </td>
-                              <td class="text-right">R4 165.00</td>
-                          </tr>
-                          <tr class="ht-30">
-                              <td class="text-left">Home Loan </td>
-                              <td class="text-right">R7 969.00</td>
-                          </tr>
-                      </tbody>
-                  </table>
-              </div>
-              <div class="pt-2">
-                  <table class="LoanTransactionTable customTable">
-                      <thead>
-                          <tr class="ht-30">
-                              <th class="text-left">Greenbacks rewards points </th>
-                              <th class="text-right">234</th>
-                          </tr>
-                      </thead>
-                  </table>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class PortfolioAccountSummaryDetailsComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Portfolio product level account summary details Widget -- Nedbank
+//@Component({
+//  selector: 'PortfolioAccountSummaryDetails',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//       <div class='card border-0'>
+//          <div class="card-body">
+//              <div class="card-body-header pb-2">Account Summary</div>
+//              <div class="pt-1">
+//                  <table class="LoanTransactionTable customTable">
+//                      <thead>
+//                          <tr class="ht-30">
+//                              <th class="w-50">Account</th>
+//                              <th class="w-50 text-right">Total Amount</th>
+//                          </tr>
+//                      </thead>
+//                      <tbody>
+//                          <tr class="ht-30">
+//                              <td class="text-left">Investment </td>
+//                              <td class="text-right">R9 620.98</td>
+//                          </tr>
+//                          <tr class="ht-30">
+//                              <td class="text-left">Personal Loan </td>
+//                              <td class="text-right">R4 165.00</td>
+//                          </tr>
+//                          <tr class="ht-30">
+//                              <td class="text-left">Home Loan </td>
+//                              <td class="text-right">R7 969.00</td>
+//                          </tr>
+//                      </tbody>
+//                  </table>
+//              </div>
+//              <div class="pt-2">
+//                  <table class="LoanTransactionTable customTable">
+//                      <thead>
+//                          <tr class="ht-30">
+//                              <th class="text-left">Greenbacks rewards points </th>
+//                              <th class="text-right">234</th>
+//                          </tr>
+//                      </thead>
+//                  </table>
+//              </div>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class PortfolioAccountSummaryDetailsComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Portfolio product level account analysis Widget -- Nedbank
-@Component({
-  selector: 'PortfolioAccountAnalysis',
-  template: `<div class="widget">
-    <div class="widget-area width100">
-      <div class="card border-0">
-          <div class="card-body">
-              <div class="card-body-header pb-2 text-center pb-1">Account analytics</div>
-              <div id="AccountAnalysisBarGraphcontainer" style="height:200px;"></div>
-          </div>
-      </div>      
-    </div>
-</div>`
-})
-export class PortfolioAccountAnalysisComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-  public options4: any = {
-    chart: {
-      backgroundColor: 'rgba(0,0,0,0)',
-      type: 'column',
-      style: {
-        fontFamily: 'Mark Pro Regular',
-        fontSize: '8pt'
-      }
-    },
-    title: {
-      text: ''
-    },
-    xAxis: {
-      categories: ['Jan', 'Feb'],
-      crosshair: true
-    },
-    yAxis: {
-      title: {
-        text: 'Amount (R)'
-      }
-    },
-    credits: {
-      enabled: false
-    },
-    tooltip: {
-      headerFormat: '<span>{point.key}</span><table>',
-      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
-      footerFormat: '</table>',
-      shared: true,
-      useHTML: true
-    },
-    plotOptions: {
-      column: {
-        pointPadding: 0.2,
-        borderWidth: 0
-      }
-    },
-    series: [{
-      name: 'Investment',
-      data: [9456.12, 9620.98]
-    }, {
-      name: 'Personal loan',
-      data: [-4465.00, -4165.00]
-    }, {
-      name: 'Home loan',
-      data: [-8969.00, -7969.00]
-    }],
-    //colors: ['#005b00', '#434348', '#7cb5ec']
-  }
-  ngAfterViewInit() {
-    setTimeout(() => {
-      Highcharts.chart('AccountAnalysisBarGraphcontainer', this.options4);
-    }, 100);
-  }
+//// Component Created for Portfolio product level account analysis Widget -- Nedbank
+//@Component({
+//  selector: 'PortfolioAccountAnalysis',
+//  template: `<div class="widget">
+//    <div class="widget-area width100">
+//      <div class="card border-0">
+//          <div class="card-body">
+//              <div class="card-body-header pb-2 text-center pb-1">Account analytics</div>
+//              <div id="AccountAnalysisBarGraphcontainer" style="height:200px;"></div>
+//          </div>
+//      </div>      
+//    </div>
+//</div>`
+//})
+//export class PortfolioAccountAnalysisComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//  public options4: any = {
+//    chart: {
+//      backgroundColor: 'rgba(0,0,0,0)',
+//      type: 'column',
+//      style: {
+//        fontFamily: 'Mark Pro Regular',
+//        fontSize: '8pt'
+//      }
+//    },
+//    title: {
+//      text: ''
+//    },
+//    xAxis: {
+//      categories: ['Jan', 'Feb'],
+//      crosshair: true
+//    },
+//    yAxis: {
+//      title: {
+//        text: 'Amount (R)'
+//      }
+//    },
+//    credits: {
+//      enabled: false
+//    },
+//    tooltip: {
+//      headerFormat: '<span>{point.key}</span><table>',
+//      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+//      footerFormat: '</table>',
+//      shared: true,
+//      useHTML: true
+//    },
+//    plotOptions: {
+//      column: {
+//        pointPadding: 0.2,
+//        borderWidth: 0
+//      }
+//    },
+//    series: [{
+//      name: 'Investment',
+//      data: [9456.12, 9620.98]
+//    }, {
+//      name: 'Personal loan',
+//      data: [-4465.00, -4165.00]
+//    }, {
+//      name: 'Home loan',
+//      data: [-8969.00, -7969.00]
+//    }],
+//    //colors: ['#005b00', '#434348', '#7cb5ec']
+//  }
+//  ngAfterViewInit() {
+//    setTimeout(() => {
+//      Highcharts.chart('AccountAnalysisBarGraphcontainer', this.options4);
+//    }, 100);
+//  }
 
-  ngOnInit() {
-    $(document).ready(function () {
-      setTimeout(function () {
-        window.dispatchEvent(new Event('resize'));
-      }, 10);
-    });
-  }
-}
+//  ngOnInit() {
+//    $(document).ready(function () {
+//      setTimeout(function () {
+//        window.dispatchEvent(new Event('resize'));
+//      }, 10);
+//    });
+//  }
+//}
 
 ////// Component Created for Portfolio product level reminders and recommendation Widget -- Nedbank
 ////@Component({

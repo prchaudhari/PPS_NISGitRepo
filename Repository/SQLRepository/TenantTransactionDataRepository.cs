@@ -1962,192 +1962,192 @@ namespace nIS
 
         #region Private methods for Nedbank Tenant
 
-        private string WhereClauseGeneratorForDmCustomer(CustomerSearchParameter searchParameter, string tenantCode)
-        {
-            StringBuilder queryString = new StringBuilder();
+        //private string WhereClauseGeneratorForDmCustomer(CustomerSearchParameter searchParameter, string tenantCode)
+        //{
+        //    StringBuilder queryString = new StringBuilder();
 
-            if (validationEngine.IsValidLong(searchParameter.Identifier))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id == {0} ", item))) + ") and ");
-            }
-            if (validationEngine.IsValidLong(searchParameter.CustomerId))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId == {0} ", item))) + ") and ");
-            }
-            if (validationEngine.IsValidLong(searchParameter.BatchId))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId == {0} ", item))) + ") ");
-            }
+        //    if (validationEngine.IsValidLong(searchParameter.Identifier))
+        //    {
+        //        queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id == {0} ", item))) + ") and ");
+        //    }
+        //    if (validationEngine.IsValidLong(searchParameter.CustomerId))
+        //    {
+        //        queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId == {0} ", item))) + ") and ");
+        //    }
+        //    if (validationEngine.IsValidLong(searchParameter.BatchId))
+        //    {
+        //        queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId == {0} ", item))) + ") ");
+        //    }
 
-            if (searchParameter.WidgetFilterSetting != null && searchParameter.WidgetFilterSetting != string.Empty)
-            {
-                var filterEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFilterEntity>>(searchParameter.WidgetFilterSetting);
-                filterEntities.ForEach(filterEntity =>
-                {
-                    queryString.Append(this.QueryGenerator(filterEntity));
-                });
-            }
+        //    if (searchParameter.WidgetFilterSetting != null && searchParameter.WidgetFilterSetting != string.Empty)
+        //    {
+        //        var filterEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFilterEntity>>(searchParameter.WidgetFilterSetting);
+        //        filterEntities.ForEach(filterEntity =>
+        //        {
+        //            queryString.Append(this.QueryGenerator(filterEntity));
+        //        });
+        //    }
 
-            queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
-            return queryString.ToString();
-        }
+        //    queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
+        //    return queryString.ToString();
+        //}
 
-        private string WhereClauseGeneratorForCustomerInvestment(CustomerInvestmentSearchParameter searchParameter, string tenantCode)
-        {
-            StringBuilder queryString = new StringBuilder();
+        //private string WhereClauseGeneratorForCustomerInvestment(CustomerInvestmentSearchParameter searchParameter, string tenantCode)
+        //{
+        //    StringBuilder queryString = new StringBuilder();
 
-            //send account id value to this property when account master data fetching
-            if (validationEngine.IsValidLong(searchParameter.Identifier))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
-            }
+        //    //send account id value to this property when account master data fetching
+        //    if (validationEngine.IsValidLong(searchParameter.Identifier))
+        //    {
+        //        queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
+        //    }
 
-            //send account id value to this property when account transaction data fetching
-            if (validationEngine.IsValidLong(searchParameter.InvestmentId))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.InvestmentId.ToString().Split(',').Select(item => string.Format("InvestmentId.Equals({0}) ", item))) + ") and ");
-            }
+        //    //send account id value to this property when account transaction data fetching
+        //    if (validationEngine.IsValidLong(searchParameter.InvestmentId))
+        //    {
+        //        queryString.Append("(" + string.Join("or ", searchParameter.InvestmentId.ToString().Split(',').Select(item => string.Format("InvestmentId.Equals({0}) ", item))) + ") and ");
+        //    }
 
-            if (validationEngine.IsValidLong(searchParameter.BatchId))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") and ");
-            }
+        //    if (validationEngine.IsValidLong(searchParameter.BatchId))
+        //    {
+        //        queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") and ");
+        //    }
 
-            if (validationEngine.IsValidLong(searchParameter.InvestorId))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.InvestorId.ToString().Split(',').Select(item => string.Format("InvestorId.Equals({0}) ", item))) + ") and ");
-            }
+        //    if (validationEngine.IsValidLong(searchParameter.InvestorId))
+        //    {
+        //        queryString.Append("(" + string.Join("or ", searchParameter.InvestorId.ToString().Split(',').Select(item => string.Format("InvestorId.Equals({0}) ", item))) + ") and ");
+        //    }
 
-            if (validationEngine.IsValidLong(searchParameter.CustomerId))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") ");
-            }
+        //    if (validationEngine.IsValidLong(searchParameter.CustomerId))
+        //    {
+        //        queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") ");
+        //    }
 
-            if (searchParameter.WidgetFilterSetting != null && searchParameter.WidgetFilterSetting != string.Empty)
-            {
-                var filterEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFilterEntity>>(searchParameter.WidgetFilterSetting);
-                filterEntities.ForEach(filterEntity =>
-                {
-                    queryString.Append(this.QueryGenerator(filterEntity));
-                });
-            }
+        //    if (searchParameter.WidgetFilterSetting != null && searchParameter.WidgetFilterSetting != string.Empty)
+        //    {
+        //        var filterEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFilterEntity>>(searchParameter.WidgetFilterSetting);
+        //        filterEntities.ForEach(filterEntity =>
+        //        {
+        //            queryString.Append(this.QueryGenerator(filterEntity));
+        //        });
+        //    }
 
-            queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
-            return queryString.ToString();
-        }
+        //    queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
+        //    return queryString.ToString();
+        //}
 
-        private string WhereClauseGeneratorForCustomerPersonalLoan(CustomerPersonalLoanSearchParameter searchParameter, string tenantCode)
-        {
-            StringBuilder queryString = new StringBuilder();
+        //private string WhereClauseGeneratorForCustomerPersonalLoan(CustomerPersonalLoanSearchParameter searchParameter, string tenantCode)
+        //{
+        //    StringBuilder queryString = new StringBuilder();
 
-            //send account id value to this property when account master data fetching
-            if (validationEngine.IsValidLong(searchParameter.Identifier))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
-            }
+        //    //send account id value to this property when account master data fetching
+        //    if (validationEngine.IsValidLong(searchParameter.Identifier))
+        //    {
+        //        queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
+        //    }
 
-            if (validationEngine.IsValidLong(searchParameter.CustomerId))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") and ");
-            }
+        //    if (validationEngine.IsValidLong(searchParameter.CustomerId))
+        //    {
+        //        queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") and ");
+        //    }
 
-            if (validationEngine.IsValidLong(searchParameter.InvestorId))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.InvestorId.ToString().Split(',').Select(item => string.Format("InvestorId.Equals({0}) ", item))) + ") and ");
-            }
+        //    if (validationEngine.IsValidLong(searchParameter.InvestorId))
+        //    {
+        //        queryString.Append("(" + string.Join("or ", searchParameter.InvestorId.ToString().Split(',').Select(item => string.Format("InvestorId.Equals({0}) ", item))) + ") and ");
+        //    }
 
-            if (validationEngine.IsValidLong(searchParameter.BatchId))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") ");
-            }
+        //    if (validationEngine.IsValidLong(searchParameter.BatchId))
+        //    {
+        //        queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") ");
+        //    }
 
-            if (searchParameter.WidgetFilterSetting != null && searchParameter.WidgetFilterSetting != string.Empty)
-            {
-                var filterEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFilterEntity>>(searchParameter.WidgetFilterSetting);
-                filterEntities.ForEach(filterEntity =>
-                {
-                    queryString.Append(this.QueryGenerator(filterEntity));
-                });
-            }
+        //    if (searchParameter.WidgetFilterSetting != null && searchParameter.WidgetFilterSetting != string.Empty)
+        //    {
+        //        var filterEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFilterEntity>>(searchParameter.WidgetFilterSetting);
+        //        filterEntities.ForEach(filterEntity =>
+        //        {
+        //            queryString.Append(this.QueryGenerator(filterEntity));
+        //        });
+        //    }
 
-            queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
-            return queryString.ToString();
-        }
+        //    queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
+        //    return queryString.ToString();
+        //}
 
-        private string WhereClauseGeneratorForCustomerHomeLoan(CustomerHomeLoanSearchParameter searchParameter, string tenantCode)
-        {
-            StringBuilder queryString = new StringBuilder();
+        //private string WhereClauseGeneratorForCustomerHomeLoan(CustomerHomeLoanSearchParameter searchParameter, string tenantCode)
+        //{
+        //    StringBuilder queryString = new StringBuilder();
 
-            //send account id value to this property when account master data fetching
-            if (validationEngine.IsValidLong(searchParameter.Identifier))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
-            }
+        //    //send account id value to this property when account master data fetching
+        //    if (validationEngine.IsValidLong(searchParameter.Identifier))
+        //    {
+        //        queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
+        //    }
 
-            if (validationEngine.IsValidLong(searchParameter.CustomerId))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") and ");
-            }
+        //    if (validationEngine.IsValidLong(searchParameter.CustomerId))
+        //    {
+        //        queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") and ");
+        //    }
 
-            if (validationEngine.IsValidLong(searchParameter.InvestorId))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.InvestorId.ToString().Split(',').Select(item => string.Format("InvestorId.Equals({0}) ", item))) + ") and ");
-            }
+        //    if (validationEngine.IsValidLong(searchParameter.InvestorId))
+        //    {
+        //        queryString.Append("(" + string.Join("or ", searchParameter.InvestorId.ToString().Split(',').Select(item => string.Format("InvestorId.Equals({0}) ", item))) + ") and ");
+        //    }
 
-            if (validationEngine.IsValidLong(searchParameter.BatchId))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") ");
-            }
+        //    if (validationEngine.IsValidLong(searchParameter.BatchId))
+        //    {
+        //        queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") ");
+        //    }
 
-            if (searchParameter.WidgetFilterSetting != null && searchParameter.WidgetFilterSetting != string.Empty)
-            {
-                var filterEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFilterEntity>>(searchParameter.WidgetFilterSetting);
-                filterEntities.ForEach(filterEntity =>
-                {
-                    queryString.Append(this.QueryGenerator(filterEntity));
-                });
-            }
+        //    if (searchParameter.WidgetFilterSetting != null && searchParameter.WidgetFilterSetting != string.Empty)
+        //    {
+        //        var filterEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFilterEntity>>(searchParameter.WidgetFilterSetting);
+        //        filterEntities.ForEach(filterEntity =>
+        //        {
+        //            queryString.Append(this.QueryGenerator(filterEntity));
+        //        });
+        //    }
 
-            queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
-            return queryString.ToString();
-        }
+        //    queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
+        //    return queryString.ToString();
+        //}
 
-        private string WhereClauseGeneratorForMessageOrNoteSearch(MessageAndNoteSearchParameter searchParameter, string tenantCode)
-        {
-            StringBuilder queryString = new StringBuilder();
+        //private string WhereClauseGeneratorForMessageOrNoteSearch(MessageAndNoteSearchParameter searchParameter, string tenantCode)
+        //{
+        //    StringBuilder queryString = new StringBuilder();
 
-            if (validationEngine.IsValidLong(searchParameter.Identifier))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
-            }
+        //    if (validationEngine.IsValidLong(searchParameter.Identifier))
+        //    {
+        //        queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
+        //    }
 
-            if (validationEngine.IsValidLong(searchParameter.CustomerId))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("ParentId.Equals({0}) ", item))) + ") and ");
-            }
+        //    if (validationEngine.IsValidLong(searchParameter.CustomerId))
+        //    {
+        //        queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("ParentId.Equals({0}) ", item))) + ") and ");
+        //    }
 
-            if (validationEngine.IsValidText(searchParameter.Type))
-            {
-                queryString.Append(string.Format("Type.Equals(\"{0}\") and ", searchParameter.Type));
-            }
+        //    if (validationEngine.IsValidText(searchParameter.Type))
+        //    {
+        //        queryString.Append(string.Format("Type.Equals(\"{0}\") and ", searchParameter.Type));
+        //    }
 
-            if (validationEngine.IsValidLong(searchParameter.BatchId))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") ");
-            }
+        //    if (validationEngine.IsValidLong(searchParameter.BatchId))
+        //    {
+        //        queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") ");
+        //    }
 
-            if (searchParameter.WidgetFilterSetting != null && searchParameter.WidgetFilterSetting != string.Empty)
-            {
-                var filterEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFilterEntity>>(searchParameter.WidgetFilterSetting);
-                filterEntities.ForEach(filterEntity =>
-                {
-                    queryString.Append(this.QueryGenerator(filterEntity));
-                });
-            }
+        //    if (searchParameter.WidgetFilterSetting != null && searchParameter.WidgetFilterSetting != string.Empty)
+        //    {
+        //        var filterEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFilterEntity>>(searchParameter.WidgetFilterSetting);
+        //        filterEntities.ForEach(filterEntity =>
+        //        {
+        //            queryString.Append(this.QueryGenerator(filterEntity));
+        //        });
+        //    }
 
-            queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
-            return queryString.ToString();
-        }
+        //    queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
+        //    return queryString.ToString();
+        //}
 
         //private IList<DM_MonthwiseAccountAnanlysis> Get_MonthwiseAccountAnanlyses(DM_AccountAnalysisRecord _AccountAnanlysis, string dataFor)
         //{
