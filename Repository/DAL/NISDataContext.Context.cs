@@ -190,5 +190,17 @@ namespace nIS
             var result = this.Database.SqlQuery<FnGetStaticAndDynamicWidgets_Result>($"select * from [NIS].[FnGetStaticAndDynamicWidgets]({pageTypeId}, '{tenantCode}')").ToList();
             return result;
         }
+
+        public List<spIAA_PaymentDetail> spIAA_PaymentDetail_fspstatement()
+        {
+            //// Create parameters for the stored procedure
+            //var param1 = new SqlParameter("@Parameter1", parameter1);
+            //var param2 = new SqlParameter("@Parameter2", parameter2);spIAA_PaymentDetail_fspstatement
+
+            // Execute the stored procedure using SqlQuery
+            var result = this.Database.SqlQuery<spIAA_PaymentDetail>("spIAA_PaymentDetail_fspstatement").ToList();
+
+            return result;
+        }
     }
 }

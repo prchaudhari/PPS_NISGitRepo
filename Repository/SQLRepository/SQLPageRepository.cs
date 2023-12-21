@@ -316,8 +316,11 @@ namespace nIS
                 IList<View_Page> view_PageRecords = new List<View_Page>();
                 IList<WidgetRecord> widgetRecords = new List<WidgetRecord>();
                 IList<View_DynamicWidgetRecord> dynamicWidgetRecords = new List<View_DynamicWidgetRecord>();
-                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString)) 
-                {
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                { 
+                    ////for try stored procedure
+                    //List<spIAA_PaymentDetail> spData = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
+                    ////end                  
                     if (pageSearchParameter.PagingParameter.PageIndex > 0 && pageSearchParameter.PagingParameter.PageSize > 0)
                     {
                         view_PageRecords = nISEntitiesDataContext.View_PageRecord
