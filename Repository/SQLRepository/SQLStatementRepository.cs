@@ -837,6 +837,16 @@ namespace nIS
                                                             pageHtmlContent.Append(widgetHTML);
 
                                                         }
+                                                        else if (mergedlst[x].WidgetName == HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME)
+                                                        {
+                                                            string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
+                                                            //string widgetHTML = HtmlConstants.PAYMENT_SUMMARY_WIDGET_HTML_FOR_STMT.Replace("{{VideoSource}}", "{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
+                                                            string widgetHTML = HtmlConstants.PAYMENT_SUMMARY_WIDGET_HTML_FOR_STMT;
+                                                            widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
+                                                            widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                            pageHtmlContent.Append(widgetHTML);
+
+                                                        }
                                                         else if (mergedlst[x].WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME)
                                                         {
                                                             string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
@@ -1192,6 +1202,18 @@ namespace nIS
 
                                     string address2 = customerInfo.AddressLine3 + ", " + customerInfo.AddressLine4 + ", ";
                                     pageContent.Replace("{{Address2}}", address2);
+                                }
+                            }
+                            else if (widget.WidgetName == HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME)
+                            {
+                                 string paymentInfoJson = "{'CustomerId':'7','BatchId':'35','AccountNumber':'LD01254-222222','AccountType':'Current Account','Currency':'$','Balance':'6235.34','TotalDeposit':'15432.00','TotalSpend':'5760.00','ProfitEarned':'3456.00','Indicator':'Up','FeesPaid':'345.00','GrandTotal':'24356.00','Percentage':'50.00','TenantCode':'00000000-0000-0000-0000-000000000000'}";
+                                if (paymentInfoJson != string.Empty && validationEngine.IsValidJson(paymentInfoJson))
+                                {
+                                    AccountMaster paymentInfo = JsonConvert.DeserializeObject<AccountMaster>(paymentInfoJson);
+                                    pageContent.Replace("{{IntTotal}}", paymentInfo.GrandTotal);
+                                    pageContent.Replace("{{Vat}}", paymentInfo.FeesPaid);
+                                    pageContent.Replace("{{TotalDue}}", (Convert.ToDouble(paymentInfo.GrandTotal) + Convert.ToDouble(paymentInfo.FeesPaid)).ToString());
+
                                 }
                             }
                             else if (widget.WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME)
@@ -1665,6 +1687,18 @@ namespace nIS
 
                                     string address2 = customerInfo.AddressLine3 + ", " + customerInfo.AddressLine4 + ", ";
                                     pageContent.Replace("{{Address2}}", address2);
+                                }
+                            }
+                            else if (widget.WidgetName == HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME)
+                            {
+                                string paymentInfoJson = "{'CustomerId':'7','BatchId':'35','AccountNumber':'LD01254-222222','AccountType':'Current Account','Currency':'$','Balance':'6235.34','TotalDeposit':'15432.00','TotalSpend':'5760.00','ProfitEarned':'3456.00','Indicator':'Up','FeesPaid':'345.00','GrandTotal':'24356.00','Percentage':'50.00','TenantCode':'00000000-0000-0000-0000-000000000000'}";
+                                if (paymentInfoJson != string.Empty && validationEngine.IsValidJson(paymentInfoJson))
+                                {
+                                    AccountMaster paymentInfo = JsonConvert.DeserializeObject<AccountMaster>(paymentInfoJson);
+                                    pageContent.Replace("{{IntTotal}}", paymentInfo.GrandTotal);
+                                    pageContent.Replace("{{Vat}}", paymentInfo.FeesPaid);
+                                    pageContent.Replace("{{TotalDue}}", (Convert.ToDouble(paymentInfo.GrandTotal) + Convert.ToDouble(paymentInfo.FeesPaid)).ToString());
+
                                 }
                             }
                             else if (widget.WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME)
@@ -2236,6 +2270,13 @@ namespace nIS
                                                 pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", batchDetail.VideoURL);
                                             }
                                         }
+                                    }
+                                   else if (widget.WidgetName == HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME) //Customer Information Widget
+                                    {
+                                        pageContent.Replace("{{IntTotal}}", accountrecords.First().GrandTotal.ToString());
+                                        pageContent.Replace("{{Vat}}", accountrecords.First().FeesPaid.ToString());
+                                        pageContent.Replace("{{TotalDue}}", (Convert.ToDouble(accountrecords.First().GrandTotal) +
+                Convert.ToDouble(accountrecords.First().FeesPaid)).ToString());
                                     }
                                     else if (widget.WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME) //Account Information Widget
                                     {

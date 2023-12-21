@@ -52,7 +52,7 @@ export class CustomerInformationComponent {
   selector: 'fsp',
   template: `<div class="widget">
     <div class="widget-header">
-      <span class="widget-header-title"> FSP details </span>
+      <span class="widget-header-title"> FSPDetails </span>
     </div>
     <section class="info-section">
 
@@ -78,9 +78,9 @@ export class CustomerInformationComponent {
                 <div class="vl"></div>
 
             <div class="subsection">
-                <b>FSP</b>&nbsp;&nbsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;: 27959<br>
-                <b>FSB Agreement number</b>&nbsp;: 124411742<br>
-                <b>Vat Reg no.</b> &emsp;&emsp;&emsp;&emsp;&emsp; : 4370245823<br>
+                <b>FSP</b>&nbsp;&nbsp; &emsp;&emsp;&emsp;&emsp;&emsp;&em 0000<br>
+                <b>FSB Agreement number</b>&nbsp;: 0000<br>
+                <b>Vat Reg no.</b> &emsp;&emsp;&emsp;&emsp;&emsp; : 0000<br>
                 <b>Month </b> &nbsp;&nbsp;&nbsp;&nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; : September 2023
             </div>
         </section>
@@ -98,6 +98,66 @@ export class FSPDetailsComponent {
   //  { title: 'RM Name', value: 'David Miller' },
   //  { title: 'RM Contact Number', value: '+4487867833' },
   //];
+
+}
+
+// Component Created for Payment Summary--
+@Component({
+  selector: 'paymentSummary',
+  template: `<div class="widget">
+    <div class="widget-header">
+      <span class="widget-header-title"> Payment Summary </span>
+    </div>
+    <div class="heading-container2">
+            <b>Payment Summary</b>
+        </div>
+        <section class="info-section">
+            <div >
+               <table class="table-subsection">
+                <tr>
+                    <td class="tds1">Intermediary Total - March 2023
+                    </td>
+                    <td class="tds">R256670.66</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="tds1">Vat</td>
+                    <td class="tds">R38001.27</td>
+                </tr>
+                <tr>
+                    <td class="tds"></td>
+                    <td ><hr class="horizontal-line1"></td>
+                </tr>
+                <tr>
+                    <td class="tds1">Total Due</td>
+                    <td class="tds"> R291671.93</td>
+                   
+                </tr>
+<tr>
+                   
+                    <td> </td>
+                    <td>Posted- 3<sup>rd</sup> March</td>
+                </tr>
+               </table>
+            </div>
+        </section>
+        <hr class="horizontal-line">
+  </div>`
+})
+export class PaymentSummaryComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
 
 }
 
@@ -144,11 +204,30 @@ export class AccountInformationComponent {
     <div class="widget-header">
       <span class="widget-header-title">Image </span>
     </div>
-    <div class="widget-area position-relative width100">
-      <div class="widget-indicator-inner">
-        <img [src]="ImageSrc" [id]="ImageId"/>
-      </div>
-    </div>
+    <section class="info-section">
+            <div class="subsection">
+               <b class="hed">Miss HW HLONGWANE</b> <br>
+               <b>Client Contact Details</b><br>
+               Mobile: 082-1234567<br>
+              <span class="blue">Email: <u>y.vanheerden@google.com</u></span>
+            </div>
+                    <div class="vl"></div>
+            <div class="subsection">
+                <b>Address</b><br>
+                1 John Vorster Drive<br>
+                Randburg<br>
+                Gauteng
+            </div>
+                <div class="vl"></div>
+            <div class="subsection">
+                <b>Intermediary Reference</b>&nbsp;&nbsp;: 27959<br>
+                <b>Measure Type</b>&nbsp; &emsp;&emsp;&emsp;&emsp;: 124411742<br>
+                <b>Month </b> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; : September 2023<br>
+                <b>Date From </b>&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;: 2023-9-10 to<br>
+                   &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp; 2023-01-01
+            </div>
+        </section>
+        <hr class="horizontal-line">
   </div>`
 })
 export class ImageComponent {

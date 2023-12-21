@@ -28,14 +28,14 @@
       <li class="side-bar-li" title={{widget.DisplayName}} *ngFor="let widget of widgetsArray">
         <a (click)="selectWidget(widget.Identifier, widget.WidgetName)">
           <span class="nav-icon fa" [ngClass]="{
-                  'fa-address-book': widget.WidgetName == 'FSPDetails' || widget.WidgetName == 'PortfolioCustomerDetails',
+                  'fa-address-book': widget.WidgetName == 'FSPDetails',
                   'fa-address-book-o': widget.WidgetName == 'CustomerInformation' || widget.WidgetName == 'CustomerDetails' || widget.WidgetName == 'PortfolioCustomerDetails',
                   'fa-address-card-o' : widget.WidgetName == 'AccountInformation' || widget.WidgetName == 'CustomerAddressDetails',
                   'fa-cc fa-lg': widget.WidgetName == 'ClientContactDetails',
                   'fa-trophy fa-lg': widget.WidgetName == 'GreenbacksTotalRewardPoints',
                   'icon-imageWidget' : widget.WidgetName == 'Image',
                   'icon-videoWidget' : widget.WidgetName == 'Video',
-                  'icon-widget-single-column2 fa-lg' : widget.WidgetName == 'Summary' || widget.WidgetName == 'BreakdownOfInvestmentAccounts' || widget.WidgetName == 'WealthBreakdownOfInvestmentAccounts' || widget.WidgetName == 'PersonalLoanDetail' || widget.WidgetName == 'PersonalLoanTotalAmountDetail' || widget.WidgetName == 'HomeLoanTotalAmountDetail' || widget.WidgetName == 'AccountSummary' || widget.WidgetName == 'WealthHomeLoanTotalAmountDetail' || widget.WidgetName == 'MCAAccountSummary'|| widget.WidgetName == 'WealthMCAAccountSummary' ||  widget.WidgetName == 'CorporateSaverTableTotal' ,
+                  'icon-widget-single-column2 fa-lg' :widget.WidgetName == 'PaymentSummary'|| widget.WidgetName == 'Summary' || widget.WidgetName == 'BreakdownOfInvestmentAccounts' || widget.WidgetName == 'WealthBreakdownOfInvestmentAccounts' || widget.WidgetName == 'PersonalLoanDetail' || widget.WidgetName == 'PersonalLoanTotalAmountDetail' || widget.WidgetName == 'HomeLoanTotalAmountDetail' || widget.WidgetName == 'AccountSummary' || widget.WidgetName == 'WealthHomeLoanTotalAmountDetail' || widget.WidgetName == 'MCAAccountSummary'|| widget.WidgetName == 'WealthMCAAccountSummary' ||  widget.WidgetName == 'CorporateSaverTableTotal' ,
                   'fa-bell-o' : widget.WidgetName == 'ReminderaAndRecommendation' || widget.WidgetName == 'SpecialMessage' || widget.WidgetName == 'PortfolioReminders',
                   'icon-rp-loss1 fa-lg' : widget.WidgetName == 'InvestmentPortfolioRisk',
                   'icon-AnalyticsWidget' : widget.WidgetName == 'Analytics',

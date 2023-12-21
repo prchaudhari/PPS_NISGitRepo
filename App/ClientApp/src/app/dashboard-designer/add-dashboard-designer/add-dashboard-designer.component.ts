@@ -12,7 +12,7 @@ import { LocalStorageService } from 'src/app/shared/services/local-storage.servi
 import { Template } from '../../layout/template/template';
 import { TemplateWidget } from '../../layout/template/templateWidget';
 import {
-  CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
+  CustomerInformationComponent, AccountInformationComponent, PaymentSummaryComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
   SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
   SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
   DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent, CustomerDetailsComponent, CorporateSaverAgentAddressComponent, BankDetailsComponent, WealthBankDetailsComponent,
@@ -955,11 +955,26 @@ export class AddDashboardDesignerComponent implements OnInit {
           }
           else if (widget.WidgetName == "FSPDetails") {
             return this.widgetsGridsterItemArray.push({
-              cols: 3,
+              cols: 10,
               rows: 4,
               y: 0,
               x: 0,
               component: FSPDetailsComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "PaymentSummary") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 11,
+              rows: 4,
+              y: 0,
+              x: 0,
+              component: PaymentSummaryComponent,
               value: widget.WidgetName,
               WidgetId: widget.Identifier,
               widgetItemCount: this.widgetItemCount,
@@ -2246,6 +2261,9 @@ export class AddDashboardDesignerComponent implements OnInit {
       }
       else if (widgetName == 'FSPDetails') {
         gridObj.component = FSPDetailsComponent;
+      }
+      else if (widgetName == 'PaymentSummary') {
+        gridObj.component = PaymentSummaryComponent;
       }
       else if (widgetName == 'AccountInformation') {
         gridObj.component = AccountInformationComponent;

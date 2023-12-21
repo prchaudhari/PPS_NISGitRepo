@@ -495,6 +495,9 @@ namespace nIS
                                         case HtmlConstants.CUSTOMER_INFORMATION_WIDGET_NAME:
                                             this.BindCustomerInformationWidgetData(pageContent, customer, statement, page, widget, customerMedias, BatchDetails);
                                             break;
+                                        case HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME:
+                                            this.BindPaymentSummaryWidgetData(pageContent, customer, statement, page, widget, customerMedias, BatchDetails, accountrecords);
+                                            break;
                                         case HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME:
                                             this.BindAccountInformationWidgetData(pageContent, customer, page, widget);
                                             break;
@@ -1239,6 +1242,14 @@ namespace nIS
                     pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", batchDetail.VideoURL);
                 }
             }
+        }
+
+        private void BindPaymentSummaryWidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<BatchDetail> batchDetails, IList<AccountMaster> accountrecords)
+        {
+            pageContent.Replace("{{IntTotal}}", accountrecords.First().GrandTotal);
+            pageContent.Replace("{{Vat}}", accountrecords.First().FeesPaid);
+            pageContent.Replace("{{TotalDue}}", (Convert.ToDouble(accountrecords.First().GrandTotal) +
+                Convert.ToDouble(accountrecords.First().FeesPaid)).ToString());
         }
 
         private void BindAccountInformationWidgetData(StringBuilder pageContent, CustomerMaster customer, Page page, PageWidget widget)
