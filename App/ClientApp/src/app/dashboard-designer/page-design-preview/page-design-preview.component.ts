@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
 import * as $ from 'jquery';
 import { DomSanitizer } from '@angular/platform-browser';
 import {
-  SummaryAtGlanceComponent, AccountInformationComponent, FSPDetailsComponent,
+  SummaryAtGlanceComponent, AccountInformationComponent, FSPDetailsComponent, PaymentSummaryComponent,
   SavingTrendsPreviewComponent, SpendindTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent, 
   DynamicBarChartWidgetPreviewComponent, DynamicHhtmlComponent, StaticHtmlComponent, PageBreakComponent, SegmentBasedContentComponent, PortfolioAccountAnalysisPreviewComponent, YTDRewardPointsPreviewComponent, PointsRedeemedYTDPreviewComponent, ProductRelatedPointsEarnedPreviewComponent, CategorySpendRewardsPreviewComponent } from '../widgetComponent/widgetComponent';
 import { DynamicWidgetService } from '../../layout/widget-dynamic/dynamicwidget.service';

@@ -1340,3 +1340,153 @@ hr {
 .LoanTransactionTable1 tbody tr:nth-of-type(odd), .LoanTransactionTable1-W tbody tr:nth-of-type(odd) {
     background-color: #F2F2F2 !important;
 }
+
+/*PPS payment summary*/
+
+.header-logo {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.social-icons {
+    margin-left: 30px;
+    display: flex;
+    gap: 20px;
+}
+
+    .social-icons a img {
+        width: 70px; /* Adjust the size of your social icons */
+        height: 70px;
+    }
+
+.pps-logo img {
+    width: 130px; /* Adjust the size of your logo */
+    height: 130px;
+}
+
+.horizontal-line {
+    height: 10px;
+    background-color: #222a35;
+    margin-top: 0%;
+}
+
+.horizontal-line1 {
+    height: 10px;
+    width: 300px;
+    background-color: #222a35;
+    margin-top: 0%;
+}
+
+.heading-container {
+    background-color: #222a35; /* Set black background color for the heading */
+    color: white;
+    padding: 5px;
+    text-align: center;
+    font-family: Calibri;
+    font-size: 40px;
+}
+
+.heading-container2 {
+    color: #222a35;
+    text-align: center;
+    font-family: Calibri;
+    font-size: 35px;
+}
+
+.info-section {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.subsection {
+    text-align: left;
+    font-family: Calibri;
+    font-size: 25px;
+}
+
+.table-subsection {
+    font-family: Calibri;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.table-subsection1 {
+    font-family: Calibri;
+    font-size: 35px;
+    text-align: left;
+    width: 100%;
+}
+
+.table-subsection2 td {
+    border: 2px solid black;
+    border-collapse: collapse;
+    font-family: Calibri;
+    font-size: 25px;
+    text-align: center;
+}
+
+.continue {
+    font-family: Calibri;
+    font-size: 35px;
+    margin-right: 150px;
+    float: right;
+}
+
+.page {
+    font-family: Calibri;
+    font-size: 25px;
+    margin-left: 150px;
+    float: left;
+}
+
+.page2 {
+    font-family: Calibri;
+    font-size: 22px;
+    float: right;
+    margin-right: 150px;
+}
+
+.tds {
+    width: 500px;
+}
+
+.tds1 {
+    text-align: left;
+}
+
+.vl {
+    border-left: 6px solid #222a35;
+    height: 200px;
+}
+
+.leftarrowlogo {
+    margin-bottom: 15px;
+}
+
+.footer {
+    border-top: 2px solid blue;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+}
+
+.footer-section {
+    text-align: center;
+}
+
+    .footer-section img {
+        width: 100px;
+    }
+
+#customers tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#customers tr:hover {
+    background-color: #ddd;
+}

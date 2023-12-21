@@ -505,6 +505,9 @@ namespace nIS
                                                             case HtmlConstants.CUSTOMER_INFORMATION_WIDGET_NAME:
                                                                 pageHtmlContent.Append(this.CustomerInformationWidgetFormatting(pageWidget, counter, statement, page, divHeight));
                                                                 break;
+                                                            case HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.PaymentSummaryWidgetFormatting(pageWidget, counter, statement, page, divHeight));
+                                                                break;
 
                                                             case HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME:
                                                                 pageHtmlContent.Append(this.AccountInformationWidgetFormatting(pageWidget, counter, statement, page, divHeight));
@@ -1301,6 +1304,10 @@ namespace nIS
                             {
                                 case HtmlConstants.CUSTOMER_INFORMATION_WIDGET_NAME:
                                     this.BindDummyDataToCustomerInformationWidget(pageContent, statement, page, widget, AppBaseDirectory);
+                                    break;
+
+                                case HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME:
+                                    this.BindDummyDataToPaymentSummaryWidget(pageContent, statement, page, widget, AppBaseDirectory);
                                     break;
 
                                 case HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME:
@@ -2163,6 +2170,20 @@ namespace nIS
                                                         customerHtmlWidget = customerHtmlWidget.Replace("{{Address2}}", address2);
 
                                                         htmlString.Append(customerHtmlWidget);
+                                                    }
+                                                }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME)
+                                                {
+                                                    string paymentInfoJson = "{'CustomerId':'7','BatchId':'35','AccountNumber':'LD01254-222222','AccountType':'Current Account','Currency':'$','Balance':'6235.34','TotalDeposit':'15432.00','TotalSpend':'5760.00','ProfitEarned':'3456.00','Indicator':'Up','FeesPaid':'345.00','GrandTotal':'24356.00','Percentage':'50.00','TenantCode':'00000000-0000-0000-0000-000000000000'}";
+                                                    if (paymentInfoJson != string.Empty && validationEngine.IsValidJson(paymentInfoJson))
+                                                    {
+                                                        AccountMaster paymentInfo = JsonConvert.DeserializeObject<AccountMaster>(paymentInfoJson);
+                                                        var paymentHtmlWidget = HtmlConstants.PAYMENT_SUMMARY_WIDGET_HTML;
+                                                        paymentHtmlWidget = paymentHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
+                                                        paymentHtmlWidget = paymentHtmlWidget.Replace("{{IntTotal}}", paymentInfo.GrandTotal);
+                                                        paymentHtmlWidget = paymentHtmlWidget.Replace("{{Vat}}", paymentInfo.FeesPaid);
+                                                        paymentHtmlWidget = paymentHtmlWidget.Replace("{{TotalDue}}", (Convert.ToDouble(paymentInfo.GrandTotal) + Convert.ToDouble(paymentInfo.FeesPaid)).ToString());
+                                                        htmlString.Append(paymentHtmlWidget);
                                                     }
                                                 }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME)
@@ -5589,6 +5610,15 @@ namespace nIS
             return widgetHTML;
         }
 
+        private string PaymentSummaryWidgetFormatting(PageWidget pageWidget, int counter, Statement statement, Page page, string divHeight)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var widgetHTML = HtmlConstants.PAYMENT_SUMMARY_WIDGET_HTML_FOR_STMT;
+            widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
+            widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+            return widgetHTML;
+        }
+
         private string AccountInformationWidgetFormatting(PageWidget pageWidget, int counter, Statement statement, Page page, string divHeight)
         {
             var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
@@ -6412,6 +6442,18 @@ namespace nIS
                 pageContent.Replace("{{CustomerName}}", customerInfo.FirstName + " " + customerInfo.SurName);
                 pageContent.Replace("{{Address1}}", customerInfo.AddressLine1 + ", " + customerInfo.AddressLine2 + ", ");
                 pageContent.Replace("{{Address2}}", customerInfo.AddressLine3 + ", " + customerInfo.AddressLine4 + ", ");
+            }
+        }
+
+        private void BindDummyDataToPaymentSummaryWidget(StringBuilder pageContent, Statement statement, Page page, PageWidget widget, string AppBaseDirectory)
+        {
+            var paymentInfoJson = "{'CustomerId':'7','BatchId':'35','AccountNumber':'LD01254-222222','AccountType':'Current Account','Currency':'$','Balance':'6235.34','TotalDeposit':'15432.00','TotalSpend':'5760.00','ProfitEarned':'3456.00','Indicator':'Up','FeesPaid':'345.00','GrandTotal':'24356.00','Percentage':'50.00','TenantCode':'00000000-0000-0000-0000-000000000000'}";
+            if (paymentInfoJson != string.Empty && validationEngine.IsValidJson(paymentInfoJson))
+            {
+                var paymentInfo = JsonConvert.DeserializeObject<AccountMaster>(paymentInfoJson);
+                pageContent.Replace("{{IntTotal}}", paymentInfo.GrandTotal);
+                pageContent.Replace("{{Vat}}", paymentInfo.FeesPaid);
+                pageContent.Replace("{{TotalDue}}", (Convert.ToDouble(paymentInfo.GrandTotal) + Convert.ToDouble(paymentInfo.FeesPaid)).ToString());
             }
         }
 

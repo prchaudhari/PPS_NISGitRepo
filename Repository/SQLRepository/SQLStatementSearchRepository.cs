@@ -563,6 +563,13 @@ namespace nIS
                                             }
                                         }
                                     }
+                                   else if (widget.WidgetName == HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME) //Customer Information Widget
+                                    {
+                                        pageContent.Replace("{{IntTotal}}", accountrecords.First().GrandTotal.ToString());
+                                        pageContent.Replace("{{Vat}}", accountrecords.First().FeesPaid.ToString());
+                                        pageContent.Replace("{{TotalDue}}", (Convert.ToDouble(accountrecords.First().GrandTotal) +
+                Convert.ToDouble(accountrecords.First().FeesPaid)).ToString());
+                                    }
                                     else if (widget.WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME) //Account Information Widget
                                     {
                                         StringBuilder AccDivData = new StringBuilder();

@@ -484,6 +484,22 @@ namespace nIS
                                                     htmlString.Append(customerHtmlWidget);
                                                 }
                                             }
+                                            else if (mergedlst[i].WidgetName == HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME)
+                                            {
+                                                string paymentInfoJson = "{'CustomerId':'7','BatchId':'35','AccountNumber':'LD01254-222222','AccountType':'Current Account','Currency':'$','Balance':'6235.34','TotalDeposit':'15432.00','TotalSpend':'5760.00','ProfitEarned':'3456.00','Indicator':'Up','FeesPaid':'345.00','GrandTotal':'24356.00','Percentage':'50.00','TenantCode':'00000000-0000-0000-0000-000000000000'}";
+                                                if (paymentInfoJson != string.Empty && validationEngine.IsValidJson(paymentInfoJson))
+                                                {
+                                                    AccountMaster paymentInfo = JsonConvert.DeserializeObject<AccountMaster>(paymentInfoJson);
+                                                    var paymentHtmlWidget = HtmlConstants.PAYMENT_SUMMARY_WIDGET_HTML;
+                                                    paymentHtmlWidget = paymentHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
+
+                                                    paymentHtmlWidget = paymentHtmlWidget.Replace("{{IntTotal}}", paymentInfo.GrandTotal);
+                                                    paymentHtmlWidget = paymentHtmlWidget.Replace("{{Vat}}", paymentInfo.FeesPaid);
+                                                    paymentHtmlWidget = paymentHtmlWidget.Replace("{{TotalDue}}",(Convert.ToDouble( paymentInfo.GrandTotal) +Convert.ToDouble( paymentInfo.FeesPaid)).ToString());
+
+                                                    htmlString.Append(paymentHtmlWidget);
+                                                }
+                                            }
                                             else if (mergedlst[i].WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME)
                                             {
                                                 string accountInfoJson = "{'StatementDate':'1-APR-2020','StatementPeriod':'Annual Statement','CustomerID':'ID2-8989-5656','RmName':'James Wiilims','RmContactNumber':'+4487867833'}";

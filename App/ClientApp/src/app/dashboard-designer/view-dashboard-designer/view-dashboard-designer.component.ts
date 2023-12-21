@@ -10,7 +10,7 @@ import { Template } from '../../layout/template/template';
 import { TemplateWidget } from '../../layout/template/templateWidget';
 import { ConfigConstants } from '../../shared/constants/configConstants';
 import {
-  CustomerInformationComponent, PageBreakComponent, FSPDetailsComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
+  CustomerInformationComponent, PageBreakComponent, FSPDetailsComponent, PaymentSummaryComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
   SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
   SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
   DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent, CorporateSaverAgentAddressComponent, CustomerDetailsComponent, BankDetailsComponent, WealthBankDetailsComponent,
@@ -311,6 +311,9 @@ export class ViewDashboardDesignerComponent implements OnInit {
       }
       else if (widgetName == 'FSPDetails') {
         gridObj.component = FSPDetailsComponent;
+      }
+      else if (widgetName == 'PaymentSummary') {
+        gridObj.component = PaymentSummaryComponent;
       }
       else if (widgetName == 'AccountInformation') {
         gridObj.component = AccountInformationComponent;
