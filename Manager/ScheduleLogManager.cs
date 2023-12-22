@@ -338,9 +338,9 @@ namespace nIS
                                     statementPageContents = this.statementManager.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
                                     break;
 
-                                case ModelConstant.GENERATE_HTML_FORMAT_OF_NEDBANK_TENANT_STATEMENT:
-                                    statementPageContents = this.statementManager.GenerateHtmlFormatOfNedbankStatement(statement, tenantCode, tenantConfiguration);
-                                    break;
+                                //case ModelConstant.GENERATE_HTML_FORMAT_OF_NEDBANK_TENANT_STATEMENT:
+                                //    statementPageContents = this.statementManager.GenerateHtmlFormatOfNedbankStatement(statement, tenantCode, tenantConfiguration);
+                                //    break;
 
                                 default:
                                     statementPageContents = this.statementManager.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);

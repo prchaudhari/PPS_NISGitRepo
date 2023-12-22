@@ -1559,70 +1559,70 @@ export class CSAgentLogoComponent {
 
 
 //Component Created for StaticHtml Widget--
-@Component({
-  selector: 'corporate-saver-agent-message',
-  template: `<div  class='card border-0 widget'><div class='text-left' style='margin:0 1.5%;'><div class='mt-3 HomeLoanDetailDiv' style='font-size: 8pt; color: #4d4e4d !important;padding:0;font-weight: 700; font-family: \"Arial\";'>BDO Wealth Advisers (Pty) Ltd</div><div class='HomeLoanDetailDiv'  style='font-size: 8pt;margin-top:2px;padding:2px; font-family: "Arial";'>As a valued client, you are enjoying the benefits of Bonus Call, Should your weighted average balance (WAB) for the following month drop below 85% of your opening balance, you will earn interest at 3,80% pa.If your WAB meets or exceeds the 85% threshold, you will earn an additional 25 basis points, ie 4,05% interest pa.</div></div></div>`
-})
-export class CorporateSaverAgentMessageComponent {
-}
-@Component({
-  selector: 'corporate-saver-transaction',
-  template: `<div id='WidgetId' class='card border-0'><div class='card-body text-left'><div class='CS-header'>Call transaction details for the period 01-02-2022 to 28-02-2022 </div><div id='HomeLoan-0101'><div class='' style='/* padding-right: 1.2%; */'><table class='LoanTransactionTable1 CScustomTable'><thead><tr class='ht-30'><th class='w-12 text-center' style='border-right: 2px solid white;'>Date</th><th class='text-center' style='width: 25%;border-right: 2px solid white;'>Payment details</th><th style='width: 25%;border-right: 2px solid white;' class='text-center'>Description</th><th class='w-15 text-center' style='border-right: 2px solid white;'>Amount</th><th class='w-8 text-center' style='border-right: 2px solid white;'>Rate</th><th class='w-15 text-center' style='border:none;'>Capital Balance</th></tr></thead></table><div class='pt-0 overflow-auto'><table id='HomeLoanTransactionTable' class='LoanTransactionTable CScustomTable'><tbody style='font-family: "arial";'><tr class='ht-20 CorporateSaverTable'><td class='w-12 text-center'>01/02/2022</td><td class='text-left'  style='width: 25%'>CASH-SOLD FRIDGE</td><td class='text-left'  style='width: 25%'>Balance brought forward</td><td class='w-15 text-right'></td><td class='w-8 text-center'>2.30%</td><td class='w-15 text-center'>R100 602.32</td></tr><tr class='ht-20 CorporateSaverTable'><td class='w-12 text-center'>12/02/2022</td><td class='text-left'  style='width: 25%'></td><td class='text-left'  style='width: 25%'>Agent fee paid</td><td class='w-15 text-right'>-R65.96</td><td class='w-8 text-center'></td><td class='w-15 text-center'>R100 738.56</td></tr><tr class='ht-20 CorporateSaverTable'><td class='w-12 text-center'>27/02/2022</td><td class='text-left'  style='width: 25%'></td><td class='text-left'  style='width: 25%'>Comprop - Lezmin</td><td class='w-15 text-right'>R8 998.26</td><td class='w-8 text-center'></td><td class='w-15 text-center'>R100 738.56</td></tr></tbody></table></div></div></div></div></div>`
-})
-export class CorporateSaverTransactionComponent {
-}
-@Component({
-  selector: 'corporate-agent-details',
-  template: `<div class='widget'>
-    <div class='CS-header col-lg-12 col-sm-12' style='padding: 0 1.5%;'>Tax totals</div>
-        <div class="col-lg-12 col-sm-12 row" style="padding: 0 1.6% 0 1%;margin-left: 0;">
-          <div class="" style="background-color: #f3f3f3;width: 100%;margin-left: 0.5%;">
-          <h4 class="pl-1" style="text-align:left;">
-          <span class="NedbankHomeLoanTxt1">Tax totals (year to date)</span></h4>
-          </div>
-          <div class="col-lg-6 col-sm-6" style="padding-right:0;padding-left: 0.5%;/* padding-top: 0.25%; */">
-            <div id="WidgetId" class="card border-0" style="padding-top: 0.5%;">
-              <div class="text-left py-0" style="padding-right: 0;/* padding-left: 1.5%; */">
-                <div class="HomeLoanDetailDiv" style="width: 100%;">
-                <table class="CScustomTable" border="0" style="height: auto;"><tbody>
-                  <tr><td class="w-25" style="padding-bottom: 8px !important;">Interest</td>
-                  <td class="w-25 text-right pr-1" style=" padding-bottom: 8px !important">R1&nbsp;018.29</td></tr>
-                  <tr><td class="w-25" style="padding-bottom: 8px !important">VAT on fee</td>
-                  <td class="w-25 text-right pr-1" style="padding-bottom: 8px !important">R0.00</td></tr>
-                </tbody></table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-6 col-sm-6" style="padding-left: .25%;padding-top: 0.25%;padding-right: 0;">
-        <div id="WidgetId" class="card border-0">
-        <div class="card-body text-left py-0" style="padding-left: 0;padding-right: 0;">
-        <div class="card-body-header"></div><div class="HomeLoanDetailDiv" style="width: 100%;min-height: 74px;">
-        <table class="CScustomTable" border="0" style="height: auto;"><tbody>
-          <tr><td class="w-25" style="padding-bottom: 8px !important;">Agent fee deducted</td>
-          <td class="w-25 text-right pr-1" style=" padding-bottom: 8px !important">R551.53</td></tr>
-          <tr><td class="w-25" style="padding-bottom: 8px !important;"></td>
-          <td class="w-25 text-right pr-1" style=" padding-bottom: 8px !important"> </td></tr></tbody></table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>`})
-export class CorporateAgentDetailsComponent {
-}
-@Component({
-  selector: 'corporate-saver-client-details',
-  // tslint:disable-next-line:max-line-length
-  template: `<div class='card-body text-left widget'><div class='CS-header'>Corporate Saver statement</div><div class='col-lg-12 col-sm-12 row' style='padding: initial;margin: 0px 0px 0px 0px;padding-right: 0px;'><div class='col-lg-6 col-sm-6' style='padding-right: 0.25%;padding: 0px 3px 0px 0px;'><div id='WidgetId' class='card border-0'><div class='card-body text-left py-0' style='padding-right: 0;padding-left: 0px;'><div class='' style='background-color: #f3f3f3;width: 100%;'><h4 class='pl-1' style='line-height: 1.8 !important;margin-bottom: 1%;'><span class='NedbankHomeLoanTxt1'>Client details</span></h4></div><div class='HomeLoanDetailDiv' style='width: 100%;'><table class='CScustomTable mt-2' border='0' style='height: auto;'><tbody><tr><td class='w-25' style='font-weight: bold;padding-bottom: 8px !important;'>Account no</td><td class='w-25 text-right pr-1' style='font-weight: bold; padding-bottom: 8px !important'>9000082385</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Branch code</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>198765</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Agent's profile:</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>PRO315</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>CIF no</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>5786407</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Client code</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>292598</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Relationship manager</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>Umhlali Agencies CC</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>VAT Calculation</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>VAT inclusive</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Client VAT no</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>Not provided</td></tr></tbody></table></div></div></div></div><div class='col-lg-6 col-sm-6' style='padding-left: .25%;padding-right: inherit;'><div id='WidgetId' class='card border-0'><div class='text-left py-0' style='padding-left: 0;'><div class='card-body-header'></div><div class='' style='background-color: #f3f3f3;width: 100%;'><h4 class='pl-1' style='line-height: 1.8 !important;margin-bottom: 1%;'><span class='NedbankHomeLoanTxt1'>Agent details</span></h4></div><div class='HomeLoanDetailDiv' style='width: 100%;'><table class='CScustomTable mt-2' border='0' style='height: auto;'><tbody><tr><td class='w-25' style='font-weight: bold;padding-bottom: 8px !important;'>Tax invoice no</td><td class='w-25 text-right pr-1' style='font-weight: bold; padding-bottom: 8px !important'>3563136</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Contact person</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>Louise Taylor</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Email address</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>louise@robchap.co.za</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Registration no</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>1986/012848/23</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>VAT registration no</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>4900153653</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>FSP license no</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>16616</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Agent reference</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>WALLI</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important;font-weight: 700;color:#006341 !important;'>Statement No</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important;font-weight: 700;color:#006341 !important;'>184</td></tr></tbody></table></div></div></div></div></div></div>`
-})
-export class CorporateSaverClientDetailsComponent {
-}
-@Component({
-  selector: 'corporate-saver-table-total',
-  template: `<div class="widget"><div class="CS-header col-lg-12 col-sm-12 mt-3" style="margin-left: 0.5%;">Investment portfolio at 28-02-2022</div><div id="WidgetId" class="card border-0" style="margin: 0 1.5%;"><div class="CSTotalAmountDetailsDiv" style="height: 40px !important; text-align: center; padding: 6px !important;"><span class="fnt-14pt">Current investment details
-  </span></div><table class="CScustomTable HomeLoanDetailDiv" border="0" style="height: auto;margin-bottom:2%;"><tbody><tr><td colspan="2" class="w-25" style="font-weight: bold;padding-bottom: 8px !important;padding-top: 8px !important;">Call account @ 2,30% per annum</td></tr><tr><td class="w-25" style="padding-bottom: 8px !important">Interest instruction</td><td class="w-25 text-right" style="padding-bottom: 8px !important;padding-right: 15px;">Capitalised</td><td class="w-25" style="padding-bottom: 8px !important">Date Invested</td><td class="w-25 text-right pr-1" style="padding-bottom: 8px !important">08-10-2006</td></tr><tr><td class="w-25" style="padding-bottom: 8px !important">Capital</td><td class="w-25 text-right" style="padding-bottom: 8px !important;padding-right: 15px;">R89&nbsp;030.44</td><td class="w-25" style="padding-bottom: 8px !important">Agent fee deducted</td><td class="w-25 text-right pr-1" style="padding-bottom: 8px !important">R59.17</td></tr><tr><td class="w-25" style="padding-bottom: 8px !important">Interest</td><td class="w-25 text-right" style="padding-bottom: 8px !important;padding-right: 15px;">R122.63</td><td class="w-25" style="padding-bottom: 8px !important">VAT on fee</td><td class="w-25 text-right pr-1" style="padding-bottom: 8px !important">R8.88</td></tr><tr><td class="w-25" style="padding-bottom: 8px !important">Agent fee structure</td><td class="w-25 text-right" style="padding-bottom: 8px !important;padding-right: 15px;">1.18%  on capital</td><td class="w-25" style="padding-bottom: 8px !important">Interest (less agent fee and VAT)</td><td class="w-25 text-right pr-1" style="padding-bottom: 8px !important">R8.88</td></tr></tbody></table><div class="d-flex flex-row" style="margin-top: -1.5%;"><div class="paymentDueHeaderBlock1 " style="font-weight: bold;margin-right:3px; margin-bottom:1px; ">Total capital</div><div class="paymentDueHeaderBlock1 " style="font-weight: bold;margin-right:3px; margin-bottom:1px; ">Total interest</div><div class="paymentDueHeaderBlock1 " style="font-weight: bold;margin-right:3px; margin-bottom:1px; ">Total agent fee <br>(deducted)</div><div class="paymentDueHeaderBlock1 " style="font-weight: bold;margin-right:3px; margin-bottom:1px; ">VAT on fee</div><div class="paymentDueHeaderBlock1" style="font-weight: bold;margin-bottom:1px">Interest<br>(less agent fee &amp; VAT)</div></div><div class="d-flex flex-row" style="margin-top: 2px !important;margin-bottom: 1%;"><div class="paymentDueHeaderBlock1 " style="margin-right:3px; margin-bottom:1px; ">R89&nbsp;030.44</div><div class="paymentDueHeaderBlock1 " style="margin-right:3px; margin-bottom:1px; ">R190.68</div><div class="paymentDueHeaderBlock1" style="margin-right:3px; margin-bottom:1px; ">R59.17</div><div class="paymentDueHeaderBlock1 " style="margin-right:3px; margin-bottom:1px; ">R8.88</div><div class="paymentDueHeaderBlock1" style="margin-bottom:1px; ">R122.63</div></div><div class="card border-0"><div class="card-body text-left" style="padding: 0;"><div class="card-body-header mt-3-2" style="font-family: &quot;Arial&quot;;font-weight: 700;">Important information</div> <div class="" style="font-size: 9pt; font-family: &quot;Arial&quot;;"><p>Interest(less agent administration fee and VAT) is credited to your account in March.The agent administration fee and VAT are deducted in March and paid on your behalf to your agent, in accordance with the mandate held.</p></div></div></div></div></div>`})
-export class CorporateSaverTableTotalComponent {
-}
+//@Component({
+//  selector: 'corporate-saver-agent-message',
+//  template: `<div  class='card border-0 widget'><div class='text-left' style='margin:0 1.5%;'><div class='mt-3 HomeLoanDetailDiv' style='font-size: 8pt; color: #4d4e4d !important;padding:0;font-weight: 700; font-family: \"Arial\";'>BDO Wealth Advisers (Pty) Ltd</div><div class='HomeLoanDetailDiv'  style='font-size: 8pt;margin-top:2px;padding:2px; font-family: "Arial";'>As a valued client, you are enjoying the benefits of Bonus Call, Should your weighted average balance (WAB) for the following month drop below 85% of your opening balance, you will earn interest at 3,80% pa.If your WAB meets or exceeds the 85% threshold, you will earn an additional 25 basis points, ie 4,05% interest pa.</div></div></div>`
+//})
+//export class CorporateSaverAgentMessageComponent {
+//}
+//@Component({
+//  selector: 'corporate-saver-transaction',
+//  template: `<div id='WidgetId' class='card border-0'><div class='card-body text-left'><div class='CS-header'>Call transaction details for the period 01-02-2022 to 28-02-2022 </div><div id='HomeLoan-0101'><div class='' style='/* padding-right: 1.2%; */'><table class='LoanTransactionTable1 CScustomTable'><thead><tr class='ht-30'><th class='w-12 text-center' style='border-right: 2px solid white;'>Date</th><th class='text-center' style='width: 25%;border-right: 2px solid white;'>Payment details</th><th style='width: 25%;border-right: 2px solid white;' class='text-center'>Description</th><th class='w-15 text-center' style='border-right: 2px solid white;'>Amount</th><th class='w-8 text-center' style='border-right: 2px solid white;'>Rate</th><th class='w-15 text-center' style='border:none;'>Capital Balance</th></tr></thead></table><div class='pt-0 overflow-auto'><table id='HomeLoanTransactionTable' class='LoanTransactionTable CScustomTable'><tbody style='font-family: "arial";'><tr class='ht-20 CorporateSaverTable'><td class='w-12 text-center'>01/02/2022</td><td class='text-left'  style='width: 25%'>CASH-SOLD FRIDGE</td><td class='text-left'  style='width: 25%'>Balance brought forward</td><td class='w-15 text-right'></td><td class='w-8 text-center'>2.30%</td><td class='w-15 text-center'>R100 602.32</td></tr><tr class='ht-20 CorporateSaverTable'><td class='w-12 text-center'>12/02/2022</td><td class='text-left'  style='width: 25%'></td><td class='text-left'  style='width: 25%'>Agent fee paid</td><td class='w-15 text-right'>-R65.96</td><td class='w-8 text-center'></td><td class='w-15 text-center'>R100 738.56</td></tr><tr class='ht-20 CorporateSaverTable'><td class='w-12 text-center'>27/02/2022</td><td class='text-left'  style='width: 25%'></td><td class='text-left'  style='width: 25%'>Comprop - Lezmin</td><td class='w-15 text-right'>R8 998.26</td><td class='w-8 text-center'></td><td class='w-15 text-center'>R100 738.56</td></tr></tbody></table></div></div></div></div></div>`
+//})
+//export class CorporateSaverTransactionComponent {
+//}
+//@Component({
+//  selector: 'corporate-agent-details',
+//  template: `<div class='widget'>
+//    <div class='CS-header col-lg-12 col-sm-12' style='padding: 0 1.5%;'>Tax totals</div>
+//        <div class="col-lg-12 col-sm-12 row" style="padding: 0 1.6% 0 1%;margin-left: 0;">
+//          <div class="" style="background-color: #f3f3f3;width: 100%;margin-left: 0.5%;">
+//          <h4 class="pl-1" style="text-align:left;">
+//          <span class="NedbankHomeLoanTxt1">Tax totals (year to date)</span></h4>
+//          </div>
+//          <div class="col-lg-6 col-sm-6" style="padding-right:0;padding-left: 0.5%;/* padding-top: 0.25%; */">
+//            <div id="WidgetId" class="card border-0" style="padding-top: 0.5%;">
+//              <div class="text-left py-0" style="padding-right: 0;/* padding-left: 1.5%; */">
+//                <div class="HomeLoanDetailDiv" style="width: 100%;">
+//                <table class="CScustomTable" border="0" style="height: auto;"><tbody>
+//                  <tr><td class="w-25" style="padding-bottom: 8px !important;">Interest</td>
+//                  <td class="w-25 text-right pr-1" style=" padding-bottom: 8px !important">R1&nbsp;018.29</td></tr>
+//                  <tr><td class="w-25" style="padding-bottom: 8px !important">VAT on fee</td>
+//                  <td class="w-25 text-right pr-1" style="padding-bottom: 8px !important">R0.00</td></tr>
+//                </tbody></table>
+//              </div>
+//            </div>
+//          </div>
+//        </div>
+//        <div class="col-lg-6 col-sm-6" style="padding-left: .25%;padding-top: 0.25%;padding-right: 0;">
+//        <div id="WidgetId" class="card border-0">
+//        <div class="card-body text-left py-0" style="padding-left: 0;padding-right: 0;">
+//        <div class="card-body-header"></div><div class="HomeLoanDetailDiv" style="width: 100%;min-height: 74px;">
+//        <table class="CScustomTable" border="0" style="height: auto;"><tbody>
+//          <tr><td class="w-25" style="padding-bottom: 8px !important;">Agent fee deducted</td>
+//          <td class="w-25 text-right pr-1" style=" padding-bottom: 8px !important">R551.53</td></tr>
+//          <tr><td class="w-25" style="padding-bottom: 8px !important;"></td>
+//          <td class="w-25 text-right pr-1" style=" padding-bottom: 8px !important"> </td></tr></tbody></table>
+//                </div>
+//              </div>
+//            </div>
+//          </div>
+//        </div>`})
+//export class CorporateAgentDetailsComponent {
+//}
+//@Component({
+//  selector: 'corporate-saver-client-details',
+//  // tslint:disable-next-line:max-line-length
+//  template: `<div class='card-body text-left widget'><div class='CS-header'>Corporate Saver statement</div><div class='col-lg-12 col-sm-12 row' style='padding: initial;margin: 0px 0px 0px 0px;padding-right: 0px;'><div class='col-lg-6 col-sm-6' style='padding-right: 0.25%;padding: 0px 3px 0px 0px;'><div id='WidgetId' class='card border-0'><div class='card-body text-left py-0' style='padding-right: 0;padding-left: 0px;'><div class='' style='background-color: #f3f3f3;width: 100%;'><h4 class='pl-1' style='line-height: 1.8 !important;margin-bottom: 1%;'><span class='NedbankHomeLoanTxt1'>Client details</span></h4></div><div class='HomeLoanDetailDiv' style='width: 100%;'><table class='CScustomTable mt-2' border='0' style='height: auto;'><tbody><tr><td class='w-25' style='font-weight: bold;padding-bottom: 8px !important;'>Account no</td><td class='w-25 text-right pr-1' style='font-weight: bold; padding-bottom: 8px !important'>9000082385</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Branch code</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>198765</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Agent's profile:</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>PRO315</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>CIF no</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>5786407</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Client code</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>292598</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Relationship manager</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>Umhlali Agencies CC</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>VAT Calculation</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>VAT inclusive</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Client VAT no</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>Not provided</td></tr></tbody></table></div></div></div></div><div class='col-lg-6 col-sm-6' style='padding-left: .25%;padding-right: inherit;'><div id='WidgetId' class='card border-0'><div class='text-left py-0' style='padding-left: 0;'><div class='card-body-header'></div><div class='' style='background-color: #f3f3f3;width: 100%;'><h4 class='pl-1' style='line-height: 1.8 !important;margin-bottom: 1%;'><span class='NedbankHomeLoanTxt1'>Agent details</span></h4></div><div class='HomeLoanDetailDiv' style='width: 100%;'><table class='CScustomTable mt-2' border='0' style='height: auto;'><tbody><tr><td class='w-25' style='font-weight: bold;padding-bottom: 8px !important;'>Tax invoice no</td><td class='w-25 text-right pr-1' style='font-weight: bold; padding-bottom: 8px !important'>3563136</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Contact person</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>Louise Taylor</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Email address</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>louise@robchap.co.za</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Registration no</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>1986/012848/23</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>VAT registration no</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>4900153653</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>FSP license no</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>16616</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important'>Agent reference</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>WALLI</td></tr><tr><td class='w-25' style='padding-bottom: 8px !important;font-weight: 700;color:#006341 !important;'>Statement No</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important;font-weight: 700;color:#006341 !important;'>184</td></tr></tbody></table></div></div></div></div></div></div>`
+//})
+//export class CorporateSaverClientDetailsComponent {
+//}
+//@Component({
+//  selector: 'corporate-saver-table-total',
+//  template: `<div class="widget"><div class="CS-header col-lg-12 col-sm-12 mt-3" style="margin-left: 0.5%;">Investment portfolio at 28-02-2022</div><div id="WidgetId" class="card border-0" style="margin: 0 1.5%;"><div class="CSTotalAmountDetailsDiv" style="height: 40px !important; text-align: center; padding: 6px !important;"><span class="fnt-14pt">Current investment details
+//  </span></div><table class="CScustomTable HomeLoanDetailDiv" border="0" style="height: auto;margin-bottom:2%;"><tbody><tr><td colspan="2" class="w-25" style="font-weight: bold;padding-bottom: 8px !important;padding-top: 8px !important;">Call account @ 2,30% per annum</td></tr><tr><td class="w-25" style="padding-bottom: 8px !important">Interest instruction</td><td class="w-25 text-right" style="padding-bottom: 8px !important;padding-right: 15px;">Capitalised</td><td class="w-25" style="padding-bottom: 8px !important">Date Invested</td><td class="w-25 text-right pr-1" style="padding-bottom: 8px !important">08-10-2006</td></tr><tr><td class="w-25" style="padding-bottom: 8px !important">Capital</td><td class="w-25 text-right" style="padding-bottom: 8px !important;padding-right: 15px;">R89&nbsp;030.44</td><td class="w-25" style="padding-bottom: 8px !important">Agent fee deducted</td><td class="w-25 text-right pr-1" style="padding-bottom: 8px !important">R59.17</td></tr><tr><td class="w-25" style="padding-bottom: 8px !important">Interest</td><td class="w-25 text-right" style="padding-bottom: 8px !important;padding-right: 15px;">R122.63</td><td class="w-25" style="padding-bottom: 8px !important">VAT on fee</td><td class="w-25 text-right pr-1" style="padding-bottom: 8px !important">R8.88</td></tr><tr><td class="w-25" style="padding-bottom: 8px !important">Agent fee structure</td><td class="w-25 text-right" style="padding-bottom: 8px !important;padding-right: 15px;">1.18%  on capital</td><td class="w-25" style="padding-bottom: 8px !important">Interest (less agent fee and VAT)</td><td class="w-25 text-right pr-1" style="padding-bottom: 8px !important">R8.88</td></tr></tbody></table><div class="d-flex flex-row" style="margin-top: -1.5%;"><div class="paymentDueHeaderBlock1 " style="font-weight: bold;margin-right:3px; margin-bottom:1px; ">Total capital</div><div class="paymentDueHeaderBlock1 " style="font-weight: bold;margin-right:3px; margin-bottom:1px; ">Total interest</div><div class="paymentDueHeaderBlock1 " style="font-weight: bold;margin-right:3px; margin-bottom:1px; ">Total agent fee <br>(deducted)</div><div class="paymentDueHeaderBlock1 " style="font-weight: bold;margin-right:3px; margin-bottom:1px; ">VAT on fee</div><div class="paymentDueHeaderBlock1" style="font-weight: bold;margin-bottom:1px">Interest<br>(less agent fee &amp; VAT)</div></div><div class="d-flex flex-row" style="margin-top: 2px !important;margin-bottom: 1%;"><div class="paymentDueHeaderBlock1 " style="margin-right:3px; margin-bottom:1px; ">R89&nbsp;030.44</div><div class="paymentDueHeaderBlock1 " style="margin-right:3px; margin-bottom:1px; ">R190.68</div><div class="paymentDueHeaderBlock1" style="margin-right:3px; margin-bottom:1px; ">R59.17</div><div class="paymentDueHeaderBlock1 " style="margin-right:3px; margin-bottom:1px; ">R8.88</div><div class="paymentDueHeaderBlock1" style="margin-bottom:1px; ">R122.63</div></div><div class="card border-0"><div class="card-body text-left" style="padding: 0;"><div class="card-body-header mt-3-2" style="font-family: &quot;Arial&quot;;font-weight: 700;">Important information</div> <div class="" style="font-size: 9pt; font-family: &quot;Arial&quot;;"><p>Interest(less agent administration fee and VAT) is credited to your account in March.The agent administration fee and VAT are deducted in March and paid on your behalf to your agent, in accordance with the mandate held.</p></div></div></div></div></div>`})
+//export class CorporateSaverTableTotalComponent {
+//}
 
 // Component Created for PageBreak Widget--
 @Component({
@@ -2190,996 +2190,996 @@ export class DynamicPieChartWidgetPreviewComponent {
 
 }
 
-// Component Created for Customer Details Widget -- Nedbank
-@Component({
-  selector: 'CustomerDetails',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-       <div class='card border-0'>
-          <div class="card-body CustomerDetails">
-          MR KOENA SOLOMON MOLOTO <br>1917 THAGE STREET <br>MAMELODI GARDENS <br>PRETORIA <br>0122<br>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class CustomerDetailsComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
-@Component({
-  selector: 'corporate-saver-agent-address',
-  template: `<div class='widget'><div class='card border-0' style='padding-right: 2%;'><div class='card-body py-1' style='font-size: 8pt;text-align: right; font-family: "arial";'><br><br>Wanderers Office park<br>52 Corlett Drive<br>Illovo<br>2196<br>Address Line1<br><br><p style='color:rgb(0, 91, 65) !important;'>Agent contact details | 0331243213</p></div></div></div>`
-})
-export class CorporateSaverAgentAddressComponent {
-}
+//// Component Created for Customer Details Widget -- Nedbank
+//@Component({
+//  selector: 'CustomerDetails',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//       <div class='card border-0'>
+//          <div class="card-body CustomerDetails">
+//          MR KOENA SOLOMON MOLOTO <br>1917 THAGE STREET <br>MAMELODI GARDENS <br>PRETORIA <br>0122<br>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class CustomerDetailsComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
+//@Component({
+//  selector: 'corporate-saver-agent-address',
+//  template: `<div class='widget'><div class='card border-0' style='padding-right: 2%;'><div class='card-body py-1' style='font-size: 8pt;text-align: right; font-family: "arial";'><br><br>Wanderers Office park<br>52 Corlett Drive<br>Illovo<br>2196<br>Address Line1<br><br><p style='color:rgb(0, 91, 65) !important;'>Agent contact details | 0331243213</p></div></div></div>`
+//})
+//export class CorporateSaverAgentAddressComponent {
+//}
 
-// Component Created for Bank Details Widget -- Nedbank
-@Component({
-  selector: 'BankDetails',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0'>
-          <div class="card-body BranchDetails">
-              BankName<br>Address Line1, City, ZipCode<br>Address Line2, City, ZipCode<br>Country Name
-              <br>Bank VAT Reg No XXXXXXXXXX
-          </div>
-          <div class="ConactCenterDiv text-success float-right pt-3">
-              Nedbank Private Wealth Service Suite: XXXX XXX XXX
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class BankDetailsComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Bank Details Widget -- Nedbank
+//@Component({
+//  selector: 'BankDetails',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0'>
+//          <div class="card-body BranchDetails">
+//              BankName<br>Address Line1, City, ZipCode<br>Address Line2, City, ZipCode<br>Country Name
+//              <br>Bank VAT Reg No XXXXXXXXXX
+//          </div>
+//          <div class="ConactCenterDiv text-success float-right pt-3">
+//              Nedbank Private Wealth Service Suite: XXXX XXX XXX
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class BankDetailsComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Bank Details Widget -- Nedbank
-@Component({
-  selector: 'WealthBankDetails',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0'>
-          <div class="card-body BranchDetails">
-              BankName<br>Address Line1, City, ZipCode<br>Address Line2, City, ZipCode<br>Country Name
-              <br>Bank VAT Reg No XXXXXXXXXX
-          </div>
-          <div class="ConactCenterDiv text-success-w float-right pt-3">
-              Nedbank Private Wealth Service Suite: XXXX XXX XXX
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class WealthBankDetailsComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Bank Details Widget -- Nedbank
+//@Component({
+//  selector: 'WealthBankDetails',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0'>
+//          <div class="card-body BranchDetails">
+//              BankName<br>Address Line1, City, ZipCode<br>Address Line2, City, ZipCode<br>Country Name
+//              <br>Bank VAT Reg No XXXXXXXXXX
+//          </div>
+//          <div class="ConactCenterDiv text-success-w float-right pt-3">
+//              Nedbank Private Wealth Service Suite: XXXX XXX XXX
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class WealthBankDetailsComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
 
-// Component Created for Investment Portfolio Statement Widget -- Nedbank
-@Component({
-  selector: 'InvestmentPortfolioStatement',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class="row">
-          <div class='col-lg-12'>
-              <div class='card border-0'>
-                  <div class='card-body text-left'>
-                      <div class="card-body-header-name pb-3">Dear Customer Name</div>
-                      <div class='card-body-header pb-2'>Investment portfolio statement</div>
-                      <div class='row pb-1'>
-                          <div class='col-lg-4 pr-1'>
-                              <div class='TotalAmountDetailsDiv'>
-                                  <span class='fnt-14'>Current investor balance</span><br><span class="fnt-20">Total Closing Balance</span>&nbsp;<br>
-                              </div>
-                          </div>
-                          <div class='col-lg-8 pl-0'>
-                              <div class='TotalAmountDetailsDiv'></div>
-                          </div>
-                      </div>
+//// Component Created for Investment Portfolio Statement Widget -- Nedbank
+//@Component({
+//  selector: 'InvestmentPortfolioStatement',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class="row">
+//          <div class='col-lg-12'>
+//              <div class='card border-0'>
+//                  <div class='card-body text-left'>
+//                      <div class="card-body-header-name pb-3">Dear Customer Name</div>
+//                      <div class='card-body-header pb-2'>Investment portfolio statement</div>
+//                      <div class='row pb-1'>
+//                          <div class='col-lg-4 pr-1'>
+//                              <div class='TotalAmountDetailsDiv'>
+//                                  <span class='fnt-14'>Current investor balance</span><br><span class="fnt-20">Total Closing Balance</span>&nbsp;<br>
+//                              </div>
+//                          </div>
+//                          <div class='col-lg-8 pl-0'>
+//                              <div class='TotalAmountDetailsDiv'></div>
+//                          </div>
+//                      </div>
 
-                      <div class="pt-1 pb-2" style="background-color:#F2F2F2">
-                          <table class="customTable mt-2" border="0" id="portfolio">
-                              <tbody class="fnt-13">
-                                  <tr>
-                                      <td class="w-25">Account type:</td>
-                                      <td class="w-25 text-right pr-4 text-success">Investment</td>
-                                      <td class="w-25">Statement Day:</td>
-                                      <td class="w-25 text-right text-success">Day of Statement</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-25">Investor no:</td>
-                                      <td class="w-25 text-right pr-4 text-success">Investor ID</td>
-                                      <td class="w-25">Statement Period:</td>
-                                      <td class="w-25 text-right text-success">Min to Max Transaction Date</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-25">Statement date:</td>
-                                      <td class="w-25 text-right pr-4 text-success">Statement Date</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class InvestmentPortfolioStatementComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//                      <div class="pt-1 pb-2" style="background-color:#F2F2F2">
+//                          <table class="customTable mt-2" border="0" id="portfolio">
+//                              <tbody class="fnt-13">
+//                                  <tr>
+//                                      <td class="w-25">Account type:</td>
+//                                      <td class="w-25 text-right pr-4 text-success">Investment</td>
+//                                      <td class="w-25">Statement Day:</td>
+//                                      <td class="w-25 text-right text-success">Day of Statement</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-25">Investor no:</td>
+//                                      <td class="w-25 text-right pr-4 text-success">Investor ID</td>
+//                                      <td class="w-25">Statement Period:</td>
+//                                      <td class="w-25 text-right text-success">Min to Max Transaction Date</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-25">Statement date:</td>
+//                                      <td class="w-25 text-right pr-4 text-success">Statement Date</td>
+//                                  </tr>
+//                              </tbody>
+//                          </table>
+//                      </div>
+//                  </div>
+//              </div>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class InvestmentPortfolioStatementComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Investment Wealth Portfolio Statement Widget -- Nedbank
-@Component({
-  selector: 'InvestmentWealthPortfolioStatementComponent',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class="row">
-          <div class='col-lg-12'>
-              <div class='card border-0'>
-                  <div class='card-body text-left'>
-                      <div class="card-body-header-w pb-3">Dear Customer Name</div>
-                      <div class='card-body-header-w pb-2'>Investment portfolio statement</div>
-                      <div class='row pb-1'>
-                          <div class='col-lg-4 pr-1'>
-                              <div class='TotalAmountDetailsDivW'>
-                                  <span class='fnt-14'>Current investor balance</span><br><span class="fnt-20">Total Closing Balance</span>&nbsp;<br>
-                              </div>
-                          </div>
-                          <div class='col-lg-8 pl-0'>
-                              <div class='TotalAmountDetailsDivW'></div>
-                          </div>
-                      </div>
+//// Component Created for Investment Wealth Portfolio Statement Widget -- Nedbank
+//@Component({
+//  selector: 'InvestmentWealthPortfolioStatementComponent',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class="row">
+//          <div class='col-lg-12'>
+//              <div class='card border-0'>
+//                  <div class='card-body text-left'>
+//                      <div class="card-body-header-w pb-3">Dear Customer Name</div>
+//                      <div class='card-body-header-w pb-2'>Investment portfolio statement</div>
+//                      <div class='row pb-1'>
+//                          <div class='col-lg-4 pr-1'>
+//                              <div class='TotalAmountDetailsDivW'>
+//                                  <span class='fnt-14'>Current investor balance</span><br><span class="fnt-20">Total Closing Balance</span>&nbsp;<br>
+//                              </div>
+//                          </div>
+//                          <div class='col-lg-8 pl-0'>
+//                              <div class='TotalAmountDetailsDivW'></div>
+//                          </div>
+//                      </div>
 
-                      <div class="pt-1 pb-2" style="background-color:#F2F2F2">
-                          <table class="customTable mt-2" border="0" id="portfolio">
-                              <tbody class="fnt-13">
-                                  <tr>
-                                      <td class="w-25">Account type:</td>
-                                      <td class="w-25 text-right pr-4 text-success">Investment</td>
-                                      <td class="w-25">Statement Day:</td>
-                                      <td class="w-25 text-right text-success">Day of Statement</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-25">Investor no:</td>
-                                      <td class="w-25 text-right pr-4 text-success">Investor ID</td>
-                                      <td class="w-25">Statement Period:</td>
-                                      <td class="w-25 text-right text-success">Min to Max Transaction Date</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-25">Statement date:</td>
-                                      <td class="w-25 text-right pr-4 text-success">Statement Date</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class InvestmentWealthPortfolioStatementComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//                      <div class="pt-1 pb-2" style="background-color:#F2F2F2">
+//                          <table class="customTable mt-2" border="0" id="portfolio">
+//                              <tbody class="fnt-13">
+//                                  <tr>
+//                                      <td class="w-25">Account type:</td>
+//                                      <td class="w-25 text-right pr-4 text-success">Investment</td>
+//                                      <td class="w-25">Statement Day:</td>
+//                                      <td class="w-25 text-right text-success">Day of Statement</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-25">Investor no:</td>
+//                                      <td class="w-25 text-right pr-4 text-success">Investor ID</td>
+//                                      <td class="w-25">Statement Period:</td>
+//                                      <td class="w-25 text-right text-success">Min to Max Transaction Date</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-25">Statement date:</td>
+//                                      <td class="w-25 text-right pr-4 text-success">Statement Date</td>
+//                                  </tr>
+//                              </tbody>
+//                          </table>
+//                      </div>
+//                  </div>
+//              </div>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class InvestmentWealthPortfolioStatementComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Investor Performance Widget -- Nedbank
-@Component({
-  selector: 'InvestorPerformance',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0'>
-          <div class='card-body text-left'>
-              <div class='card-body-header pb-2'>Investor performance</div>
-              <div class='InvestmentPermanaceDiv'>
-                  <table class='InvestorPermanaceTable' border='0' id='InvestorPerformance'>
-                      <tbody>
-                          <tr>
-                              <td class='w-50' colspan='2'><span class='text-success fnt-18'>Notice deposits</span></td>
-                          </tr>
-                          <tr>
-                              <td class='w-50 fnt-14'>Opening balance</td>
-                              <td class='w-50 fnt-14'>Closing balance</td>
-                          </tr>
-                          <tr>
-                              <td class='w-50 fnt-20'>xxx.xx</td>
-                              <td class='w-50 fnt-20'>xxx.xx</td>
-                          </tr>
-                      </tbody>
-                  </table>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class InvestorPerformanceComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Investor Performance Widget -- Nedbank
+//@Component({
+//  selector: 'InvestorPerformance',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0'>
+//          <div class='card-body text-left'>
+//              <div class='card-body-header pb-2'>Investor performance</div>
+//              <div class='InvestmentPermanaceDiv'>
+//                  <table class='InvestorPermanaceTable' border='0' id='InvestorPerformance'>
+//                      <tbody>
+//                          <tr>
+//                              <td class='w-50' colspan='2'><span class='text-success fnt-18'>Notice deposits</span></td>
+//                          </tr>
+//                          <tr>
+//                              <td class='w-50 fnt-14'>Opening balance</td>
+//                              <td class='w-50 fnt-14'>Closing balance</td>
+//                          </tr>
+//                          <tr>
+//                              <td class='w-50 fnt-20'>xxx.xx</td>
+//                              <td class='w-50 fnt-20'>xxx.xx</td>
+//                          </tr>
+//                      </tbody>
+//                  </table>
+//              </div>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class InvestorPerformanceComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Investor Performance Widget -- Nedbank
-@Component({
-  selector: 'WealthInvestorPerformance',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0'>
-          <div class='card-body text-left'>
-              <div class='card-body-header-w pb-2'>Investor performance</div>
-              <div class='InvestmentPermanaceDiv'>
-                  <table class='InvestorPermanaceTable' border='0' id='InvestorPerformance'>
-                      <tbody>
-                          <tr>
-                              <td class='w-50' colspan='2'><span class='text-success-w fnt-18'>Notice deposits</span></td>
-                          </tr>
-                          <tr>
-                              <td class='w-50 fnt-14'>Opening balance</td>
-                              <td class='w-50 fnt-14'>Closing balance</td>
-                          </tr>
-                          <tr>
-                              <td class='w-50 fnt-20'>xxx.xx</td>
-                              <td class='w-50 fnt-20'>xxx.xx</td>
-                          </tr>
-                      </tbody>
-                  </table>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class WealthInvestorPerformanceComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Investor Performance Widget -- Nedbank
+//@Component({
+//  selector: 'WealthInvestorPerformance',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0'>
+//          <div class='card-body text-left'>
+//              <div class='card-body-header-w pb-2'>Investor performance</div>
+//              <div class='InvestmentPermanaceDiv'>
+//                  <table class='InvestorPermanaceTable' border='0' id='InvestorPerformance'>
+//                      <tbody>
+//                          <tr>
+//                              <td class='w-50' colspan='2'><span class='text-success-w fnt-18'>Notice deposits</span></td>
+//                          </tr>
+//                          <tr>
+//                              <td class='w-50 fnt-14'>Opening balance</td>
+//                              <td class='w-50 fnt-14'>Closing balance</td>
+//                          </tr>
+//                          <tr>
+//                              <td class='w-50 fnt-20'>xxx.xx</td>
+//                              <td class='w-50 fnt-20'>xxx.xx</td>
+//                          </tr>
+//                      </tbody>
+//                  </table>
+//              </div>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class WealthInvestorPerformanceComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Breakdown Of Investment Accounts Widget -- Nedbank
-@Component({
-  selector: 'BreakdownOfInvestmentAccounts',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0'>
-          <div class='card-body text-left'>
-              <div class="card-body-header pb-2">Breakdown of your investment accounts</div>
+//// Component Created for Breakdown Of Investment Accounts Widget -- Nedbank
+//@Component({
+//  selector: 'BreakdownOfInvestmentAccounts',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0'>
+//          <div class='card-body text-left'>
+//              <div class="card-body-header pb-2">Breakdown of your investment accounts</div>
               
-                  <div id='JustInvest-9929' class='tab-pane fade in active show'>
-                      <div style="background-color: #F2F2F2;padding:10px 0px">
-                          <h4 class="pl-25px"><span class='InvestmentProdDesc'>Product Desc</span></h4>
-                          <table border="0" class="InvestmentDetail customTable">
-                              <tbody>
-                                  <tr>
-                                      <td class="w-25">Investment no:</td>
-                                      <td class="text-right w-25"><span>Investor ID + Investoment ID</span></td>
-                                      <td class='w-25'>Opening date:</td>
-                                      <td class="text-right w-25"><span>Account Open Date</span></td>
-                                  </tr>
-                                  <tr>
-                                      <td class='w-25'>Current interest rate:</td>
-                                      <td class="text-right w-25"><span>Interest rate % pa</span></td>
-                                      <td class='w-25'>Maturity date:</td>
-                                      <td class="text-right w-25"><span>Maturity date</span></td>
-                                  </tr>
-                                  <tr>
-                                      <td class='w-25'>Interest disposal:</td>
-                                      <td class="text-right w-25"><span>Interest Disposal value</span></td>
-                                      <td class='w-25'>Notice period:</td>
-                                      <td class="text-right w-25" ><span>Notice Period value</span></td>
-                                  </tr>
-                                  <tr>
-                                      <td class='w-25'>Interest due:</td>
-                                      <td class="text-right w-25" ><span>Accured Interest</span></td>
-                                      <td class='w-25'>&nbsp;</td>
-                                      <td class="text-right w-25" >&nbsp;</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                          <div class="InvestmentClosingBalanceDiv">
-                              <span class='fn-14'>Balance at&nbsp;</span> <span class="text-success">Max Transaction date</span><br>
-                              <span class="text-success fnt-20">Total Closing Balance</span>
-                          </div>
-                      </div>
+//                  <div id='JustInvest-9929' class='tab-pane fade in active show'>
+//                      <div style="background-color: #F2F2F2;padding:10px 0px">
+//                          <h4 class="pl-25px"><span class='InvestmentProdDesc'>Product Desc</span></h4>
+//                          <table border="0" class="InvestmentDetail customTable">
+//                              <tbody>
+//                                  <tr>
+//                                      <td class="w-25">Investment no:</td>
+//                                      <td class="text-right w-25"><span>Investor ID + Investoment ID</span></td>
+//                                      <td class='w-25'>Opening date:</td>
+//                                      <td class="text-right w-25"><span>Account Open Date</span></td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class='w-25'>Current interest rate:</td>
+//                                      <td class="text-right w-25"><span>Interest rate % pa</span></td>
+//                                      <td class='w-25'>Maturity date:</td>
+//                                      <td class="text-right w-25"><span>Maturity date</span></td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class='w-25'>Interest disposal:</td>
+//                                      <td class="text-right w-25"><span>Interest Disposal value</span></td>
+//                                      <td class='w-25'>Notice period:</td>
+//                                      <td class="text-right w-25" ><span>Notice Period value</span></td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class='w-25'>Interest due:</td>
+//                                      <td class="text-right w-25" ><span>Accured Interest</span></td>
+//                                      <td class='w-25'>&nbsp;</td>
+//                                      <td class="text-right w-25" >&nbsp;</td>
+//                                  </tr>
+//                              </tbody>
+//                          </table>
+//                          <div class="InvestmentClosingBalanceDiv">
+//                              <span class='fn-14'>Balance at&nbsp;</span> <span class="text-success">Max Transaction date</span><br>
+//                              <span class="text-success fnt-20">Total Closing Balance</span>
+//                          </div>
+//                      </div>
 
-                      <div class="pt-1">
-                          <table id="TableWidget" style="width:100%;" class="table-striped InvestmentBreakdown customTable">
-                              <thead>
-                                  <tr class='ht-30'>
-                                      <th class="w-15">Date</th>
-                                      <th class="w-40">Description</th>
-                                      <th class="w-15 text-right">Debit</th>
-                                      <th class="w-15 text-right">Credit</th>
-                                      <th class="w-15 text-right">Balance</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.xx</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">x.xx</td>
-                                      <td class="w-15 text-right">-</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.x</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">x.xx</td>
-                                      <td class="w-15 text-right">-</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.xx</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">x.xx</td>
-                                      <td class="w-15 text-right">-</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.x</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                      </div>
+//                      <div class="pt-1">
+//                          <table id="TableWidget" style="width:100%;" class="table-striped InvestmentBreakdown customTable">
+//                              <thead>
+//                                  <tr class='ht-30'>
+//                                      <th class="w-15">Date</th>
+//                                      <th class="w-40">Description</th>
+//                                      <th class="w-15 text-right">Debit</th>
+//                                      <th class="w-15 text-right">Credit</th>
+//                                      <th class="w-15 text-right">Balance</th>
+//                                  </tr>
+//                              </thead>
+//                              <tbody>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.xx</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">x.xx</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.x</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">x.xx</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.xx</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">x.xx</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.x</td>
+//                                  </tr>
+//                              </tbody>
+//                          </table>
+//                      </div>
 
-                      <br/><br/>
+//                      <br/><br/>
 
-                      <div style="background-color: #F2F2F2;padding:10px 0px">
-                          <h4 class="pl-25px"><span class="InvestmentProdDesc">Product Desc</span></h4>
-                          <table border="0" class="InvestmentDetail customTable">
-                              <tbody>
-                                  <tr>
-                                      <td class="w-25">Investment no:</td>
-                                      <td class="text-right w-25"><span>Investor ID with Investoment ID</span></td>
-                                      <td class='w-25'>Opening date:</td>
-                                      <td class="text-right w-25"><span>Acc Open Date</span></td>
-                                  </tr>
-                                  <tr>
-                                      <td class='w-25'>Current interest rate:</td>
-                                      <td class="text-right w-25"><span>Interest rate % pa</span></td>
-                                      <td class='w-25'>Maturity date:</td>
-                                      <td class="text-right w-25"><span>Maturity date</span></td>
-                                  </tr>
-                                  <tr>
-                                      <td class='w-25'>Interest disposal:</td>
-                                      <td class="text-right w-25"><span>Interest Disposal value</span></td>
-                                      <td class='w-25'>Notice period:</td>
-                                      <td class="text-right w-25"><span>Notice Period value</span></td>
-                                  </tr>
-                                  <tr>
-                                      <td class='w-25'>Interest due:</td>
-                                      <td class="text-right w-25"><span>Accured Interest</span></td>
-                                      <td class='w-25'>&nbsp;</td>
-                                      <td class="text-right w-25">&nbsp;</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                          <div class="InvestmentClosingBalanceDiv">
-                              <span class='fn-14'>Balance at&nbsp;</span> <span class="text-success">Max Transaction date</span><br>
-                              <span class="text-success fnt-20">Total Closing Balance</span>
-                          </div>
-                      </div>
+//                      <div style="background-color: #F2F2F2;padding:10px 0px">
+//                          <h4 class="pl-25px"><span class="InvestmentProdDesc">Product Desc</span></h4>
+//                          <table border="0" class="InvestmentDetail customTable">
+//                              <tbody>
+//                                  <tr>
+//                                      <td class="w-25">Investment no:</td>
+//                                      <td class="text-right w-25"><span>Investor ID with Investoment ID</span></td>
+//                                      <td class='w-25'>Opening date:</td>
+//                                      <td class="text-right w-25"><span>Acc Open Date</span></td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class='w-25'>Current interest rate:</td>
+//                                      <td class="text-right w-25"><span>Interest rate % pa</span></td>
+//                                      <td class='w-25'>Maturity date:</td>
+//                                      <td class="text-right w-25"><span>Maturity date</span></td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class='w-25'>Interest disposal:</td>
+//                                      <td class="text-right w-25"><span>Interest Disposal value</span></td>
+//                                      <td class='w-25'>Notice period:</td>
+//                                      <td class="text-right w-25"><span>Notice Period value</span></td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class='w-25'>Interest due:</td>
+//                                      <td class="text-right w-25"><span>Accured Interest</span></td>
+//                                      <td class='w-25'>&nbsp;</td>
+//                                      <td class="text-right w-25">&nbsp;</td>
+//                                  </tr>
+//                              </tbody>
+//                          </table>
+//                          <div class="InvestmentClosingBalanceDiv">
+//                              <span class='fn-14'>Balance at&nbsp;</span> <span class="text-success">Max Transaction date</span><br>
+//                              <span class="text-success fnt-20">Total Closing Balance</span>
+//                          </div>
+//                      </div>
 
-                      <div class="pt-1">
-                          <table id="TableWidget" style="width:100%;" class="table-striped InvestmentBreakdown customTable">
-                              <thead>
-                                  <tr class='ht-30'>
-                                      <th class="w-15">Date</th>
-                                      <th class="w-40">Description</th>
-                                      <th class="w-15 text-right">Debit</th>
-                                      <th class="w-15 text-right">Credit</th>
-                                      <th class="w-15 text-right">Balance</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.xx</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">x.xx</td>
-                                      <td class="w-15 text-right">-</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.x</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">x.xx</td>
-                                      <td class="w-15 text-right">-</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.xx</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">x.xx</td>
-                                      <td class="w-15 text-right">-</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.x</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                      </div>
+//                      <div class="pt-1">
+//                          <table id="TableWidget" style="width:100%;" class="table-striped InvestmentBreakdown customTable">
+//                              <thead>
+//                                  <tr class='ht-30'>
+//                                      <th class="w-15">Date</th>
+//                                      <th class="w-40">Description</th>
+//                                      <th class="w-15 text-right">Debit</th>
+//                                      <th class="w-15 text-right">Credit</th>
+//                                      <th class="w-15 text-right">Balance</th>
+//                                  </tr>
+//                              </thead>
+//                              <tbody>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.xx</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">x.xx</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.x</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">x.xx</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.xx</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">x.xx</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.x</td>
+//                                  </tr>
+//                              </tbody>
+//                          </table>
+//                      </div>
                   
-              </div>
+//              </div>
 
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class BreakdownOfInvestmentAccountsComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class BreakdownOfInvestmentAccountsComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Wealth Breakdown Of Investment Accounts Widget -- Nedbank
-@Component({
-  selector: 'WealthBreakdownOfInvestmentAccounts',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0'>
-          <div class='card-body text-left'>
-              <div class="card-body-header-w pb-2">Breakdown of your investment accounts</div>
+//// Component Created for Wealth Breakdown Of Investment Accounts Widget -- Nedbank
+//@Component({
+//  selector: 'WealthBreakdownOfInvestmentAccounts',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0'>
+//          <div class='card-body text-left'>
+//              <div class="card-body-header-w pb-2">Breakdown of your investment accounts</div>
               
-                  <div id='JustInvest-9929' class='tab-pane fade in active show'>
-                      <div style="background-color: #F2F2F2;padding:10px 0px">
-                          <h4 class="pl-25px"><span class='InvestmentProdDescW'>Product Desc</span></h4>
-                          <table border="0" class="InvestmentDetailW customTable">
-                              <tbody>
-                                  <tr>
-                                      <td class="w-25">Investment no:</td>
-                                      <td class="text-right w-25"><span>Investor ID + Investoment ID</span></td>
-                                      <td class='w-25'>Opening date:</td>
-                                      <td class="text-right w-25"><span>Account Open Date</span></td>
-                                  </tr>
-                                  <tr>
-                                      <td class='w-25'>Current interest rate:</td>
-                                      <td class="text-right w-25"><span>Interest rate % pa</span></td>
-                                      <td class='w-25'>Maturity date:</td>
-                                      <td class="text-right w-25"><span>Maturity date</span></td>
-                                  </tr>
-                                  <tr>
-                                      <td class='w-25'>Interest disposal:</td>
-                                      <td class="text-right w-25"><span>Interest Disposal value</span></td>
-                                      <td class='w-25'>Notice period:</td>
-                                      <td class="text-right w-25" ><span>Notice Period value</span></td>
-                                  </tr>
-                                  <tr>
-                                      <td class='w-25'>Interest due:</td>
-                                      <td class="text-right w-25" ><span>Accured Interest</span></td>
-                                      <td class='w-25'>&nbsp;</td>
-                                      <td class="text-right w-25" >&nbsp;</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                          <div class="InvestmentClosingBalanceDiv">
-                              <span class='fn-14'>Balance at&nbsp;</span> <span class="text-success-w">Max Transaction date</span><br>
-                              <span class="text-success-w fnt-20">Total Closing Balance</span>
-                          </div>
-                      </div>
+//                  <div id='JustInvest-9929' class='tab-pane fade in active show'>
+//                      <div style="background-color: #F2F2F2;padding:10px 0px">
+//                          <h4 class="pl-25px"><span class='InvestmentProdDescW'>Product Desc</span></h4>
+//                          <table border="0" class="InvestmentDetailW customTable">
+//                              <tbody>
+//                                  <tr>
+//                                      <td class="w-25">Investment no:</td>
+//                                      <td class="text-right w-25"><span>Investor ID + Investoment ID</span></td>
+//                                      <td class='w-25'>Opening date:</td>
+//                                      <td class="text-right w-25"><span>Account Open Date</span></td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class='w-25'>Current interest rate:</td>
+//                                      <td class="text-right w-25"><span>Interest rate % pa</span></td>
+//                                      <td class='w-25'>Maturity date:</td>
+//                                      <td class="text-right w-25"><span>Maturity date</span></td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class='w-25'>Interest disposal:</td>
+//                                      <td class="text-right w-25"><span>Interest Disposal value</span></td>
+//                                      <td class='w-25'>Notice period:</td>
+//                                      <td class="text-right w-25" ><span>Notice Period value</span></td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class='w-25'>Interest due:</td>
+//                                      <td class="text-right w-25" ><span>Accured Interest</span></td>
+//                                      <td class='w-25'>&nbsp;</td>
+//                                      <td class="text-right w-25" >&nbsp;</td>
+//                                  </tr>
+//                              </tbody>
+//                          </table>
+//                          <div class="InvestmentClosingBalanceDiv">
+//                              <span class='fn-14'>Balance at&nbsp;</span> <span class="text-success-w">Max Transaction date</span><br>
+//                              <span class="text-success-w fnt-20">Total Closing Balance</span>
+//                          </div>
+//                      </div>
 
-                      <div class="pt-1">
-                          <table id="TableWidget" style="width:100%;" class="table-striped InvestmentBreakdownW customTable">
-                              <thead>
-                                  <tr class='ht-30'>
-                                      <th class="w-15">Date</th>
-                                      <th class="w-40">Description</th>
-                                      <th class="w-15 text-right">Debit</th>
-                                      <th class="w-15 text-right">Credit</th>
-                                      <th class="w-15 text-right">Balance</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.xx</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">x.xx</td>
-                                      <td class="w-15 text-right">-</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.x</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">x.xx</td>
-                                      <td class="w-15 text-right">-</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.xx</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">x.xx</td>
-                                      <td class="w-15 text-right">-</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.x</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                      </div>
+//                      <div class="pt-1">
+//                          <table id="TableWidget" style="width:100%;" class="table-striped InvestmentBreakdownW customTable">
+//                              <thead>
+//                                  <tr class='ht-30'>
+//                                      <th class="w-15">Date</th>
+//                                      <th class="w-40">Description</th>
+//                                      <th class="w-15 text-right">Debit</th>
+//                                      <th class="w-15 text-right">Credit</th>
+//                                      <th class="w-15 text-right">Balance</th>
+//                                  </tr>
+//                              </thead>
+//                              <tbody>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.xx</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">x.xx</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.x</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">x.xx</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.xx</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">x.xx</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.x</td>
+//                                  </tr>
+//                              </tbody>
+//                          </table>
+//                      </div>
 
-                      <br/><br/>
+//                      <br/><br/>
 
-                      <div style="background-color: #F2F2F2;padding:10px 0px">
-                          <h4 class="pl-25px"><span class="InvestmentProdDescW">Product Desc</span></h4>
-                          <table border="0" class="InvestmentDetailW customTable">
-                              <tbody>
-                                  <tr>
-                                      <td class="w-25">Investment no:</td>
-                                      <td class="text-right w-25"><span>Investor ID with Investoment ID</span></td>
-                                      <td class='w-25'>Opening date:</td>
-                                      <td class="text-right w-25"><span>Acc Open Date</span></td>
-                                  </tr>
-                                  <tr>
-                                      <td class='w-25'>Current interest rate:</td>
-                                      <td class="text-right w-25"><span>Interest rate % pa</span></td>
-                                      <td class='w-25'>Maturity date:</td>
-                                      <td class="text-right w-25"><span>Maturity date</span></td>
-                                  </tr>
-                                  <tr>
-                                      <td class='w-25'>Interest disposal:</td>
-                                      <td class="text-right w-25"><span>Interest Disposal value</span></td>
-                                      <td class='w-25'>Notice period:</td>
-                                      <td class="text-right w-25"><span>Notice Period value</span></td>
-                                  </tr>
-                                  <tr>
-                                      <td class='w-25'>Interest due:</td>
-                                      <td class="text-right w-25"><span>Accured Interest</span></td>
-                                      <td class='w-25'>&nbsp;</td>
-                                      <td class="text-right w-25">&nbsp;</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                          <div class="InvestmentClosingBalanceDiv">
-                              <span class='fn-14'>Balance at&nbsp;</span> <span class="text-success">Max Transaction date</span><br>
-                              <span class="text-success fnt-20">Total Closing Balance</span>
-                          </div>
-                      </div>
+//                      <div style="background-color: #F2F2F2;padding:10px 0px">
+//                          <h4 class="pl-25px"><span class="InvestmentProdDescW">Product Desc</span></h4>
+//                          <table border="0" class="InvestmentDetailW customTable">
+//                              <tbody>
+//                                  <tr>
+//                                      <td class="w-25">Investment no:</td>
+//                                      <td class="text-right w-25"><span>Investor ID with Investoment ID</span></td>
+//                                      <td class='w-25'>Opening date:</td>
+//                                      <td class="text-right w-25"><span>Acc Open Date</span></td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class='w-25'>Current interest rate:</td>
+//                                      <td class="text-right w-25"><span>Interest rate % pa</span></td>
+//                                      <td class='w-25'>Maturity date:</td>
+//                                      <td class="text-right w-25"><span>Maturity date</span></td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class='w-25'>Interest disposal:</td>
+//                                      <td class="text-right w-25"><span>Interest Disposal value</span></td>
+//                                      <td class='w-25'>Notice period:</td>
+//                                      <td class="text-right w-25"><span>Notice Period value</span></td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class='w-25'>Interest due:</td>
+//                                      <td class="text-right w-25"><span>Accured Interest</span></td>
+//                                      <td class='w-25'>&nbsp;</td>
+//                                      <td class="text-right w-25">&nbsp;</td>
+//                                  </tr>
+//                              </tbody>
+//                          </table>
+//                          <div class="InvestmentClosingBalanceDiv">
+//                              <span class='fn-14'>Balance at&nbsp;</span> <span class="text-success">Max Transaction date</span><br>
+//                              <span class="text-success fnt-20">Total Closing Balance</span>
+//                          </div>
+//                      </div>
 
-                      <div class="pt-1">
-                          <table id="TableWidget" style="width:100%;" class="table-striped InvestmentBreakdownW customTable">
-                              <thead>
-                                  <tr class='ht-30'>
-                                      <th class="w-15">Date</th>
-                                      <th class="w-40">Description</th>
-                                      <th class="w-15 text-right">Debit</th>
-                                      <th class="w-15 text-right">Credit</th>
-                                      <th class="w-15 text-right">Balance</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.xx</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">x.xx</td>
-                                      <td class="w-15 text-right">-</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.x</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">x.xx</td>
-                                      <td class="w-15 text-right">-</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.xx</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">x.xx</td>
-                                      <td class="w-15 text-right">-</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Transaction Description</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">-</td>
-                                      <td class="w-15 text-right">xxx.x</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                      </div>
+//                      <div class="pt-1">
+//                          <table id="TableWidget" style="width:100%;" class="table-striped InvestmentBreakdownW customTable">
+//                              <thead>
+//                                  <tr class='ht-30'>
+//                                      <th class="w-15">Date</th>
+//                                      <th class="w-40">Description</th>
+//                                      <th class="w-15 text-right">Debit</th>
+//                                      <th class="w-15 text-right">Credit</th>
+//                                      <th class="w-15 text-right">Balance</th>
+//                                  </tr>
+//                              </thead>
+//                              <tbody>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.xx</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">x.xx</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.x</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">x.xx</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.xx</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">x.xx</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                  </tr>
+//                                  <tr>
+//                                      <td class="w-15">DD/MM/YYYY</td>
+//                                      <td class="w-40">Transaction Description</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">-</td>
+//                                      <td class="w-15 text-right">xxx.x</td>
+//                                  </tr>
+//                              </tbody>
+//                          </table>
+//                      </div>
                   
-              </div>
+//              </div>
 
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class WealthBreakdownOfInvestmentAccountsComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class WealthBreakdownOfInvestmentAccountsComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Explanatory Notes Widget -- Nedbank
-@Component({
-  selector: 'ExplanatoryNotes',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0'>
-          <div class='card-body text-left'>
-              <div class="card-body-header pb-2">Explanatory notes</div>
-              <div class='ExplanatoryNotes'>
-                  <span>Fixed deposits — Total balance of all your fixed-type accounts.</span><br />
-                  <span>Notice deposits — Total balance of all your notice deposit accounts.</span><br />
-                  <span>Linked deposits — Total balance of all your linked-type accounts.</span>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class ExplanatoryNotesComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Explanatory Notes Widget -- Nedbank
+//@Component({
+//  selector: 'ExplanatoryNotes',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0'>
+//          <div class='card-body text-left'>
+//              <div class="card-body-header pb-2">Explanatory notes</div>
+//              <div class='ExplanatoryNotes'>
+//                  <span>Fixed deposits — Total balance of all your fixed-type accounts.</span><br />
+//                  <span>Notice deposits — Total balance of all your notice deposit accounts.</span><br />
+//                  <span>Linked deposits — Total balance of all your linked-type accounts.</span>
+//              </div>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class ExplanatoryNotesComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Explanatory Notes Widget -- Nedbank
-@Component({
-  selector: 'WealthExplanatoryNotes',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0'>
-          <div class='card-body text-left'>
-              <div class="card-body-header-w pb-2">Explanatory notes</div>
-              <div class='ExplanatoryNotes'>
-                  <span>Fixed deposits — Total balance of all your fixed-type accounts.</span><br />
-                  <span>Notice deposits — Total balance of all your notice deposit accounts.</span><br />
-                  <span>Linked deposits — Total balance of all your linked-type accounts.</span>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class WealthExplanatoryNotesComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Explanatory Notes Widget -- Nedbank
+//@Component({
+//  selector: 'WealthExplanatoryNotes',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0'>
+//          <div class='card-body text-left'>
+//              <div class="card-body-header-w pb-2">Explanatory notes</div>
+//              <div class='ExplanatoryNotes'>
+//                  <span>Fixed deposits — Total balance of all your fixed-type accounts.</span><br />
+//                  <span>Notice deposits — Total balance of all your notice deposit accounts.</span><br />
+//                  <span>Linked deposits — Total balance of all your linked-type accounts.</span>
+//              </div>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class WealthExplanatoryNotesComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
+
+//// Component Created for Nedbank service Widget -- Nedbank
+//@Component({
+//  selector: 'NedbankService',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class="card border-0">
+//          <div class="card-body text-left">
+//              <div class="ServicesDiv">
+//                  <div class="serviceHeader pb-2">Nedbank service message header</div>
+//                  <span>Nedbank service message text</span><br>
+//                  <span>Nedbank service message text</span><br>
+//                  <span>Nedbank service message text</span>
+//              </div>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class NedbankServiceComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
 // Component Created for Nedbank service Widget -- Nedbank
-@Component({
-  selector: 'NedbankService',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class="card border-0">
-          <div class="card-body text-left">
-              <div class="ServicesDiv">
-                  <div class="serviceHeader pb-2">Nedbank service message header</div>
-                  <span>Nedbank service message text</span><br>
-                  <span>Nedbank service message text</span><br>
-                  <span>Nedbank service message text</span>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class NedbankServiceComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//@Component({
+//  selector: 'WealthNedbankService',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class="card border-0">
+//          <div class="card-body text-left">
+//          <div class='card-body-header-w pb-2'>Nedbank services</div>
 
-// Component Created for Nedbank service Widget -- Nedbank
-@Component({
-  selector: 'WealthNedbankService',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class="card border-0">
-          <div class="card-body text-left">
-          <div class='card-body-header-w pb-2'>Nedbank services</div>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
 
-          </div>
-      </div>
-    </div>
-  </div>`
-})
+//export class WealthNedbankServiceComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-export class WealthNedbankServiceComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Personal loan detail Widget -- Nedbank
+//@Component({
+//  selector: 'PersonalLoanDetail',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0'>
+//          <div class='card-body text-left pb-1 pt-1'>
+//              <div class='card-body-header pb-2'>Personal loan statement</div>
+//              <div class='row pb-1'>
+//                  <div class='col-lg-4 col-sm-4 pr-1'>
+//                      <div class='LoanAmountDetailsDiv'>
+//                          <span class="fnt-10pt">Loan Amount</span><br><span class="fnt-14pt">Loan Amount</span>&nbsp;<br>
+//                      </div>
+//                  </div>
+//                  <div class='col-lg-4 col-sm-4 pr-1 pl-0'>
+//                      <div class='LoanAmountDetailsDiv'>
+//                          <span class="fnt-10pt">Balance outstanding</span><br><span class="fnt-14pt">Outstanding balance</span>&nbsp;<br>
+//                      </div>
+//                  </div>
+//                  <div class='col-lg-4 col-sm-4 pl-0'>
+//                      <div class='LoanAmountDetailsDiv'>
+//                          <span class="fnt-10pt">Now due</span><br><span class="fnt-14pt">Now Due value</span>&nbsp;<br>
+//                      </div>
+//                  </div>
+//              </div>
 
-// Component Created for Personal loan detail Widget -- Nedbank
-@Component({
-  selector: 'PersonalLoanDetail',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0'>
-          <div class='card-body text-left pb-1 pt-1'>
-              <div class='card-body-header pb-2'>Personal loan statement</div>
-              <div class='row pb-1'>
-                  <div class='col-lg-4 col-sm-4 pr-1'>
-                      <div class='LoanAmountDetailsDiv'>
-                          <span class="fnt-10pt">Loan Amount</span><br><span class="fnt-14pt">Loan Amount</span>&nbsp;<br>
-                      </div>
-                  </div>
-                  <div class='col-lg-4 col-sm-4 pr-1 pl-0'>
-                      <div class='LoanAmountDetailsDiv'>
-                          <span class="fnt-10pt">Balance outstanding</span><br><span class="fnt-14pt">Outstanding balance</span>&nbsp;<br>
-                      </div>
-                  </div>
-                  <div class='col-lg-4 col-sm-4 pl-0'>
-                      <div class='LoanAmountDetailsDiv'>
-                          <span class="fnt-10pt">Now due</span><br><span class="fnt-14pt">Now Due value</span>&nbsp;<br>
-                      </div>
-                  </div>
-              </div>
+//              <div class="pt-2 pb-2" style="background-color:#F2F2F2">
+//                  <h4 class="pl-25px"><span class="NedbankPersonalLoanTxt">Nedbank personal loan</span></h4>
+//                  <table class="customTable mt-2" border="0">
+//                      <tbody>
+//                          <tr>
+//                              <td class="w-25">Account Number:</td>
+//                              <td class="w-25 text-right pr-4 text-success">Account Number</td>
+//                              <td class="w-25"></td>
+//                              <td class="w-25 text-right text-success"></td>
+//                          </tr>
+//                          <tr>
+//                              <td class="w-25">Statement date:</td>
+//                              <td class="w-25 text-right pr-4 text-success">Statement date</td>
+//                              <td class="w-25">Arrears:</td>
+//                              <td class="w-25 text-right text-success">Arrears amount</td>
+//                          </tr>
+//                          <tr>
+//                              <td class="w-25">Statement period:</td>
+//                              <td class="w-25 text-right pr-4 text-success">Min to Max Transaction Date</td>
+//                              <td class="w-25">Annual rate of interest:</td>
+//                              <td class="w-25 text-right pr-4 text-success">annual rate value</td>
+//                          </tr>
+//                          <tr>
+//                              <td class="w-25">Monthly instalment:</td>
+//                              <td class="w-25 text-right pr-4 text-success">Monthly instalment amount</td>
+//                              <td class="w-25">Original term (months):</td>
+//                              <td class="w-25 text-right pr-4 text-success">Month value</td>
+//                          </tr>
+//                          <tr>
+//                              <td class="w-25">Due by date:</td>
+//                              <td class="w-25 text-right pr-4 text-success">DD/MM/YYYY</td>
+//                              <td class="w-25"></td>
+//                              <td class="w-25 text-right pr-4 text-success"></td>
+//                          </tr>
+//                      </tbody>
+//                  </table>
+//              </div>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class PersonalLoanDetailComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-              <div class="pt-2 pb-2" style="background-color:#F2F2F2">
-                  <h4 class="pl-25px"><span class="NedbankPersonalLoanTxt">Nedbank personal loan</span></h4>
-                  <table class="customTable mt-2" border="0">
-                      <tbody>
-                          <tr>
-                              <td class="w-25">Account Number:</td>
-                              <td class="w-25 text-right pr-4 text-success">Account Number</td>
-                              <td class="w-25"></td>
-                              <td class="w-25 text-right text-success"></td>
-                          </tr>
-                          <tr>
-                              <td class="w-25">Statement date:</td>
-                              <td class="w-25 text-right pr-4 text-success">Statement date</td>
-                              <td class="w-25">Arrears:</td>
-                              <td class="w-25 text-right text-success">Arrears amount</td>
-                          </tr>
-                          <tr>
-                              <td class="w-25">Statement period:</td>
-                              <td class="w-25 text-right pr-4 text-success">Min to Max Transaction Date</td>
-                              <td class="w-25">Annual rate of interest:</td>
-                              <td class="w-25 text-right pr-4 text-success">annual rate value</td>
-                          </tr>
-                          <tr>
-                              <td class="w-25">Monthly instalment:</td>
-                              <td class="w-25 text-right pr-4 text-success">Monthly instalment amount</td>
-                              <td class="w-25">Original term (months):</td>
-                              <td class="w-25 text-right pr-4 text-success">Month value</td>
-                          </tr>
-                          <tr>
-                              <td class="w-25">Due by date:</td>
-                              <td class="w-25 text-right pr-4 text-success">DD/MM/YYYY</td>
-                              <td class="w-25"></td>
-                              <td class="w-25 text-right pr-4 text-success"></td>
-                          </tr>
-                      </tbody>
-                  </table>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class PersonalLoanDetailComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Personal loan transaction Widget -- Nedbank
+//@Component({
+//  selector: 'PersonalLoanTransaction',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0'>
+//          <div class='card-body text-left pb-1 pt-1'>
+//              <div class="pt-1">
+//                  <table id="TableWidget" class="LoanTransactionTable customTable">
+//                      <thead>
+//                          <tr class="ht-30">
+//                              <th class="w-12">Post date</th>
+//                              <th class="w-12">Effective date</th>
+//                              <th class="w-40">Transaction</th>
+//                              <th class="w-12 text-right">Debit</th>
+//                              <th class="w-12 text-right">Credit</th>
+//                              <th class="w-12 text-right">Balance outstanding</th>
+//                          </tr>
+//                      </thead>
+//                  </table>
 
-// Component Created for Personal loan transaction Widget -- Nedbank
-@Component({
-  selector: 'PersonalLoanTransaction',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0'>
-          <div class='card-body text-left pb-1 pt-1'>
-              <div class="pt-1">
-                  <table id="TableWidget" class="LoanTransactionTable customTable">
-                      <thead>
-                          <tr class="ht-30">
-                              <th class="w-12">Post date</th>
-                              <th class="w-12">Effective date</th>
-                              <th class="w-40">Transaction</th>
-                              <th class="w-12 text-right">Debit</th>
-                              <th class="w-12 text-right">Credit</th>
-                              <th class="w-12 text-right">Balance outstanding</th>
-                          </tr>
-                      </thead>
-                  </table>
+//                  <div class="pt-0 overflow-auto" style="max-height:125px;">
+//                      <table class="LoanTransactionTable customTable">
+//                          <tbody>
+//                              <tr>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-40">Transaction Description</td>
+//                                  <td class="w-12 text-right">xxx.x</td>
+//                                  <td class="w-12 text-right">-</td>
+//                                  <td class="w-12 text-right">xxx.xx</td>
+//                              </tr>
+//                              <tr>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-40">Transaction Description</td>
+//                                  <td class="w-12 text-right">-</td>
+//                                  <td class="w-12 text-right">x.xx</td>
+//                                  <td class="w-12 text-right">xxx.xx</td>
+//                              </tr>
+//                              <tr>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-40">Transaction Description</td>
+//                                  <td class="w-12 text-right">-</td>
+//                                  <td class="w-12 text-right">xxx.xx</td>
+//                                  <td class="w-12 text-right">xxx.xx</td>
+//                              </tr>
+//                              <tr>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-40">Transaction Description</td>
+//                                  <td class="w-12 text-right">-</td>
+//                                  <td class="w-12 text-right">x.xx</td>
+//                                  <td class="w-12 text-right">xxx.xx</td>
+//                              </tr>
+//                              <tr>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-40">Transaction Description</td>
+//                                  <td class="w-12 text-right">xxx.xx</td>
+//                                  <td class="w-12 text-right">-</td>
+//                                  <td class="w-12 text-right">xxx.xx</td>
+//                              </tr>
+//                              <tr>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-40">Transaction Description</td>
+//                                  <td class="w-12 text-right">-</td>
+//                                  <td class="w-12 text-right">xx.xx</td>
+//                                  <td class="w-12 text-right">xxx.xx</td>
+//                              </tr>
+//                              <tr>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-12">DD/MM/YYYY</td>
+//                                  <td class="w-40">Transaction Description</td>
+//                                  <td class="w-12 text-right">xx.xx</td>
+//                                  <td class="w-12 text-right">-</td>
+//                                  <td class="w-12 text-right">xxx.xx</td>
+//                              </tr>
+//                          </tbody>
+//                      </table>
+//                  </div>
+//              </div>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class PersonalLoanTransactionComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-                  <div class="pt-0 overflow-auto" style="max-height:125px;">
-                      <table class="LoanTransactionTable customTable">
-                          <tbody>
-                              <tr>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-40">Transaction Description</td>
-                                  <td class="w-12 text-right">xxx.x</td>
-                                  <td class="w-12 text-right">-</td>
-                                  <td class="w-12 text-right">xxx.xx</td>
-                              </tr>
-                              <tr>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-40">Transaction Description</td>
-                                  <td class="w-12 text-right">-</td>
-                                  <td class="w-12 text-right">x.xx</td>
-                                  <td class="w-12 text-right">xxx.xx</td>
-                              </tr>
-                              <tr>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-40">Transaction Description</td>
-                                  <td class="w-12 text-right">-</td>
-                                  <td class="w-12 text-right">xxx.xx</td>
-                                  <td class="w-12 text-right">xxx.xx</td>
-                              </tr>
-                              <tr>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-40">Transaction Description</td>
-                                  <td class="w-12 text-right">-</td>
-                                  <td class="w-12 text-right">x.xx</td>
-                                  <td class="w-12 text-right">xxx.xx</td>
-                              </tr>
-                              <tr>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-40">Transaction Description</td>
-                                  <td class="w-12 text-right">xxx.xx</td>
-                                  <td class="w-12 text-right">-</td>
-                                  <td class="w-12 text-right">xxx.xx</td>
-                              </tr>
-                              <tr>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-40">Transaction Description</td>
-                                  <td class="w-12 text-right">-</td>
-                                  <td class="w-12 text-right">xx.xx</td>
-                                  <td class="w-12 text-right">xxx.xx</td>
-                              </tr>
-                              <tr>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-12">DD/MM/YYYY</td>
-                                  <td class="w-40">Transaction Description</td>
-                                  <td class="w-12 text-right">xx.xx</td>
-                                  <td class="w-12 text-right">-</td>
-                                  <td class="w-12 text-right">xxx.xx</td>
-                              </tr>
-                          </tbody>
-                      </table>
-                  </div>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class PersonalLoanTransactionComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
-
-// Component Created for Personal loan payment due details Widget -- Nedbank
-@Component({
-  selector: 'PersonalLoanPaymentDue',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0'>
-          <div class='card-body text-left pb-1 pt-1'>
-              <div class='card-body-sub-header pb-2'>Payment Due</div>
-              <div class="d-flex flex-row">
-                  <div class="paymentDueHeaderBlock mr-1">After 120 + days</div>
-                  <div class="paymentDueHeaderBlock mr-1">After 90 days</div>
-                  <div class="paymentDueHeaderBlock mr-1">After 60 days</div>
-                  <div class="paymentDueHeaderBlock mr-1">After 30 days</div>
-                  <div class="paymentDueHeaderBlock">Current</div>
-              </div>
-              <div class="d-flex flex-row mt-1">
-                  <div class="paymentDueFooterBlock mr-1">x.xx</div>
-                  <div class="paymentDueFooterBlock mr-1">x.xx</div>
-                  <div class="paymentDueFooterBlock mr-1">x.xx</div>
-                  <div class="paymentDueFooterBlock mr-1">x.xx</div>
-                  <div class="paymentDueFooterBlock">x.xx</div>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class PersonalLoanPaymentDueComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Personal loan payment due details Widget -- Nedbank
+//@Component({
+//  selector: 'PersonalLoanPaymentDue',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0'>
+//          <div class='card-body text-left pb-1 pt-1'>
+//              <div class='card-body-sub-header pb-2'>Payment Due</div>
+//              <div class="d-flex flex-row">
+//                  <div class="paymentDueHeaderBlock mr-1">After 120 + days</div>
+//                  <div class="paymentDueHeaderBlock mr-1">After 90 days</div>
+//                  <div class="paymentDueHeaderBlock mr-1">After 60 days</div>
+//                  <div class="paymentDueHeaderBlock mr-1">After 30 days</div>
+//                  <div class="paymentDueHeaderBlock">Current</div>
+//              </div>
+//              <div class="d-flex flex-row mt-1">
+//                  <div class="paymentDueFooterBlock mr-1">x.xx</div>
+//                  <div class="paymentDueFooterBlock mr-1">x.xx</div>
+//                  <div class="paymentDueFooterBlock mr-1">x.xx</div>
+//                  <div class="paymentDueFooterBlock mr-1">x.xx</div>
+//                  <div class="paymentDueFooterBlock">x.xx</div>
+//              </div>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class PersonalLoanPaymentDueComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
 // Component Created for special message Widget -- Nedbank
 @Component({
@@ -3226,2687 +3226,2687 @@ export class PersonalLoanInsuranceMessageComponent {
   widgetsGridsterItemArray: any[] = [];
 }
 
-// Component Created for Personal loan total amount detail Widget -- Nedbank
-@Component({
-  selector: 'PersonalLoanTotalAmountDetail',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0'>
-          <div class='card-body text-left pb-1 pt-4'>
-              <div class='card-body-header pb-2'>Personal loan statement</div>
-              <div class='row pb-1'>
-                  <div class='col-lg-4 col-sm-4 pr-1'>
-                      <div class='LoanAmountDetailsDiv'>
-                          <span class="fnt-10pt">Loan Amount</span><br><span class="fnt-14pt">R121 765.00</span><br>
-                      </div>
-                  </div>
-                  <div class='col-lg-4 col-sm-4 pr-1 pl-0'>
-                      <div class='LoanAmountDetailsDiv'>
-                          <span class="fnt-10pt">Balance outstanding</span><br><span class="fnt-14pt">R114 190.00</span><br>
-                      </div>
-                  </div>
-                  <div class='col-lg-4 col-sm-4 pl-0'>
-                      <div class='LoanAmountDetailsDiv'>
-                          <span class="fnt-10pt">Now due</span><br><span class="fnt-14pt">R4 742.00</span><br>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class PersonalLoanTotalAmountDetailComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Personal loan total amount detail Widget -- Nedbank
+//@Component({
+//  selector: 'PersonalLoanTotalAmountDetail',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0'>
+//          <div class='card-body text-left pb-1 pt-4'>
+//              <div class='card-body-header pb-2'>Personal loan statement</div>
+//              <div class='row pb-1'>
+//                  <div class='col-lg-4 col-sm-4 pr-1'>
+//                      <div class='LoanAmountDetailsDiv'>
+//                          <span class="fnt-10pt">Loan Amount</span><br><span class="fnt-14pt">R121 765.00</span><br>
+//                      </div>
+//                  </div>
+//                  <div class='col-lg-4 col-sm-4 pr-1 pl-0'>
+//                      <div class='LoanAmountDetailsDiv'>
+//                          <span class="fnt-10pt">Balance outstanding</span><br><span class="fnt-14pt">R114 190.00</span><br>
+//                      </div>
+//                  </div>
+//                  <div class='col-lg-4 col-sm-4 pl-0'>
+//                      <div class='LoanAmountDetailsDiv'>
+//                          <span class="fnt-10pt">Now due</span><br><span class="fnt-14pt">R4 742.00</span><br>
+//                      </div>
+//                  </div>
+//              </div>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class PersonalLoanTotalAmountDetailComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
 // Component Created for Personal loan total amount detail Widget -- Nedbank
-@Component({
-  selector: 'PersonalLoanAccountsBreakdown',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0'>
-        <div class='card-body text-left py-0'>
-            <div class="tab-content">
-                <div id="PersonalLoan-4001" class="tab-pane fade in active show">
-                    <div class="PersonalLoanDetailDiv">
-                        <h4 class="pl-25px"><span class="NedbankPersonalLoanTxt">Nedbank personal loan</span></h4>
-                        <table class="customTable mt-2" border="0">
-                            <tbody>
-                                <tr>
-                                    <td class="w-25">Account Number:</td>
-                                    <td class="w-25 text-right pr-4 text-success">8004334234001</td>
-                                    <td class="w-25"></td>
-                                    <td class="w-25 text-right text-success"></td>
-                                </tr>
-                                <tr>
-                                    <td class="w-25">Statement date:</td>
-                                    <td class="w-25 text-right pr-4 text-success">30/01/2021</td>
-                                    <td class="w-25">Arrears:</td>
-                                    <td class="w-25 text-right text-success">R0.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-25">Statement period:</td>
-                                    <td class="w-25 text-right pr-4 text-success">01/12/2020 - 30/01/2021</td>
-                                    <td class="w-25">Annual rate of interest:</td>
-                                    <td class="w-25 text-right pr-4 text-success">24% pa</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-25">Monthly instalment:</td>
-                                    <td class="w-25 text-right pr-4 text-success">R3 297.00</td>
-                                    <td class="w-25">Original term (months):</td>
-                                    <td class="w-25 text-right pr-4 text-success">36</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-25">Due by date:</td>
-                                    <td class="w-25 text-right pr-4 text-success">28/02/2021</td>
-                                    <td class="w-25"></td>
-                                    <td class="w-25 text-right pr-4 text-success"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+//@Component({
+//  selector: 'PersonalLoanAccountsBreakdown',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0'>
+//        <div class='card-body text-left py-0'>
+//            <div class="tab-content">
+//                <div id="PersonalLoan-4001" class="tab-pane fade in active show">
+//                    <div class="PersonalLoanDetailDiv">
+//                        <h4 class="pl-25px"><span class="NedbankPersonalLoanTxt">Nedbank personal loan</span></h4>
+//                        <table class="customTable mt-2" border="0">
+//                            <tbody>
+//                                <tr>
+//                                    <td class="w-25">Account Number:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">8004334234001</td>
+//                                    <td class="w-25"></td>
+//                                    <td class="w-25 text-right text-success"></td>
+//                                </tr>
+//                                <tr>
+//                                    <td class="w-25">Statement date:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">30/01/2021</td>
+//                                    <td class="w-25">Arrears:</td>
+//                                    <td class="w-25 text-right text-success">R0.00</td>
+//                                </tr>
+//                                <tr>
+//                                    <td class="w-25">Statement period:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">01/12/2020 - 30/01/2021</td>
+//                                    <td class="w-25">Annual rate of interest:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">24% pa</td>
+//                                </tr>
+//                                <tr>
+//                                    <td class="w-25">Monthly instalment:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">R3 297.00</td>
+//                                    <td class="w-25">Original term (months):</td>
+//                                    <td class="w-25 text-right pr-4 text-success">36</td>
+//                                </tr>
+//                                <tr>
+//                                    <td class="w-25">Due by date:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">28/02/2021</td>
+//                                    <td class="w-25"></td>
+//                                    <td class="w-25 text-right pr-4 text-success"></td>
+//                                </tr>
+//                            </tbody>
+//                        </table>
+//                    </div>
 
-                    <div class="pt-1">
-                        <table id="TableWidget" class="LoanTransactionTable customTable">
-                            <thead>
-                                <tr class="ht-30">
-                                    <th class="w-12 text-center">Post date</th>
-                                    <th class="w-12 text-center">Effective date</th>
-                                    <th class="w-40">Transaction</th>
-                                    <th class="w-12 text-right">Debit</th>
-                                    <th class="w-12 text-right">Credit</th>
-                                    <th class="w-12 text-right">Balance outstanding</th>
-                                </tr>
-                            </thead>
-                        </table>
-                        <div class="pt-0 overflow-auto" style="max-height:200px;">
-                            <table class="LoanTransactionTable customTable">
-                                <tbody>
-                                    <tr>
-                                        <td class="w-12 text-center">01/12/2020</td>
-                                        <td class="w-12 text-center">01/12/2020</td>
-                                        <td class="w-40">Interest Debit</td>
-                                        <td class="w-12 text-right">R1 490.00</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R74 298.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">03/12/2020</td>
-                                        <td class="w-12 text-center">03/12/2020</td>
-                                        <td class="w-40">Insurance Premium</td>
-                                        <td class="w-12 text-right">R188.00</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R74 487.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">15/12/2020</td>
-                                        <td class="w-12 text-center">15/12/2020</td>
-                                        <td class="w-40">Payment - Thank you</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R3 297.00</td>
-                                        <td class="w-12 text-right">R71 189.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">31/12/2020</td>
-                                        <td class="w-12 text-center">31/12/2020</td>
-                                        <td class="w-40">Monthly Admin Fee</td>
-                                        <td class="w-12 text-right">R69.00</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R71 258.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">01/01/2021</td>
-                                        <td class="w-12 text-center">01/01/2021</td>
-                                        <td class="w-40">Interest Debit</td>
-                                        <td class="w-12 text-right">R1 512.00</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R72 770.00</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+//                    <div class="pt-1">
+//                        <table id="TableWidget" class="LoanTransactionTable customTable">
+//                            <thead>
+//                                <tr class="ht-30">
+//                                    <th class="w-12 text-center">Post date</th>
+//                                    <th class="w-12 text-center">Effective date</th>
+//                                    <th class="w-40">Transaction</th>
+//                                    <th class="w-12 text-right">Debit</th>
+//                                    <th class="w-12 text-right">Credit</th>
+//                                    <th class="w-12 text-right">Balance outstanding</th>
+//                                </tr>
+//                            </thead>
+//                        </table>
+//                        <div class="pt-0 overflow-auto" style="max-height:200px;">
+//                            <table class="LoanTransactionTable customTable">
+//                                <tbody>
+//                                    <tr>
+//                                        <td class="w-12 text-center">01/12/2020</td>
+//                                        <td class="w-12 text-center">01/12/2020</td>
+//                                        <td class="w-40">Interest Debit</td>
+//                                        <td class="w-12 text-right">R1 490.00</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R74 298.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">03/12/2020</td>
+//                                        <td class="w-12 text-center">03/12/2020</td>
+//                                        <td class="w-40">Insurance Premium</td>
+//                                        <td class="w-12 text-right">R188.00</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R74 487.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">15/12/2020</td>
+//                                        <td class="w-12 text-center">15/12/2020</td>
+//                                        <td class="w-40">Payment - Thank you</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R3 297.00</td>
+//                                        <td class="w-12 text-right">R71 189.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">31/12/2020</td>
+//                                        <td class="w-12 text-center">31/12/2020</td>
+//                                        <td class="w-40">Monthly Admin Fee</td>
+//                                        <td class="w-12 text-right">R69.00</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R71 258.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">01/01/2021</td>
+//                                        <td class="w-12 text-center">01/01/2021</td>
+//                                        <td class="w-40">Interest Debit</td>
+//                                        <td class="w-12 text-right">R1 512.00</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R72 770.00</td>
+//                                    </tr>
+//                                </tbody>
+//                            </table>
+//                        </div>
+//                    </div>
 
-                    <div class="py-2">
-                        <div class='payment-due-header'>Payment Due</div>
-                        <div class="d-flex flex-row">
-                            <div class="paymentDueHeaderBlock mr-1">After 120 + days</div>
-                            <div class="paymentDueHeaderBlock mr-1">After 90 days</div>
-                            <div class="paymentDueHeaderBlock mr-1">After 60 days</div>
-                            <div class="paymentDueHeaderBlock mr-1">After 30 days</div>
-                            <div class="paymentDueHeaderBlock">Current</div>
-                        </div>
-                        <div class="d-flex flex-row mt-1">
-                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
-                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
-                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
-                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
-                            <div class="paymentDueFooterBlock">R3 297.00</div>
-                        </div>
-                    </div>
+//                    <div class="py-2">
+//                        <div class='payment-due-header'>Payment Due</div>
+//                        <div class="d-flex flex-row">
+//                            <div class="paymentDueHeaderBlock mr-1">After 120 + days</div>
+//                            <div class="paymentDueHeaderBlock mr-1">After 90 days</div>
+//                            <div class="paymentDueHeaderBlock mr-1">After 60 days</div>
+//                            <div class="paymentDueHeaderBlock mr-1">After 30 days</div>
+//                            <div class="paymentDueHeaderBlock">Current</div>
+//                        </div>
+//                        <div class="d-flex flex-row mt-1">
+//                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+//                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+//                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+//                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+//                            <div class="paymentDueFooterBlock">R3 297.00</div>
+//                        </div>
+//                    </div>
 
-                </div>
+//                </div>
 
-                <div id="PersonalLoan-6001" class="tab-pane fade">
-                    <div class="PersonalLoanDetailDiv">
-                        <h4 class="pl-25px"><span class="NedbankPersonalLoanTxt">Nedbank personal loan</span></h4>
-                        <table class="customTable mt-2" border="0">
-                            <tbody>
-                                <tr>
-                                    <td class="w-25">Account Number:</td>
-                                    <td class="w-25 text-right pr-4 text-success">8003922986001</td>
-                                    <td class="w-25"></td>
-                                    <td class="w-25 text-right text-success"></td>
-                                </tr>
-                                <tr>
-                                    <td class="w-25">Statement date:</td>
-                                    <td class="w-25 text-right pr-4 text-success">30/01/2021</td>
-                                    <td class="w-25">Arrears:</td>
-                                    <td class="w-25 text-right text-success">R774.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-25">Statement period:</td>
-                                    <td class="w-25 text-right pr-4 text-success">01/12/2020 - 30/01/2021</td>
-                                    <td class="w-25">Annual rate of interest:</td>
-                                    <td class="w-25 text-right pr-4 text-success">0% pa</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-25">Monthly instalment:</td>
-                                    <td class="w-25 text-right pr-4 text-success">R671.00</td>
-                                    <td class="w-25">Original term (months):</td>
-                                    <td class="w-25 text-right pr-4 text-success">60</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-25">Due by date:</td>
-                                    <td class="w-25 text-right pr-4 text-success">28/02/2021</td>
-                                    <td class="w-25"></td>
-                                    <td class="w-25 text-right pr-4 text-success"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+//                <div id="PersonalLoan-6001" class="tab-pane fade">
+//                    <div class="PersonalLoanDetailDiv">
+//                        <h4 class="pl-25px"><span class="NedbankPersonalLoanTxt">Nedbank personal loan</span></h4>
+//                        <table class="customTable mt-2" border="0">
+//                            <tbody>
+//                                <tr>
+//                                    <td class="w-25">Account Number:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">8003922986001</td>
+//                                    <td class="w-25"></td>
+//                                    <td class="w-25 text-right text-success"></td>
+//                                </tr>
+//                                <tr>
+//                                    <td class="w-25">Statement date:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">30/01/2021</td>
+//                                    <td class="w-25">Arrears:</td>
+//                                    <td class="w-25 text-right text-success">R774.00</td>
+//                                </tr>
+//                                <tr>
+//                                    <td class="w-25">Statement period:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">01/12/2020 - 30/01/2021</td>
+//                                    <td class="w-25">Annual rate of interest:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">0% pa</td>
+//                                </tr>
+//                                <tr>
+//                                    <td class="w-25">Monthly instalment:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">R671.00</td>
+//                                    <td class="w-25">Original term (months):</td>
+//                                    <td class="w-25 text-right pr-4 text-success">60</td>
+//                                </tr>
+//                                <tr>
+//                                    <td class="w-25">Due by date:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">28/02/2021</td>
+//                                    <td class="w-25"></td>
+//                                    <td class="w-25 text-right pr-4 text-success"></td>
+//                                </tr>
+//                            </tbody>
+//                        </table>
+//                    </div>
 
-                    <div class="pt-1">
-                        <table id="TableWidget" class="LoanTransactionTable customTable">
-                            <thead>
-                                <tr class="ht-30">
-                                    <th class="w-12 text-center">Post date</th>
-                                    <th class="w-12 text-center">Effective date</th>
-                                    <th class="w-40">Transaction</th>
-                                    <th class="w-12 text-right">Debit</th>
-                                    <th class="w-12 text-right">Credit</th>
-                                    <th class="w-12 text-right">Balance outstanding</th>
-                                </tr>
-                            </thead>
-                        </table>
-                        <div class="pt-0 overflow-auto" style="max-height:200px;">
-                            <table class="LoanTransactionTable customTable">
-                                <tbody>
-                                    <tr>
-                                        <td class="w-12 text-center">01/12/2020</td>
-                                        <td class="w-12 text-center">01/12/2020</td>
-                                        <td class="w-40">Payment - Thank you</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R671.00</td>
-                                        <td class="w-12 text-right">R47 363.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">24/12/2020</td>
-                                        <td class="w-12 text-center">24/12/2020</td>
-                                        <td class="w-40">Payment - Thank you</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R1 789.00</td>
-                                        <td class="w-12 text-right">R45 574.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">24/12/2020</td>
-                                        <td class="w-12 text-center">24/12/2020</td>
-                                        <td class="w-40">Payment Reversal</td>
-                                        <td class="w-12 text-right">R1 789.00</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R47 363.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">31/12/2020</td>
-                                        <td class="w-12 text-center">31/12/2020</td>
-                                        <td class="w-40">Payment - Thank you</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R671.00</td>
-                                        <td class="w-12 text-right">R46 692.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">29/01/2020</td>
-                                        <td class="w-12 text-center">29/01/2020</td>
-                                        <td class="w-40">Payment - Thank you</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R671.00</td>
-                                        <td class="w-12 text-right">R46 021.00</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+//                    <div class="pt-1">
+//                        <table id="TableWidget" class="LoanTransactionTable customTable">
+//                            <thead>
+//                                <tr class="ht-30">
+//                                    <th class="w-12 text-center">Post date</th>
+//                                    <th class="w-12 text-center">Effective date</th>
+//                                    <th class="w-40">Transaction</th>
+//                                    <th class="w-12 text-right">Debit</th>
+//                                    <th class="w-12 text-right">Credit</th>
+//                                    <th class="w-12 text-right">Balance outstanding</th>
+//                                </tr>
+//                            </thead>
+//                        </table>
+//                        <div class="pt-0 overflow-auto" style="max-height:200px;">
+//                            <table class="LoanTransactionTable customTable">
+//                                <tbody>
+//                                    <tr>
+//                                        <td class="w-12 text-center">01/12/2020</td>
+//                                        <td class="w-12 text-center">01/12/2020</td>
+//                                        <td class="w-40">Payment - Thank you</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R671.00</td>
+//                                        <td class="w-12 text-right">R47 363.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">24/12/2020</td>
+//                                        <td class="w-12 text-center">24/12/2020</td>
+//                                        <td class="w-40">Payment - Thank you</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R1 789.00</td>
+//                                        <td class="w-12 text-right">R45 574.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">24/12/2020</td>
+//                                        <td class="w-12 text-center">24/12/2020</td>
+//                                        <td class="w-40">Payment Reversal</td>
+//                                        <td class="w-12 text-right">R1 789.00</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R47 363.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">31/12/2020</td>
+//                                        <td class="w-12 text-center">31/12/2020</td>
+//                                        <td class="w-40">Payment - Thank you</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R671.00</td>
+//                                        <td class="w-12 text-right">R46 692.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">29/01/2020</td>
+//                                        <td class="w-12 text-center">29/01/2020</td>
+//                                        <td class="w-40">Payment - Thank you</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R671.00</td>
+//                                        <td class="w-12 text-right">R46 021.00</td>
+//                                    </tr>
+//                                </tbody>
+//                            </table>
+//                        </div>
+//                    </div>
 
-                    <div class="py-2">
-                        <div class='payment-due-header'>Payment Due</div>
-                        <div class="d-flex flex-row">
-                            <div class="paymentDueHeaderBlock mr-1">After 120 + days</div>
-                            <div class="paymentDueHeaderBlock mr-1">After 90 days</div>
-                            <div class="paymentDueHeaderBlock mr-1">After 60 days</div>
-                            <div class="paymentDueHeaderBlock mr-1">After 30 days</div>
-                            <div class="paymentDueHeaderBlock">Current</div>
-                        </div>
-                        <div class="d-flex flex-row mt-1">
-                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
-                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
-                            <div class="paymentDueFooterBlock mr-1">R103.00</div>
-                            <div class="paymentDueFooterBlock mr-1">R671.00</div>
-                            <div class="paymentDueFooterBlock">R671.00</div>
-                        </div>
-                    </div>
+//                    <div class="py-2">
+//                        <div class='payment-due-header'>Payment Due</div>
+//                        <div class="d-flex flex-row">
+//                            <div class="paymentDueHeaderBlock mr-1">After 120 + days</div>
+//                            <div class="paymentDueHeaderBlock mr-1">After 90 days</div>
+//                            <div class="paymentDueHeaderBlock mr-1">After 60 days</div>
+//                            <div class="paymentDueHeaderBlock mr-1">After 30 days</div>
+//                            <div class="paymentDueHeaderBlock">Current</div>
+//                        </div>
+//                        <div class="d-flex flex-row mt-1">
+//                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+//                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+//                            <div class="paymentDueFooterBlock mr-1">R103.00</div>
+//                            <div class="paymentDueFooterBlock mr-1">R671.00</div>
+//                            <div class="paymentDueFooterBlock">R671.00</div>
+//                        </div>
+//                    </div>
 
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
-  </div>`
-})
-export class PersonalLoanAccountsBreakdownComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//                </div>
+//            </div>
+//        </div>
+//    </div>
+//    </div>
+//  </div>`
+//})
+//export class PersonalLoanAccountsBreakdownComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
 // Component Created for Home loan total amount detail Widget -- Nedbank
-@Component({
-  selector: 'HomeLoanTotalAmountDetail',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-     <div class='card border-0 pt-4'>
-          <div class='card-body text-left pb-1'>
-              <div class='card-body-header pb-2'>New instalment</div>
-              <div class='row'>
-                  <div class='col-lg-4 pr-1'>
-                      <div class='TotalAmountDetailsDiv'>
-                          <span class="fnt-10pt">Total Loan Amount</span><br><span class="fnt-14pt">R432 969.00</span><br>
-                      </div>
-                  </div>
-                  <div class='col-lg-8 pl-0 text-right'>
-                      <div class='TotalAmountDetailsDiv'>
-                          <span class="fnt-10pt">Balance outstanding</span><br><span class="fnt-14pt">R136 320.00</span>&nbsp;<br>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class HomeLoanTotalAmountDetailComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//@Component({
+//  selector: 'HomeLoanTotalAmountDetail',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//     <div class='card border-0 pt-4'>
+//          <div class='card-body text-left pb-1'>
+//              <div class='card-body-header pb-2'>New instalment</div>
+//              <div class='row'>
+//                  <div class='col-lg-4 pr-1'>
+//                      <div class='TotalAmountDetailsDiv'>
+//                          <span class="fnt-10pt">Total Loan Amount</span><br><span class="fnt-14pt">R432 969.00</span><br>
+//                      </div>
+//                  </div>
+//                  <div class='col-lg-8 pl-0 text-right'>
+//                      <div class='TotalAmountDetailsDiv'>
+//                          <span class="fnt-10pt">Balance outstanding</span><br><span class="fnt-14pt">R136 320.00</span>&nbsp;<br>
+//                      </div>
+//                  </div>
+//              </div>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class HomeLoanTotalAmountDetailComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
 // Component Created for Home loan accounts breakdown Widget -- Nedbank
-@Component({
-  selector: 'HomeLoanAccountsBreakdown',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0 pt-4'>
-        <div class='card-body text-left py-1'>
-            <div class="tab-content">
-                <div id='HomeLoan-4001' class='tab-pane fade in active show'>
-                    <div class="HomeLoanDetailDiv">
-                        <h4 class="pl-25px"><span class="NedbankHomeLoanTxt">Nedbank home loan</span></h4>
-                        <table class="customTable mt-2" border="0">
-                            <tbody>
-                                <tr>
-                                    <td class="w-25">Bond no:</td>
-                                    <td class="w-25 text-right pr-4 text-success">8003876814001</td>
-                                    <td class="w-25">Address:</td>
-                                    <td class="w-25 text-right text-success" rowspan="3">ERF 44 THE COVES H <br />ARTBEESPOORT <br /></td>
-                                </tr>
-                                <tr>
-                                    <td class="w-25">Instalment:</td>
-                                    <td class="w-25 text-right pr-4 text-success">R4 149.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-25">Arrears:</td>
-                                    <td class="w-25 text-right pr-4 text-success">R0.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-25">Interest rate:</td>
-                                    <td class="w-25 text-right pr-4 text-success">5.75% pa</td>
-                                    <td class="w-25">Registration date:</td>
-                                    <td class="w-25 text-right pr-4 text-success">12/12/2016</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-25">Loan term:</td>
-                                    <td class="w-25 text-right pr-4 text-success">300 months</td>
-                                    <td class="w-25">Registered amount</td>
-                                    <td class="w-25 text-right pr-4 text-success">R516 037.00</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+//@Component({
+//  selector: 'HomeLoanAccountsBreakdown',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0 pt-4'>
+//        <div class='card-body text-left py-1'>
+//            <div class="tab-content">
+//                <div id='HomeLoan-4001' class='tab-pane fade in active show'>
+//                    <div class="HomeLoanDetailDiv">
+//                        <h4 class="pl-25px"><span class="NedbankHomeLoanTxt">Nedbank home loan</span></h4>
+//                        <table class="customTable mt-2" border="0">
+//                            <tbody>
+//                                <tr>
+//                                    <td class="w-25">Bond no:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">8003876814001</td>
+//                                    <td class="w-25">Address:</td>
+//                                    <td class="w-25 text-right text-success" rowspan="3">ERF 44 THE COVES H <br />ARTBEESPOORT <br /></td>
+//                                </tr>
+//                                <tr>
+//                                    <td class="w-25">Instalment:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">R4 149.00</td>
+//                                </tr>
+//                                <tr>
+//                                    <td class="w-25">Arrears:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">R0.00</td>
+//                                </tr>
+//                                <tr>
+//                                    <td class="w-25">Interest rate:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">5.75% pa</td>
+//                                    <td class="w-25">Registration date:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">12/12/2016</td>
+//                                </tr>
+//                                <tr>
+//                                    <td class="w-25">Loan term:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">300 months</td>
+//                                    <td class="w-25">Registered amount</td>
+//                                    <td class="w-25 text-right pr-4 text-success">R516 037.00</td>
+//                                </tr>
+//                            </tbody>
+//                        </table>
+//                    </div>
 
-                    <div class="pt-1">
-                        <table id="TableWidget" class="LoanTransactionTable customTable">
-                            <thead>
-                                <tr class="ht-30">
-                                    <th class="w-12 text-center">Post date</th>
-                                    <th class="w-12 text-center">Effective date</th>
-                                    <th class="w-40">Transaction</th>
-                                    <th class="w-12 text-right">Debit (R)</th>
-                                    <th class="w-12 text-right">Credit (R)</th>
-                                    <th class="w-12 text-right">Balance (R)</th>
-                                </tr>
-                            </thead>
-                        </table>
-                        <div class="pt-0 overflow-auto" style="max-height:200px;">
-                            <table class="LoanTransactionTable customTable">
-                                <tbody>
-                                    <tr>
-                                        <td class="w-12 text-center">01/12/2020</td>
-                                        <td class="w-12 text-center">01/12/2020</td>
-                                        <td class="w-40">Interest Debit</td>
-                                        <td class="w-12 text-right">R1 490.00</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R74 298.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">03/12/2020</td>
-                                        <td class="w-12 text-center">03/12/2020</td>
-                                        <td class="w-40">Insurance Premium</td>
-                                        <td class="w-12 text-right">R188.00</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R74 487.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">15/12/2020</td>
-                                        <td class="w-12 text-center">15/12/2020</td>
-                                        <td class="w-40">Payment - Thank you</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R3 297.00</td>
-                                        <td class="w-12 text-right">R71 189.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">31/12/2020</td>
-                                        <td class="w-12 text-center">31/12/2020</td>
-                                        <td class="w-40">Monthly Admin Fee</td>
-                                        <td class="w-12 text-right">R69.00</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R71 258.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">01/01/2021</td>
-                                        <td class="w-12 text-center">01/01/2021</td>
-                                        <td class="w-40">Interest Debit</td>
-                                        <td class="w-12 text-right">R1 512.00</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R72 770.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">05/01/2021</td>
-                                        <td class="w-12 text-center">05/01/2021</td>
-                                        <td class="w-40">Insurance Premium</td>
-                                        <td class="w-12 text-right">R188.00</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R72 958.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">15/01/2021</td>
-                                        <td class="w-12 text-center">15/01/2021</td>
-                                        <td class="w-40">Payment - Thank you</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R3 297.00</td>
-                                        <td class="w-12 text-right">R69 660.00</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+//                    <div class="pt-1">
+//                        <table id="TableWidget" class="LoanTransactionTable customTable">
+//                            <thead>
+//                                <tr class="ht-30">
+//                                    <th class="w-12 text-center">Post date</th>
+//                                    <th class="w-12 text-center">Effective date</th>
+//                                    <th class="w-40">Transaction</th>
+//                                    <th class="w-12 text-right">Debit (R)</th>
+//                                    <th class="w-12 text-right">Credit (R)</th>
+//                                    <th class="w-12 text-right">Balance (R)</th>
+//                                </tr>
+//                            </thead>
+//                        </table>
+//                        <div class="pt-0 overflow-auto" style="max-height:200px;">
+//                            <table class="LoanTransactionTable customTable">
+//                                <tbody>
+//                                    <tr>
+//                                        <td class="w-12 text-center">01/12/2020</td>
+//                                        <td class="w-12 text-center">01/12/2020</td>
+//                                        <td class="w-40">Interest Debit</td>
+//                                        <td class="w-12 text-right">R1 490.00</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R74 298.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">03/12/2020</td>
+//                                        <td class="w-12 text-center">03/12/2020</td>
+//                                        <td class="w-40">Insurance Premium</td>
+//                                        <td class="w-12 text-right">R188.00</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R74 487.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">15/12/2020</td>
+//                                        <td class="w-12 text-center">15/12/2020</td>
+//                                        <td class="w-40">Payment - Thank you</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R3 297.00</td>
+//                                        <td class="w-12 text-right">R71 189.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">31/12/2020</td>
+//                                        <td class="w-12 text-center">31/12/2020</td>
+//                                        <td class="w-40">Monthly Admin Fee</td>
+//                                        <td class="w-12 text-right">R69.00</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R71 258.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">01/01/2021</td>
+//                                        <td class="w-12 text-center">01/01/2021</td>
+//                                        <td class="w-40">Interest Debit</td>
+//                                        <td class="w-12 text-right">R1 512.00</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R72 770.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">05/01/2021</td>
+//                                        <td class="w-12 text-center">05/01/2021</td>
+//                                        <td class="w-40">Insurance Premium</td>
+//                                        <td class="w-12 text-right">R188.00</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R72 958.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">15/01/2021</td>
+//                                        <td class="w-12 text-center">15/01/2021</td>
+//                                        <td class="w-40">Payment - Thank you</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R3 297.00</td>
+//                                        <td class="w-12 text-right">R69 660.00</td>
+//                                    </tr>
+//                                </tbody>
+//                            </table>
+//                        </div>
+//                    </div>
 
-                    <div class="py-2">
-                        <div class='card-body-header pb-2'>Home loan statement overview</div>
-                        <div class='row pb-1'>
-                            <div class='col-lg-4 pr-0'>
-                                <div class='TotalAmountDetailsDiv'>
-                                    <span class="fnt-14pt">Balance outstanding</span> <br> <span class="fnt-10pt">as at 2021-01-30</span>
-                                </div>
-                            </div>
-                            <div class='col-lg-8 pl-0 text-right'>
-                                <div class='TotalAmountDetailsDiv'>
-                                    <span class="fnt-14pt">R69 660.00</span>&nbsp;<br>
-                                </div>
-                            </div>
-                        </div>
+//                    <div class="py-2">
+//                        <div class='card-body-header pb-2'>Home loan statement overview</div>
+//                        <div class='row pb-1'>
+//                            <div class='col-lg-4 pr-0'>
+//                                <div class='TotalAmountDetailsDiv'>
+//                                    <span class="fnt-14pt">Balance outstanding</span> <br> <span class="fnt-10pt">as at 2021-01-30</span>
+//                                </div>
+//                            </div>
+//                            <div class='col-lg-8 pl-0 text-right'>
+//                                <div class='TotalAmountDetailsDiv'>
+//                                    <span class="fnt-14pt">R69 660.00</span>&nbsp;<br>
+//                                </div>
+//                            </div>
+//                        </div>
 
-                        <div class='card-body-sub-header pb-2 pt-1'>Payment Due</div>
-                        <div class="d-flex flex-row">
-                            <div class="paymentDueHeaderBlock mr-1">Current</div>
-                            <div class="paymentDueHeaderBlock mr-1">After 30 days</div>
-                            <div class="paymentDueHeaderBlock mr-1">After 60 days</div>
-                            <div class="paymentDueHeaderBlock mr-1">After 90 days</div>
-                            <div class="paymentDueHeaderBlock">After 120 + days</div>
-                        </div>
-                        <div class="d-flex flex-row mt-1">
-                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
-                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
-                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
-                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
-                            <div class="paymentDueFooterBlock">R0.00</div>
-                        </div>
-                    </div>
+//                        <div class='card-body-sub-header pb-2 pt-1'>Payment Due</div>
+//                        <div class="d-flex flex-row">
+//                            <div class="paymentDueHeaderBlock mr-1">Current</div>
+//                            <div class="paymentDueHeaderBlock mr-1">After 30 days</div>
+//                            <div class="paymentDueHeaderBlock mr-1">After 60 days</div>
+//                            <div class="paymentDueHeaderBlock mr-1">After 90 days</div>
+//                            <div class="paymentDueHeaderBlock">After 120 + days</div>
+//                        </div>
+//                        <div class="d-flex flex-row mt-1">
+//                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+//                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+//                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+//                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+//                            <div class="paymentDueFooterBlock">R0.00</div>
+//                        </div>
+//                    </div>
 
-                    <div class='PaymentDueSpecialMessageDiv'>
-                        If you received payment relief because of Covid-19 lockdown, any arrear status that we show above will be resolved when we restructure your account after your three-month arrangement has ended. If you have not applied for relief and would like to, phone us on 0860 555 222 or speak to your relationship banker.
-                    </div>
+//                    <div class='PaymentDueSpecialMessageDiv'>
+//                        If you received payment relief because of Covid-19 lockdown, any arrear status that we show above will be resolved when we restructure your account after your three-month arrangement has ended. If you have not applied for relief and would like to, phone us on 0860 555 222 or speak to your relationship banker.
+//                    </div>
 
-                    <div class='card-body-sub-header pt-2'>Summary for Tax Purposes</div>
-                      <div class="pt-1">
-                          <table class="LoanTransactionTable customTable">
-                              <tbody>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Interest </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Insurance/Assurnace </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Service fee </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Legal costs </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Total amount received </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                      </div>
+//                    <div class='card-body-sub-header pt-2'>Summary for Tax Purposes</div>
+//                      <div class="pt-1">
+//                          <table class="LoanTransactionTable customTable">
+//                              <tbody>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Interest </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Insurance/Assurnace </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Service fee </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Legal costs </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Total amount received </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                              </tbody>
+//                          </table>
+//                      </div>
 
-                </div>
+//                </div>
 
-                <div id='HomeLoan-6001' class='tab-pane fade'>
-                    <div class="HomeLoanDetailDiv">
-                        <h4 class="pl-25px"><span class="NedbankHomeLoanTxt">Nedbank home loan</span></h4>
-                        <table class="customTable mt-2" border="0">
-                            <tbody>
-                                <tr>
-                                    <td class="w-25">Bond no:</td>
-                                    <td class="w-25 text-right pr-4 text-success">8003876816001</td>
-                                    <td class="w-25">Address:</td>
-                                    <td class="w-25 text-right text-success" rowspan="3">ERF 44 THE COVES H <br />ARTBEESPOORT <br /></td>
-                                </tr>
-                                <tr>
-                                    <td class="w-25">Instalment:</td>
-                                    <td class="w-25 text-right pr-4 text-success">R11 090.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-25">Arrears:</td>
-                                    <td class="w-25 text-right pr-4 text-success">R0.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-25">Interest rate:</td>
-                                    <td class="w-25 text-right pr-4 text-success">7.25% pa</td>
-                                    <td class="w-25">Registration date:</td>
-                                    <td class="w-25 text-right pr-4 text-success">21/01/2018</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-25">Loan term:</td>
-                                    <td class="w-25 text-right pr-4 text-success">273 months</td>
-                                    <td class="w-25">Registered amount</td>
-                                    <td class="w-25 text-right pr-4 text-success">R416 879.00</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+//                <div id='HomeLoan-6001' class='tab-pane fade'>
+//                    <div class="HomeLoanDetailDiv">
+//                        <h4 class="pl-25px"><span class="NedbankHomeLoanTxt">Nedbank home loan</span></h4>
+//                        <table class="customTable mt-2" border="0">
+//                            <tbody>
+//                                <tr>
+//                                    <td class="w-25">Bond no:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">8003876816001</td>
+//                                    <td class="w-25">Address:</td>
+//                                    <td class="w-25 text-right text-success" rowspan="3">ERF 44 THE COVES H <br />ARTBEESPOORT <br /></td>
+//                                </tr>
+//                                <tr>
+//                                    <td class="w-25">Instalment:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">R11 090.00</td>
+//                                </tr>
+//                                <tr>
+//                                    <td class="w-25">Arrears:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">R0.00</td>
+//                                </tr>
+//                                <tr>
+//                                    <td class="w-25">Interest rate:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">7.25% pa</td>
+//                                    <td class="w-25">Registration date:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">21/01/2018</td>
+//                                </tr>
+//                                <tr>
+//                                    <td class="w-25">Loan term:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">273 months</td>
+//                                    <td class="w-25">Registered amount</td>
+//                                    <td class="w-25 text-right pr-4 text-success">R416 879.00</td>
+//                                </tr>
+//                            </tbody>
+//                        </table>
+//                    </div>
 
-                    <div class="pt-1">
-                        <table id="TableWidget" class="LoanTransactionTable customTable">
-                            <thead>
-                                <tr class="ht-30">
-                                    <th class="w-12 text-center">Post date</th>
-                                    <th class="w-12 text-center">Effective date</th>
-                                    <th class="w-40">Transaction</th>
-                                    <th class="w-12 text-right">Debit (R)</th>
-                                    <th class="w-12 text-right">Credit (R)</th>
-                                    <th class="w-12 text-right">Balance (R)</th>
-                                </tr>
-                            </thead>
-                        </table>
-                        <div class="pt-0 overflow-auto" style="max-height:200px;">
-                            <table class="LoanTransactionTable customTable">
-                                <tbody>
-                                    <tr>
-                                        <td class="w-12 text-center">01/12/2020</td>
-                                        <td class="w-12 text-center">01/12/2020</td>
-                                        <td class="w-40">Interest Debit</td>
-                                        <td class="w-12 text-right">R1 490.00</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R71 298.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">03/12/2020</td>
-                                        <td class="w-12 text-center">03/12/2020</td>
-                                        <td class="w-40">Insurance Premium</td>
-                                        <td class="w-12 text-right">R188.00</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R71 487.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">15/12/2020</td>
-                                        <td class="w-12 text-center">15/12/2020</td>
-                                        <td class="w-40">Payment - Thank you</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R3 297.00</td>
-                                        <td class="w-12 text-right">R68 189.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">31/12/2020</td>
-                                        <td class="w-12 text-center">31/12/2020</td>
-                                        <td class="w-40">Monthly Admin Fee</td>
-                                        <td class="w-12 text-right">R69.00</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R68 258.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">01/01/2021</td>
-                                        <td class="w-12 text-center">01/01/2021</td>
-                                        <td class="w-40">Interest Debit</td>
-                                        <td class="w-12 text-right">R1 512.00</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R69 770.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">05/01/2021</td>
-                                        <td class="w-12 text-center">05/01/2021</td>
-                                        <td class="w-40">Insurance Premium</td>
-                                        <td class="w-12 text-right">R188.00</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R69 958.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">15/01/2021</td>
-                                        <td class="w-12 text-center">15/01/2021</td>
-                                        <td class="w-40">Payment - Thank you</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R3 297.00</td>
-                                        <td class="w-12 text-right">R66 660.00</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+//                    <div class="pt-1">
+//                        <table id="TableWidget" class="LoanTransactionTable customTable">
+//                            <thead>
+//                                <tr class="ht-30">
+//                                    <th class="w-12 text-center">Post date</th>
+//                                    <th class="w-12 text-center">Effective date</th>
+//                                    <th class="w-40">Transaction</th>
+//                                    <th class="w-12 text-right">Debit (R)</th>
+//                                    <th class="w-12 text-right">Credit (R)</th>
+//                                    <th class="w-12 text-right">Balance (R)</th>
+//                                </tr>
+//                            </thead>
+//                        </table>
+//                        <div class="pt-0 overflow-auto" style="max-height:200px;">
+//                            <table class="LoanTransactionTable customTable">
+//                                <tbody>
+//                                    <tr>
+//                                        <td class="w-12 text-center">01/12/2020</td>
+//                                        <td class="w-12 text-center">01/12/2020</td>
+//                                        <td class="w-40">Interest Debit</td>
+//                                        <td class="w-12 text-right">R1 490.00</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R71 298.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">03/12/2020</td>
+//                                        <td class="w-12 text-center">03/12/2020</td>
+//                                        <td class="w-40">Insurance Premium</td>
+//                                        <td class="w-12 text-right">R188.00</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R71 487.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">15/12/2020</td>
+//                                        <td class="w-12 text-center">15/12/2020</td>
+//                                        <td class="w-40">Payment - Thank you</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R3 297.00</td>
+//                                        <td class="w-12 text-right">R68 189.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">31/12/2020</td>
+//                                        <td class="w-12 text-center">31/12/2020</td>
+//                                        <td class="w-40">Monthly Admin Fee</td>
+//                                        <td class="w-12 text-right">R69.00</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R68 258.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">01/01/2021</td>
+//                                        <td class="w-12 text-center">01/01/2021</td>
+//                                        <td class="w-40">Interest Debit</td>
+//                                        <td class="w-12 text-right">R1 512.00</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R69 770.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">05/01/2021</td>
+//                                        <td class="w-12 text-center">05/01/2021</td>
+//                                        <td class="w-40">Insurance Premium</td>
+//                                        <td class="w-12 text-right">R188.00</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R69 958.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">15/01/2021</td>
+//                                        <td class="w-12 text-center">15/01/2021</td>
+//                                        <td class="w-40">Payment - Thank you</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R3 297.00</td>
+//                                        <td class="w-12 text-right">R66 660.00</td>
+//                                    </tr>
+//                                </tbody>
+//                            </table>
+//                        </div>
+//                    </div>
 
-                    <div class="py-2">
-                        <div class='card-body-header pb-2'>Home loan statement overview</div>
-                        <div class='row pb-1'>
-                            <div class='col-lg-4 pr-0'>
-                                <div class='TotalAmountDetailsDiv'>
-                                    <span class="fnt-14pt">Balance outstanding</span> <br> <span class="fnt-10pt">as at 2021-01-30</span>
-                                </div>
-                            </div>
-                            <div class='col-lg-8 pl-0 text-right'>
-                                <div class='TotalAmountDetailsDiv'>
-                                    <span class="fnt-14pt">R69 660.00</span><br>
-                                </div>
-                            </div>
-                        </div>
+//                    <div class="py-2">
+//                        <div class='card-body-header pb-2'>Home loan statement overview</div>
+//                        <div class='row pb-1'>
+//                            <div class='col-lg-4 pr-0'>
+//                                <div class='TotalAmountDetailsDiv'>
+//                                    <span class="fnt-14pt">Balance outstanding</span> <br> <span class="fnt-10pt">as at 2021-01-30</span>
+//                                </div>
+//                            </div>
+//                            <div class='col-lg-8 pl-0 text-right'>
+//                                <div class='TotalAmountDetailsDiv'>
+//                                    <span class="fnt-14pt">R69 660.00</span><br>
+//                                </div>
+//                            </div>
+//                        </div>
 
-                        <div class='card-body-sub-header pb-2 pt-1'>Payment Due</div>
-                        <div class="d-flex flex-row">
-                            <div class="paymentDueHeaderBlock mr-1">Current</div>
-                            <div class="paymentDueHeaderBlock mr-1">After 30 days</div>
-                            <div class="paymentDueHeaderBlock mr-1">After 60 days</div>
-                            <div class="paymentDueHeaderBlock mr-1">After 90 days</div>
-                            <div class="paymentDueHeaderBlock">After 120 + days</div>
-                        </div>
-                        <div class="d-flex flex-row mt-1">
-                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
-                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
-                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
-                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
-                            <div class="paymentDueFooterBlock">R0.00</div>
-                        </div>
-                    </div>
+//                        <div class='card-body-sub-header pb-2 pt-1'>Payment Due</div>
+//                        <div class="d-flex flex-row">
+//                            <div class="paymentDueHeaderBlock mr-1">Current</div>
+//                            <div class="paymentDueHeaderBlock mr-1">After 30 days</div>
+//                            <div class="paymentDueHeaderBlock mr-1">After 60 days</div>
+//                            <div class="paymentDueHeaderBlock mr-1">After 90 days</div>
+//                            <div class="paymentDueHeaderBlock">After 120 + days</div>
+//                        </div>
+//                        <div class="d-flex flex-row mt-1">
+//                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+//                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+//                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+//                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+//                            <div class="paymentDueFooterBlock">R0.00</div>
+//                        </div>
+//                    </div>
 
-                    <div class='PaymentDueSpecialMessageDiv'>
-                        If you received payment relief because of Covid-19 lockdown, any arrear status that we show above will be resolved when we restructure your account after your three-month arrangement has ended. If you have not applied for relief and would like to, phone us on 0860 555 222 or speak to your relationship banker.
-                    </div>
+//                    <div class='PaymentDueSpecialMessageDiv'>
+//                        If you received payment relief because of Covid-19 lockdown, any arrear status that we show above will be resolved when we restructure your account after your three-month arrangement has ended. If you have not applied for relief and would like to, phone us on 0860 555 222 or speak to your relationship banker.
+//                    </div>
 
-                    <div class='card-body-sub-header pt-2'>Summary for Tax Purposes</div>
-                      <div class="pt-1">
-                          <table class="LoanTransactionTable customTable">
-                              <tbody>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Interest </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Insurance/Assurnace </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Service fee </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Legal costs </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Total amount received </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                      </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
-  </div>`
-})
-export class HomeLoanAccountsBreakdownComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//                    <div class='card-body-sub-header pt-2'>Summary for Tax Purposes</div>
+//                      <div class="pt-1">
+//                          <table class="LoanTransactionTable customTable">
+//                              <tbody>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Interest </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Insurance/Assurnace </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Service fee </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Legal costs </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Total amount received </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                              </tbody>
+//                          </table>
+//                      </div>
+//                </div>
+//            </div>
+//        </div>
+//    </div>
+//    </div>
+//  </div>`
+//})
+//export class HomeLoanAccountsBreakdownComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
 // Component Created for Home loan payment due special msg Widget -- Nedbank
-@Component({
-  selector: 'HomeLoanPaymentDueSpecialMsg',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-     <div class="card border-0 pt-2">
-          <div class="card-body text-left py-1">
-              <div class="PaymentDueSpecialMessageDiv pt-2">
-                  If you received payment relief because of Covid-19, any arrear status that we show above will be resolved when we restructure your account after your three-month arrangement has ended. If you have not applied for relief and would like to, phone us on 0860 555 222 or speak to your relationship banker.
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class HomeLoanPaymentDueSpecialMsgComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//@Component({
+//  selector: 'HomeLoanPaymentDueSpecialMsg',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//     <div class="card border-0 pt-2">
+//          <div class="card-body text-left py-1">
+//              <div class="PaymentDueSpecialMessageDiv pt-2">
+//                  If you received payment relief because of Covid-19, any arrear status that we show above will be resolved when we restructure your account after your three-month arrangement has ended. If you have not applied for relief and would like to, phone us on 0860 555 222 or speak to your relationship banker.
+//              </div>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class HomeLoanPaymentDueSpecialMsgComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
 // Component Created for Home loan instalment details Widget -- Nedbank
-@Component({
-  selector: 'HomeLoanInstalmentDetail',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0 pt-4'>
-          <div class='card-body text-left py-1'>
-              <div class='card-body-sub-header pt-1'>Instalment details</div>
-              <div class="card-body-sub-header2">Due to insurance changes, your new instalment details are as follows:</div>
-              <div class="pt-1">
-                  <table class="LoanTransactionTable customTable">
-                      <thead>
-                          <tr class="ht-30">
-                              <th class="w-50">Payments</th>
-                              <th class="w-50 text-right">Amount</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                          <tr class="ht-20">
-                              <td class="text-left">Basic instalment </td>
-                              <td class="text-right">R0.00</td>
-                          </tr>
-                          <tr class="ht-20">
-                              <td class="text-left">Homeowner's insurance </td>
-                              <td class="text-right">R0.00</td>
-                          </tr>
-                          <tr class="ht-20">
-                              <td class="text-left">Credit life insurance </td>
-                              <td class="text-right">R0.00</td>
-                          </tr>
-                          <tr class="ht-20">
-                              <td class="text-left">Transaction fees </td>
-                              <td class="text-right">R0.00</td>
-                          </tr>
-                          <tr class="ht-20">
-                              <td class="text-left">Subsidised account capital redemption </td>
-                              <td class="text-right">R0.00</td>
-                          </tr>
-                          <tr class="ht-20">
-                              <td class="text-left">Monthly service fee </td>
-                              <td class="text-right">R0.00</td>
-                          </tr>
-                          <tr class="ht-20">
-                              <td class="text-left font-weight-bold">Total instalment (effective from 01/02/2021) </td>
-                              <td class="text-right font-weight-bold">R0.00</td>
-                          </tr>
-                      </tbody>
-                  </table>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class HomeLoanInstalmentDetailComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//@Component({
+//  selector: 'HomeLoanInstalmentDetail',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0 pt-4'>
+//          <div class='card-body text-left py-1'>
+//              <div class='card-body-sub-header pt-1'>Instalment details</div>
+//              <div class="card-body-sub-header2">Due to insurance changes, your new instalment details are as follows:</div>
+//              <div class="pt-1">
+//                  <table class="LoanTransactionTable customTable">
+//                      <thead>
+//                          <tr class="ht-30">
+//                              <th class="w-50">Payments</th>
+//                              <th class="w-50 text-right">Amount</th>
+//                          </tr>
+//                      </thead>
+//                      <tbody>
+//                          <tr class="ht-20">
+//                              <td class="text-left">Basic instalment </td>
+//                              <td class="text-right">R0.00</td>
+//                          </tr>
+//                          <tr class="ht-20">
+//                              <td class="text-left">Homeowner's insurance </td>
+//                              <td class="text-right">R0.00</td>
+//                          </tr>
+//                          <tr class="ht-20">
+//                              <td class="text-left">Credit life insurance </td>
+//                              <td class="text-right">R0.00</td>
+//                          </tr>
+//                          <tr class="ht-20">
+//                              <td class="text-left">Transaction fees </td>
+//                              <td class="text-right">R0.00</td>
+//                          </tr>
+//                          <tr class="ht-20">
+//                              <td class="text-left">Subsidised account capital redemption </td>
+//                              <td class="text-right">R0.00</td>
+//                          </tr>
+//                          <tr class="ht-20">
+//                              <td class="text-left">Monthly service fee </td>
+//                              <td class="text-right">R0.00</td>
+//                          </tr>
+//                          <tr class="ht-20">
+//                              <td class="text-left font-weight-bold">Total instalment (effective from 01/02/2021) </td>
+//                              <td class="text-right font-weight-bold">R0.00</td>
+//                          </tr>
+//                      </tbody>
+//                  </table>
+//              </div>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class HomeLoanInstalmentDetailComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
 // Component Created for Portfolio product level Customer Details Widget -- Nedbank
-@Component({
-  selector: 'PortfolioCustomerDetails',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-       <div class='card border-0'>
-          <div class="card-body CustomerDetails">
-              <span class="fnt-14pt pt-1">MR. Firstname Lastname</span> <br />
-              <p class="fnt-8pt pt-1">Customer Id: 171001255307</p>
-              <p class="fnt-8pt">Mobile No: +2367 345 786</p>
-              <p>Email: custemail@demo.com</p>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class PortfolioCustomerDetailsComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//@Component({
+//  selector: 'PortfolioCustomerDetails',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//       <div class='card border-0'>
+//          <div class="card-body CustomerDetails">
+//              <span class="fnt-14pt pt-1">MR. Firstname Lastname</span> <br />
+//              <p class="fnt-8pt pt-1">Customer Id: 171001255307</p>
+//              <p class="fnt-8pt">Mobile No: +2367 345 786</p>
+//              <p>Email: custemail@demo.com</p>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class PortfolioCustomerDetailsComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Portfolio product level Customer address details Widget -- Nedbank
-@Component({
-  selector: 'PortfolioCustomerAddressDetails',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-       <div class='card border-0'>
-          <div class="card-body CustomerDetails">
-              <span class="fnt-14pt">Address</span> <br />
-              VERDEAU LIFESTYLE ESTATE <br />
-              6 HERCULE CRESCENT DRIVE <br />
-              WELLINGTON, 7655
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class PortfolioCustomerAddressDetailsComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Portfolio product level Customer address details Widget -- Nedbank
+//@Component({
+//  selector: 'PortfolioCustomerAddressDetails',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//       <div class='card border-0'>
+//          <div class="card-body CustomerDetails">
+//              <span class="fnt-14pt">Address</span> <br />
+//              VERDEAU LIFESTYLE ESTATE <br />
+//              6 HERCULE CRESCENT DRIVE <br />
+//              WELLINGTON, 7655
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class PortfolioCustomerAddressDetailsComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Portfolio product level client contact details Widget -- Nedbank
-@Component({
-  selector: 'PortfolioClientContactDetails',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-       <div class='card border-0'>
-          <div class="card-body ClientDetails">
-              <span class="fnt-14pt">Client contact details</span><br />
-              <p>Mobile No: 0860 555 111</p>
-              <p>Email: supportdesk@nedbank.com</p>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class PortfolioClientContactDetailsComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Portfolio product level client contact details Widget -- Nedbank
+//@Component({
+//  selector: 'PortfolioClientContactDetails',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//       <div class='card border-0'>
+//          <div class="card-body ClientDetails">
+//              <span class="fnt-14pt">Client contact details</span><br />
+//              <p>Mobile No: 0860 555 111</p>
+//              <p>Email: supportdesk@nedbank.com</p>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class PortfolioClientContactDetailsComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Portfolio product level account summary details Widget -- Nedbank
-@Component({
-  selector: 'PortfolioAccountSummaryDetails',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-       <div class='card border-0'>
-          <div class="card-body">
-              <div class="card-body-header pb-2">Account Summary</div>
-              <div class="pt-1">
-                  <table class="LoanTransactionTable customTable">
-                      <thead>
-                          <tr class="ht-30">
-                              <th class="w-50">Account</th>
-                              <th class="w-50 text-right">Total Amount</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                          <tr class="ht-30">
-                              <td class="text-left">Investment </td>
-                              <td class="text-right">R9 620.98</td>
-                          </tr>
-                          <tr class="ht-30">
-                              <td class="text-left">Personal Loan </td>
-                              <td class="text-right">R4 165.00</td>
-                          </tr>
-                          <tr class="ht-30">
-                              <td class="text-left">Home Loan </td>
-                              <td class="text-right">R7 969.00</td>
-                          </tr>
-                      </tbody>
-                  </table>
-              </div>
-              <div class="pt-2">
-                  <table class="LoanTransactionTable customTable">
-                      <thead>
-                          <tr class="ht-30">
-                              <th class="text-left">Greenbacks rewards points </th>
-                              <th class="text-right">234</th>
-                          </tr>
-                      </thead>
-                  </table>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class PortfolioAccountSummaryDetailsComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Portfolio product level account summary details Widget -- Nedbank
+//@Component({
+//  selector: 'PortfolioAccountSummaryDetails',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//       <div class='card border-0'>
+//          <div class="card-body">
+//              <div class="card-body-header pb-2">Account Summary</div>
+//              <div class="pt-1">
+//                  <table class="LoanTransactionTable customTable">
+//                      <thead>
+//                          <tr class="ht-30">
+//                              <th class="w-50">Account</th>
+//                              <th class="w-50 text-right">Total Amount</th>
+//                          </tr>
+//                      </thead>
+//                      <tbody>
+//                          <tr class="ht-30">
+//                              <td class="text-left">Investment </td>
+//                              <td class="text-right">R9 620.98</td>
+//                          </tr>
+//                          <tr class="ht-30">
+//                              <td class="text-left">Personal Loan </td>
+//                              <td class="text-right">R4 165.00</td>
+//                          </tr>
+//                          <tr class="ht-30">
+//                              <td class="text-left">Home Loan </td>
+//                              <td class="text-right">R7 969.00</td>
+//                          </tr>
+//                      </tbody>
+//                  </table>
+//              </div>
+//              <div class="pt-2">
+//                  <table class="LoanTransactionTable customTable">
+//                      <thead>
+//                          <tr class="ht-30">
+//                              <th class="text-left">Greenbacks rewards points </th>
+//                              <th class="text-right">234</th>
+//                          </tr>
+//                      </thead>
+//                  </table>
+//              </div>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class PortfolioAccountSummaryDetailsComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Portfolio product level account analysis Widget -- Nedbank
-@Component({
-  selector: 'PortfolioAccountAnalysis',
-  template: `<div class="widget">
-    <div class="widget-area width100">
-      <div class="card border-0">
-          <div class="card-body">
-              <div class="card-body-header pb-2 text-center pb-1">Account analytics</div>
-              <div id="AccountAnalysisBarGraphcontainer" style="height:200px;"></div>
-          </div>
-      </div>      
-    </div>
-</div>`
-})
-export class PortfolioAccountAnalysisComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-  public options4: any = {
-    chart: {
-      backgroundColor: 'rgba(0,0,0,0)',
-      type: 'column',
-      style: {
-        fontFamily: 'Mark Pro Regular',
-        fontSize: '8pt'
-      }
-    },
-    title: {
-      text: ''
-    },
-    xAxis: {
-      categories: ['Jan', 'Feb'],
-      crosshair: true
-    },
-    yAxis: {
-      title: {
-        text: 'Amount (R)'
-      }
-    },
-    credits: {
-      enabled: false
-    },
-    tooltip: {
-      headerFormat: '<span>{point.key}</span><table>',
-      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
-      footerFormat: '</table>',
-      shared: true,
-      useHTML: true
-    },
-    plotOptions: {
-      column: {
-        pointPadding: 0.2,
-        borderWidth: 0
-      }
-    },
-    series: [{
-      name: 'Investment',
-      data: [9456.12, 9620.98]
-    }, {
-      name: 'Personal loan',
-      data: [-4465.00, -4165.00]
-    }, {
-      name: 'Home loan',
-      data: [-8969.00, -7969.00]
-    }],
-    //colors: ['#005b00', '#434348', '#7cb5ec']
-  }
-  ngAfterViewInit() {
-    setTimeout(() => {
-      Highcharts.chart('AccountAnalysisBarGraphcontainer', this.options4);
-    }, 100);
-  }
+//// Component Created for Portfolio product level account analysis Widget -- Nedbank
+//@Component({
+//  selector: 'PortfolioAccountAnalysis',
+//  template: `<div class="widget">
+//    <div class="widget-area width100">
+//      <div class="card border-0">
+//          <div class="card-body">
+//              <div class="card-body-header pb-2 text-center pb-1">Account analytics</div>
+//              <div id="AccountAnalysisBarGraphcontainer" style="height:200px;"></div>
+//          </div>
+//      </div>      
+//    </div>
+//</div>`
+//})
+//export class PortfolioAccountAnalysisComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//  public options4: any = {
+//    chart: {
+//      backgroundColor: 'rgba(0,0,0,0)',
+//      type: 'column',
+//      style: {
+//        fontFamily: 'Mark Pro Regular',
+//        fontSize: '8pt'
+//      }
+//    },
+//    title: {
+//      text: ''
+//    },
+//    xAxis: {
+//      categories: ['Jan', 'Feb'],
+//      crosshair: true
+//    },
+//    yAxis: {
+//      title: {
+//        text: 'Amount (R)'
+//      }
+//    },
+//    credits: {
+//      enabled: false
+//    },
+//    tooltip: {
+//      headerFormat: '<span>{point.key}</span><table>',
+//      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+//      footerFormat: '</table>',
+//      shared: true,
+//      useHTML: true
+//    },
+//    plotOptions: {
+//      column: {
+//        pointPadding: 0.2,
+//        borderWidth: 0
+//      }
+//    },
+//    series: [{
+//      name: 'Investment',
+//      data: [9456.12, 9620.98]
+//    }, {
+//      name: 'Personal loan',
+//      data: [-4465.00, -4165.00]
+//    }, {
+//      name: 'Home loan',
+//      data: [-8969.00, -7969.00]
+//    }],
+//    //colors: ['#005b00', '#434348', '#7cb5ec']
+//  }
+//  ngAfterViewInit() {
+//    setTimeout(() => {
+//      Highcharts.chart('AccountAnalysisBarGraphcontainer', this.options4);
+//    }, 100);
+//  }
 
-  ngOnInit() {
-    $(document).ready(function () {
-      setTimeout(function () {
-        window.dispatchEvent(new Event('resize'));
-      }, 10);
-    });
-  }
-}
+//  ngOnInit() {
+//    $(document).ready(function () {
+//      setTimeout(function () {
+//        window.dispatchEvent(new Event('resize'));
+//      }, 10);
+//    });
+//  }
+//}
 
-// Component Created for Portfolio product level reminders and recommendation Widget -- Nedbank
-@Component({
-  selector: 'PortfolioReminders',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-       <div class='card border-0'>
-          <div class='card-body ReminderDiv'>
-              <div class="card-body-header pb-2 fnt-14pt">Reminder and Recommendation</div>
-              <div class='row'>
-                  <div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>Your Credit Card payment is due </p></div>
-                  <div class='col-lg-3 text-left'>
-                      <a href='javascript:void(0)' target='_blank'>
-                          <i class='fa fa-caret-left fa-3x float-left text-success'></i><span class='mt-2 d-inline-block ml-2'>Pay Now</span>
-                      </a>
-                  </div>
-              </div>
-              <div class='row'>
-                  <div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>Update missing information in your profile </p></div>
-                  <div class='col-lg-3 text-left'>
-                      <a href='javascript:void(0)' target='_blank'>
-                          <i class='fa fa-caret-left fa-3x float-left text-success'></i><span class='mt-2 d-inline-block ml-2'>Update</span>
-                      </a>
-                  </div>
-              </div>
-              <div class='row'>
-                  <div class='col-lg-9 text-left'>
-                      <p class='p-1' style='background-color: #dce3dc;'>Based on your transaction trend add on BA Airmile card is offered free to you. </p>
-                  </div>
-                  <div class='col-lg-3 text-left'>
-                      <a href='javascript:void(0)' target='_blank'>
-                          <i class='fa fa-caret-left fa-3x float-left text-success'></i><span class='mt-2 d-inline-block ml-2'>Order</span>
-                      </a>
-                  </div>
-              </div>
-              <div class='row'>
-                  <div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>Need saving deposit Boxes </p></div>
-                  <div class='col-lg-3 text-left'>
-                      <a href='javascript:void(0)' target='_blank'>
-                          <i class='fa fa-caret-left fa-3x float-left text-success'></i><span class='mt-2 d-inline-block ml-2'>Apply</span>
-                      </a>
-                  </div>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class PortfolioRemindersComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+////// Component Created for Portfolio product level reminders and recommendation Widget -- Nedbank
+////@Component({
+////  selector: 'PortfolioReminders',
+////  template: `<div class="widget">
+////    <div class="widget-area height100">
+////       <div class='card border-0'>
+////          <div class='card-body ReminderDiv'>
+////              <div class="card-body-header pb-2 fnt-14pt">Reminder and Recommendation</div>
+////              <div class='row'>
+////                  <div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>Your Credit Card payment is due </p></div>
+////                  <div class='col-lg-3 text-left'>
+////                      <a href='javascript:void(0)' target='_blank'>
+////                          <i class='fa fa-caret-left fa-3x float-left text-success'></i><span class='mt-2 d-inline-block ml-2'>Pay Now</span>
+////                      </a>
+////                  </div>
+////              </div>
+////              <div class='row'>
+////                  <div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>Update missing information in your profile </p></div>
+////                  <div class='col-lg-3 text-left'>
+////                      <a href='javascript:void(0)' target='_blank'>
+////                          <i class='fa fa-caret-left fa-3x float-left text-success'></i><span class='mt-2 d-inline-block ml-2'>Update</span>
+////                      </a>
+////                  </div>
+////              </div>
+////              <div class='row'>
+////                  <div class='col-lg-9 text-left'>
+////                      <p class='p-1' style='background-color: #dce3dc;'>Based on your transaction trend add on BA Airmile card is offered free to you. </p>
+////                  </div>
+////                  <div class='col-lg-3 text-left'>
+////                      <a href='javascript:void(0)' target='_blank'>
+////                          <i class='fa fa-caret-left fa-3x float-left text-success'></i><span class='mt-2 d-inline-block ml-2'>Order</span>
+////                      </a>
+////                  </div>
+////              </div>
+////              <div class='row'>
+////                  <div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>Need saving deposit Boxes </p></div>
+////                  <div class='col-lg-3 text-left'>
+////                      <a href='javascript:void(0)' target='_blank'>
+////                          <i class='fa fa-caret-left fa-3x float-left text-success'></i><span class='mt-2 d-inline-block ml-2'>Apply</span>
+////                      </a>
+////                  </div>
+////              </div>
+////          </div>
+////      </div>
+////    </div>
+////  </div>`
+////})
+////export class PortfolioRemindersComponent {
+////  @Input()
+////  widgetsGridsterItemArray: any[] = [];
+////}
 
-// Component Created for Portfolio product level news alerts Widget -- Nedbank
-@Component({
-  selector: 'PortfolioNewsAlerts',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-       <div class='card border-0'>
-          <div class='card-body text-left py-1'>
-            <div class='NewAlertDiv'>
-                <div class='card-body-header pb-2'>News Alerts</div>
-                <p>Covid 19 and the subsequent lockdown has affected all areas of our daily lives. The way we work, the way we bank and how we interact with each other.</p>
-                <p>We want you to know we are in this together. That's why we are sharing advice, tips and news updates with you on ways to bank as well as ways to keep yorself and your loved ones safe.</p>
-                <p>We would like to remind you of the credit life insurance benefits available to you through your Nedbank Insurance policy. When you pass away, Nedbank Insurance will cover your outstanding loan amount. If you are permanently employed, you will also enjoy cover for comprehensive disability and loss of income. The disability benefit will cover your monthly instalments if you cannot earn your usual income due to illness or bodily injury.</p>
-                <div class='float-right'>
-                    <a href='javascript:void(0)' target='_blank'>
-                        <i class='fa fa-caret-left fa-3x float-left text-success'></i><span class='mt-2 d-inline-block ml-2'>More Info</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-      </div>
-    </div>
-  </div>`
-})
-export class PortfolioNewsAlertsComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Portfolio product level news alerts Widget -- Nedbank
+//@Component({
+//  selector: 'PortfolioNewsAlerts',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//       <div class='card border-0'>
+//          <div class='card-body text-left py-1'>
+//            <div class='NewAlertDiv'>
+//                <div class='card-body-header pb-2'>News Alerts</div>
+//                <p>Covid 19 and the subsequent lockdown has affected all areas of our daily lives. The way we work, the way we bank and how we interact with each other.</p>
+//                <p>We want you to know we are in this together. That's why we are sharing advice, tips and news updates with you on ways to bank as well as ways to keep yorself and your loved ones safe.</p>
+//                <p>We would like to remind you of the credit life insurance benefits available to you through your Nedbank Insurance policy. When you pass away, Nedbank Insurance will cover your outstanding loan amount. If you are permanently employed, you will also enjoy cover for comprehensive disability and loss of income. The disability benefit will cover your monthly instalments if you cannot earn your usual income due to illness or bodily injury.</p>
+//                <div class='float-right'>
+//                    <a href='javascript:void(0)' target='_blank'>
+//                        <i class='fa fa-caret-left fa-3x float-left text-success'></i><span class='mt-2 d-inline-block ml-2'>More Info</span>
+//                    </a>
+//                </div>
+//            </div>
+//        </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class PortfolioNewsAlertsComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Greenbacks product level total reward points Widget -- Nedbank
-@Component({
-  selector: 'GreenbacksTotalRewardPoints',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-       <div class='card border-0'>
-          <div class="card-body text-center">
-              <span class="TotalRewardPointsSpan" title='Total Rewards Points'>482</span>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class GreenbacksTotalRewardPointsComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Greenbacks product level total reward points Widget -- Nedbank
+//@Component({
+//  selector: 'GreenbacksTotalRewardPoints',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//       <div class='card border-0'>
+//          <div class="card-body text-center">
+//              <span class="TotalRewardPointsSpan" title='Total Rewards Points'>482</span>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class GreenbacksTotalRewardPointsComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Rewards product level greenbacks contact us Widget -- Nedbank
-@Component({
-  selector: 'GreenbacksContactUs',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-       <div class="card border-0">
-          <div class="card-body GreenbacksContactUsDiv">
-              <ul class="list-group float-right" style="width:250px;">
-                  <li class="list-group-item d-flex justify-content-between align-items-center ht-30 JoinGreenbacks-li-bg border-white">
-                      <a class="text-white" href="javascript:void(0)">
-                          Join Greenbacks
-                          <i class='fa fa-caret-right float-right text-white mt-1'></i>
-                      </a>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center ht-30 UseGreenbacks-li-bg border-white">
-                      <a class="text-white" href="javascript:void(0)">
-                          Use Greenbacks
-                          <i class='fa fa-caret-right float-right text-white mt-1'></i>
-                      </a>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center ht-30 ContactUs-li-bg border-white">
-                      Contact Us 0860 553 111
-                  </li>
-              </ul>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class GreenbacksContactUsComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Rewards product level greenbacks contact us Widget -- Nedbank
+//@Component({
+//  selector: 'GreenbacksContactUs',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//       <div class="card border-0">
+//          <div class="card-body GreenbacksContactUsDiv">
+//              <ul class="list-group float-right" style="width:250px;">
+//                  <li class="list-group-item d-flex justify-content-between align-items-center ht-30 JoinGreenbacks-li-bg border-white">
+//                      <a class="text-white" href="javascript:void(0)">
+//                          Join Greenbacks
+//                          <i class='fa fa-caret-right float-right text-white mt-1'></i>
+//                      </a>
+//                  </li>
+//                  <li class="list-group-item d-flex justify-content-between align-items-center ht-30 UseGreenbacks-li-bg border-white">
+//                      <a class="text-white" href="javascript:void(0)">
+//                          Use Greenbacks
+//                          <i class='fa fa-caret-right float-right text-white mt-1'></i>
+//                      </a>
+//                  </li>
+//                  <li class="list-group-item d-flex justify-content-between align-items-center ht-30 ContactUs-li-bg border-white">
+//                      Contact Us 0860 553 111
+//                  </li>
+//              </ul>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class GreenbacksContactUsComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Rewards product level YTD rewards points Widget -- Nedbank
-@Component({
-  selector: 'YTDRewardPoints',
-  template: `<div class="widget">
-    <div class="widget-area width100">
-      <div class="card border-0">
-          <div class="card-body">
-              <div class="card-body-header pb-2 text-center pb-1">YTD Rewards Points</div>
-              <div id="YTDRewardPointsBarGraphcontainer" style="height:200px;"></div>
-          </div>
-      </div>      
-    </div>
-</div>`
-})
-export class YTDRewardPointsComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
+//// Component Created for Rewards product level YTD rewards points Widget -- Nedbank
+//@Component({
+//  selector: 'YTDRewardPoints',
+//  template: `<div class="widget">
+//    <div class="widget-area width100">
+//      <div class="card border-0">
+//          <div class="card-body">
+//              <div class="card-body-header pb-2 text-center pb-1">YTD Rewards Points</div>
+//              <div id="YTDRewardPointsBarGraphcontainer" style="height:200px;"></div>
+//          </div>
+//      </div>      
+//    </div>
+//</div>`
+//})
+//export class YTDRewardPointsComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
 
-  public options4: any = {
-    chart: {
-      backgroundColor: 'rgba(0,0,0,0)',
-      type: 'column',
-      style: {
-        fontFamily: 'Mark Pro Regular',
-        fontSize: '8pt'
-      }
-    },
-    title: {
-      text: ''
-    },
-    xAxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr'],
-      crosshair: true
-    },
-    yAxis: {
-      title: {
-        text: 'Points'
-      }
-    },
-    credits: {
-      enabled: false
-    },
-    tooltip: {
-      headerFormat: '<span>{point.key}</span><table>',
-      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
-      footerFormat: '</table>',
-      shared: true,
-      useHTML: true
-    },
-    plotOptions: {
-      column: {
-        pointPadding: 0.2,
-        borderWidth: 0
-      },
-      series: {
-        color: '#005b00'
-      }
-    },
-    series: [{
-      name: 'Rewards Points',
-      data: [98, 112, 128, 144]
-    }]
-  }
+//  public options4: any = {
+//    chart: {
+//      backgroundColor: 'rgba(0,0,0,0)',
+//      type: 'column',
+//      style: {
+//        fontFamily: 'Mark Pro Regular',
+//        fontSize: '8pt'
+//      }
+//    },
+//    title: {
+//      text: ''
+//    },
+//    xAxis: {
+//      categories: ['Jan', 'Feb', 'Mar', 'Apr'],
+//      crosshair: true
+//    },
+//    yAxis: {
+//      title: {
+//        text: 'Points'
+//      }
+//    },
+//    credits: {
+//      enabled: false
+//    },
+//    tooltip: {
+//      headerFormat: '<span>{point.key}</span><table>',
+//      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+//      footerFormat: '</table>',
+//      shared: true,
+//      useHTML: true
+//    },
+//    plotOptions: {
+//      column: {
+//        pointPadding: 0.2,
+//        borderWidth: 0
+//      },
+//      series: {
+//        color: '#005b00'
+//      }
+//    },
+//    series: [{
+//      name: 'Rewards Points',
+//      data: [98, 112, 128, 144]
+//    }]
+//  }
 
-  ngAfterViewInit() {
-    setTimeout(() => {
-      Highcharts.chart('YTDRewardPointsBarGraphcontainer', this.options4);
-    }, 100);
-  }
+//  ngAfterViewInit() {
+//    setTimeout(() => {
+//      Highcharts.chart('YTDRewardPointsBarGraphcontainer', this.options4);
+//    }, 100);
+//  }
 
-  ngOnInit() {
-    $(document).ready(function () {
-      setTimeout(function () {
-        window.dispatchEvent(new Event('resize'));
-      }, 10);
-    });
-  }
-}
+//  ngOnInit() {
+//    $(document).ready(function () {
+//      setTimeout(function () {
+//        window.dispatchEvent(new Event('resize'));
+//      }, 10);
+//    });
+//  }
+//}
 
-// Component Created for Rewards product level Points redeemed YTD Widget -- Nedbank
-@Component({
-  selector: 'PointsRedeemedYTD',
-  template: `<div class="widget">
-    <div class="widget-area width100">
-      <div class="card border-0">
-          <div class="card-body">
-              <div class="card-body-header pb-2 text-center pb-1">Points Redeemed YTD</div>
-              <div id="PointsRedeemedYTDBarGraphcontainer" style="height:200px;"></div>
-          </div>
-      </div>      
-    </div>
-</div>`
-})
-export class PointsRedeemedYTDComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
+//// Component Created for Rewards product level Points redeemed YTD Widget -- Nedbank
+//@Component({
+//  selector: 'PointsRedeemedYTD',
+//  template: `<div class="widget">
+//    <div class="widget-area width100">
+//      <div class="card border-0">
+//          <div class="card-body">
+//              <div class="card-body-header pb-2 text-center pb-1">Points Redeemed YTD</div>
+//              <div id="PointsRedeemedYTDBarGraphcontainer" style="height:200px;"></div>
+//          </div>
+//      </div>      
+//    </div>
+//</div>`
+//})
+//export class PointsRedeemedYTDComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
 
-  public options4: any = {
-    chart: {
-      backgroundColor: 'rgba(0,0,0,0)',
-      type: 'column',
-      style: {
-        fontFamily: 'Mark Pro Regular',
-        fontSize: '8pt'
-      }
-    },
-    title: {
-      text: ''
-    },
-    xAxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr'],
-      crosshair: true
-    },
-    yAxis: {
-      title: {
-        text: 'Points'
-      }
-    },
-    credits: {
-      enabled: false
-    },
-    tooltip: {
-      headerFormat: '<span>{point.key}</span><table>',
-      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
-      footerFormat: '</table>',
-      shared: true,
-      useHTML: true
-    },
-    plotOptions: {
-      column: {
-        pointPadding: 0.2,
-        borderWidth: 0
-      },
-      series: {
-        color: '#005b00'
-      }
-    },
-    series: [{
-      name: 'Redeemed Points',
-      data: [96, 71, 87, 54]
-    }]
-  }
+//  public options4: any = {
+//    chart: {
+//      backgroundColor: 'rgba(0,0,0,0)',
+//      type: 'column',
+//      style: {
+//        fontFamily: 'Mark Pro Regular',
+//        fontSize: '8pt'
+//      }
+//    },
+//    title: {
+//      text: ''
+//    },
+//    xAxis: {
+//      categories: ['Jan', 'Feb', 'Mar', 'Apr'],
+//      crosshair: true
+//    },
+//    yAxis: {
+//      title: {
+//        text: 'Points'
+//      }
+//    },
+//    credits: {
+//      enabled: false
+//    },
+//    tooltip: {
+//      headerFormat: '<span>{point.key}</span><table>',
+//      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+//      footerFormat: '</table>',
+//      shared: true,
+//      useHTML: true
+//    },
+//    plotOptions: {
+//      column: {
+//        pointPadding: 0.2,
+//        borderWidth: 0
+//      },
+//      series: {
+//        color: '#005b00'
+//      }
+//    },
+//    series: [{
+//      name: 'Redeemed Points',
+//      data: [96, 71, 87, 54]
+//    }]
+//  }
 
-  ngAfterViewInit() {
-    setTimeout(() => {
-      Highcharts.chart('PointsRedeemedYTDBarGraphcontainer', this.options4);
-    }, 100);
-  }
+//  ngAfterViewInit() {
+//    setTimeout(() => {
+//      Highcharts.chart('PointsRedeemedYTDBarGraphcontainer', this.options4);
+//    }, 100);
+//  }
 
-  ngOnInit() {
-    $(document).ready(function () {
-      setTimeout(function () {
-        window.dispatchEvent(new Event('resize'));
-      }, 10);
-    });
-  }
-}
+//  ngOnInit() {
+//    $(document).ready(function () {
+//      setTimeout(function () {
+//        window.dispatchEvent(new Event('resize'));
+//      }, 10);
+//    });
+//  }
+//}
 
-// Component Created for Rewards product level Product Related Points Earned Widget -- Nedbank
-@Component({
-  selector: 'ProductRelatedPointsEarned',
-  template: `<div class="widget">
-    <div class="widget-area width100">
-      <div class="card border-0">
-          <div class="card-body">
-              <div class="card-body-header pb-2 text-center pb-1">Product Related Points Earned</div>
-              <div id="ProductRelatedPointsEarnedBarGraphcontainer" style="height:200px;"></div>
-          </div>
-      </div>      
-    </div>
-</div>`
-})
-export class ProductRelatedPointsEarnedComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
+//// Component Created for Rewards product level Product Related Points Earned Widget -- Nedbank
+//@Component({
+//  selector: 'ProductRelatedPointsEarned',
+//  template: `<div class="widget">
+//    <div class="widget-area width100">
+//      <div class="card border-0">
+//          <div class="card-body">
+//              <div class="card-body-header pb-2 text-center pb-1">Product Related Points Earned</div>
+//              <div id="ProductRelatedPointsEarnedBarGraphcontainer" style="height:200px;"></div>
+//          </div>
+//      </div>      
+//    </div>
+//</div>`
+//})
+//export class ProductRelatedPointsEarnedComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
 
-  public options4: any = {
-    chart: {
-      backgroundColor: 'rgba(0,0,0,0)',
-      type: 'column',
-      style: {
-        fontFamily: 'Mark Pro Regular',
-        fontSize: '8pt'
-      }
-    },
-    title: {
-      text: ''
-    },
-    xAxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr'],
-      crosshair: true
-    },
-    yAxis: {
-      title: {
-        text: 'Points'
-      }
-    },
-    credits: {
-      enabled: false
-    },
-    tooltip: {
-      headerFormat: '<span>{point.key}</span><table>',
-      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
-      footerFormat: '</table>',
-      shared: true,
-      useHTML: true
-    },
-    plotOptions: {
-      column: {
-        pointPadding: 0.2,
-        borderWidth: 0
-      }
-    },
-    series: [{
-      name: 'Investment',
-      data: [121, 145, 98, 134]
-    }, {
-      name: 'Personal loan',
-      data: [232, 167, 125, 245]
-    }, {
-      name: 'Home loan',
-      data: [104, 110, 211, 167]
-    }]
-  }
+//  public options4: any = {
+//    chart: {
+//      backgroundColor: 'rgba(0,0,0,0)',
+//      type: 'column',
+//      style: {
+//        fontFamily: 'Mark Pro Regular',
+//        fontSize: '8pt'
+//      }
+//    },
+//    title: {
+//      text: ''
+//    },
+//    xAxis: {
+//      categories: ['Jan', 'Feb', 'Mar', 'Apr'],
+//      crosshair: true
+//    },
+//    yAxis: {
+//      title: {
+//        text: 'Points'
+//      }
+//    },
+//    credits: {
+//      enabled: false
+//    },
+//    tooltip: {
+//      headerFormat: '<span>{point.key}</span><table>',
+//      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+//      footerFormat: '</table>',
+//      shared: true,
+//      useHTML: true
+//    },
+//    plotOptions: {
+//      column: {
+//        pointPadding: 0.2,
+//        borderWidth: 0
+//      }
+//    },
+//    series: [{
+//      name: 'Investment',
+//      data: [121, 145, 98, 134]
+//    }, {
+//      name: 'Personal loan',
+//      data: [232, 167, 125, 245]
+//    }, {
+//      name: 'Home loan',
+//      data: [104, 110, 211, 167]
+//    }]
+//  }
 
-  ngAfterViewInit() {
-    setTimeout(() => {
-      Highcharts.chart('ProductRelatedPointsEarnedBarGraphcontainer', this.options4);
-    }, 100);
-  }
+//  ngAfterViewInit() {
+//    setTimeout(() => {
+//      Highcharts.chart('ProductRelatedPointsEarnedBarGraphcontainer', this.options4);
+//    }, 100);
+//  }
 
-  ngOnInit() {
-    $(document).ready(function () {
-      setTimeout(function () {
-        window.dispatchEvent(new Event('resize'));
-      }, 10);
-    });
-  }
-}
+//  ngOnInit() {
+//    $(document).ready(function () {
+//      setTimeout(function () {
+//        window.dispatchEvent(new Event('resize'));
+//      }, 10);
+//    });
+//  }
+//}
 
-// Component Created for Rewards product level Category Spend Rewards Widget -- Nedbank
-@Component({
-  selector: 'CategorySpendRewards',
-  template: `<div class="widget">
-    <div class="widget-area width100">
-      <div class="card border-0">
-          <div class="card-body">
-              <div class="card-body-header pb-2 text-center pb-1">Category Spend Rewards</div>
-              <div id="CategorySpendRewardsPieChartcontainer" style="height:200px;"></div>
-          </div>
-      </div>      
-    </div>
-</div>`
-})
-export class CategorySpendRewardsComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
+//// Component Created for Rewards product level Category Spend Rewards Widget -- Nedbank
+//@Component({
+//  selector: 'CategorySpendRewards',
+//  template: `<div class="widget">
+//    <div class="widget-area width100">
+//      <div class="card border-0">
+//          <div class="card-body">
+//              <div class="card-body-header pb-2 text-center pb-1">Category Spend Rewards</div>
+//              <div id="CategorySpendRewardsPieChartcontainer" style="height:200px;"></div>
+//          </div>
+//      </div>      
+//    </div>
+//</div>`
+//})
+//export class CategorySpendRewardsComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
 
-  public options4: any = {
-    chart: {
-      plotBackgroundColor: null,
-      plotBorderWidth: null,
-      plotShadow: !1,
-      type: 'pie',
-      style: {
-        fontFamily: 'Mark Pro Regular',
-        fontSize: '8pt'
-      }
-    },
-    title: { text: '' },
-    credits: { enabled: false },
-    tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>' },
-    accessibility: { point: { valueSuffix: '%' } },
-    plotOptions: {
-      pie: {
-        allowPointSelect: !0,
-        cursor: 'pointer',
-        dataLabels: {
-          enabled: !0,
-          format: '{point.percentage:.1f} %'
-        },
-        showInLegend: !0
-      }
-    },
-    series: [{
-      name: 'Percentage',
-      colorByPoint: !0,
-      data: [{ name: 'Fuel', y: 34 }, { name: 'Groceries', y: 15 }, { name: 'Travel', y: 21 }, { name: 'Movies', y: 19 }, { name: 'Shopping', y: 11 }]
-    }]
-  }
+//  public options4: any = {
+//    chart: {
+//      plotBackgroundColor: null,
+//      plotBorderWidth: null,
+//      plotShadow: !1,
+//      type: 'pie',
+//      style: {
+//        fontFamily: 'Mark Pro Regular',
+//        fontSize: '8pt'
+//      }
+//    },
+//    title: { text: '' },
+//    credits: { enabled: false },
+//    tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>' },
+//    accessibility: { point: { valueSuffix: '%' } },
+//    plotOptions: {
+//      pie: {
+//        allowPointSelect: !0,
+//        cursor: 'pointer',
+//        dataLabels: {
+//          enabled: !0,
+//          format: '{point.percentage:.1f} %'
+//        },
+//        showInLegend: !0
+//      }
+//    },
+//    series: [{
+//      name: 'Percentage',
+//      colorByPoint: !0,
+//      data: [{ name: 'Fuel', y: 34 }, { name: 'Groceries', y: 15 }, { name: 'Travel', y: 21 }, { name: 'Movies', y: 19 }, { name: 'Shopping', y: 11 }]
+//    }]
+//  }
 
-  ngAfterViewInit() {
-    setTimeout(() => {
-      Highcharts.chart('CategorySpendRewardsPieChartcontainer', this.options4);
-    }, 100);
-  }
+//  ngAfterViewInit() {
+//    setTimeout(() => {
+//      Highcharts.chart('CategorySpendRewardsPieChartcontainer', this.options4);
+//    }, 100);
+//  }
 
-  ngOnInit() {
-    $(document).ready(function () {
-      setTimeout(function () {
-        window.dispatchEvent(new Event('resize'));
-      }, 10);
-    });
-  }
-}
+//  ngOnInit() {
+//    $(document).ready(function () {
+//      setTimeout(function () {
+//        window.dispatchEvent(new Event('resize'));
+//      }, 10);
+//    });
+//  }
+//}
 
 /* ---  below highcharts components are created for page preview while designing..
     which are same as above highcharts widgets, but created due to facing issue in page preview in popup --- */
 
-// Component Created for Portfolio product level account analysis Widget for page preview while designing -- Nedbank
-@Component({
-  selector: 'PortfolioAccountAnalysisPreview',
-  template: `<div class="widget">
-    <div class="widget-area width100">
-      <div class="card border-0">
-          <div class="card-body">
-              <div class="card-body-header pb-2 text-center pb-1">Account analytics</div>
-              <div id="AccountAnalysisPreviewBarGraphcontainer" style="height:200px;"></div>
-          </div>
-      </div>      
-    </div>
-</div>`
-})
-export class PortfolioAccountAnalysisPreviewComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-  public options4: any = {
-    chart: {
-      height: (9 / 16 * 100) + '%',
-      backgroundColor: 'rgba(0,0,0,0)',
-      type: 'column',
-      style: {
-        fontFamily: 'Mark Pro Regular',
-        fontSize: '8pt'
-      }
-    },
-    title: {
-      text: ''
-    },
-    xAxis: {
-      categories: ['Jan', 'Feb'],
-      crosshair: true
-    },
-    yAxis: {
-      title: {
-        text: 'Amount (R)'
-      }
-    },
-    credits: {
-      enabled: false
-    },
-    tooltip: {
-      headerFormat: '<span>{point.key}</span><table>',
-      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
-      footerFormat: '</table>',
-      shared: true,
-      useHTML: true
-    },
-    plotOptions: {
-      column: {
-        pointPadding: 0.2,
-        borderWidth: 0
-      }
-    },
-    series: [{
-      name: 'Investment',
-      data: [9456.12, 9620.98]
-    }, {
-      name: 'Personal loan',
-      data: [-4465.00, -4165.00]
-    }, {
-      name: 'Home loan',
-      data: [-8969.00, -7969.00]
-    }],
-    //colors: ['#005b00', '#434348', '#7cb5ec']
-  }
-  ngAfterViewInit() {
-    setTimeout(() => {
-      Highcharts.chart('AccountAnalysisPreviewBarGraphcontainer', this.options4);
-    }, 100);
-  }
+//// Component Created for Portfolio product level account analysis Widget for page preview while designing -- Nedbank
+//@Component({
+//  selector: 'PortfolioAccountAnalysisPreview',
+//  template: `<div class="widget">
+//    <div class="widget-area width100">
+//      <div class="card border-0">
+//          <div class="card-body">
+//              <div class="card-body-header pb-2 text-center pb-1">Account analytics</div>
+//              <div id="AccountAnalysisPreviewBarGraphcontainer" style="height:200px;"></div>
+//          </div>
+//      </div>      
+//    </div>
+//</div>`
+//})
+//export class PortfolioAccountAnalysisPreviewComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//  public options4: any = {
+//    chart: {
+//      height: (9 / 16 * 100) + '%',
+//      backgroundColor: 'rgba(0,0,0,0)',
+//      type: 'column',
+//      style: {
+//        fontFamily: 'Mark Pro Regular',
+//        fontSize: '8pt'
+//      }
+//    },
+//    title: {
+//      text: ''
+//    },
+//    xAxis: {
+//      categories: ['Jan', 'Feb'],
+//      crosshair: true
+//    },
+//    yAxis: {
+//      title: {
+//        text: 'Amount (R)'
+//      }
+//    },
+//    credits: {
+//      enabled: false
+//    },
+//    tooltip: {
+//      headerFormat: '<span>{point.key}</span><table>',
+//      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+//      footerFormat: '</table>',
+//      shared: true,
+//      useHTML: true
+//    },
+//    plotOptions: {
+//      column: {
+//        pointPadding: 0.2,
+//        borderWidth: 0
+//      }
+//    },
+//    series: [{
+//      name: 'Investment',
+//      data: [9456.12, 9620.98]
+//    }, {
+//      name: 'Personal loan',
+//      data: [-4465.00, -4165.00]
+//    }, {
+//      name: 'Home loan',
+//      data: [-8969.00, -7969.00]
+//    }],
+//    //colors: ['#005b00', '#434348', '#7cb5ec']
+//  }
+//  ngAfterViewInit() {
+//    setTimeout(() => {
+//      Highcharts.chart('AccountAnalysisPreviewBarGraphcontainer', this.options4);
+//    }, 100);
+//  }
 
-  ngOnInit() {
-    $(document).ready(function () {
-      setTimeout(function () {
-        window.dispatchEvent(new Event('resize'));
-      }, 10);
-    });
-  }
-}
+//  ngOnInit() {
+//    $(document).ready(function () {
+//      setTimeout(function () {
+//        window.dispatchEvent(new Event('resize'));
+//      }, 10);
+//    });
+//  }
+//}
 
-// Component Created for Rewards product level YTD rewards points Widget for page preview while designing -- Nedbank
-@Component({
-  selector: 'YTDRewardPointsPreview',
-  template: `<div class="widget">
-    <div class="widget-area width100">
-      <div class="card border-0">
-          <div class="card-body">
-              <div class="card-body-header pb-2 text-center pb-1">YTD Rewards points</div>
-              <div id="YTDRewardPointsBarGraphPreviewcontainer" style="height:200px;"></div>
-          </div>
-      </div>      
-    </div>
-</div>`
-})
-export class YTDRewardPointsPreviewComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
+//// Component Created for Rewards product level YTD rewards points Widget for page preview while designing -- Nedbank
+//@Component({
+//  selector: 'YTDRewardPointsPreview',
+//  template: `<div class="widget">
+//    <div class="widget-area width100">
+//      <div class="card border-0">
+//          <div class="card-body">
+//              <div class="card-body-header pb-2 text-center pb-1">YTD Rewards points</div>
+//              <div id="YTDRewardPointsBarGraphPreviewcontainer" style="height:200px;"></div>
+//          </div>
+//      </div>      
+//    </div>
+//</div>`
+//})
+//export class YTDRewardPointsPreviewComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
 
-  public options4: any = {
-    chart: {
-      backgroundColor: 'rgba(0,0,0,0)',
-      type: 'column',
-      style: {
-        fontFamily: 'Mark Pro Regular',
-        fontSize: '8pt'
-      }
-    },
-    title: {
-      text: ''
-    },
-    xAxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr'],
-      crosshair: true
-    },
-    yAxis: {
-      title: {
-        text: 'Points'
-      }
-    },
-    credits: {
-      enabled: false
-    },
-    tooltip: {
-      headerFormat: '<span>{point.key}</span><table>',
-      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
-      footerFormat: '</table>',
-      shared: true,
-      useHTML: true
-    },
-    plotOptions: {
-      column: {
-        pointPadding: 0.2,
-        borderWidth: 0
-      },
-      series: {
-        color: '#005b00'
-      }
-    },
-    series: [{
-      name: 'Rewards Points',
-      data: [98, 112, 128, 144]
-    }]
-  }
+//  public options4: any = {
+//    chart: {
+//      backgroundColor: 'rgba(0,0,0,0)',
+//      type: 'column',
+//      style: {
+//        fontFamily: 'Mark Pro Regular',
+//        fontSize: '8pt'
+//      }
+//    },
+//    title: {
+//      text: ''
+//    },
+//    xAxis: {
+//      categories: ['Jan', 'Feb', 'Mar', 'Apr'],
+//      crosshair: true
+//    },
+//    yAxis: {
+//      title: {
+//        text: 'Points'
+//      }
+//    },
+//    credits: {
+//      enabled: false
+//    },
+//    tooltip: {
+//      headerFormat: '<span>{point.key}</span><table>',
+//      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+//      footerFormat: '</table>',
+//      shared: true,
+//      useHTML: true
+//    },
+//    plotOptions: {
+//      column: {
+//        pointPadding: 0.2,
+//        borderWidth: 0
+//      },
+//      series: {
+//        color: '#005b00'
+//      }
+//    },
+//    series: [{
+//      name: 'Rewards Points',
+//      data: [98, 112, 128, 144]
+//    }]
+//  }
 
-  ngAfterViewInit() {
-    setTimeout(() => {
-      Highcharts.chart('YTDRewardPointsBarGraphPreviewcontainer', this.options4);
-    }, 100);
-  }
+//  ngAfterViewInit() {
+//    setTimeout(() => {
+//      Highcharts.chart('YTDRewardPointsBarGraphPreviewcontainer', this.options4);
+//    }, 100);
+//  }
 
-  ngOnInit() {
-    $(document).ready(function () {
-      setTimeout(function () {
-        window.dispatchEvent(new Event('resize'));
-      }, 10);
-    });
-  }
-}
+//  ngOnInit() {
+//    $(document).ready(function () {
+//      setTimeout(function () {
+//        window.dispatchEvent(new Event('resize'));
+//      }, 10);
+//    });
+//  }
+//}
 
-// Component Created for Rewards product level Points redeemed YTD Widget for page preview while designing -- Nedbank
-@Component({
-  selector: 'PointsRedeemedYTDPreview',
-  template: `<div class="widget">
-    <div class="widget-area width100">
-      <div class="card border-0">
-          <div class="card-body">
-              <div class="card-body-header pb-2 text-center pb-1">Points Redeemed YTD</div>
-              <div id="PointsRedeemedYTDBarGraphPreviewcontainer" style="height:200px;"></div>
-          </div>
-      </div>      
-    </div>
-</div>`
-})
-export class PointsRedeemedYTDPreviewComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
+//// Component Created for Rewards product level Points redeemed YTD Widget for page preview while designing -- Nedbank
+//@Component({
+//  selector: 'PointsRedeemedYTDPreview',
+//  template: `<div class="widget">
+//    <div class="widget-area width100">
+//      <div class="card border-0">
+//          <div class="card-body">
+//              <div class="card-body-header pb-2 text-center pb-1">Points Redeemed YTD</div>
+//              <div id="PointsRedeemedYTDBarGraphPreviewcontainer" style="height:200px;"></div>
+//          </div>
+//      </div>      
+//    </div>
+//</div>`
+//})
+//export class PointsRedeemedYTDPreviewComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
 
-  public options4: any = {
-    chart: {
-      backgroundColor: 'rgba(0,0,0,0)',
-      type: 'column',
-      style: {
-        fontFamily: 'Mark Pro Regular',
-        fontSize: '8pt'
-      }
-    },
-    title: {
-      text: ''
-    },
-    xAxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr'],
-      crosshair: true
-    },
-    yAxis: {
-      title: {
-        text: 'Points'
-      }
-    },
-    credits: {
-      enabled: false
-    },
-    tooltip: {
-      headerFormat: '<span>{point.key}</span><table>',
-      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
-      footerFormat: '</table>',
-      shared: true,
-      useHTML: true
-    },
-    plotOptions: {
-      column: {
-        pointPadding: 0.2,
-        borderWidth: 0
-      },
-      series: {
-        color: '#005b00'
-      }
-    },
-    series: [{
-      name: 'Redeemed Points',
-      data: [96, 71, 87, 54]
-    }]
-  }
+//  public options4: any = {
+//    chart: {
+//      backgroundColor: 'rgba(0,0,0,0)',
+//      type: 'column',
+//      style: {
+//        fontFamily: 'Mark Pro Regular',
+//        fontSize: '8pt'
+//      }
+//    },
+//    title: {
+//      text: ''
+//    },
+//    xAxis: {
+//      categories: ['Jan', 'Feb', 'Mar', 'Apr'],
+//      crosshair: true
+//    },
+//    yAxis: {
+//      title: {
+//        text: 'Points'
+//      }
+//    },
+//    credits: {
+//      enabled: false
+//    },
+//    tooltip: {
+//      headerFormat: '<span>{point.key}</span><table>',
+//      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+//      footerFormat: '</table>',
+//      shared: true,
+//      useHTML: true
+//    },
+//    plotOptions: {
+//      column: {
+//        pointPadding: 0.2,
+//        borderWidth: 0
+//      },
+//      series: {
+//        color: '#005b00'
+//      }
+//    },
+//    series: [{
+//      name: 'Redeemed Points',
+//      data: [96, 71, 87, 54]
+//    }]
+//  }
 
-  ngAfterViewInit() {
-    setTimeout(() => {
-      Highcharts.chart('PointsRedeemedYTDBarGraphPreviewcontainer', this.options4);
-    }, 100);
-  }
+//  ngAfterViewInit() {
+//    setTimeout(() => {
+//      Highcharts.chart('PointsRedeemedYTDBarGraphPreviewcontainer', this.options4);
+//    }, 100);
+//  }
 
-  ngOnInit() {
-    $(document).ready(function () {
-      setTimeout(function () {
-        window.dispatchEvent(new Event('resize'));
-      }, 10);
-    });
-  }
-}
+//  ngOnInit() {
+//    $(document).ready(function () {
+//      setTimeout(function () {
+//        window.dispatchEvent(new Event('resize'));
+//      }, 10);
+//    });
+//  }
+//}
 
-// Component Created for Rewards product level Product Related Points Earned Widget for page preview while designing -- Nedbank
-@Component({
-  selector: 'ProductRelatedPointsEarnedPreview',
-  template: `<div class="widget">
-    <div class="widget-area width100">
-      <div class="card border-0">
-          <div class="card-body">
-              <div class="card-body-header pb-2 text-center pb-1">Product Related Points Earned</div>
-              <div id="ProductRelatedPointsEarnedBarGraphPreviewcontainer" style="height:200px;"></div>
-          </div>
-      </div>      
-    </div>
-</div>`
-})
-export class ProductRelatedPointsEarnedPreviewComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
+//// Component Created for Rewards product level Product Related Points Earned Widget for page preview while designing -- Nedbank
+//@Component({
+//  selector: 'ProductRelatedPointsEarnedPreview',
+//  template: `<div class="widget">
+//    <div class="widget-area width100">
+//      <div class="card border-0">
+//          <div class="card-body">
+//              <div class="card-body-header pb-2 text-center pb-1">Product Related Points Earned</div>
+//              <div id="ProductRelatedPointsEarnedBarGraphPreviewcontainer" style="height:200px;"></div>
+//          </div>
+//      </div>      
+//    </div>
+//</div>`
+//})
+//export class ProductRelatedPointsEarnedPreviewComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
 
-  public options4: any = {
-    chart: {
-      backgroundColor: 'rgba(0,0,0,0)',
-      type: 'column',
-      style: {
-        fontFamily: 'Mark Pro Regular',
-        fontSize: '8pt'
-      }
-    },
-    title: {
-      text: ''
-    },
-    xAxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr'],
-      crosshair: true
-    },
-    yAxis: {
-      title: {
-        text: 'Points'
-      }
-    },
-    credits: {
-      enabled: false
-    },
-    tooltip: {
-      headerFormat: '<span>{point.key}</span><table>',
-      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
-      footerFormat: '</table>',
-      shared: true,
-      useHTML: true
-    },
-    plotOptions: {
-      column: {
-        pointPadding: 0.2,
-        borderWidth: 0
-      }
-    },
-    series: [{
-      name: 'Investment',
-      data: [121, 145, 98, 134]
-    }, {
-      name: 'Personal loan',
-      data: [232, 167, 125, 245]
-    }, {
-      name: 'Home loan',
-      data: [104, 110, 211, 167]
-    }]
-  }
+//  public options4: any = {
+//    chart: {
+//      backgroundColor: 'rgba(0,0,0,0)',
+//      type: 'column',
+//      style: {
+//        fontFamily: 'Mark Pro Regular',
+//        fontSize: '8pt'
+//      }
+//    },
+//    title: {
+//      text: ''
+//    },
+//    xAxis: {
+//      categories: ['Jan', 'Feb', 'Mar', 'Apr'],
+//      crosshair: true
+//    },
+//    yAxis: {
+//      title: {
+//        text: 'Points'
+//      }
+//    },
+//    credits: {
+//      enabled: false
+//    },
+//    tooltip: {
+//      headerFormat: '<span>{point.key}</span><table>',
+//      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+//      footerFormat: '</table>',
+//      shared: true,
+//      useHTML: true
+//    },
+//    plotOptions: {
+//      column: {
+//        pointPadding: 0.2,
+//        borderWidth: 0
+//      }
+//    },
+//    series: [{
+//      name: 'Investment',
+//      data: [121, 145, 98, 134]
+//    }, {
+//      name: 'Personal loan',
+//      data: [232, 167, 125, 245]
+//    }, {
+//      name: 'Home loan',
+//      data: [104, 110, 211, 167]
+//    }]
+//  }
 
-  ngAfterViewInit() {
-    setTimeout(() => {
-      Highcharts.chart('ProductRelatedPointsEarnedBarGraphPreviewcontainer', this.options4);
-    }, 100);
-  }
+//  ngAfterViewInit() {
+//    setTimeout(() => {
+//      Highcharts.chart('ProductRelatedPointsEarnedBarGraphPreviewcontainer', this.options4);
+//    }, 100);
+//  }
 
-  ngOnInit() {
-    $(document).ready(function () {
-      setTimeout(function () {
-        window.dispatchEvent(new Event('resize'));
-      }, 10);
-    });
-  }
-}
+//  ngOnInit() {
+//    $(document).ready(function () {
+//      setTimeout(function () {
+//        window.dispatchEvent(new Event('resize'));
+//      }, 10);
+//    });
+//  }
+//}
 
-// Component Created for Rewards product level Category Spend Rewards Widget for page preview while designing -- Nedbank
-@Component({
-  selector: 'CategorySpendRewardsPreview',
-  template: `<div class="widget">
-    <div class="widget-area width100">
-      <div class="card border-0">
-          <div class="card-body">
-              <div class="card-body-header pb-2 text-center pb-1">Category Spend Rewards</div>
-              <div id="CategorySpendRewardsPieChartPreviewcontainer" style="height:200px;"></div>
-          </div>
-      </div>      
-    </div>
-</div>`
-})
-export class CategorySpendRewardsPreviewComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
+//// Component Created for Rewards product level Category Spend Rewards Widget for page preview while designing -- Nedbank
+//@Component({
+//  selector: 'CategorySpendRewardsPreview',
+//  template: `<div class="widget">
+//    <div class="widget-area width100">
+//      <div class="card border-0">
+//          <div class="card-body">
+//              <div class="card-body-header pb-2 text-center pb-1">Category Spend Rewards</div>
+//              <div id="CategorySpendRewardsPieChartPreviewcontainer" style="height:200px;"></div>
+//          </div>
+//      </div>      
+//    </div>
+//</div>`
+//})
+//export class CategorySpendRewardsPreviewComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
 
-  public options4: any = {
-    chart: {
-      plotBackgroundColor: null,
-      plotBorderWidth: null,
-      plotShadow: !1,
-      type: 'pie',
-      style: {
-        fontFamily: 'Mark Pro Regular',
-        fontSize: '8pt'
-      }
-    },
-    title: { text: '' },
-    credits: { enabled: false },
-    tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>' },
-    accessibility: { point: { valueSuffix: '%' } },
-    plotOptions: {
-      pie: {
-        allowPointSelect: !0,
-        cursor: 'pointer',
-        dataLabels: {
-          enabled: !0,
-          format: '{point.percentage:.1f} %'
-        },
-        showInLegend: !0
-      }
-    },
-    series: [{
-      name: 'Percentage',
-      colorByPoint: !0,
-      data: [{ name: 'Fuel', y: 34 }, { name: 'Groceries', y: 15 }, { name: 'Travel', y: 21 }, { name: 'Movies', y: 19 }, { name: 'Shopping', y: 11 }]
-    }]
-  }
+//  public options4: any = {
+//    chart: {
+//      plotBackgroundColor: null,
+//      plotBorderWidth: null,
+//      plotShadow: !1,
+//      type: 'pie',
+//      style: {
+//        fontFamily: 'Mark Pro Regular',
+//        fontSize: '8pt'
+//      }
+//    },
+//    title: { text: '' },
+//    credits: { enabled: false },
+//    tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>' },
+//    accessibility: { point: { valueSuffix: '%' } },
+//    plotOptions: {
+//      pie: {
+//        allowPointSelect: !0,
+//        cursor: 'pointer',
+//        dataLabels: {
+//          enabled: !0,
+//          format: '{point.percentage:.1f} %'
+//        },
+//        showInLegend: !0
+//      }
+//    },
+//    series: [{
+//      name: 'Percentage',
+//      colorByPoint: !0,
+//      data: [{ name: 'Fuel', y: 34 }, { name: 'Groceries', y: 15 }, { name: 'Travel', y: 21 }, { name: 'Movies', y: 19 }, { name: 'Shopping', y: 11 }]
+//    }]
+//  }
 
-  ngAfterViewInit() {
-    setTimeout(() => {
-      Highcharts.chart('CategorySpendRewardsPieChartPreviewcontainer', this.options4);
-    }, 100);
-  }
+//  ngAfterViewInit() {
+//    setTimeout(() => {
+//      Highcharts.chart('CategorySpendRewardsPieChartPreviewcontainer', this.options4);
+//    }, 100);
+//  }
 
-  ngOnInit() {
-    $(document).ready(function () {
-      setTimeout(function () {
-        window.dispatchEvent(new Event('resize'));
-      }, 10);
-    });
-  }
-}
+//  ngOnInit() {
+//    $(document).ready(function () {
+//      setTimeout(function () {
+//        window.dispatchEvent(new Event('resize'));
+//      }, 10);
+//    });
+//  }
+//}
 
-// Component Created for special message Widget -- Nedbank
-@Component({
-  selector: 'HomeLoanSummaryTaxPurpose',
-  template: `<div class="widget">
-      <div class="widget-area width100">
-        <div class='card border-0'>
-          <div class='card-body text-left py-1'>
-            <div class='py-2'>
-              <div class='card-body-sub-header'> Summary for Tax Purposes</div>
-                <div class='d-flex flex-row mt-1 HomeLoanDetailDiv margin_right_15'>
-                  <table class='SummaryTable mt-2' border='0' style="width: 100%;margin-left: 10px !important;">
-                    <tbody>
-                      <tr><td>Interest</td><td class='text-right pr-4 text-success'>R0.00</td></tr>
-                      <tr><td>Insurance/Assurance</td><td class='text-right pr-4 text-success'>R0.00</td></tr>
-                      <tr><td>Service fee</td><td class='text-right pr-4 text-success'>R0.00</td></tr>
-                      <tr><td>Legal costs </td><td class='text-right pr-4 text-success'>R0.00</td></tr>
-                      <tr><td>Total amount received</td><td class='text-right pr-4 text-success'>R0.00</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-           </div>
-          </div>
-        </div>`
-})
-export class HomeLoanSummaryTaxPurposeComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for special message Widget -- Nedbank
+//@Component({
+//  selector: 'HomeLoanSummaryTaxPurpose',
+//  template: `<div class="widget">
+//      <div class="widget-area width100">
+//        <div class='card border-0'>
+//          <div class='card-body text-left py-1'>
+//            <div class='py-2'>
+//              <div class='card-body-sub-header'> Summary for Tax Purposes</div>
+//                <div class='d-flex flex-row mt-1 HomeLoanDetailDiv margin_right_15'>
+//                  <table class='SummaryTable mt-2' border='0' style="width: 100%;margin-left: 10px !important;">
+//                    <tbody>
+//                      <tr><td>Interest</td><td class='text-right pr-4 text-success'>R0.00</td></tr>
+//                      <tr><td>Insurance/Assurance</td><td class='text-right pr-4 text-success'>R0.00</td></tr>
+//                      <tr><td>Service fee</td><td class='text-right pr-4 text-success'>R0.00</td></tr>
+//                      <tr><td>Legal costs </td><td class='text-right pr-4 text-success'>R0.00</td></tr>
+//                      <tr><td>Total amount received</td><td class='text-right pr-4 text-success'>R0.00</td></tr>
+//                    </tbody>
+//                  </table>
+//                </div>
+//              </div>
+//            </div>
+//           </div>
+//          </div>
+//        </div>`
+//})
+//export class HomeLoanSummaryTaxPurposeComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Home Loan Instalment Widget -- Nedbank
-@Component({
-  selector: 'HomeLoanInstalment',
-  template: `<div class="widget">
-                <div class="widget-area width100">
-                    <div class='card-body-sub-header pt-2'>Instalment details</div>
-                      <div class="card-body-sub-header2">Due to insurance changes, your new instalment details are as follows:</div>
-                      <div class="pt-1">
-                          <table class="LoanTransactionTable customTable">
-                              <thead>
-                                  <tr class="ht-30">
-                                      <th class="w-50">Payments</th>
-                                      <th class="w-50 text-right">Amount</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Basic instalment </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Homeowner's insurance </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Credit life insurance </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Transaction fees </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Subsidised account capital redemption </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Monthly service fee </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left font-weight-bold">Total instalment (effective from 01/04/2021) </td>
-                                      <td class="text-right font-weight-bold">R0.00</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                          </div>
-                        </div>
-                      </div>`
-})
-export class HomeLoanInstalmentComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Home Loan Instalment Widget -- Nedbank
+//@Component({
+//  selector: 'HomeLoanInstalment',
+//  template: `<div class="widget">
+//                <div class="widget-area width100">
+//                    <div class='card-body-sub-header pt-2'>Instalment details</div>
+//                      <div class="card-body-sub-header2">Due to insurance changes, your new instalment details are as follows:</div>
+//                      <div class="pt-1">
+//                          <table class="LoanTransactionTable customTable">
+//                              <thead>
+//                                  <tr class="ht-30">
+//                                      <th class="w-50">Payments</th>
+//                                      <th class="w-50 text-right">Amount</th>
+//                                  </tr>
+//                              </thead>
+//                              <tbody>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Basic instalment </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Homeowner's insurance </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Credit life insurance </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Transaction fees </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Subsidised account capital redemption </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Monthly service fee </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left font-weight-bold">Total instalment (effective from 01/04/2021) </td>
+//                                      <td class="text-right font-weight-bold">R0.00</td>
+//                                  </tr>
+//                              </tbody>
+//                          </table>
+//                          </div>
+//                        </div>
+//                      </div>`
+//})
+//export class HomeLoanInstalmentComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Home loan total amount for wealth detail Widget -- Nedbank
-@Component({
-  selector: 'WealthHomeLoanTotalAmountDetail',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-     <div class='card border-0 pt-4'>
-          <div class='card-body text-left pb-1'>
-              <div class='card-body-header-w pb-2'>New instalment</div>
-              <div class='row'>
-                  <div class='col-lg-4 pr-1'>
-                      <div class='TotalAmountDetailsDivW'>
-                          <span class="fnt-10pt">Total Loan Amount</span><br><span class="fnt-14pt">R432 969.00</span><br>
-                      </div>
-                  </div>
-                  <div class='col-lg-8 pl-0 text-right'>
-                      <div class='TotalAmountDetailsDivW'>
-                          <span class="fnt-10pt">Balance outstanding</span><br><span class="fnt-14pt">R136 320.00</span>&nbsp;<br>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class WealthHomeLoanTotalAmountDetailComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Home loan total amount for wealth detail Widget -- Nedbank
+//@Component({
+//  selector: 'WealthHomeLoanTotalAmountDetail',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//     <div class='card border-0 pt-4'>
+//          <div class='card-body text-left pb-1'>
+//              <div class='card-body-header-w pb-2'>New instalment</div>
+//              <div class='row'>
+//                  <div class='col-lg-4 pr-1'>
+//                      <div class='TotalAmountDetailsDivW'>
+//                          <span class="fnt-10pt">Total Loan Amount</span><br><span class="fnt-14pt">R432 969.00</span><br>
+//                      </div>
+//                  </div>
+//                  <div class='col-lg-8 pl-0 text-right'>
+//                      <div class='TotalAmountDetailsDivW'>
+//                          <span class="fnt-10pt">Balance outstanding</span><br><span class="fnt-14pt">R136 320.00</span>&nbsp;<br>
+//                      </div>
+//                  </div>
+//              </div>
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class WealthHomeLoanTotalAmountDetailComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Home loan accounts breakdown for wealth detail Widget -- Nedbank
-@Component({
-  selector: 'WealthHomeLoanAccountsBreakdown',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0 pt-4'>
-        <div class='card-body text-left py-1'>
-            <div class="tab-content">
-                <div id='HomeLoan-4001' class='tab-pane fade in active show'>
-                    <div class="HomeLoanDetailDiv">
-                        <h4 class="pl-25px"><span class="NedbankHomeLoanTxt">Nedbank home loan</span></h4>
-                        <table class="customTable mt-2" border="0">
-                            <tbody>
-                                <tr>
-                                    <td class="w-25">Bond no:</td>
-                                    <td class="w-25 text-right pr-4 text-success">8003876814001</td>
-                                    <td class="w-25">Address:</td>
-                                    <td class="w-25 text-right text-success" rowspan="3">ERF 44 THE COVES H <br />ARTBEESPOORT <br /></td>
-                                </tr>
-                                <tr>
-                                    <td class="w-25">Instalment:</td>
-                                    <td class="w-25 text-right pr-4 text-success">R4 149.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-25">Arrears:</td>
-                                    <td class="w-25 text-right pr-4 text-success">R0.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-25">Interest rate:</td>
-                                    <td class="w-25 text-right pr-4 text-success">5.75% pa</td>
-                                    <td class="w-25">Registration date:</td>
-                                    <td class="w-25 text-right pr-4 text-success">12/12/2016</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-25">Loan term:</td>
-                                    <td class="w-25 text-right pr-4 text-success">300 months</td>
-                                    <td class="w-25">Registered amount</td>
-                                    <td class="w-25 text-right pr-4 text-success">R516 037.00</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+//// Component Created for Home loan accounts breakdown for wealth detail Widget -- Nedbank
+//@Component({
+//  selector: 'WealthHomeLoanAccountsBreakdown',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0 pt-4'>
+//        <div class='card-body text-left py-1'>
+//            <div class="tab-content">
+//                <div id='HomeLoan-4001' class='tab-pane fade in active show'>
+//                    <div class="HomeLoanDetailDiv">
+//                        <h4 class="pl-25px"><span class="NedbankHomeLoanTxt">Nedbank home loan</span></h4>
+//                        <table class="customTable mt-2" border="0">
+//                            <tbody>
+//                                <tr>
+//                                    <td class="w-25">Bond no:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">8003876814001</td>
+//                                    <td class="w-25">Address:</td>
+//                                    <td class="w-25 text-right text-success" rowspan="3">ERF 44 THE COVES H <br />ARTBEESPOORT <br /></td>
+//                                </tr>
+//                                <tr>
+//                                    <td class="w-25">Instalment:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">R4 149.00</td>
+//                                </tr>
+//                                <tr>
+//                                    <td class="w-25">Arrears:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">R0.00</td>
+//                                </tr>
+//                                <tr>
+//                                    <td class="w-25">Interest rate:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">5.75% pa</td>
+//                                    <td class="w-25">Registration date:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">12/12/2016</td>
+//                                </tr>
+//                                <tr>
+//                                    <td class="w-25">Loan term:</td>
+//                                    <td class="w-25 text-right pr-4 text-success">300 months</td>
+//                                    <td class="w-25">Registered amount</td>
+//                                    <td class="w-25 text-right pr-4 text-success">R516 037.00</td>
+//                                </tr>
+//                            </tbody>
+//                        </table>
+//                    </div>
 
-                    <div class="pt-1">
-                        <table id="TableWidget" class="LoanTransactionTable customTable">
-                            <thead>
-                                <tr class="ht-30">
-                                    <th class="w-12 text-center">Post date</th>
-                                    <th class="w-12 text-center">Effective date</th>
-                                    <th class="w-40">Transaction</th>
-                                    <th class="w-12 text-right">Debit (R)</th>
-                                    <th class="w-12 text-right">Credit (R)</th>
-                                    <th class="w-12 text-right">Balance (R)</th>
-                                </tr>
-                            </thead>
-                        </table>
-                        <div class="pt-0 overflow-auto" style="max-height:200px;">
-                            <table class="LoanTransactionTable customTable">
-                                <tbody>
-                                    <tr>
-                                        <td class="w-12 text-center">01/12/2020</td>
-                                        <td class="w-12 text-center">01/12/2020</td>
-                                        <td class="w-40">Interest Debit</td>
-                                        <td class="w-12 text-right">R1 490.00</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R74 298.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">03/12/2020</td>
-                                        <td class="w-12 text-center">03/12/2020</td>
-                                        <td class="w-40">Insurance Premium</td>
-                                        <td class="w-12 text-right">R188.00</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R74 487.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">15/12/2020</td>
-                                        <td class="w-12 text-center">15/12/2020</td>
-                                        <td class="w-40">Payment - Thank you</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R3 297.00</td>
-                                        <td class="w-12 text-right">R71 189.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">31/12/2020</td>
-                                        <td class="w-12 text-center">31/12/2020</td>
-                                        <td class="w-40">Monthly Admin Fee</td>
-                                        <td class="w-12 text-right">R69.00</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R71 258.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">01/01/2021</td>
-                                        <td class="w-12 text-center">01/01/2021</td>
-                                        <td class="w-40">Interest Debit</td>
-                                        <td class="w-12 text-right">R1 512.00</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R72 770.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">05/01/2021</td>
-                                        <td class="w-12 text-center">05/01/2021</td>
-                                        <td class="w-40">Insurance Premium</td>
-                                        <td class="w-12 text-right">R188.00</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R72 958.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">15/01/2021</td>
-                                        <td class="w-12 text-center">15/01/2021</td>
-                                        <td class="w-40">Payment - Thank you</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R3 297.00</td>
-                                        <td class="w-12 text-right">R69 660.00</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+//                    <div class="pt-1">
+//                        <table id="TableWidget" class="LoanTransactionTable customTable">
+//                            <thead>
+//                                <tr class="ht-30">
+//                                    <th class="w-12 text-center">Post date</th>
+//                                    <th class="w-12 text-center">Effective date</th>
+//                                    <th class="w-40">Transaction</th>
+//                                    <th class="w-12 text-right">Debit (R)</th>
+//                                    <th class="w-12 text-right">Credit (R)</th>
+//                                    <th class="w-12 text-right">Balance (R)</th>
+//                                </tr>
+//                            </thead>
+//                        </table>
+//                        <div class="pt-0 overflow-auto" style="max-height:200px;">
+//                            <table class="LoanTransactionTable customTable">
+//                                <tbody>
+//                                    <tr>
+//                                        <td class="w-12 text-center">01/12/2020</td>
+//                                        <td class="w-12 text-center">01/12/2020</td>
+//                                        <td class="w-40">Interest Debit</td>
+//                                        <td class="w-12 text-right">R1 490.00</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R74 298.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">03/12/2020</td>
+//                                        <td class="w-12 text-center">03/12/2020</td>
+//                                        <td class="w-40">Insurance Premium</td>
+//                                        <td class="w-12 text-right">R188.00</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R74 487.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">15/12/2020</td>
+//                                        <td class="w-12 text-center">15/12/2020</td>
+//                                        <td class="w-40">Payment - Thank you</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R3 297.00</td>
+//                                        <td class="w-12 text-right">R71 189.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">31/12/2020</td>
+//                                        <td class="w-12 text-center">31/12/2020</td>
+//                                        <td class="w-40">Monthly Admin Fee</td>
+//                                        <td class="w-12 text-right">R69.00</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R71 258.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">01/01/2021</td>
+//                                        <td class="w-12 text-center">01/01/2021</td>
+//                                        <td class="w-40">Interest Debit</td>
+//                                        <td class="w-12 text-right">R1 512.00</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R72 770.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">05/01/2021</td>
+//                                        <td class="w-12 text-center">05/01/2021</td>
+//                                        <td class="w-40">Insurance Premium</td>
+//                                        <td class="w-12 text-right">R188.00</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R72 958.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">15/01/2021</td>
+//                                        <td class="w-12 text-center">15/01/2021</td>
+//                                        <td class="w-40">Payment - Thank you</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R3 297.00</td>
+//                                        <td class="w-12 text-right">R69 660.00</td>
+//                                    </tr>
+//                                </tbody>
+//                            </table>
+//                        </div>
+//                    </div>
 
-                    <div class="py-2">
-                        <div class='card-body-header pb-2'>Home loan statement overview</div>
-                        <div class='row pb-1'>
-                            <div class='col-lg-4 pr-0'>
-                                <div class='TotalAmountDetailsDiv'>
-                                    <span class="fnt-14pt">Balance outstanding</span> <br> <span class="fnt-10pt">as at 2021-01-30</span>
-                                </div>
-                            </div>
-                            <div class='col-lg-8 pl-0 text-right'>
-                                <div class='TotalAmountDetailsDiv'>
-                                    <span class="fnt-14pt">R69 660.00</span>&nbsp;<br>
-                                </div>
-                            </div>
-                        </div>
+//                    <div class="py-2">
+//                        <div class='card-body-header pb-2'>Home loan statement overview</div>
+//                        <div class='row pb-1'>
+//                            <div class='col-lg-4 pr-0'>
+//                                <div class='TotalAmountDetailsDiv'>
+//                                    <span class="fnt-14pt">Balance outstanding</span> <br> <span class="fnt-10pt">as at 2021-01-30</span>
+//                                </div>
+//                            </div>
+//                            <div class='col-lg-8 pl-0 text-right'>
+//                                <div class='TotalAmountDetailsDiv'>
+//                                    <span class="fnt-14pt">R69 660.00</span>&nbsp;<br>
+//                                </div>
+//                            </div>
+//                        </div>
 
-                        <div class='card-body-sub-header pb-2 pt-1'>Payment Due</div>
-                        <div class="d-flex flex-row">
-                            <div class="paymentDueHeaderBlock mr-1">Current</div>
-                            <div class="paymentDueHeaderBlock mr-1">After 30 days</div>
-                            <div class="paymentDueHeaderBlock mr-1">After 60 days</div>
-                            <div class="paymentDueHeaderBlock mr-1">After 90 days</div>
-                            <div class="paymentDueHeaderBlock">After 120 + days</div>
-                        </div>
-                        <div class="d-flex flex-row mt-1">
-                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
-                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
-                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
-                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
-                            <div class="paymentDueFooterBlock">R0.00</div>
-                        </div>
-                    </div>
+//                        <div class='card-body-sub-header pb-2 pt-1'>Payment Due</div>
+//                        <div class="d-flex flex-row">
+//                            <div class="paymentDueHeaderBlock mr-1">Current</div>
+//                            <div class="paymentDueHeaderBlock mr-1">After 30 days</div>
+//                            <div class="paymentDueHeaderBlock mr-1">After 60 days</div>
+//                            <div class="paymentDueHeaderBlock mr-1">After 90 days</div>
+//                            <div class="paymentDueHeaderBlock">After 120 + days</div>
+//                        </div>
+//                        <div class="d-flex flex-row mt-1">
+//                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+//                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+//                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+//                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+//                            <div class="paymentDueFooterBlock">R0.00</div>
+//                        </div>
+//                    </div>
 
-                    <div class='PaymentDueSpecialMessageDiv'>
-                        If you received payment relief because of Covid-19 lockdown, any arrear status that we show above will be resolved when we restructure your account after your three-month arrangement has ended. If you have not applied for relief and would like to, phone us on 0860 555 222 or speak to your relationship banker.
-                    </div>
+//                    <div class='PaymentDueSpecialMessageDiv'>
+//                        If you received payment relief because of Covid-19 lockdown, any arrear status that we show above will be resolved when we restructure your account after your three-month arrangement has ended. If you have not applied for relief and would like to, phone us on 0860 555 222 or speak to your relationship banker.
+//                    </div>
 
-                    <div class='card-body-sub-header pt-2'>Summary for Tax Purposes</div>
-                      <div class="pt-1">
-                          <table class="LoanTransactionTable customTable">
-                              <tbody>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Interest </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Insurance/Assurnace </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Service fee </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Legal costs </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Total amount received </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                      </div>
+//                    <div class='card-body-sub-header pt-2'>Summary for Tax Purposes</div>
+//                      <div class="pt-1">
+//                          <table class="LoanTransactionTable customTable">
+//                              <tbody>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Interest </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Insurance/Assurnace </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Service fee </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Legal costs </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Total amount received </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                              </tbody>
+//                          </table>
+//                      </div>
 
-                </div>
+//                </div>
 
-                <div id='HomeLoan-6001' class='tab-pane fade'>
-                    <div class="HomeLoanDetailDiv">
-                        <h4 class="pl-25px"><span class="NedbankHomeLoanTxt-W">Nedbank home loan</span></h4>
-                        <table class="customTable mt-2" border="0">
-                            <tbody>
-                                <tr>
-                                    <td class="w-25">Bond no:</td>
-                                    <td class="w-25 text-right pr-4 text-success-w">8003876816001</td>
-                                    <td class="w-25">Address:</td>
-                                    <td class="w-25 text-right text-success" rowspan="3">ERF 44 THE COVES H <br />ARTBEESPOORT <br /></td>
-                                </tr>
-                                <tr>
-                                    <td class="w-25">Instalment:</td>
-                                    <td class="w-25 text-right pr-4 text-success-w">R11 090.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-25">Arrears:</td>
-                                    <td class="w-25 text-right pr-4 text-success-w">R0.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-25">Interest rate:</td>
-                                    <td class="w-25 text-right pr-4 text-success-w">7.25% pa</td>
-                                    <td class="w-25">Registration date:</td>
-                                    <td class="w-25 text-right pr-4 text-success-w">21/01/2018</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-25">Loan term:</td>
-                                    <td class="w-25 text-right pr-4 text-success-w">273 months</td>
-                                    <td class="w-25">Registered amount</td>
-                                    <td class="w-25 text-right pr-4 text-success-w">R416 879.00</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+//                <div id='HomeLoan-6001' class='tab-pane fade'>
+//                    <div class="HomeLoanDetailDiv">
+//                        <h4 class="pl-25px"><span class="NedbankHomeLoanTxt-W">Nedbank home loan</span></h4>
+//                        <table class="customTable mt-2" border="0">
+//                            <tbody>
+//                                <tr>
+//                                    <td class="w-25">Bond no:</td>
+//                                    <td class="w-25 text-right pr-4 text-success-w">8003876816001</td>
+//                                    <td class="w-25">Address:</td>
+//                                    <td class="w-25 text-right text-success" rowspan="3">ERF 44 THE COVES H <br />ARTBEESPOORT <br /></td>
+//                                </tr>
+//                                <tr>
+//                                    <td class="w-25">Instalment:</td>
+//                                    <td class="w-25 text-right pr-4 text-success-w">R11 090.00</td>
+//                                </tr>
+//                                <tr>
+//                                    <td class="w-25">Arrears:</td>
+//                                    <td class="w-25 text-right pr-4 text-success-w">R0.00</td>
+//                                </tr>
+//                                <tr>
+//                                    <td class="w-25">Interest rate:</td>
+//                                    <td class="w-25 text-right pr-4 text-success-w">7.25% pa</td>
+//                                    <td class="w-25">Registration date:</td>
+//                                    <td class="w-25 text-right pr-4 text-success-w">21/01/2018</td>
+//                                </tr>
+//                                <tr>
+//                                    <td class="w-25">Loan term:</td>
+//                                    <td class="w-25 text-right pr-4 text-success-w">273 months</td>
+//                                    <td class="w-25">Registered amount</td>
+//                                    <td class="w-25 text-right pr-4 text-success-w">R416 879.00</td>
+//                                </tr>
+//                            </tbody>
+//                        </table>
+//                    </div>
 
-                    <div class="pt-1">
-                        <table id="TableWidget" class="LoanTransactionTable-W customTable">
-                            <thead>
-                                <tr class="ht-30">
-                                    <th class="w-12 text-center">Post date</th>
-                                    <th class="w-12 text-center">Effective date</th>
-                                    <th class="w-40">Transaction</th>
-                                    <th class="w-12 text-right">Debit (R)</th>
-                                    <th class="w-12 text-right">Credit (R)</th>
-                                    <th class="w-12 text-right">Balance (R)</th>
-                                </tr>
-                            </thead>
-                        </table>
-                        <div class="pt-0 overflow-auto" style="max-height:200px;">
-                            <table class="LoanTransactionTable customTable">
-                                <tbody>
-                                    <tr>
-                                        <td class="w-12 text-center">01/12/2020</td>
-                                        <td class="w-12 text-center">01/12/2020</td>
-                                        <td class="w-40">Interest Debit</td>
-                                        <td class="w-12 text-right">R1 490.00</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R71 298.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">03/12/2020</td>
-                                        <td class="w-12 text-center">03/12/2020</td>
-                                        <td class="w-40">Insurance Premium</td>
-                                        <td class="w-12 text-right">R188.00</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R71 487.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">15/12/2020</td>
-                                        <td class="w-12 text-center">15/12/2020</td>
-                                        <td class="w-40">Payment - Thank you</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R3 297.00</td>
-                                        <td class="w-12 text-right">R68 189.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">31/12/2020</td>
-                                        <td class="w-12 text-center">31/12/2020</td>
-                                        <td class="w-40">Monthly Admin Fee</td>
-                                        <td class="w-12 text-right">R69.00</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R68 258.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">01/01/2021</td>
-                                        <td class="w-12 text-center">01/01/2021</td>
-                                        <td class="w-40">Interest Debit</td>
-                                        <td class="w-12 text-right">R1 512.00</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R69 770.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">05/01/2021</td>
-                                        <td class="w-12 text-center">05/01/2021</td>
-                                        <td class="w-40">Insurance Premium</td>
-                                        <td class="w-12 text-right">R188.00</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R69 958.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12 text-center">15/01/2021</td>
-                                        <td class="w-12 text-center">15/01/2021</td>
-                                        <td class="w-40">Payment - Thank you</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">R3 297.00</td>
-                                        <td class="w-12 text-right">R66 660.00</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+//                    <div class="pt-1">
+//                        <table id="TableWidget" class="LoanTransactionTable-W customTable">
+//                            <thead>
+//                                <tr class="ht-30">
+//                                    <th class="w-12 text-center">Post date</th>
+//                                    <th class="w-12 text-center">Effective date</th>
+//                                    <th class="w-40">Transaction</th>
+//                                    <th class="w-12 text-right">Debit (R)</th>
+//                                    <th class="w-12 text-right">Credit (R)</th>
+//                                    <th class="w-12 text-right">Balance (R)</th>
+//                                </tr>
+//                            </thead>
+//                        </table>
+//                        <div class="pt-0 overflow-auto" style="max-height:200px;">
+//                            <table class="LoanTransactionTable customTable">
+//                                <tbody>
+//                                    <tr>
+//                                        <td class="w-12 text-center">01/12/2020</td>
+//                                        <td class="w-12 text-center">01/12/2020</td>
+//                                        <td class="w-40">Interest Debit</td>
+//                                        <td class="w-12 text-right">R1 490.00</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R71 298.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">03/12/2020</td>
+//                                        <td class="w-12 text-center">03/12/2020</td>
+//                                        <td class="w-40">Insurance Premium</td>
+//                                        <td class="w-12 text-right">R188.00</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R71 487.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">15/12/2020</td>
+//                                        <td class="w-12 text-center">15/12/2020</td>
+//                                        <td class="w-40">Payment - Thank you</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R3 297.00</td>
+//                                        <td class="w-12 text-right">R68 189.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">31/12/2020</td>
+//                                        <td class="w-12 text-center">31/12/2020</td>
+//                                        <td class="w-40">Monthly Admin Fee</td>
+//                                        <td class="w-12 text-right">R69.00</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R68 258.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">01/01/2021</td>
+//                                        <td class="w-12 text-center">01/01/2021</td>
+//                                        <td class="w-40">Interest Debit</td>
+//                                        <td class="w-12 text-right">R1 512.00</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R69 770.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">05/01/2021</td>
+//                                        <td class="w-12 text-center">05/01/2021</td>
+//                                        <td class="w-40">Insurance Premium</td>
+//                                        <td class="w-12 text-right">R188.00</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R69 958.00</td>
+//                                    </tr>
+//                                    <tr>
+//                                        <td class="w-12 text-center">15/01/2021</td>
+//                                        <td class="w-12 text-center">15/01/2021</td>
+//                                        <td class="w-40">Payment - Thank you</td>
+//                                        <td class="w-12 text-right">-</td>
+//                                        <td class="w-12 text-right">R3 297.00</td>
+//                                        <td class="w-12 text-right">R66 660.00</td>
+//                                    </tr>
+//                                </tbody>
+//                            </table>
+//                        </div>
+//                    </div>
 
-                    <div class="py-2">
-                        <div class='card-body-header-w pb-2'>Home loan statement overview</div>
-                        <div class='row pb-1'>
-                            <div class='col-lg-4 pr-0'>
-                                <div class='TotalAmountDetailsDivW'>
-                                    <span class="fnt-14pt">Balance outstanding</span> <br> <span class="fnt-10pt">as at 28 February 2022</span>
-                                </div>
-                            </div>
-                            <div class='col-lg-8 pl-0 text-right'>
-                                <div class='TotalAmountDetailsDivW'>
-                                    <span class="fnt-14pt">R69 660.00</span><br>
-                                </div>
-                            </div>
-                        </div>
+//                    <div class="py-2">
+//                        <div class='card-body-header-w pb-2'>Home loan statement overview</div>
+//                        <div class='row pb-1'>
+//                            <div class='col-lg-4 pr-0'>
+//                                <div class='TotalAmountDetailsDivW'>
+//                                    <span class="fnt-14pt">Balance outstanding</span> <br> <span class="fnt-10pt">as at 28 February 2022</span>
+//                                </div>
+//                            </div>
+//                            <div class='col-lg-8 pl-0 text-right'>
+//                                <div class='TotalAmountDetailsDivW'>
+//                                    <span class="fnt-14pt">R69 660.00</span><br>
+//                                </div>
+//                            </div>
+//                        </div>
 
-                        <div class='card-body-sub-header-w pb-2 pt-1'>Payment Due</div>
-                        <div class="d-flex flex-row">
-                            <div class="paymentDueHeaderBlock-W mr-1">Current</div>
-                            <div class="paymentDueHeaderBlock-W mr-1">After 30 days</div>
-                            <div class="paymentDueHeaderBlock-W mr-1">After 60 days</div>
-                            <div class="paymentDueHeaderBlock-W mr-1">After 90 days</div>
-                            <div class="paymentDueHeaderBlock">After 120 + days</div>
-                        </div>
-                        <div class="d-flex flex-row mt-1">
-                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
-                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
-                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
-                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
-                            <div class="paymentDueFooterBlock">R0.00</div>
-                        </div>
-                    </div>
-            </div>
-        </div>
-    </div>
-    </div>
-  </div>`
-})
-export class WealthHomeLoanAccountsBreakdownComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//                        <div class='card-body-sub-header-w pb-2 pt-1'>Payment Due</div>
+//                        <div class="d-flex flex-row">
+//                            <div class="paymentDueHeaderBlock-W mr-1">Current</div>
+//                            <div class="paymentDueHeaderBlock-W mr-1">After 30 days</div>
+//                            <div class="paymentDueHeaderBlock-W mr-1">After 60 days</div>
+//                            <div class="paymentDueHeaderBlock-W mr-1">After 90 days</div>
+//                            <div class="paymentDueHeaderBlock">After 120 + days</div>
+//                        </div>
+//                        <div class="d-flex flex-row mt-1">
+//                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+//                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+//                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+//                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+//                            <div class="paymentDueFooterBlock">R0.00</div>
+//                        </div>
+//                    </div>
+//            </div>
+//        </div>
+//    </div>
+//    </div>
+//  </div>`
+//})
+//export class WealthHomeLoanAccountsBreakdownComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for special message Widget for Widget -- Nedbank
-@Component({
-  selector: 'WealthHomeLoanSummaryTaxPurpose',
-  template: `<div class="widget">
-      <div class="widget-area width100">
-        <div class='card border-0'>
-          <div class='card-body text-left py-1'>
-            <div class='py-2'>
-              <div class='card-body-sub-header-w'> Summary for Tax Purposes</div>
-                <div class='d-flex flex-row mt-1 HomeLoanDetailDiv margin_right_15'>
-                  <table class='SummaryTable mt-2' border='0' style="width: 100%;margin-left: 10px !important;">
-                    <tbody>
-                      <tr><td>Interest</td><td class='text-right pr-4 text-success-w'>R0.00</td></tr>
-                      <tr><td>Insurance/Assurance</td><td class='text-right pr-4 text-success-w'>R0.00</td></tr>
-                      <tr><td>Service fee</td><td class='text-right pr-4 text-success-w'>R0.00</td></tr>
-                      <tr><td>Legal costs </td><td class='text-right pr-4 text-success-w'>R0.00</td></tr>
-                      <tr><td>Total amount received</td><td class='text-right pr-4 text-success-w'>R0.00</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-           </div>
-          </div>
-        </div>`
-})
-export class WealthHomeLoanSummaryTaxPurposeComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for special message Widget for Widget -- Nedbank
+//@Component({
+//  selector: 'WealthHomeLoanSummaryTaxPurpose',
+//  template: `<div class="widget">
+//      <div class="widget-area width100">
+//        <div class='card border-0'>
+//          <div class='card-body text-left py-1'>
+//            <div class='py-2'>
+//              <div class='card-body-sub-header-w'> Summary for Tax Purposes</div>
+//                <div class='d-flex flex-row mt-1 HomeLoanDetailDiv margin_right_15'>
+//                  <table class='SummaryTable mt-2' border='0' style="width: 100%;margin-left: 10px !important;">
+//                    <tbody>
+//                      <tr><td>Interest</td><td class='text-right pr-4 text-success-w'>R0.00</td></tr>
+//                      <tr><td>Insurance/Assurance</td><td class='text-right pr-4 text-success-w'>R0.00</td></tr>
+//                      <tr><td>Service fee</td><td class='text-right pr-4 text-success-w'>R0.00</td></tr>
+//                      <tr><td>Legal costs </td><td class='text-right pr-4 text-success-w'>R0.00</td></tr>
+//                      <tr><td>Total amount received</td><td class='text-right pr-4 text-success-w'>R0.00</td></tr>
+//                    </tbody>
+//                  </table>
+//                </div>
+//              </div>
+//            </div>
+//           </div>
+//          </div>
+//        </div>`
+//})
+//export class WealthHomeLoanSummaryTaxPurposeComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-@Component({
-  selector: 'WealthHomeLoanInstalment',
-  template: `<div class="widget">
-                <div class="widget-area width100">
-                    <div class='card-body-sub-header-w pt-2'>Instalment details</div>
-                      <div class="card-body-sub-header2">Due to insurance changes, your new instalment details are as follows:</div>
-                      <div class="pt-1">
-                          <table class="LoanTransactionTable-W customTable">
-                              <thead>
-                                  <tr class="ht-30">
-                                      <th class="w-50">Payments</th>
-                                      <th class="w-50 text-right">Amount</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Basic instalment </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Homeowner's insurance </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Credit life insurance </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Transaction fees </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Subsidised account capital redemption </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Monthly service fee </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left font-weight-bold">Total instalment (effective from 01/04/2021) </td>
-                                      <td class="text-right font-weight-bold">R0.00</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                          </div>
-                        </div>
-                      </div>`
-})
-export class WealthHomeLoanInstalmentComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//@Component({
+//  selector: 'WealthHomeLoanInstalment',
+//  template: `<div class="widget">
+//                <div class="widget-area width100">
+//                    <div class='card-body-sub-header-w pt-2'>Instalment details</div>
+//                      <div class="card-body-sub-header2">Due to insurance changes, your new instalment details are as follows:</div>
+//                      <div class="pt-1">
+//                          <table class="LoanTransactionTable-W customTable">
+//                              <thead>
+//                                  <tr class="ht-30">
+//                                      <th class="w-50">Payments</th>
+//                                      <th class="w-50 text-right">Amount</th>
+//                                  </tr>
+//                              </thead>
+//                              <tbody>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Basic instalment </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Homeowner's insurance </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Credit life insurance </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Transaction fees </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Subsidised account capital redemption </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left">Monthly service fee </td>
+//                                      <td class="text-right">R0.00</td>
+//                                  </tr>
+//                                  <tr class="ht-20">
+//                                      <td class="text-left font-weight-bold">Total instalment (effective from 01/04/2021) </td>
+//                                      <td class="text-right font-weight-bold">R0.00</td>
+//                                  </tr>
+//                              </tbody>
+//                          </table>
+//                          </div>
+//                        </div>
+//                      </div>`
+//})
+//export class WealthHomeLoanInstalmentComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Home Loan Bank Details Widget -- Nedbank
-@Component({
-  selector: 'WealthHomeLoanBranchDetails',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0'>
-          <div class="card-body BranchDetails">
-              BankName<br>Address Line1, City, ZipCode<br>Address Line2, City, ZipCode<br>Country Name
-              <br>Bank VAT Reg No XXXXXXXXXX
-              <br>22/02/2022
-          </div>
-          <div class="ConactCenterDiv text-success-w float-right pt-3">
-              Nedbank Private Wealth Service Suite: XXXX XXX XXX
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class WealthHomeLoanBankDetailsComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Home Loan Bank Details Widget -- Nedbank
+//@Component({
+//  selector: 'WealthHomeLoanBranchDetails',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0'>
+//          <div class="card-body BranchDetails">
+//              BankName<br>Address Line1, City, ZipCode<br>Address Line2, City, ZipCode<br>Country Name
+//              <br>Bank VAT Reg No XXXXXXXXXX
+//              <br>22/02/2022
+//          </div>
+//          <div class="ConactCenterDiv text-success-w float-right pt-3">
+//              Nedbank Private Wealth Service Suite: XXXX XXX XXX
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class WealthHomeLoanBankDetailsComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for MCA Account Summary for Widget -- Nedbank
-@Component({
-  selector: 'MCAAccountSummary',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-     <div id class="card border-0">
-      <div class="card-body text-left py-0">
-        <div class="mca_header_label pb-2">Currency Account Statement</div>
-          <div class="mca_sub_header_label pb-2">Please examine this statement at once. If no errors are reported to us within 15 days, this statement will be considered correct.</div>
-        </div>
-       </div>
-       <div class="MCADetailDiv">
-        <h4 class="pl-25px">
-          <span class="mca_detail_statement_label">Account summary</span>
-        </h4>
-        <table class="mca_custom_table mt-2" border="0" style='width: 100%'><tbody>
-          <tr>
-            <td class="w-25">Account no:</td>
-            <td class="w-25 text-right pr-4 mca_text_custom_color">7503010231</td>
-            <td class="w-25">Statement no:</td><td class="w-25 text-right mca_text_custom_color">96</td>
-          </tr>
-          <tr>
-            <td class="w-25">Overdraft limit:</td><td class="w-25 text-right pr-4 mca_text_custom_color">0.00</td>
-            <td class="w-25">Statement date</td><td class="w-25 text-right mca_text_custom_color">09/05/2020</td>
-          </tr>
-          <tr>
-            <td class="w-25">Currency:</td><td class="w-25 text-right pr-4 mca_text_custom_color">USD</td>
-            <td class="w-25">Statement frequency</td><td class="w-25 text-right mca_text_custom_color">WEEKLY</td>
-          </tr>
-          <tr>
-            <td class="w-25">Free balance:</td><td class="w-25 text-right pr-4 mca_text_custom_color">0.00</td>
-            <td class="w-25"></td><td class="w-25 text-right pr-4 mca_text_custom_color"></td>
-          </tr>
-        </tbody></table>
-      </div>
-    </div>
-  </div>`
-})
-export class MCAAccountSummaryComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for MCA Account Summary for Widget -- Nedbank
+//@Component({
+//  selector: 'MCAAccountSummary',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//     <div id class="card border-0">
+//      <div class="card-body text-left py-0">
+//        <div class="mca_header_label pb-2">Currency Account Statement</div>
+//          <div class="mca_sub_header_label pb-2">Please examine this statement at once. If no errors are reported to us within 15 days, this statement will be considered correct.</div>
+//        </div>
+//       </div>
+//       <div class="MCADetailDiv">
+//        <h4 class="pl-25px">
+//          <span class="mca_detail_statement_label">Account summary</span>
+//        </h4>
+//        <table class="mca_custom_table mt-2" border="0" style='width: 100%'><tbody>
+//          <tr>
+//            <td class="w-25">Account no:</td>
+//            <td class="w-25 text-right pr-4 mca_text_custom_color">7503010231</td>
+//            <td class="w-25">Statement no:</td><td class="w-25 text-right mca_text_custom_color">96</td>
+//          </tr>
+//          <tr>
+//            <td class="w-25">Overdraft limit:</td><td class="w-25 text-right pr-4 mca_text_custom_color">0.00</td>
+//            <td class="w-25">Statement date</td><td class="w-25 text-right mca_text_custom_color">09/05/2020</td>
+//          </tr>
+//          <tr>
+//            <td class="w-25">Currency:</td><td class="w-25 text-right pr-4 mca_text_custom_color">USD</td>
+//            <td class="w-25">Statement frequency</td><td class="w-25 text-right mca_text_custom_color">WEEKLY</td>
+//          </tr>
+//          <tr>
+//            <td class="w-25">Free balance:</td><td class="w-25 text-right pr-4 mca_text_custom_color">0.00</td>
+//            <td class="w-25"></td><td class="w-25 text-right pr-4 mca_text_custom_color"></td>
+//          </tr>
+//        </tbody></table>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class MCAAccountSummaryComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for MCA Transaction for Widget -- Nedbank
-@Component({
-  selector: 'MCATransaction',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-     <div class='pt-1'>
-      <table class='MCATransactionTable mca_custom_table' style='width: 100%'>
-        <thead>
-          <tr class='ht-30'>
-            <th class='w-15 text-center'>Transaction date</th>
-            <th class='w-35 text-left'>Description and additional information</th>
-            <th class='w-12 text-right'>Debit</th>
-            <th class='w-12 text-right'>Credit</th>
-            <th class='w-7 text-center'>Rate</th>
-            <th class='w-7 text-center'>Days</th>
-            <th class='w-12 text-right'>Accrued interest</th>
-          </tr>
-        </thead>
-      </table>
-     <div class='pt-0 overflow-auto'>
-        <table id='MCATransactionTable' class='MCATransactionTable mca_custom_table' style='width: 100%'>
-          <tbody>
-            <tr class='ht-20'>
-              <td class='w-15 text-center'>02/05/2020</td>
-              <td class='w-35 text-left'>BROUGHT FORWARD</td>
-              <td class='w-12 text-right'></td>
-              <td class='w-12 text-right'>50 606.44</td>
-              <td class='w-7 text-center'>0.03</td>
-              <td class='w-7 text-center'></td>
-              <td class='w-12 text-right'>0.04</td>
-            </tr>
-            <tr class='ht-20'>
-              <td class='w-15 text-center'>08/05/2020</td>
-              <td class='w-35 text-left'>INTEREST ACCRUED ON 50606.64 CR FROM 2020-05-02 TO 2020-05-08</td>
-              <td class='w-12 text-right'></td>
-              <td class='w-12 text-right'></td>
-              <td class='w-7 text-center'>0.03</td>
-              <td class='w-7 text-center'>7</td>
-              <td class='w-12 text-right'>0.28</td>
-            </tr>
-            <tr class='ht-20'>
-              <td class='w-15 text-center'>09/05/2020</td>
-              <td class='w-35 text-left'>CARRIED FORWARD</td>
-              <td class='w-12 text-right'></td>
-              <td class='w-12 text-right'>50 606.64</td>
-              <td class='w-7 text-center'>0.03</td>
-              <td class='w-7 text-center'></td>
-              <td class='w-12 text-right'>0.32</td>
-            </tr>
-            <tr class='ht-20'>
-              <td class='w-15 text-center'>10/05/2020</td>
-              <td class='w-35 text-left'>BROUGHT FORWARD</td>
-              <td class='w-12 text-right'></td>
-              <td class='w-12 text-right'>50 606.44</td>
-              <td class='w-7 text-center'>0.03</td>
-              <td class='w-7 text-center'></td>
-              <td class='w-12 text-right'>0.04</td>
-            </tr>
-          </tbody>
-         </table>
-        </div>
-      </div>
-    </div>
-  </div>`
-})
-export class MCATransactionComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for MCA Transaction for Widget -- Nedbank
+//@Component({
+//  selector: 'MCATransaction',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//     <div class='pt-1'>
+//      <table class='MCATransactionTable mca_custom_table' style='width: 100%'>
+//        <thead>
+//          <tr class='ht-30'>
+//            <th class='w-15 text-center'>Transaction date</th>
+//            <th class='w-35 text-left'>Description and additional information</th>
+//            <th class='w-12 text-right'>Debit</th>
+//            <th class='w-12 text-right'>Credit</th>
+//            <th class='w-7 text-center'>Rate</th>
+//            <th class='w-7 text-center'>Days</th>
+//            <th class='w-12 text-right'>Accrued interest</th>
+//          </tr>
+//        </thead>
+//      </table>
+//     <div class='pt-0 overflow-auto'>
+//        <table id='MCATransactionTable' class='MCATransactionTable mca_custom_table' style='width: 100%'>
+//          <tbody>
+//            <tr class='ht-20'>
+//              <td class='w-15 text-center'>02/05/2020</td>
+//              <td class='w-35 text-left'>BROUGHT FORWARD</td>
+//              <td class='w-12 text-right'></td>
+//              <td class='w-12 text-right'>50 606.44</td>
+//              <td class='w-7 text-center'>0.03</td>
+//              <td class='w-7 text-center'></td>
+//              <td class='w-12 text-right'>0.04</td>
+//            </tr>
+//            <tr class='ht-20'>
+//              <td class='w-15 text-center'>08/05/2020</td>
+//              <td class='w-35 text-left'>INTEREST ACCRUED ON 50606.64 CR FROM 2020-05-02 TO 2020-05-08</td>
+//              <td class='w-12 text-right'></td>
+//              <td class='w-12 text-right'></td>
+//              <td class='w-7 text-center'>0.03</td>
+//              <td class='w-7 text-center'>7</td>
+//              <td class='w-12 text-right'>0.28</td>
+//            </tr>
+//            <tr class='ht-20'>
+//              <td class='w-15 text-center'>09/05/2020</td>
+//              <td class='w-35 text-left'>CARRIED FORWARD</td>
+//              <td class='w-12 text-right'></td>
+//              <td class='w-12 text-right'>50 606.64</td>
+//              <td class='w-7 text-center'>0.03</td>
+//              <td class='w-7 text-center'></td>
+//              <td class='w-12 text-right'>0.32</td>
+//            </tr>
+//            <tr class='ht-20'>
+//              <td class='w-15 text-center'>10/05/2020</td>
+//              <td class='w-35 text-left'>BROUGHT FORWARD</td>
+//              <td class='w-12 text-right'></td>
+//              <td class='w-12 text-right'>50 606.44</td>
+//              <td class='w-7 text-center'>0.03</td>
+//              <td class='w-7 text-center'></td>
+//              <td class='w-12 text-right'>0.04</td>
+//            </tr>
+//          </tbody>
+//         </table>
+//        </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class MCATransactionComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for MCA VAT Analysis for Widget -- Nedbank
-@Component({
-  selector: 'MCAVATAnalysis',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-     <div class='pt-1'>
-      <table class='MCATransactionTable mca_small_table' style='width: 40%'>
-        <thead>
-          <tr class='ht-30'>
-            <th class='ip-w-25 text-left'>From</th>
-            <th class='ip-w-25 text-left'>To</th>
-            <th class='ip-w-25 text-right'>Rate</th>
-            <th class='ip-w-25 text-right'>Amount</th>
-          </tr>
-        </thead>
-      </table>
-     <div class='pt-0 overflow-auto'>
-        <table id='MCATransactionTable' class='MCATransactionTable mca_small_table' style='width: 40%'>
-          <tbody>
-            <tr class='ht-20'>
-              <td class='ip-w-25 text-left'>02/05/2020</td>
-              <td class='ip-w-25 text-left'>02/05/2020</td>
-              <td class='ip-w-25 text-right'>0.3</td>
-              <td class='ip-w-25 text-right'>50 606.44</td>
-            </tr>
-          </tbody>
-         </table>
-        </div>
-      </div>
-    </div>
-  </div>`
-})
-export class MCAVATAnalysisComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for MCA VAT Analysis for Widget -- Nedbank
+//@Component({
+//  selector: 'MCAVATAnalysis',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//     <div class='pt-1'>
+//      <table class='MCATransactionTable mca_small_table' style='width: 40%'>
+//        <thead>
+//          <tr class='ht-30'>
+//            <th class='ip-w-25 text-left'>From</th>
+//            <th class='ip-w-25 text-left'>To</th>
+//            <th class='ip-w-25 text-right'>Rate</th>
+//            <th class='ip-w-25 text-right'>Amount</th>
+//          </tr>
+//        </thead>
+//      </table>
+//     <div class='pt-0 overflow-auto'>
+//        <table id='MCATransactionTable' class='MCATransactionTable mca_small_table' style='width: 40%'>
+//          <tbody>
+//            <tr class='ht-20'>
+//              <td class='ip-w-25 text-left'>02/05/2020</td>
+//              <td class='ip-w-25 text-left'>02/05/2020</td>
+//              <td class='ip-w-25 text-right'>0.3</td>
+//              <td class='ip-w-25 text-right'>50 606.44</td>
+//            </tr>
+//          </tbody>
+//         </table>
+//        </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class MCAVATAnalysisComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for MCA Account Summary for Widget -- Nedbank
-@Component({
-  selector: 'WealthMCAAccountSummary',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-     <div id class="card border-0">
-      <div class="card-body text-left py-0">
-        <div class="mca_header_label-w pb-2">Currency Account Statement</div>
-          <div class="mca_sub_header_label pb-2">Please examine this statement at once. If no errors are reported to us within 15 days, this statement will be considered correct.</div>
-        </div>
-       </div>
-       <div class="MCADetailDiv">
-        <h4 class="pl-25px">
-          <span class="mca_detail_statement_label-w">Account summary</span>
-        </h4>
-        <table class="mca_custom_table mt-2" border="0" style='width: 100%'><tbody>
-          <tr>
-            <td class="w-25">Account no:</td>
-            <td class="w-25 text-right pr-4 mca_text_custom_color-w">7503010231</td>
-            <td class="w-25">Statement no:</td><td class="w-25 text-right mca_text_custom_color-w">96</td>
-          </tr>
-          <tr>
-            <td class="w-25">Overdraft limit:</td><td class="w-25 text-right pr-4 mca_text_custom_color-w">0.00</td>
-            <td class="w-25">Statement date</td><td class="w-25 text-right mca_text_custom_color-w">09/05/2020</td>
-          </tr>
-          <tr>
-            <td class="w-25">Currency:</td><td class="w-25 text-right pr-4 mca_text_custom_color-w">USD</td>
-            <td class="w-25">Statement frequency</td><td class="w-25 text-right mca_text_custom_color-w">WEEKLY</td>
-          </tr>
-          <tr>
-            <td class="w-25">Free balance:</td><td class="w-25 text-right pr-4 mca_text_custom_color-w">0.00</td>
-            <td class="w-25"></td><td class="w-25 text-right pr-4 mca_text_custom_color-w"></td>
-          </tr>
-        </tbody></table>
-      </div>
-    </div>
-  </div>`
-})
-export class WealthMCAAccountSummaryComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for MCA Account Summary for Widget -- Nedbank
+//@Component({
+//  selector: 'WealthMCAAccountSummary',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//     <div id class="card border-0">
+//      <div class="card-body text-left py-0">
+//        <div class="mca_header_label-w pb-2">Currency Account Statement</div>
+//          <div class="mca_sub_header_label pb-2">Please examine this statement at once. If no errors are reported to us within 15 days, this statement will be considered correct.</div>
+//        </div>
+//       </div>
+//       <div class="MCADetailDiv">
+//        <h4 class="pl-25px">
+//          <span class="mca_detail_statement_label-w">Account summary</span>
+//        </h4>
+//        <table class="mca_custom_table mt-2" border="0" style='width: 100%'><tbody>
+//          <tr>
+//            <td class="w-25">Account no:</td>
+//            <td class="w-25 text-right pr-4 mca_text_custom_color-w">7503010231</td>
+//            <td class="w-25">Statement no:</td><td class="w-25 text-right mca_text_custom_color-w">96</td>
+//          </tr>
+//          <tr>
+//            <td class="w-25">Overdraft limit:</td><td class="w-25 text-right pr-4 mca_text_custom_color-w">0.00</td>
+//            <td class="w-25">Statement date</td><td class="w-25 text-right mca_text_custom_color-w">09/05/2020</td>
+//          </tr>
+//          <tr>
+//            <td class="w-25">Currency:</td><td class="w-25 text-right pr-4 mca_text_custom_color-w">USD</td>
+//            <td class="w-25">Statement frequency</td><td class="w-25 text-right mca_text_custom_color-w">WEEKLY</td>
+//          </tr>
+//          <tr>
+//            <td class="w-25">Free balance:</td><td class="w-25 text-right pr-4 mca_text_custom_color-w">0.00</td>
+//            <td class="w-25"></td><td class="w-25 text-right pr-4 mca_text_custom_color-w"></td>
+//          </tr>
+//        </tbody></table>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class WealthMCAAccountSummaryComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for MCA Transaction for Widget -- Nedbank
-@Component({
-  selector: 'WealthMCATransaction',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-     <div class='pt-1'>
-      <table class='MCATransactionTable-W mca_custom_table' style='width: 100%'>
-        <thead>
-          <tr class='ht-30'>
-            <th class='w-15 text-center'>Transaction date</th>
-            <th class='w-35 text-left'>Description and additional information</th>
-            <th class='w-12 text-right'>Debit</th>
-            <th class='w-12 text-right'>Credit</th>
-            <th class='w-7 text-center'>Rate</th>
-            <th class='w-7 text-center'>Days</th>
-            <th class='w-12 text-right'>Accrued interest</th>
-          </tr>
-        </thead>
-      </table>
-     <div class='pt-0 overflow-auto'>
-        <table id='MCATransactionTable' class='MCATransactionTable-W mca_custom_table' style='width: 100%'>
-          <tbody>
-            <tr class='ht-20'>
-              <td class='w-15 text-center'>02/05/2020</td>
-              <td class='w-35 text-left'>BROUGHT FORWARD</td>
-              <td class='w-12 text-right'></td>
-              <td class='w-12 text-right'>50 606.44</td>
-              <td class='w-7 text-center'>0.03</td>
-              <td class='w-7 text-center'></td>
-              <td class='w-12 text-right'>0.04</td>
-            </tr>
-            <tr class='ht-20'>
-              <td class='w-15 text-center'>08/05/2020</td>
-              <td class='w-35 text-left'>INTEREST ACCRUED ON 50606.64 CR FROM 2020-05-02 TO 2020-05-08</td>
-              <td class='w-12 text-right'></td>
-              <td class='w-12 text-right'></td>
-              <td class='w-7 text-center'>0.03</td>
-              <td class='w-7 text-center'>7</td>
-              <td class='w-12 text-right'>0.28</td>
-            </tr>
-            <tr class='ht-20'>
-              <td class='w-15 text-center'>09/05/2020</td>
-              <td class='w-35 text-left'>CARRIED FORWARD</td>
-              <td class='w-12 text-right'></td>
-              <td class='w-12 text-right'>50 606.64</td>
-              <td class='w-7 text-center'>0.03</td>
-              <td class='w-7 text-center'></td>
-              <td class='w-12 text-right'>0.32</td>
-            </tr>
-            <tr class='ht-20'>
-              <td class='w-15 text-center'>10/05/2020</td>
-              <td class='w-35 text-left'>BROUGHT FORWARD</td>
-              <td class='w-12 text-right'></td>
-              <td class='w-12 text-right'>50 606.44</td>
-              <td class='w-7 text-center'>0.03</td>
-              <td class='w-7 text-center'></td>
-              <td class='w-12 text-right'>0.04</td>
-            </tr>
-          </tbody>
-         </table>
-        </div>
-      </div>
-    </div>
-  </div>`
-})
-export class WealthMCATransactionComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for MCA Transaction for Widget -- Nedbank
+//@Component({
+//  selector: 'WealthMCATransaction',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//     <div class='pt-1'>
+//      <table class='MCATransactionTable-W mca_custom_table' style='width: 100%'>
+//        <thead>
+//          <tr class='ht-30'>
+//            <th class='w-15 text-center'>Transaction date</th>
+//            <th class='w-35 text-left'>Description and additional information</th>
+//            <th class='w-12 text-right'>Debit</th>
+//            <th class='w-12 text-right'>Credit</th>
+//            <th class='w-7 text-center'>Rate</th>
+//            <th class='w-7 text-center'>Days</th>
+//            <th class='w-12 text-right'>Accrued interest</th>
+//          </tr>
+//        </thead>
+//      </table>
+//     <div class='pt-0 overflow-auto'>
+//        <table id='MCATransactionTable' class='MCATransactionTable-W mca_custom_table' style='width: 100%'>
+//          <tbody>
+//            <tr class='ht-20'>
+//              <td class='w-15 text-center'>02/05/2020</td>
+//              <td class='w-35 text-left'>BROUGHT FORWARD</td>
+//              <td class='w-12 text-right'></td>
+//              <td class='w-12 text-right'>50 606.44</td>
+//              <td class='w-7 text-center'>0.03</td>
+//              <td class='w-7 text-center'></td>
+//              <td class='w-12 text-right'>0.04</td>
+//            </tr>
+//            <tr class='ht-20'>
+//              <td class='w-15 text-center'>08/05/2020</td>
+//              <td class='w-35 text-left'>INTEREST ACCRUED ON 50606.64 CR FROM 2020-05-02 TO 2020-05-08</td>
+//              <td class='w-12 text-right'></td>
+//              <td class='w-12 text-right'></td>
+//              <td class='w-7 text-center'>0.03</td>
+//              <td class='w-7 text-center'>7</td>
+//              <td class='w-12 text-right'>0.28</td>
+//            </tr>
+//            <tr class='ht-20'>
+//              <td class='w-15 text-center'>09/05/2020</td>
+//              <td class='w-35 text-left'>CARRIED FORWARD</td>
+//              <td class='w-12 text-right'></td>
+//              <td class='w-12 text-right'>50 606.64</td>
+//              <td class='w-7 text-center'>0.03</td>
+//              <td class='w-7 text-center'></td>
+//              <td class='w-12 text-right'>0.32</td>
+//            </tr>
+//            <tr class='ht-20'>
+//              <td class='w-15 text-center'>10/05/2020</td>
+//              <td class='w-35 text-left'>BROUGHT FORWARD</td>
+//              <td class='w-12 text-right'></td>
+//              <td class='w-12 text-right'>50 606.44</td>
+//              <td class='w-7 text-center'>0.03</td>
+//              <td class='w-7 text-center'></td>
+//              <td class='w-12 text-right'>0.04</td>
+//            </tr>
+//          </tbody>
+//         </table>
+//        </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class WealthMCATransactionComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for MCA VAT Analysis for Widget -- Nedbank
-@Component({
-  selector: 'WealthMCAVATAnalysis',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-     <div class='pt-1'>
-      <table class='MCATransactionTable-W mca_small_table' style='width: 40%'>
-        <thead>
-          <tr class='ht-30'>
-            <th class='ip-w-25 text-left'>From</th>
-            <th class='ip-w-25 text-left'>To</th>
-            <th class='ip-w-25 text-right'>Rate</th>
-            <th class='ip-w-25 text-right'>Amount</th>
-          </tr>
-        </thead>
-      </table>
-     <div class='pt-0 overflow-auto'>
-        <table id='MCATransactionTable' class='MCATransactionTable-W mca_small_table' style='width: 40%'>
-          <tbody>
-            <tr class='ht-20'>
-              <td class='ip-w-25 text-left'>02/05/2020</td>
-              <td class='ip-w-25 text-left'>02/05/2020</td>
-              <td class='ip-w-25 text-right'>0.3</td>
-              <td class='ip-w-25 text-right'>50 606.44</td>
-            </tr>
-          </tbody>
-         </table>
-        </div>
-      </div>
-    </div>
-  </div>`
-})
-export class WealthMCAVATAnalysisComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for MCA VAT Analysis for Widget -- Nedbank
+//@Component({
+//  selector: 'WealthMCAVATAnalysis',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//     <div class='pt-1'>
+//      <table class='MCATransactionTable-W mca_small_table' style='width: 40%'>
+//        <thead>
+//          <tr class='ht-30'>
+//            <th class='ip-w-25 text-left'>From</th>
+//            <th class='ip-w-25 text-left'>To</th>
+//            <th class='ip-w-25 text-right'>Rate</th>
+//            <th class='ip-w-25 text-right'>Amount</th>
+//          </tr>
+//        </thead>
+//      </table>
+//     <div class='pt-0 overflow-auto'>
+//        <table id='MCATransactionTable' class='MCATransactionTable-W mca_small_table' style='width: 40%'>
+//          <tbody>
+//            <tr class='ht-20'>
+//              <td class='ip-w-25 text-left'>02/05/2020</td>
+//              <td class='ip-w-25 text-left'>02/05/2020</td>
+//              <td class='ip-w-25 text-right'>0.3</td>
+//              <td class='ip-w-25 text-right'>50 606.44</td>
+//            </tr>
+//          </tbody>
+//         </table>
+//        </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class WealthMCAVATAnalysisComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}
 
-// Component Created for Bank Details Widget -- Nedbank
-@Component({
-  selector: 'WealthMCABranchDetails',
-  template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class='card border-0'>
-          <div class="card-body BranchDetails">
-              BankName<br>Address Line1, City, ZipCode<br>Address Line2, City, ZipCode<br>Country Name
-              <br>Bank VAT Reg No XXXXXXXXXX
-          </div>
-          <div class="ConactCenterDiv text-success-w float-right pt-3">
-              Nedbank Private Wealth Service Suite: XXXX XXX XXX
-          </div>
-      </div>
-    </div>
-  </div>`
-})
-export class WealthMCABranchDetailsComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-}
+//// Component Created for Bank Details Widget -- Nedbank
+//@Component({
+//  selector: 'WealthMCABranchDetails',
+//  template: `<div class="widget">
+//    <div class="widget-area height100">
+//      <div class='card border-0'>
+//          <div class="card-body BranchDetails">
+//              BankName<br>Address Line1, City, ZipCode<br>Address Line2, City, ZipCode<br>Country Name
+//              <br>Bank VAT Reg No XXXXXXXXXX
+//          </div>
+//          <div class="ConactCenterDiv text-success-w float-right pt-3">
+//              Nedbank Private Wealth Service Suite: XXXX XXX XXX
+//          </div>
+//      </div>
+//    </div>
+//  </div>`
+//})
+//export class WealthMCABranchDetailsComponent {
+//  @Input()
+//  widgetsGridsterItemArray: any[] = [];
+//}

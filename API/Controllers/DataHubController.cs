@@ -13,10 +13,10 @@ namespace nIS
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Http;
-    using nIS.Models.NedBank;
+    using nIS.Models.PPS;
     //using nIS.Models;
     //using nIS.Models.NedBank;
-    using nIS.NedBank;
+    using nIS.PPS;
     using Unity;
 
     #endregion

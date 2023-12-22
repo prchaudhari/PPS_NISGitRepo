@@ -1,4 +1,4 @@
-﻿namespace nIS.NedBank
+﻿namespace nIS.PPS
 {
     public class StatementViewModel
     {

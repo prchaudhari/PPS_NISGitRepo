@@ -6,7 +6,7 @@
 namespace nIS
 {
     using Newtonsoft.Json;
-    using nIS.NedBank;
+    using nIS.PPS;
     #region References
 
     using System;
@@ -654,9 +654,9 @@ namespace nIS
                                                 this.GenerateFinancialTenantCustomerStatementsByScheduleRunTime(statement, tenantConfiguration, batch, schedule, tenantCode, baseURL, outputLocation, parallelThreadCount);
                                                 break;
 
-                                            case ModelConstant.GENERATE_NEDBANK_CUSTOEMR_STATEMENT_BY_SCHEDULE_RUN_NOW:
-                                                this.GenerateNedbankCustomerStatementsByScheduleRunTime(statement, tenantConfiguration, batch, schedule, tenantCode, baseURL, outputLocation, parallelThreadCount);
-                                                break;
+                                            //case ModelConstant.GENERATE_NEDBANK_CUSTOEMR_STATEMENT_BY_SCHEDULE_RUN_NOW:
+                                            //    this.GenerateNedbankCustomerStatementsByScheduleRunTime(statement, tenantConfiguration, batch, schedule, tenantCode, baseURL, outputLocation, parallelThreadCount);
+                                            //    break;
 
                                             default:
                                                 this.GenerateFinancialTenantCustomerStatementsByScheduleRunTime(statement, tenantConfiguration, batch, schedule, tenantCode, baseURL, outputLocation, parallelThreadCount);
@@ -907,9 +907,9 @@ namespace nIS
                             scheduleRunStatus = this.GenerateFinancialTenantCustomerStatementsByScheduleRunNow(statement, tenantConfiguration, batch, scheduleRecord, tenantCode, baseURL, outputLocation, parallelThreadCount);
                             break;
 
-                        case ModelConstant.GENERATE_NEDBANK_CUSTOEMR_STATEMENT_BY_SCHEDULE_RUN_NOW:
-                            scheduleRunStatus = this.GenerateNedbankCustomerStatementsByScheduleRunNow(statement, tenantConfiguration, batch, scheduleRecord, tenantCode, baseURL, outputLocation, parallelThreadCount);
-                            break;
+                        //case ModelConstant.GENERATE_NEDBANK_CUSTOEMR_STATEMENT_BY_SCHEDULE_RUN_NOW:
+                        //    scheduleRunStatus = this.GenerateNedbankCustomerStatementsByScheduleRunNow(statement, tenantConfiguration, batch, scheduleRecord, tenantCode, baseURL, outputLocation, parallelThreadCount);
+                        //    break;
 
                         default:
                             scheduleRunStatus = this.GenerateFinancialTenantCustomerStatementsByScheduleRunNow(statement, tenantConfiguration, batch, scheduleRecord, tenantCode, baseURL, outputLocation, parallelThreadCount);
@@ -1072,45 +1072,45 @@ namespace nIS
             }
         }
 
-        /// <summary>
-        /// This method helps to approve batch of the respective schedule.
-        /// </summary>
-        /// <param name="BatchIdentifier">The batch identifier.</param>
-        /// <param name="tenantCode">The tenant code.</param>
-        /// <returns>
-        /// True if success, otherwise false
-        /// </returns>
-        public bool ApproveScheduleBatch(long BatchIdentifier, string tenantCode)
-        {
-            try
-            {
-                return this.scheduleRepository.ApproveScheduleBatch(BatchIdentifier, tenantCode);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        ///// <summary>
+        ///// This method helps to approve batch of the respective schedule.
+        ///// </summary>
+        ///// <param name="BatchIdentifier">The batch identifier.</param>
+        ///// <param name="tenantCode">The tenant code.</param>
+        ///// <returns>
+        ///// True if success, otherwise false
+        ///// </returns>
+        //public bool ApproveScheduleBatch(long BatchIdentifier, string tenantCode)
+        //{
+        //    try
+        //    {
+        //        return this.scheduleRepository.ApproveScheduleBatch(BatchIdentifier, tenantCode);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
-        /// <summary>
-        /// This method helps to approve batch of the respective schedule.
-        /// </summary>
-        /// <param name="BatchIdentifier">The batch identifier.</param>
-        /// <param name="tenantCode">The tenant code.</param>
-        /// <returns>
-        /// True if success, otherwise false
-        /// </returns>
-        public bool ValidateApproveScheduleBatch(long BatchIdentifier, string tenantCode)
-        {
-            try
-            {
-                return this.scheduleRepository.ValidateApproveScheduleBatch(BatchIdentifier, tenantCode);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        ///// <summary>
+        ///// This method helps to approve batch of the respective schedule.
+        ///// </summary>
+        ///// <param name="BatchIdentifier">The batch identifier.</param>
+        ///// <param name="tenantCode">The tenant code.</param>
+        ///// <returns>
+        ///// True if success, otherwise false
+        ///// </returns>
+        //public bool ValidateApproveScheduleBatch(long BatchIdentifier, string tenantCode)
+        //{
+        //    try
+        //    {
+        //        return this.scheduleRepository.ValidateApproveScheduleBatch(BatchIdentifier, tenantCode);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
         public bool ValidateApproveScheduleBatches(List<long> BatchIdentifier, string tenantCode)
         {
@@ -1366,71 +1366,71 @@ namespace nIS
             }
         }
 
-        /// <summary>
-        /// This method helps to process request in parallel
-        /// </summary>
-        /// <param name="statementRawData">raw data object requires in statement generate process</param>
-        /// <param name="tenantCode">The tenant code.</param>
-        /// <param name="parallelOptions">parallel option object of threading</param>
-        /// <param name="parallelRequests">the list of customer parallel request object</param>
-        /// <param name="parallelThreadCount">The parallel thread count.</param>
-        private void DM_Customer_ParalllelProcessing(GenerateStatementRawData statementRawData, string tenantCode, ParallelOptions parallelOptions, List<DM_CustomerParallelRequest> parallelRequests, int parallelThreadCount)
-        {
-            Parallel.ForEach(parallelRequests, parallelOptions, item =>
-            {
-                CallGenearateNedbankStatementWebAPI(statementRawData, tenantCode, item, parallelThreadCount);
-            });
-        }
+        ///// <summary>
+        ///// This method helps to process request in parallel
+        ///// </summary>
+        ///// <param name="statementRawData">raw data object requires in statement generate process</param>
+        ///// <param name="tenantCode">The tenant code.</param>
+        ///// <param name="parallelOptions">parallel option object of threading</param>
+        ///// <param name="parallelRequests">the list of customer parallel request object</param>
+        ///// <param name="parallelThreadCount">The parallel thread count.</param>
+        //private void DM_Customer_ParalllelProcessing(GenerateStatementRawData statementRawData, string tenantCode, ParallelOptions parallelOptions, List<DM_CustomerParallelRequest> parallelRequests, int parallelThreadCount)
+        //{
+        //    Parallel.ForEach(parallelRequests, parallelOptions, item =>
+        //    {
+        //        CallGenearateNedbankStatementWebAPI(statementRawData, tenantCode, item, parallelThreadCount);
+        //    });
+        //}
 
-        /// <summary>
-        /// This method helps to call web api of create customer statement file
-        /// </summary>
-        /// <param name="statementRawData">raw data object requires in statement generate process</param>
-        /// <param name="TenantCode">The tenant code</param>
-        /// <param name="parallelRequest">the customer parallel request object</param>
-        /// <param name="parallelThreadCount">the thread count to run request in parallel</param>
-        private void CallGenearateNedbankStatementWebAPI(GenerateStatementRawData statementRawData, string TenantCode, DM_CustomerParallelRequest parallelRequest, int parallelThreadCount)
-        {
-            try
-            {
-                var renderEngine = parallelRequest.RenderEngine;
-                string RenderEngineBaseUrl = string.IsNullOrEmpty(renderEngine?.URL) ? ConfigurationManager.AppSettings[ModelConstant.DEFAULT_NIS_ENGINE_BASE_URL].ToString() : renderEngine?.URL;
+        ///// <summary>
+        ///// This method helps to call web api of create customer statement file
+        ///// </summary>
+        ///// <param name="statementRawData">raw data object requires in statement generate process</param>
+        ///// <param name="TenantCode">The tenant code</param>
+        ///// <param name="parallelRequest">the customer parallel request object</param>
+        ///// <param name="parallelThreadCount">the thread count to run request in parallel</param>
+        //private void CallGenearateNedbankStatementWebAPI(GenerateStatementRawData statementRawData, string TenantCode, DM_CustomerParallelRequest parallelRequest, int parallelThreadCount)
+        //{
+        //    try
+        //    {
+        //        var renderEngine = parallelRequest.RenderEngine;
+        //        string RenderEngineBaseUrl = string.IsNullOrEmpty(renderEngine?.URL) ? ConfigurationManager.AppSettings[ModelConstant.DEFAULT_NIS_ENGINE_BASE_URL].ToString() : renderEngine?.URL;
 
-                ParallelOptions parallelOptions = new ParallelOptions();
-                parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
+        //        ParallelOptions parallelOptions = new ParallelOptions();
+        //        parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
 
-                Parallel.ForEach(parallelRequest.DM_Customers, parallelOptions, customer =>
-                {
-                    var newStatementRawData = new GenerateStatementRawData()
-                    {
-                        Statement = statementRawData.Statement,
-                        ScheduleLog = statementRawData.ScheduleLog,
-                        StatementPageContents = statementRawData.StatementPageContents,
-                        Batch = statementRawData.Batch,
-                        BatchDetails = statementRawData.BatchDetails,
-                        BaseURL = statementRawData.BaseURL,
-                        CustomerCount = statementRawData.CustomerCount,
-                        OutputLocation = statementRawData.OutputLocation,
-                        TenantConfiguration = statementRawData.TenantConfiguration,
-                        Client = statementRawData.Client,
-                        TenantEntities = statementRawData.TenantEntities,
-                        DM_Customer = customer,
-                        RenderEngine = parallelRequest.RenderEngine
-                    };
+        //        Parallel.ForEach(parallelRequest.DM_Customers, parallelOptions, customer =>
+        //        {
+        //            var newStatementRawData = new GenerateStatementRawData()
+        //            {
+        //                Statement = statementRawData.Statement,
+        //                ScheduleLog = statementRawData.ScheduleLog,
+        //                StatementPageContents = statementRawData.StatementPageContents,
+        //                Batch = statementRawData.Batch,
+        //                BatchDetails = statementRawData.BatchDetails,
+        //                BaseURL = statementRawData.BaseURL,
+        //                CustomerCount = statementRawData.CustomerCount,
+        //                OutputLocation = statementRawData.OutputLocation,
+        //                TenantConfiguration = statementRawData.TenantConfiguration,
+        //                Client = statementRawData.Client,
+        //                TenantEntities = statementRawData.TenantEntities,
+        //                DM_Customer = customer,
+        //                RenderEngine = parallelRequest.RenderEngine
+        //            };
 
-                    HttpClient client = new HttpClient();
-                    client.BaseAddress = new Uri(RenderEngineBaseUrl);
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ModelConstant.APPLICATION_JSON_MEDIA_TYPE));
-                    client.DefaultRequestHeaders.Add(ModelConstant.TENANT_CODE_KEY, TenantCode);
-                    var response = client.PostAsync(ModelConstant.CREATE_NEDBANK_CUSTOMER_STATEMENT_API_URL, new StringContent(JsonConvert.SerializeObject(newStatementRawData), Encoding.UTF8, ModelConstant.APPLICATION_JSON_MEDIA_TYPE)).Result;
-                });
-            }
-            catch (Exception ex)
-            {
-                //TODO: ***Deepak: commenting below line
-                //throw ex;
-            }
-        }
+        //            HttpClient client = new HttpClient();
+        //            client.BaseAddress = new Uri(RenderEngineBaseUrl);
+        //            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ModelConstant.APPLICATION_JSON_MEDIA_TYPE));
+        //            client.DefaultRequestHeaders.Add(ModelConstant.TENANT_CODE_KEY, TenantCode);
+        //            var response = client.PostAsync(ModelConstant.CREATE_NEDBANK_CUSTOMER_STATEMENT_API_URL, new StringContent(JsonConvert.SerializeObject(newStatementRawData), Encoding.UTF8, ModelConstant.APPLICATION_JSON_MEDIA_TYPE)).Result;
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //TODO: ***Deepak: commenting below line
+        //        //throw ex;
+        //    }
+        //}
 
         /// <summary>
         /// Generates the financial tenant customer statements by schedule run now.
@@ -1961,482 +1961,482 @@ namespace nIS
             }
         }
 
-        /// <summary>
-        /// Generates the nedbank customer statements by schedule run now.
-        /// </summary>
-        /// <param name="statement">The statement.</param>
-        /// <param name="tenantConfiguration">The tenant configuration.</param>
-        /// <param name="batch">The batch.</param>
-        /// <param name="scheduleRecord">The schedule record.</param>
-        /// <param name="tenantCode">The tenant code.</param>
-        /// <param name="baseURL">The base URL.</param>
-        /// <param name="outputLocation">The output location.</param>
-        /// <param name="parallelThreadCount">The parallel thread count.</param>
-        /// <returns></returns>
-        private bool GenerateNedbankCustomerStatementsByScheduleRunNow(Statement statement, TenantConfiguration tenantConfiguration, BatchMaster batch, Schedule scheduleRecord, string tenantCode, string baseURL, string outputLocation, int parallelThreadCount)
-        {
-            //try
-            //{
-            //    var statementPageContents = this.statementManager.GenerateHtmlFormatOfNedbankStatement(statement, tenantCode, tenantConfiguration);
-            //    if (statementPageContents.Count > 0)
-            //    {
-            //        var statementPreviewData = this.statementManager.BindDataToCommonNedbankStatement(statement, statementPageContents, tenantCode);
-            //        string fileName = "Statement_" + statement.Identifier + "_" + batch.Identifier + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
+        ///// <summary>
+        ///// Generates the nedbank customer statements by schedule run now.
+        ///// </summary>
+        ///// <param name="statement">The statement.</param>
+        ///// <param name="tenantConfiguration">The tenant configuration.</param>
+        ///// <param name="batch">The batch.</param>
+        ///// <param name="scheduleRecord">The schedule record.</param>
+        ///// <param name="tenantCode">The tenant code.</param>
+        ///// <param name="baseURL">The base URL.</param>
+        ///// <param name="outputLocation">The output location.</param>
+        ///// <param name="parallelThreadCount">The parallel thread count.</param>
+        ///// <returns></returns>
+        //private bool GenerateNedbankCustomerStatementsByScheduleRunNow(Statement statement, TenantConfiguration tenantConfiguration, BatchMaster batch, Schedule scheduleRecord, string tenantCode, string baseURL, string outputLocation, int parallelThreadCount)
+        //{
+        //    //try
+        //    //{
+        //    //    var statementPageContents = this.statementManager.GenerateHtmlFormatOfNedbankStatement(statement, tenantCode, tenantConfiguration);
+        //    //    if (statementPageContents.Count > 0)
+        //    //    {
+        //    //        var statementPreviewData = this.statementManager.BindDataToCommonNedbankStatement(statement, statementPageContents, tenantCode);
+        //    //        string fileName = "Statement_" + statement.Identifier + "_" + batch.Identifier + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
 
-            //        var filesDict = new Dictionary<string, string>();
-            //        for (int i = 0; i < statementPreviewData.SampleFiles.Count; i++)
-            //        {
-            //            filesDict.Add(statementPreviewData.SampleFiles[i].FileName, statementPreviewData.SampleFiles[i].FileUrl);
-            //        }
-            //       // string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, batch.Identifier, baseURL, outputLocation, filesDict);
-            //        var scheduleLog = this.scheduleLogRepository.GetScheduleLogs(new ScheduleLogSearchParameter()
-            //        {
-            //            ScheduleName = scheduleRecord.Name,
-            //            BatchId = batch.Identifier.ToString(),
-            //            PagingParameter = new PagingParameter
-            //            {
-            //                PageIndex = 0,
-            //                PageSize = 0,
-            //            },
-            //            SortParameter = new SortParameter()
-            //            {
-            //                SortOrder = SortOrder.Ascending,
-            //                SortColumn = "Id",
-            //            },
-            //            SearchMode = SearchMode.Equals
-            //        }, tenantCode).ToList().FirstOrDefault();
-            //        scheduleLog.ScheduleId = scheduleRecord.Identifier;
+        //    //        var filesDict = new Dictionary<string, string>();
+        //    //        for (int i = 0; i < statementPreviewData.SampleFiles.Count; i++)
+        //    //        {
+        //    //            filesDict.Add(statementPreviewData.SampleFiles[i].FileName, statementPreviewData.SampleFiles[i].FileUrl);
+        //    //        }
+        //    //       // string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, batch.Identifier, baseURL, outputLocation, filesDict);
+        //    //        var scheduleLog = this.scheduleLogRepository.GetScheduleLogs(new ScheduleLogSearchParameter()
+        //    //        {
+        //    //            ScheduleName = scheduleRecord.Name,
+        //    //            BatchId = batch.Identifier.ToString(),
+        //    //            PagingParameter = new PagingParameter
+        //    //            {
+        //    //                PageIndex = 0,
+        //    //                PageSize = 0,
+        //    //            },
+        //    //            SortParameter = new SortParameter()
+        //    //            {
+        //    //                SortOrder = SortOrder.Ascending,
+        //    //                SortColumn = "Id",
+        //    //            },
+        //    //            SearchMode = SearchMode.Equals
+        //    //        }, tenantCode).ToList().FirstOrDefault();
+        //    //        scheduleLog.ScheduleId = scheduleRecord.Identifier;
 
-            //        var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
-            //        var customers = this.tenantTransactionDataRepository.Get_DM_CustomerMasters(new CustomerSearchParameter()
-            //        {
-            //            BatchId = batch.Identifier,
-            //        }, tenantCode).ToList();
+        //    //        var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
+        //    //        var customers = this.tenantTransactionDataRepository.Get_DM_CustomerMasters(new CustomerSearchParameter()
+        //    //        {
+        //    //            BatchId = batch.Identifier,
+        //    //        }, tenantCode).ToList();
 
-            //        List<string> listSegment = customers.GroupBy(x => x.Segment).Select(y => y.Key).ToList();
-            //        string productType = this.productRepository.Get_ProductById(Convert.ToInt32(scheduleRecord.ProductId), tenantCode).Name;
+        //    //        List<string> listSegment = customers.GroupBy(x => x.Segment).Select(y => y.Key).ToList();
+        //    //        string productType = this.productRepository.Get_ProductById(Convert.ToInt32(scheduleRecord.ProductId), tenantCode).Name;
 
-            //       // _log.Info($"Adding common folder inside statement folder. outputLocation: {outputLocation}");
-            //        string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFileForNedBank(statementPreviewData.FileContent, fileName, Convert.ToDateTime(batch.BatchExecutionDate).ToString("yyyy-MM-dd"), productType, listSegment, baseURL, outputLocation, filesDict);
-            //        //customers = customers.Where(m => m.CustomerId == 9000082385).ToList();
+        //    //       // _log.Info($"Adding common folder inside statement folder. outputLocation: {outputLocation}");
+        //    //        string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFileForNedBank(statementPreviewData.FileContent, fileName, Convert.ToDateTime(batch.BatchExecutionDate).ToString("yyyy-MM-dd"), productType, listSegment, baseURL, outputLocation, filesDict);
+        //    //        //customers = customers.Where(m => m.CustomerId == 9000082385).ToList();
 
-            //        var scheduleRunStartTime = DateTime.UtcNow;
+        //    //        var scheduleRunStartTime = DateTime.UtcNow;
 
-            //        if (customers != null && customers.Count > 0)
-            //        {
-            //            long CustomerCount = customers.Count;
-            //            var statementRawData = new GenerateStatementRawData()
-            //            {
-            //                Statement = statement,
-            //                ScheduleLog = scheduleLog,
-            //                StatementPageContents = statementPageContents,
-            //                Batch = batch,
-            //                BaseURL = baseURL,
-            //                CustomerCount = CustomerCount,
-            //                OutputLocation = outputLocation,
-            //                TenantConfiguration = tenantConfiguration,
-            //                TenantEntities = tenantEntities,
-            //            };
+        //    //        if (customers != null && customers.Count > 0)
+        //    //        {
+        //    //            long CustomerCount = customers.Count;
+        //    //            var statementRawData = new GenerateStatementRawData()
+        //    //            {
+        //    //                Statement = statement,
+        //    //                ScheduleLog = scheduleLog,
+        //    //                StatementPageContents = statementPageContents,
+        //    //                Batch = batch,
+        //    //                BaseURL = baseURL,
+        //    //                CustomerCount = CustomerCount,
+        //    //                OutputLocation = outputLocation,
+        //    //                TenantConfiguration = tenantConfiguration,
+        //    //                TenantEntities = tenantEntities,
+        //    //            };
 
-            //            //NIS engine implementation logic
-            //            bool IsWantToUseNisEngines = true;
-            //            if (ConfigurationManager.AppSettings[ModelConstant.IS_WANT_TO_USE_NIS_ENGINES] != null)
-            //            {
-            //                bool.TryParse(ConfigurationManager.AppSettings[ModelConstant.IS_WANT_TO_USE_NIS_ENGINES], out IsWantToUseNisEngines);
-            //            }
+        //    //            //NIS engine implementation logic
+        //    //            bool IsWantToUseNisEngines = true;
+        //    //            if (ConfigurationManager.AppSettings[ModelConstant.IS_WANT_TO_USE_NIS_ENGINES] != null)
+        //    //            {
+        //    //                bool.TryParse(ConfigurationManager.AppSettings[ModelConstant.IS_WANT_TO_USE_NIS_ENGINES], out IsWantToUseNisEngines);
+        //    //            }
 
-            //            if (IsWantToUseNisEngines)
-            //            {
-            //                var NisEngines = this.renderEngineRepository.GetRenderEngine(tenantCode).Where(item => item.IsActive && !item.IsDeleted).ToList();
-            //                if (NisEngines.Count > 0)
-            //                {
-            //                    for (int i = 0; customers.Count > 0; i++)
-            //                    {
-            //                        var availableNisEngines = new List<RenderEngine>(NisEngines);
-            //                        ParallelOptions parallelOptions = new ParallelOptions();
-            //                        if (customers.Count > availableNisEngines.Count * parallelThreadCount)
-            //                        {
-            //                            parallelOptions.MaxDegreeOfParallelism = availableNisEngines.Count;
-            //                            var parallelRequest = new List<DM_CustomerParallelRequest>();
-            //                            int count = 0;
-            //                            for (int j = 1; availableNisEngines.Count > 0; j++)
-            //                            {
-            //                                parallelRequest.Add(new DM_CustomerParallelRequest { DM_Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableNisEngines.FirstOrDefault() });
-            //                                customers = customers.Skip(parallelThreadCount).ToList();
-            //                                count += 1;
-            //                                availableNisEngines = availableNisEngines.Skip(count).ToList();
-            //                            }
+        //    //            if (IsWantToUseNisEngines)
+        //    //            {
+        //    //                var NisEngines = this.renderEngineRepository.GetRenderEngine(tenantCode).Where(item => item.IsActive && !item.IsDeleted).ToList();
+        //    //                if (NisEngines.Count > 0)
+        //    //                {
+        //    //                    for (int i = 0; customers.Count > 0; i++)
+        //    //                    {
+        //    //                        var availableNisEngines = new List<RenderEngine>(NisEngines);
+        //    //                        ParallelOptions parallelOptions = new ParallelOptions();
+        //    //                        if (customers.Count > availableNisEngines.Count * parallelThreadCount)
+        //    //                        {
+        //    //                            parallelOptions.MaxDegreeOfParallelism = availableNisEngines.Count;
+        //    //                            var parallelRequest = new List<DM_CustomerParallelRequest>();
+        //    //                            int count = 0;
+        //    //                            for (int j = 1; availableNisEngines.Count > 0; j++)
+        //    //                            {
+        //    //                                parallelRequest.Add(new DM_CustomerParallelRequest { DM_Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableNisEngines.FirstOrDefault() });
+        //    //                                customers = customers.Skip(parallelThreadCount).ToList();
+        //    //                                count += 1;
+        //    //                                availableNisEngines = availableNisEngines.Skip(count).ToList();
+        //    //                            }
 
-            //                            DM_Customer_ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
-            //                        }
-            //                        else
-            //                        {
-            //                            parallelOptions.MaxDegreeOfParallelism = customers.ToList().Count % parallelThreadCount == 0 ? customers.ToList().Count / parallelThreadCount : customers.ToList().Count / parallelThreadCount + 1;
-            //                            var parallelRequest = new List<DM_CustomerParallelRequest>();
-            //                            int count = 0;
+        //    //                            DM_Customer_ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+        //    //                        }
+        //    //                        else
+        //    //                        {
+        //    //                            parallelOptions.MaxDegreeOfParallelism = customers.ToList().Count % parallelThreadCount == 0 ? customers.ToList().Count / parallelThreadCount : customers.ToList().Count / parallelThreadCount + 1;
+        //    //                            var parallelRequest = new List<DM_CustomerParallelRequest>();
+        //    //                            int count = 0;
 
-            //                            for (int k = 0; customers.Count > 0; k++)
-            //                            {
-            //                                if (customers.Count > parallelThreadCount)
-            //                                {
-            //                                    parallelRequest.Add(new DM_CustomerParallelRequest { DM_Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableNisEngines[count] });
-            //                                    customers = customers.Skip(parallelThreadCount).ToList();
-            //                                    count += 1;
-            //                                }
-            //                                else
-            //                                {
-            //                                    parallelRequest.Add(new DM_CustomerParallelRequest { DM_Customers = customers.ToList(), RenderEngine = availableNisEngines[count] });
-            //                                    customers = new List<DM_CustomerMaster>();
-            //                                }
-            //                            }
+        //    //                            for (int k = 0; customers.Count > 0; k++)
+        //    //                            {
+        //    //                                if (customers.Count > parallelThreadCount)
+        //    //                                {
+        //    //                                    parallelRequest.Add(new DM_CustomerParallelRequest { DM_Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableNisEngines[count] });
+        //    //                                    customers = customers.Skip(parallelThreadCount).ToList();
+        //    //                                    count += 1;
+        //    //                                }
+        //    //                                else
+        //    //                                {
+        //    //                                    parallelRequest.Add(new DM_CustomerParallelRequest { DM_Customers = customers.ToList(), RenderEngine = availableNisEngines[count] });
+        //    //                                    customers = new List<DM_CustomerMaster>();
+        //    //                                }
+        //    //                            }
 
-            //                            DM_Customer_ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
-            //                        }
-            //                    }
-            //                }
-            //                else
-            //                {
-            //                    RenderEngine renderEngine = new RenderEngine()
-            //                    {
-            //                        Identifier = 0,
-            //                        RenderEngineName = "DeFault NIS Engine",
-            //                        URL = ConfigurationManager.AppSettings[ModelConstant.DEFAULT_NIS_ENGINE_BASE_URL].ToString(),
-            //                        IsActive = true,
-            //                        IsDeleted = false,
-            //                        InUse = false,
-            //                        NumberOfThread = 1,
-            //                        PriorityLevel = 1
-            //                    };
-            //                    for (int i = 0; customers.Count > 0; i++)
-            //                    {
-            //                        ParallelOptions parallelOptions = new ParallelOptions();
-            //                        parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
-            //                        var parallelRequest = new List<DM_CustomerParallelRequest>();
-            //                        parallelRequest.Add(new DM_CustomerParallelRequest { DM_Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = renderEngine });
-            //                        customers = customers.Skip(parallelThreadCount).ToList();
-            //                        DM_Customer_ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
-            //                    }
-            //                }
-            //            }
-            //            else
-            //            {
-            //                RenderEngine renderEngine = new RenderEngine()
-            //                {
-            //                    Identifier = 0,
-            //                    RenderEngineName = "DeFault NIS Engine",
-            //                    URL = ConfigurationManager.AppSettings[ModelConstant.DEFAULT_NIS_ENGINE_BASE_URL].ToString(),
-            //                    IsActive = true,
-            //                    IsDeleted = false,
-            //                    InUse = false,
-            //                    NumberOfThread = 1,
-            //                    PriorityLevel = 1
-            //                };
-            //                for (int i = 0; customers.Count > 0; i++)
-            //                {
-            //                    ParallelOptions parallelOptions = new ParallelOptions();
-            //                    parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
-            //                    var parallelRequest = new List<DM_CustomerParallelRequest>();
-            //                    parallelRequest.Add(new DM_CustomerParallelRequest { DM_Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = renderEngine });
-            //                    customers = customers.Skip(parallelThreadCount).ToList();
-            //                    DM_Customer_ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
-            //                }
-            //            }
+        //    //                            DM_Customer_ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+        //    //                        }
+        //    //                    }
+        //    //                }
+        //    //                else
+        //    //                {
+        //    //                    RenderEngine renderEngine = new RenderEngine()
+        //    //                    {
+        //    //                        Identifier = 0,
+        //    //                        RenderEngineName = "DeFault NIS Engine",
+        //    //                        URL = ConfigurationManager.AppSettings[ModelConstant.DEFAULT_NIS_ENGINE_BASE_URL].ToString(),
+        //    //                        IsActive = true,
+        //    //                        IsDeleted = false,
+        //    //                        InUse = false,
+        //    //                        NumberOfThread = 1,
+        //    //                        PriorityLevel = 1
+        //    //                    };
+        //    //                    for (int i = 0; customers.Count > 0; i++)
+        //    //                    {
+        //    //                        ParallelOptions parallelOptions = new ParallelOptions();
+        //    //                        parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
+        //    //                        var parallelRequest = new List<DM_CustomerParallelRequest>();
+        //    //                        parallelRequest.Add(new DM_CustomerParallelRequest { DM_Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = renderEngine });
+        //    //                        customers = customers.Skip(parallelThreadCount).ToList();
+        //    //                        DM_Customer_ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+        //    //                    }
+        //    //                }
+        //    //            }
+        //    //            else
+        //    //            {
+        //    //                RenderEngine renderEngine = new RenderEngine()
+        //    //                {
+        //    //                    Identifier = 0,
+        //    //                    RenderEngineName = "DeFault NIS Engine",
+        //    //                    URL = ConfigurationManager.AppSettings[ModelConstant.DEFAULT_NIS_ENGINE_BASE_URL].ToString(),
+        //    //                    IsActive = true,
+        //    //                    IsDeleted = false,
+        //    //                    InUse = false,
+        //    //                    NumberOfThread = 1,
+        //    //                    PriorityLevel = 1
+        //    //                };
+        //    //                for (int i = 0; customers.Count > 0; i++)
+        //    //                {
+        //    //                    ParallelOptions parallelOptions = new ParallelOptions();
+        //    //                    parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
+        //    //                    var parallelRequest = new List<DM_CustomerParallelRequest>();
+        //    //                    parallelRequest.Add(new DM_CustomerParallelRequest { DM_Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = renderEngine });
+        //    //                    customers = customers.Skip(parallelThreadCount).ToList();
+        //    //                    DM_Customer_ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+        //    //                }
+        //    //            }
 
-            //            var scheduleRunHistory = new List<ScheduleRunHistory>();
-            //            scheduleRunHistory.Add(new ScheduleRunHistory()
-            //            {
-            //                StartDate = scheduleRunStartTime,
-            //                ScheduleId = scheduleRecord.Identifier,
-            //                StatementId = statement.Identifier,
-            //                ScheduleLogId = scheduleLog.Identifier,
-            //                EndDate = DateTime.UtcNow,
-            //                StatementFilePath = CommonStatementZipFilePath
-            //            });
-            //            this.scheduleRepository.AddScheduleRunHistorys(scheduleRunHistory, tenantCode);
+        //    //            var scheduleRunHistory = new List<ScheduleRunHistory>();
+        //    //            scheduleRunHistory.Add(new ScheduleRunHistory()
+        //    //            {
+        //    //                StartDate = scheduleRunStartTime,
+        //    //                ScheduleId = scheduleRecord.Identifier,
+        //    //                StatementId = statement.Identifier,
+        //    //                ScheduleLogId = scheduleLog.Identifier,
+        //    //                EndDate = DateTime.UtcNow,
+        //    //                StatementFilePath = CommonStatementZipFilePath
+        //    //            });
+        //    //            this.scheduleRepository.AddScheduleRunHistorys(scheduleRunHistory, tenantCode);
 
-            //            //update status for respective schedule log, schedule log details entities as well as update batch status if statement generation done for all customers of current batch
-            //            var logDetailsRecords = this.scheduleLogRepository.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
-            //            {
-            //                ScheduleLogId = statementRawData.ScheduleLog.Identifier.ToString(),
-            //                PagingParameter = new PagingParameter
-            //                {
-            //                    PageIndex = 0,
-            //                    PageSize = 0,
-            //                },
-            //                SortParameter = new SortParameter()
-            //                {
-            //                    SortOrder = SortOrder.Ascending,
-            //                    SortColumn = "Id",
-            //                },
-            //                SearchMode = SearchMode.Equals
-            //            }, tenantCode);
-            //            var scheduleLogStatus = ScheduleLogStatus.Completed.ToString();
-            //            var _batchStatus = BatchStatus.Completed.ToString();
+        //    //            //update status for respective schedule log, schedule log details entities as well as update batch status if statement generation done for all customers of current batch
+        //    //            var logDetailsRecords = this.scheduleLogRepository.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
+        //    //            {
+        //    //                ScheduleLogId = statementRawData.ScheduleLog.Identifier.ToString(),
+        //    //                PagingParameter = new PagingParameter
+        //    //                {
+        //    //                    PageIndex = 0,
+        //    //                    PageSize = 0,
+        //    //                },
+        //    //                SortParameter = new SortParameter()
+        //    //                {
+        //    //                    SortOrder = SortOrder.Ascending,
+        //    //                    SortColumn = "Id",
+        //    //                },
+        //    //                SearchMode = SearchMode.Equals
+        //    //            }, tenantCode);
+        //    //            var scheduleLogStatus = ScheduleLogStatus.Completed.ToString();
+        //    //            var _batchStatus = BatchStatus.Completed.ToString();
 
-            //            var failedRecords = logDetailsRecords.Where(item => item.Status == ScheduleLogStatus.Failed.ToString())?.ToList();
-            //            if (failedRecords != null && failedRecords.Count > 0)
-            //            {
-            //                scheduleLogStatus = ScheduleLogStatus.Failed.ToString();
-            //                _batchStatus = BatchStatus.Failed.ToString();
-            //            }
+        //    //            var failedRecords = logDetailsRecords.Where(item => item.Status == ScheduleLogStatus.Failed.ToString())?.ToList();
+        //    //            if (failedRecords != null && failedRecords.Count > 0)
+        //    //            {
+        //    //                scheduleLogStatus = ScheduleLogStatus.Failed.ToString();
+        //    //                _batchStatus = BatchStatus.Failed.ToString();
+        //    //            }
 
-            //            this.scheduleLogRepository.UpdateScheduleLogStatus(statementRawData.ScheduleLog.Identifier, scheduleLogStatus, tenantCode);
-            //            this.scheduleRepository.UpdateBatchStatus(statementRawData.Batch.Identifier, _batchStatus, true, tenantCode);
-            //            this.scheduleRepository.UpdateScheduleStatus(statementRawData.ScheduleLog.ScheduleId, ScheduleStatus.Completed.ToString(), tenantCode);
-            //        }
-            //        else
-            //        {
-            //            this.scheduleRepository.UpdateBatchStatus(batch.Identifier, BatchStatus.BatchDataNotAvailable.ToString(), false, tenantCode);
-            //            this.scheduleLogRepository.UpdateScheduleLogStatus(scheduleLog.Identifier, ScheduleLogStatus.BatchDataNotAvailable.ToString(), tenantCode);
-            //            this.scheduleRepository.UpdateScheduleStatus(scheduleRecord.Identifier, ScheduleStatus.BatchDataNotAvailable.ToString(), tenantCode);
-            //        }
-            //    }
-               return true;
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw ex;
-            //}
-        }
+        //    //            this.scheduleLogRepository.UpdateScheduleLogStatus(statementRawData.ScheduleLog.Identifier, scheduleLogStatus, tenantCode);
+        //    //            this.scheduleRepository.UpdateBatchStatus(statementRawData.Batch.Identifier, _batchStatus, true, tenantCode);
+        //    //            this.scheduleRepository.UpdateScheduleStatus(statementRawData.ScheduleLog.ScheduleId, ScheduleStatus.Completed.ToString(), tenantCode);
+        //    //        }
+        //    //        else
+        //    //        {
+        //    //            this.scheduleRepository.UpdateBatchStatus(batch.Identifier, BatchStatus.BatchDataNotAvailable.ToString(), false, tenantCode);
+        //    //            this.scheduleLogRepository.UpdateScheduleLogStatus(scheduleLog.Identifier, ScheduleLogStatus.BatchDataNotAvailable.ToString(), tenantCode);
+        //    //            this.scheduleRepository.UpdateScheduleStatus(scheduleRecord.Identifier, ScheduleStatus.BatchDataNotAvailable.ToString(), tenantCode);
+        //    //        }
+        //    //    }
+        //       return true;
+        //    //}
+        //    //catch (Exception ex)
+        //    //{
+        //    //    throw ex;
+        //    //}
+        //}
 
-        /// <summary>
-        /// Generates the nedbank customer statements by schedule run time.
-        /// </summary>
-        /// <param name="statement">The statement.</param>
-        /// <param name="tenantConfiguration">The tenant configuration.</param>
-        /// <param name="batch">The batch.</param>
-        /// <param name="schedule">The schedule.</param>
-        /// <param name="tenantCode">The tenant code.</param>
-        /// <param name="baseURL">The base URL.</param>
-        /// <param name="outputLocation">The output location.</param>
-        /// <param name="parallelThreadCount">The parallel thread count.</param>
-        private void GenerateNedbankCustomerStatementsByScheduleRunTime(Statement statement, TenantConfiguration tenantConfiguration, BatchMaster batch, Schedule schedule, string tenantCode, string baseURL, string outputLocation, int parallelThreadCount)
-        {
-            try
-            {
-                var statementPageContents = this.statementManager.GenerateHtmlFormatOfNedbankStatement(statement, tenantCode, tenantConfiguration);
-                if (statementPageContents.Count > 0)
-                {
-                    var statementPreviewData = this.statementManager.BindDataToCommonNedbankStatement(statement, statementPageContents, tenantCode);
-                    string fileName = "Statement_" + statement.Identifier + "_" + batch.Identifier + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
+        ///// <summary>
+        ///// Generates the nedbank customer statements by schedule run time.
+        ///// </summary>
+        ///// <param name="statement">The statement.</param>
+        ///// <param name="tenantConfiguration">The tenant configuration.</param>
+        ///// <param name="batch">The batch.</param>
+        ///// <param name="schedule">The schedule.</param>
+        ///// <param name="tenantCode">The tenant code.</param>
+        ///// <param name="baseURL">The base URL.</param>
+        ///// <param name="outputLocation">The output location.</param>
+        ///// <param name="parallelThreadCount">The parallel thread count.</param>
+        //private void GenerateNedbankCustomerStatementsByScheduleRunTime(Statement statement, TenantConfiguration tenantConfiguration, BatchMaster batch, Schedule schedule, string tenantCode, string baseURL, string outputLocation, int parallelThreadCount)
+        //{
+        //    try
+        //    {
+        //        var statementPageContents = this.statementManager.GenerateHtmlFormatOfNedbankStatement(statement, tenantCode, tenantConfiguration);
+        //        if (statementPageContents.Count > 0)
+        //        {
+        //            var statementPreviewData = this.statementManager.BindDataToCommonNedbankStatement(statement, statementPageContents, tenantCode);
+        //            string fileName = "Statement_" + statement.Identifier + "_" + batch.Identifier + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
 
-                    var filesDict = new Dictionary<string, string>();
-                    if (statementPreviewData.SampleFiles != null && statementPreviewData.SampleFiles.Count > 0)
-                    {
-                        statementPreviewData.SampleFiles.ToList().ForEach(file =>
-                        {
-                            if (!filesDict.ContainsKey(file.FileName))
-                            {
-                                filesDict.Add(file.FileName, file.FileUrl);
-                            }
-                        });
-                    }
+        //            var filesDict = new Dictionary<string, string>();
+        //            if (statementPreviewData.SampleFiles != null && statementPreviewData.SampleFiles.Count > 0)
+        //            {
+        //                statementPreviewData.SampleFiles.ToList().ForEach(file =>
+        //                {
+        //                    if (!filesDict.ContainsKey(file.FileName))
+        //                    {
+        //                        filesDict.Add(file.FileName, file.FileUrl);
+        //                    }
+        //                });
+        //            }
 
-                    string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, schedule.Name, batch.BatchName, baseURL, outputLocation, filesDict);
+        //            string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, schedule.Name, batch.BatchName, baseURL, outputLocation, filesDict);
 
-                    var scheduleLog = this.scheduleLogRepository.GetScheduleLogs(new ScheduleLogSearchParameter()
-                    {
-                        ScheduleName = schedule.Name,
-                        BatchId = batch.Identifier.ToString(),
-                        PagingParameter = new PagingParameter
-                        {
-                            PageIndex = 0,
-                            PageSize = 0,
-                        },
-                        SortParameter = new SortParameter()
-                        {
-                            SortOrder = SortOrder.Ascending,
-                            SortColumn = "Id",
-                        },
-                        SearchMode = SearchMode.Equals
-                    }, tenantCode).ToList().FirstOrDefault();
-                    scheduleLog.ScheduleId = schedule.Identifier;
+        //            var scheduleLog = this.scheduleLogRepository.GetScheduleLogs(new ScheduleLogSearchParameter()
+        //            {
+        //                ScheduleName = schedule.Name,
+        //                BatchId = batch.Identifier.ToString(),
+        //                PagingParameter = new PagingParameter
+        //                {
+        //                    PageIndex = 0,
+        //                    PageSize = 0,
+        //                },
+        //                SortParameter = new SortParameter()
+        //                {
+        //                    SortOrder = SortOrder.Ascending,
+        //                    SortColumn = "Id",
+        //                },
+        //                SearchMode = SearchMode.Equals
+        //            }, tenantCode).ToList().FirstOrDefault();
+        //            scheduleLog.ScheduleId = schedule.Identifier;
 
-                    var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
-                    var BatchDetails = this.tenantTransactionDataRepository.GetBatchDetails(batch.Identifier, statement.Identifier, tenantCode);
+        //            var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
+        //            var BatchDetails = this.tenantTransactionDataRepository.GetBatchDetails(batch.Identifier, statement.Identifier, tenantCode);
 
-                    var customers = this.tenantTransactionDataRepository.Get_DM_CustomerMasters(new CustomerSearchParameter()
-                    {
-                        BatchId = batch.Identifier,
-                    }, tenantCode);
-                    var scheduleRunStartTime = DateTime.UtcNow;
-                    if (customers.Count > 0)
-                    {
-                        long CustomerCount = customers.Count;
-                        var statementRawData = new GenerateStatementRawData()
-                        {
-                            Statement = statement,
-                            ScheduleLog = scheduleLog,
-                            StatementPageContents = statementPageContents,
-                            Batch = batch,
-                            BatchDetails = BatchDetails,
-                            BaseURL = baseURL,
-                            CustomerCount = CustomerCount,
-                            OutputLocation = outputLocation,
-                            TenantConfiguration = tenantConfiguration,
-                            TenantEntities = tenantEntities,
-                        };
+        //            var customers = this.tenantTransactionDataRepository.Get_DM_CustomerMasters(new CustomerSearchParameter()
+        //            {
+        //                BatchId = batch.Identifier,
+        //            }, tenantCode);
+        //            var scheduleRunStartTime = DateTime.UtcNow;
+        //            if (customers.Count > 0)
+        //            {
+        //                long CustomerCount = customers.Count;
+        //                var statementRawData = new GenerateStatementRawData()
+        //                {
+        //                    Statement = statement,
+        //                    ScheduleLog = scheduleLog,
+        //                    StatementPageContents = statementPageContents,
+        //                    Batch = batch,
+        //                    BatchDetails = BatchDetails,
+        //                    BaseURL = baseURL,
+        //                    CustomerCount = CustomerCount,
+        //                    OutputLocation = outputLocation,
+        //                    TenantConfiguration = tenantConfiguration,
+        //                    TenantEntities = tenantEntities,
+        //                };
 
-                        //NIS engine implementation logic
-                        bool IsWantToUseNisEngines = true;
-                        if (ConfigurationManager.AppSettings[ModelConstant.IS_WANT_TO_USE_NIS_ENGINES] != null)
-                        {
-                            bool.TryParse(ConfigurationManager.AppSettings[ModelConstant.IS_WANT_TO_USE_NIS_ENGINES], out IsWantToUseNisEngines);
-                        }
+        //                //NIS engine implementation logic
+        //                bool IsWantToUseNisEngines = true;
+        //                if (ConfigurationManager.AppSettings[ModelConstant.IS_WANT_TO_USE_NIS_ENGINES] != null)
+        //                {
+        //                    bool.TryParse(ConfigurationManager.AppSettings[ModelConstant.IS_WANT_TO_USE_NIS_ENGINES], out IsWantToUseNisEngines);
+        //                }
 
-                        if (IsWantToUseNisEngines)
-                        {
-                            var NisEngines = this.renderEngineRepository.GetRenderEngine(tenantCode).Where(item => item.IsActive && !item.IsDeleted).ToList();
-                            if (NisEngines.Count > 0)
-                            {
-                                for (int i = 0; customers.Count > 0; i++)
-                                {
-                                    var availableNisEngines = new List<RenderEngine>(NisEngines);
-                                    ParallelOptions parallelOptions = new ParallelOptions();
+        //                if (IsWantToUseNisEngines)
+        //                {
+        //                    var NisEngines = this.renderEngineRepository.GetRenderEngine(tenantCode).Where(item => item.IsActive && !item.IsDeleted).ToList();
+        //                    if (NisEngines.Count > 0)
+        //                    {
+        //                        for (int i = 0; customers.Count > 0; i++)
+        //                        {
+        //                            var availableNisEngines = new List<RenderEngine>(NisEngines);
+        //                            ParallelOptions parallelOptions = new ParallelOptions();
 
-                                    if (customers.Count > availableNisEngines.Count * parallelThreadCount)
-                                    {
-                                        parallelOptions.MaxDegreeOfParallelism = availableNisEngines.Count;
-                                        var parallelRequest = new List<DM_CustomerParallelRequest>();
-                                        int count = 0;
-                                        for (int j = 1; availableNisEngines.Count > 0; j++)
-                                        {
-                                            parallelRequest.Add(new DM_CustomerParallelRequest { DM_Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableNisEngines.FirstOrDefault() });
-                                            customers = customers.Skip(parallelThreadCount).ToList();
-                                            count += 1;
-                                            availableNisEngines = availableNisEngines.Skip(count).ToList();
-                                        }
+        //                            if (customers.Count > availableNisEngines.Count * parallelThreadCount)
+        //                            {
+        //                                parallelOptions.MaxDegreeOfParallelism = availableNisEngines.Count;
+        //                                var parallelRequest = new List<DM_CustomerParallelRequest>();
+        //                                int count = 0;
+        //                                for (int j = 1; availableNisEngines.Count > 0; j++)
+        //                                {
+        //                                    parallelRequest.Add(new DM_CustomerParallelRequest { DM_Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableNisEngines.FirstOrDefault() });
+        //                                    customers = customers.Skip(parallelThreadCount).ToList();
+        //                                    count += 1;
+        //                                    availableNisEngines = availableNisEngines.Skip(count).ToList();
+        //                                }
 
-                                        DM_Customer_ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
-                                    }
-                                    else
-                                    {
-                                        parallelOptions.MaxDegreeOfParallelism = customers.ToList().Count % parallelThreadCount == 0 ? customers.ToList().Count / parallelThreadCount : customers.ToList().Count / parallelThreadCount + 1;
-                                        var parallelRequest = new List<DM_CustomerParallelRequest>();
-                                        int count = 0;
+        //                                DM_Customer_ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+        //                            }
+        //                            else
+        //                            {
+        //                                parallelOptions.MaxDegreeOfParallelism = customers.ToList().Count % parallelThreadCount == 0 ? customers.ToList().Count / parallelThreadCount : customers.ToList().Count / parallelThreadCount + 1;
+        //                                var parallelRequest = new List<DM_CustomerParallelRequest>();
+        //                                int count = 0;
 
-                                        for (int k = 0; customers.Count > 0; k++)
-                                        {
-                                            if (customers.Count > parallelThreadCount)
-                                            {
-                                                parallelRequest.Add(new DM_CustomerParallelRequest { DM_Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableNisEngines[count] });
-                                                customers = customers.Skip(parallelThreadCount).ToList();
-                                                count += 1;
-                                            }
-                                            else
-                                            {
-                                                parallelRequest.Add(new DM_CustomerParallelRequest { DM_Customers = customers.ToList(), RenderEngine = availableNisEngines[count] });
-                                                customers = new List<DM_CustomerMaster>();
-                                            }
-                                        }
+        //                                for (int k = 0; customers.Count > 0; k++)
+        //                                {
+        //                                    if (customers.Count > parallelThreadCount)
+        //                                    {
+        //                                        parallelRequest.Add(new DM_CustomerParallelRequest { DM_Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableNisEngines[count] });
+        //                                        customers = customers.Skip(parallelThreadCount).ToList();
+        //                                        count += 1;
+        //                                    }
+        //                                    else
+        //                                    {
+        //                                        parallelRequest.Add(new DM_CustomerParallelRequest { DM_Customers = customers.ToList(), RenderEngine = availableNisEngines[count] });
+        //                                        customers = new List<DM_CustomerMaster>();
+        //                                    }
+        //                                }
 
-                                        DM_Customer_ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                RenderEngine renderEngine = new RenderEngine()
-                                {
-                                    Identifier = 0,
-                                    RenderEngineName = "DeFault NIS Engine",
-                                    URL = ConfigurationManager.AppSettings[ModelConstant.DEFAULT_NIS_ENGINE_BASE_URL].ToString(),
-                                    IsActive = true,
-                                    IsDeleted = false,
-                                    InUse = false,
-                                    NumberOfThread = 1,
-                                    PriorityLevel = 1
-                                };
-                                for (int i = 0; customers.Count > 0; i++)
-                                {
-                                    ParallelOptions parallelOptions = new ParallelOptions();
-                                    parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
-                                    var parallelRequest = new List<DM_CustomerParallelRequest>();
-                                    parallelRequest.Add(new DM_CustomerParallelRequest { DM_Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = renderEngine });
-                                    customers = customers.Skip(parallelThreadCount).ToList();
-                                    DM_Customer_ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            RenderEngine renderEngine = new RenderEngine()
-                            {
-                                Identifier = 0,
-                                RenderEngineName = "DeFault NIS Engine",
-                                URL = ConfigurationManager.AppSettings[ModelConstant.DEFAULT_NIS_ENGINE_BASE_URL].ToString(),
-                                IsActive = true,
-                                IsDeleted = false,
-                                InUse = false,
-                                NumberOfThread = 1,
-                                PriorityLevel = 1
-                            };
-                            for (int i = 0; customers.Count > 0; i++)
-                            {
-                                ParallelOptions parallelOptions = new ParallelOptions();
-                                parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
-                                var parallelRequest = new List<DM_CustomerParallelRequest>();
-                                parallelRequest.Add(new DM_CustomerParallelRequest { DM_Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = renderEngine });
-                                customers = customers.Skip(parallelThreadCount).ToList();
-                                DM_Customer_ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
-                            }
-                        }
+        //                                DM_Customer_ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+        //                            }
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        RenderEngine renderEngine = new RenderEngine()
+        //                        {
+        //                            Identifier = 0,
+        //                            RenderEngineName = "DeFault NIS Engine",
+        //                            URL = ConfigurationManager.AppSettings[ModelConstant.DEFAULT_NIS_ENGINE_BASE_URL].ToString(),
+        //                            IsActive = true,
+        //                            IsDeleted = false,
+        //                            InUse = false,
+        //                            NumberOfThread = 1,
+        //                            PriorityLevel = 1
+        //                        };
+        //                        for (int i = 0; customers.Count > 0; i++)
+        //                        {
+        //                            ParallelOptions parallelOptions = new ParallelOptions();
+        //                            parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
+        //                            var parallelRequest = new List<DM_CustomerParallelRequest>();
+        //                            parallelRequest.Add(new DM_CustomerParallelRequest { DM_Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = renderEngine });
+        //                            customers = customers.Skip(parallelThreadCount).ToList();
+        //                            DM_Customer_ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+        //                        }
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    RenderEngine renderEngine = new RenderEngine()
+        //                    {
+        //                        Identifier = 0,
+        //                        RenderEngineName = "DeFault NIS Engine",
+        //                        URL = ConfigurationManager.AppSettings[ModelConstant.DEFAULT_NIS_ENGINE_BASE_URL].ToString(),
+        //                        IsActive = true,
+        //                        IsDeleted = false,
+        //                        InUse = false,
+        //                        NumberOfThread = 1,
+        //                        PriorityLevel = 1
+        //                    };
+        //                    for (int i = 0; customers.Count > 0; i++)
+        //                    {
+        //                        ParallelOptions parallelOptions = new ParallelOptions();
+        //                        parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
+        //                        var parallelRequest = new List<DM_CustomerParallelRequest>();
+        //                        parallelRequest.Add(new DM_CustomerParallelRequest { DM_Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = renderEngine });
+        //                        customers = customers.Skip(parallelThreadCount).ToList();
+        //                        DM_Customer_ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+        //                    }
+        //                }
 
-                        var scheduleRunHistory = new List<ScheduleRunHistory>();
-                        scheduleRunHistory.Add(new ScheduleRunHistory()
-                        {
-                            StartDate = scheduleRunStartTime,
-                            ScheduleId = schedule.Identifier,
-                            StatementId = statement.Identifier,
-                            ScheduleLogId = scheduleLog.Identifier,
-                            EndDate = DateTime.UtcNow,
-                            StatementFilePath = CommonStatementZipFilePath
-                        });
-                        this.scheduleRepository.AddScheduleRunHistorys(scheduleRunHistory, tenantCode);
+        //                var scheduleRunHistory = new List<ScheduleRunHistory>();
+        //                scheduleRunHistory.Add(new ScheduleRunHistory()
+        //                {
+        //                    StartDate = scheduleRunStartTime,
+        //                    ScheduleId = schedule.Identifier,
+        //                    StatementId = statement.Identifier,
+        //                    ScheduleLogId = scheduleLog.Identifier,
+        //                    EndDate = DateTime.UtcNow,
+        //                    StatementFilePath = CommonStatementZipFilePath
+        //                });
+        //                this.scheduleRepository.AddScheduleRunHistorys(scheduleRunHistory, tenantCode);
 
-                        //update status for respective schedule log, schedule log details entities as well as update batch status if statement generation done for all customers of current batch
-                        var logDetailsRecords = this.scheduleLogRepository.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
-                        {
-                            ScheduleLogId = statementRawData.ScheduleLog.Identifier.ToString(),
-                            PagingParameter = new PagingParameter
-                            {
-                                PageIndex = 0,
-                                PageSize = 0,
-                            },
-                            SortParameter = new SortParameter()
-                            {
-                                SortOrder = SortOrder.Ascending,
-                                SortColumn = "Id",
-                            },
-                            SearchMode = SearchMode.Equals
-                        }, tenantCode);
-                        var scheduleLogStatus = ScheduleLogStatus.Completed.ToString();
-                        var _batchStatus = BatchStatus.Completed.ToString();
+        //                //update status for respective schedule log, schedule log details entities as well as update batch status if statement generation done for all customers of current batch
+        //                var logDetailsRecords = this.scheduleLogRepository.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
+        //                {
+        //                    ScheduleLogId = statementRawData.ScheduleLog.Identifier.ToString(),
+        //                    PagingParameter = new PagingParameter
+        //                    {
+        //                        PageIndex = 0,
+        //                        PageSize = 0,
+        //                    },
+        //                    SortParameter = new SortParameter()
+        //                    {
+        //                        SortOrder = SortOrder.Ascending,
+        //                        SortColumn = "Id",
+        //                    },
+        //                    SearchMode = SearchMode.Equals
+        //                }, tenantCode);
+        //                var scheduleLogStatus = ScheduleLogStatus.Completed.ToString();
+        //                var _batchStatus = BatchStatus.Completed.ToString();
 
-                        var failedRecords = logDetailsRecords.Where(item => item.Status == ScheduleLogStatus.Failed.ToString())?.ToList();
-                        if (failedRecords != null && failedRecords.Count > 0)
-                        {
-                            scheduleLogStatus = ScheduleLogStatus.Failed.ToString();
-                            _batchStatus = BatchStatus.Failed.ToString();
-                        }
+        //                var failedRecords = logDetailsRecords.Where(item => item.Status == ScheduleLogStatus.Failed.ToString())?.ToList();
+        //                if (failedRecords != null && failedRecords.Count > 0)
+        //                {
+        //                    scheduleLogStatus = ScheduleLogStatus.Failed.ToString();
+        //                    _batchStatus = BatchStatus.Failed.ToString();
+        //                }
 
-                        this.scheduleLogRepository.UpdateScheduleLogStatus(statementRawData.ScheduleLog.Identifier, scheduleLogStatus, tenantCode);
-                        this.scheduleRepository.UpdateBatchStatus(statementRawData.Batch.Identifier, _batchStatus, true, tenantCode);
-                        this.scheduleRepository.UpdateScheduleStatus(statementRawData.ScheduleLog.ScheduleId, ScheduleStatus.Completed.ToString(), tenantCode);
-                    }
-                    else
-                    {
-                        this.scheduleRepository.UpdateBatchStatus(batch.Identifier, BatchStatus.BatchDataNotAvailable.ToString(), false, tenantCode);
-                        this.scheduleLogRepository.UpdateScheduleLogStatus(scheduleLog.Identifier, ScheduleLogStatus.BatchDataNotAvailable.ToString(), tenantCode);
-                        this.scheduleRepository.UpdateScheduleStatus(schedule.Identifier, ScheduleStatus.BatchDataNotAvailable.ToString(), tenantCode);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //                this.scheduleLogRepository.UpdateScheduleLogStatus(statementRawData.ScheduleLog.Identifier, scheduleLogStatus, tenantCode);
+        //                this.scheduleRepository.UpdateBatchStatus(statementRawData.Batch.Identifier, _batchStatus, true, tenantCode);
+        //                this.scheduleRepository.UpdateScheduleStatus(statementRawData.ScheduleLog.ScheduleId, ScheduleStatus.Completed.ToString(), tenantCode);
+        //            }
+        //            else
+        //            {
+        //                this.scheduleRepository.UpdateBatchStatus(batch.Identifier, BatchStatus.BatchDataNotAvailable.ToString(), false, tenantCode);
+        //                this.scheduleLogRepository.UpdateScheduleLogStatus(scheduleLog.Identifier, ScheduleLogStatus.BatchDataNotAvailable.ToString(), tenantCode);
+        //                this.scheduleRepository.UpdateScheduleStatus(schedule.Identifier, ScheduleStatus.BatchDataNotAvailable.ToString(), tenantCode);
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
         #endregion
 
@@ -2461,25 +2461,25 @@ namespace nIS
             public RenderEngine RenderEngine { get; set; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public class DM_CustomerParallelRequest
-        {
-            /// <summary>
-            /// Gets or sets the dm customers.
-            /// </summary>
-            /// <value>
-            /// The dm customers.
-            /// </value>
-            public List<DM_CustomerMaster> DM_Customers { get; set; }
-            /// <summary>
-            /// Gets or sets the render engine.
-            /// </summary>
-            /// <value>
-            /// The render engine.
-            /// </value>
-            public RenderEngine RenderEngine { get; set; }
-        }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public class DM_CustomerParallelRequest
+        //{
+        //    /// <summary>
+        //    /// Gets or sets the dm customers.
+        //    /// </summary>
+        //    /// <value>
+        //    /// The dm customers.
+        //    /// </value>
+        //    public List<DM_CustomerMaster> DM_Customers { get; set; }
+        //    /// <summary>
+        //    /// Gets or sets the render engine.
+        //    /// </summary>
+        //    /// <value>
+        //    /// The render engine.
+        //    /// </value>
+        //    public RenderEngine RenderEngine { get; set; }
+        //}
     }
 }

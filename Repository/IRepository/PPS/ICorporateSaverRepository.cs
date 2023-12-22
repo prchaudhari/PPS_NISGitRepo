@@ -17,9 +17,9 @@ namespace nIS
     {
         #region Corporate Saver Data
 
-        IList<DM_CorporateSaverMaster> Get_DM_CorporateSaverMaster(CustomerCorporateSaverSearchParameter searchParameter, string tenantCode);
+        //IList<DM_CorporateSaverMaster> Get_DM_CorporateSaverMaster(CustomerCorporateSaverSearchParameter searchParameter, string tenantCode);
 
-        IList<DM_CorporateSaverTransaction> Get_DM_CorporateSaverTransaction(CustomerCorporateSaverSearchParameter searchParameter, string tenantCode);
+        //IList<DM_CorporateSaverTransaction> Get_DM_CorporateSaverTransaction(CustomerCorporateSaverSearchParameter searchParameter, string tenantCode);
 
         #endregion
     }

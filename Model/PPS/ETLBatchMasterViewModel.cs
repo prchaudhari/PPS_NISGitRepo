@@ -3,7 +3,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace nIS.Models.NedBank
+namespace nIS.Models.PPS
 {
     #region References
     using System;

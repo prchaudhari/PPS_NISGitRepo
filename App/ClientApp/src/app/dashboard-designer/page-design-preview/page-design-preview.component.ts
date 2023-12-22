@@ -9,7 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import {
   SummaryAtGlanceComponent, AccountInformationComponent, FSPDetailsComponent, PaymentSummaryComponent,
   SavingTrendsPreviewComponent, SpendindTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent, 
-  DynamicBarChartWidgetPreviewComponent, DynamicHhtmlComponent, StaticHtmlComponent, PageBreakComponent, SegmentBasedContentComponent, PortfolioAccountAnalysisPreviewComponent, YTDRewardPointsPreviewComponent, PointsRedeemedYTDPreviewComponent, ProductRelatedPointsEarnedPreviewComponent, CategorySpendRewardsPreviewComponent } from '../widgetComponent/widgetComponent';
+  DynamicBarChartWidgetPreviewComponent, DynamicHhtmlComponent, StaticHtmlComponent, PageBreakComponent, SegmentBasedContentComponent} from '../widgetComponent/widgetComponent';
 import { DynamicWidgetService } from '../../layout/widget-dynamic/dynamicwidget.service';
 import { AppSettings } from '../../appsettings';
 
@@ -161,21 +161,22 @@ export class PageDesignPreviewComponent extends DialogComponent<PageDesignPrevie
         return AnalyticsWidgetPreviewComponent;
       }else if(widgetName == 'SpendingTrend') {
         return SpendindTrendsPreviewComponent;
-      }else if (widgetName == 'AccountAnalysis') {
-        return PortfolioAccountAnalysisPreviewComponent;
       }
-      else if (widgetName == 'YTDRewardsPoints') {
-        return YTDRewardPointsPreviewComponent;
-      }
-      else if (widgetName == 'PointsRedeemedYTD') {
-        return PointsRedeemedYTDPreviewComponent;
-      }
-      else if (widgetName == 'ProductRelatedPointsEarned') {
-        return ProductRelatedPointsEarnedPreviewComponent;
-      }
-      else if (widgetName == 'CategorySpendRewards') {
-        return CategorySpendRewardsPreviewComponent;
-      }
+      //else if (widgetName == 'AccountAnalysis') {
+      //  return PortfolioAccountAnalysisPreviewComponent;
+      //}
+      //else if (widgetName == 'YTDRewardsPoints') {
+      //  return YTDRewardPointsPreviewComponent;
+      //}
+      //else if (widgetName == 'PointsRedeemedYTD') {
+      //  return PointsRedeemedYTDPreviewComponent;
+      //}
+      //else if (widgetName == 'ProductRelatedPointsEarned') {
+      //  return ProductRelatedPointsEarnedPreviewComponent;
+      //}
+      //else if (widgetName == 'CategorySpendRewards') {
+      //  return CategorySpendRewardsPreviewComponent;
+      //}
       else if (widgetName == 'StaticHtml') {
         return StaticHtmlComponent;
       }

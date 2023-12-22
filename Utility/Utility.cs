@@ -1290,7 +1290,7 @@
                 client.setTitle("PDF statement");
 
                 //Set the author of the PDF.
-                client.setAuthor("NedBank");
+                client.setAuthor("PPS");
 
                 if (password != string.Empty)
                 {
@@ -1316,41 +1316,41 @@
             return isPdfSuccess;
         }
 
-        /// <summary>
-        /// This method helps to format nedbank tenant amount value
-        /// </summary>
-        /// <param name="amount">The value.</param>
-        /// <returns>
-        /// Returns the the formatted amount value string
-        /// </returns>
-        public string NedbankClientAmountFormatter(double amount)
-        {
-            try
-            {
-                var totalAmtStr = Convert.ToString(amount).Split(new Char[] { '.', ',' });
-                var wholeNo = totalAmtStr[0];
-                var franctionNo = totalAmtStr.Length > 1 ? (new string(totalAmtStr[1].Take(2).ToArray())) : "0";
+        ///// <summary>
+        ///// This method helps to format nedbank tenant amount value
+        ///// </summary>
+        ///// <param name="amount">The value.</param>
+        ///// <returns>
+        ///// Returns the the formatted amount value string
+        ///// </returns>
+        //public string NedbankClientAmountFormatter(double amount)
+        //{
+        //    try
+        //    {
+        //        var totalAmtStr = Convert.ToString(amount).Split(new Char[] { '.', ',' });
+        //        var wholeNo = totalAmtStr[0];
+        //        var franctionNo = totalAmtStr.Length > 1 ? (new string(totalAmtStr[1].Take(2).ToArray())) : "0";
 
-                char[] cArray = wholeNo.ToCharArray();
-                Array.Reverse(cArray);
+        //        char[] cArray = wholeNo.ToCharArray();
+        //        Array.Reverse(cArray);
 
-                var tempAmountVal = ".";
-                int cnt = 0;
-                while (cArray.Length != cnt)
-                {
-                    tempAmountVal = (tempAmountVal.Length > 1 && tempAmountVal.Length % 4 == 0) ? tempAmountVal + " " + cArray[cnt].ToString() : tempAmountVal + cArray[cnt].ToString();
-                    cnt++;
-                }
+        //        var tempAmountVal = ".";
+        //        int cnt = 0;
+        //        while (cArray.Length != cnt)
+        //        {
+        //            tempAmountVal = (tempAmountVal.Length > 1 && tempAmountVal.Length % 4 == 0) ? tempAmountVal + " " + cArray[cnt].ToString() : tempAmountVal + cArray[cnt].ToString();
+        //            cnt++;
+        //        }
 
-                cArray = tempAmountVal.ToCharArray();
-                Array.Reverse(cArray);
-                return (new string(cArray) + franctionNo);
-            }
-            catch (Exception)
-            {
-                return "0";
-            }
-        }
+        //        cArray = tempAmountVal.ToCharArray();
+        //        Array.Reverse(cArray);
+        //        return (new string(cArray) + franctionNo);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return "0";
+        //    }
+        //}
 
         /// <summary>
         /// This method helps to format currency as per provided country currency details amount value

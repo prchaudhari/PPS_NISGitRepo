@@ -3,7 +3,7 @@
 // </copyright>
 // -----------------------------------------------------------------------  
 
-using nIS.NedBank;
+using nIS.PPS;
 using System;
 using System.Collections.Generic;
 
@@ -207,25 +207,25 @@ namespace nIS
         /// </returns>
         bool RunScheduleNow(BatchMaster batchMaster, string baseURL, string outputLocation, string tenantCode, int parallelThreadCount, TenantConfiguration tenantConfiguration, Client client);
 
-        /// <summary>
-        /// This method helps to approve batch of the respective schedule.
-        /// </summary>
-        /// <param name="BatchIdentifier">The batch identifier.</param>
-        /// <param name="tenantCode">The tenant code.</param>
-        /// <returns>
-        /// True if success, otherwise false
-        /// </returns>
-        bool ApproveScheduleBatch(long BatchIdentifier, string tenantCode);
+        ///// <summary>
+        ///// This method helps to approve batch of the respective schedule.
+        ///// </summary>
+        ///// <param name="BatchIdentifier">The batch identifier.</param>
+        ///// <param name="tenantCode">The tenant code.</param>
+        ///// <returns>
+        ///// True if success, otherwise false
+        ///// </returns>
+        //bool ApproveScheduleBatch(long BatchIdentifier, string tenantCode);
 
-        /// <summary>
-        /// This method helps to approve batch of the respective schedule.
-        /// </summary>
-        /// <param name="BatchIdentifier">The batch identifier.</param>
-        /// <param name="tenantCode">The tenant code.</param>
-        /// <returns>
-        /// True if success, otherwise false
-        /// </returns>
-        bool ValidateApproveScheduleBatch(long BatchIdentifier, string tenantCode);
+        ///// <summary>
+        ///// This method helps to approve batch of the respective schedule.
+        ///// </summary>
+        ///// <param name="BatchIdentifier">The batch identifier.</param>
+        ///// <param name="tenantCode">The tenant code.</param>
+        ///// <returns>
+        ///// True if success, otherwise false
+        ///// </returns>
+        //bool ValidateApproveScheduleBatch(long BatchIdentifier, string tenantCode);
         bool ValidateApproveScheduleBatches(List<long> BatchIdentifier, string tenantCode);
         /// <summary>
         /// This method helps to clean batch and related data of the respective schedule.

@@ -15,7 +15,7 @@ namespace nIS
     #endregion
 
     /// <summary>
-    /// This class represent api controller for pagev
+    /// This class represent api controller for page
     /// </summary>
     public class PageController: ApiController
     {

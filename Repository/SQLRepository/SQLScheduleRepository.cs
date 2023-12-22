@@ -8,7 +8,7 @@ namespace nIS
     using Microsoft.Practices.ObjectBuilder2;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
-    using nIS.NedBank;
+    using nIS.PPS;
     using NIS.Repository.Entities;
     #region References
     using System;
@@ -2600,341 +2600,341 @@ namespace nIS
             return batchMasters;
         }
 
-        /// <summary>
-        /// This method helps to approve batch of the respective schedule.
-        /// </summary>
-        /// <param name="BatchIdentifier">The batch identifier.</param>
-        /// <param name="tenantCode">The tenant code.</param>
-        /// <returns>
-        /// True if success, otherwise false
-        /// </returns>
-        /// <exception cref="nIS.TenantSecurityCodeFormatNotAvailableException"></exception>
-        public bool ApproveScheduleBatch(long BatchIdentifier, string tenantCode)
-        {
-            List<CustomerMasterRecord> customerMasterRecords = new List<CustomerMasterRecord>();
-            List<DM_CustomerMasterRecord> dm_customerMasterRecords = new List<DM_CustomerMasterRecord>();
-            List<StatementMetadataRecord> statementMetadataRecords = new List<StatementMetadataRecord>();
-            IList<ScheduleLogRecord> scheduleLogRecords = new List<ScheduleLogRecord>();
-            IList<ScheduleLogDetailRecord> scheduleLogDetailRecords = new List<ScheduleLogDetailRecord>();
-            IList<SystemActivityHistoryRecord> Records = new List<SystemActivityHistoryRecord>();
+        ///// <summary>
+        ///// This method helps to approve batch of the respective schedule.
+        ///// </summary>
+        ///// <param name="BatchIdentifier">The batch identifier.</param>
+        ///// <param name="tenantCode">The tenant code.</param>
+        ///// <returns>
+        ///// True if success, otherwise false
+        ///// </returns>
+        ///// <exception cref="nIS.TenantSecurityCodeFormatNotAvailableException"></exception>
+        //public bool ApproveScheduleBatch(long BatchIdentifier, string tenantCode)
+        //{
+        //    List<CustomerMasterRecord> customerMasterRecords = new List<CustomerMasterRecord>();
+        //    List<DM_CustomerMasterRecord> dm_customerMasterRecords = new List<DM_CustomerMasterRecord>();
+        //    List<StatementMetadataRecord> statementMetadataRecords = new List<StatementMetadataRecord>();
+        //    IList<ScheduleLogRecord> scheduleLogRecords = new List<ScheduleLogRecord>();
+        //    IList<ScheduleLogDetailRecord> scheduleLogDetailRecords = new List<ScheduleLogDetailRecord>();
+        //    IList<SystemActivityHistoryRecord> Records = new List<SystemActivityHistoryRecord>();
 
-            try
-            {
-                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
-                int userId;
-                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
-                var userFullName = claims?.FirstOrDefault(x => x.Type.Equals("UserFullName", StringComparison.OrdinalIgnoreCase)).Value;
+        //    try
+        //    {
+        //        var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+        //        int userId;
+        //        int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+        //        var userFullName = claims?.FirstOrDefault(x => x.Type.Equals("UserFullName", StringComparison.OrdinalIgnoreCase)).Value;
 
-                this.SetAndValidateConnectionString(tenantCode);
-                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                {
-                    customerMasterRecords = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.BatchId == BatchIdentifier && item.TenantCode == tenantCode)?.ToList();
-                    if (customerMasterRecords == null || customerMasterRecords.Count == 0)
-                    {
-                        dm_customerMasterRecords = nISEntitiesDataContext.DM_CustomerMasterRecord.Where(it => it.BatchId == BatchIdentifier && it.TenantCode == tenantCode)?.ToList();
-                    }
-                    scheduleLogRecords = nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.BatchId == BatchIdentifier).ToList();
-                }
-                StringBuilder query = new StringBuilder();
-                if (scheduleLogRecords?.Count > 0)
-                {
-                    query = query.Append("(" + string.Join("or ", scheduleLogRecords.Select(item => string.Format("ScheduleLogId.Equals({0}) ", item.Id))) + ") and ");
-                    query.Append(string.Format(" TenantCode.Equals(\"{0}\") ", tenantCode));
-                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                    {
-                        statementMetadataRecords = nISEntitiesDataContext.StatementMetadataRecords.Where(query.ToString()).ToList();
-                    }
-                }
-                if (statementMetadataRecords?.Count > 0)
-                {
-                    TenantSecurityCodeFormatRecord tenantSecurityCodeFormatRecord;
-                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                    {
-                        tenantSecurityCodeFormatRecord = nISEntitiesDataContext.TenantSecurityCodeFormatRecords.Where(item => item.TenantCode == tenantCode).ToList().FirstOrDefault();
-                    }
-                    if (tenantSecurityCodeFormatRecord == null)
-                    {
-                        throw new TenantSecurityCodeFormatNotAvailableException(tenantCode);
-                    }
-                    List<string> fields = tenantSecurityCodeFormatRecord.Format.Split('<').ToList();
-                    fields.RemoveAt(0);
-                    for (int i = 0; i < fields.Count; i++)
-                    {
-                        fields[i] = fields[i].Remove(fields[i].Length - 1);
-                    }
-                    IList<StatementMetadataRecord> newStatementMetadataRecords = new List<StatementMetadataRecord>();
-                    if (customerMasterRecords != null && customerMasterRecords.Count > 0)
-                    {
-                        customerMasterRecords.ToList().ForEach(item =>
-                        {
-                            string password = string.Empty;
-                            JObject customerDetails = JObject.FromObject(item);
-                            int count = 0;
+        //        this.SetAndValidateConnectionString(tenantCode);
+        //        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+        //        {
+        //            customerMasterRecords = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.BatchId == BatchIdentifier && item.TenantCode == tenantCode)?.ToList();
+        //            //if (customerMasterRecords == null || customerMasterRecords.Count == 0)
+        //            //{
+        //            //    dm_customerMasterRecords = nISEntitiesDataContext.DM_CustomerMasterRecord.Where(it => it.BatchId == BatchIdentifier && it.TenantCode == tenantCode)?.ToList();
+        //            //}
+        //            scheduleLogRecords = nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.BatchId == BatchIdentifier).ToList();
+        //        }
+        //        StringBuilder query = new StringBuilder();
+        //        if (scheduleLogRecords?.Count > 0)
+        //        {
+        //            query = query.Append("(" + string.Join("or ", scheduleLogRecords.Select(item => string.Format("ScheduleLogId.Equals({0}) ", item.Id))) + ") and ");
+        //            query.Append(string.Format(" TenantCode.Equals(\"{0}\") ", tenantCode));
+        //            using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+        //            {
+        //                statementMetadataRecords = nISEntitiesDataContext.StatementMetadataRecords.Where(query.ToString()).ToList();
+        //            }
+        //        }
+        //        if (statementMetadataRecords?.Count > 0)
+        //        {
+        //            TenantSecurityCodeFormatRecord tenantSecurityCodeFormatRecord;
+        //            using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+        //            {
+        //                tenantSecurityCodeFormatRecord = nISEntitiesDataContext.TenantSecurityCodeFormatRecords.Where(item => item.TenantCode == tenantCode).ToList().FirstOrDefault();
+        //            }
+        //            if (tenantSecurityCodeFormatRecord == null)
+        //            {
+        //                throw new TenantSecurityCodeFormatNotAvailableException(tenantCode);
+        //            }
+        //            List<string> fields = tenantSecurityCodeFormatRecord.Format.Split('<').ToList();
+        //            fields.RemoveAt(0);
+        //            for (int i = 0; i < fields.Count; i++)
+        //            {
+        //                fields[i] = fields[i].Remove(fields[i].Length - 1);
+        //            }
+        //            IList<StatementMetadataRecord> newStatementMetadataRecords = new List<StatementMetadataRecord>();
+        //            if (customerMasterRecords != null && customerMasterRecords.Count > 0)
+        //            {
+        //                customerMasterRecords.ToList().ForEach(item =>
+        //                {
+        //                    string password = string.Empty;
+        //                    JObject customerDetails = JObject.FromObject(item);
+        //                    int count = 0;
 
-                            fields.ToList().ForEach(field =>
-                            {
-                                string fieldValue = string.Empty;
-                                List<string> fieldDetail = field.Split(':').ToList();
-                                if (customerDetails[fieldDetail[0]].ToString() == "")
-                                {
-                                    throw new TenantSecurityCodeFieldDataNotAvailable(tenantCode);
-                                }
-                                if (fieldDetail.Count == 1)
-                                {
-                                    fieldValue = customerDetails[fieldDetail[0]].ToString();
-                                }
-                                else if (fieldDetail.Count == 3)
-                                {
-                                    fieldValue = fieldDetail[0];
-                                    if (fieldDetail[2] == "F")
-                                    {
-                                        count = Convert.ToInt32(fieldDetail[1]);
-                                        fieldValue = customerDetails[fieldDetail[0]].ToString().Substring(0, count);
-                                    }
-                                    else if (fieldDetail[2] == "L")
-                                    {
-                                        count = Convert.ToInt32(fieldDetail[1]);
-                                        int length = customerDetails[fieldDetail[0]].ToString().Length;
-                                        fieldValue = customerDetails[fieldDetail[0]].ToString().Substring(length - count, count);
-                                    }
-                                }
-                                password = password + fieldValue;
-                            });
-                            statementMetadataRecords.Where(stmt => stmt.CustomerId == item.Id).ToList().ForEach(st =>
-                            {
-                                StatementMetadataRecord statement = new StatementMetadataRecord();
-                                statement = st;
-                                statement.Password = this.cryptoManager.Encrypt(password);
-                                newStatementMetadataRecords.Add(statement);
-                            });
-                        });
+        //                    fields.ToList().ForEach(field =>
+        //                    {
+        //                        string fieldValue = string.Empty;
+        //                        List<string> fieldDetail = field.Split(':').ToList();
+        //                        if (customerDetails[fieldDetail[0]].ToString() == "")
+        //                        {
+        //                            throw new TenantSecurityCodeFieldDataNotAvailable(tenantCode);
+        //                        }
+        //                        if (fieldDetail.Count == 1)
+        //                        {
+        //                            fieldValue = customerDetails[fieldDetail[0]].ToString();
+        //                        }
+        //                        else if (fieldDetail.Count == 3)
+        //                        {
+        //                            fieldValue = fieldDetail[0];
+        //                            if (fieldDetail[2] == "F")
+        //                            {
+        //                                count = Convert.ToInt32(fieldDetail[1]);
+        //                                fieldValue = customerDetails[fieldDetail[0]].ToString().Substring(0, count);
+        //                            }
+        //                            else if (fieldDetail[2] == "L")
+        //                            {
+        //                                count = Convert.ToInt32(fieldDetail[1]);
+        //                                int length = customerDetails[fieldDetail[0]].ToString().Length;
+        //                                fieldValue = customerDetails[fieldDetail[0]].ToString().Substring(length - count, count);
+        //                            }
+        //                        }
+        //                        password = password + fieldValue;
+        //                    });
+        //                    statementMetadataRecords.Where(stmt => stmt.CustomerId == item.Id).ToList().ForEach(st =>
+        //                    {
+        //                        StatementMetadataRecord statement = new StatementMetadataRecord();
+        //                        statement = st;
+        //                        statement.Password = this.cryptoManager.Encrypt(password);
+        //                        newStatementMetadataRecords.Add(statement);
+        //                    });
+        //                });
 
-                        if (newStatementMetadataRecords?.Count > 0)
-                        {
-                            IList<StatementMetadataRecord> statementToBeUpdate = new List<StatementMetadataRecord>();
-                            query = new StringBuilder();
-                            query = query.Append("(" + string.Join("or ", newStatementMetadataRecords.Select(item => string.Format("Id.Equals({0}) ", item.Id))) + ") ");
-                            using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                            {
-                                statementToBeUpdate = nISEntitiesDataContext.StatementMetadataRecords.Where(query.ToString()).ToList();
-                                statementToBeUpdate.ToList().ForEach(item =>
-                                {
-                                    item.Password = newStatementMetadataRecords.Where(s => s.Id == item.Id).FirstOrDefault().Password;
-                                    item.IsPasswordGenerated = true;
-                                });
-                                nISEntitiesDataContext.SaveChanges();
-                            }
-                        }
-                    }
-                    else if (dm_customerMasterRecords != null && dm_customerMasterRecords.Count > 0)
-                    {
-                        dm_customerMasterRecords.ToList().ForEach(item =>
-                        {
-                            string password = string.Empty;
-                            JObject customerDetails = JObject.FromObject(item);
-                            int count = 0;
+        //                if (newStatementMetadataRecords?.Count > 0)
+        //                {
+        //                    IList<StatementMetadataRecord> statementToBeUpdate = new List<StatementMetadataRecord>();
+        //                    query = new StringBuilder();
+        //                    query = query.Append("(" + string.Join("or ", newStatementMetadataRecords.Select(item => string.Format("Id.Equals({0}) ", item.Id))) + ") ");
+        //                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+        //                    {
+        //                        statementToBeUpdate = nISEntitiesDataContext.StatementMetadataRecords.Where(query.ToString()).ToList();
+        //                        statementToBeUpdate.ToList().ForEach(item =>
+        //                        {
+        //                            item.Password = newStatementMetadataRecords.Where(s => s.Id == item.Id).FirstOrDefault().Password;
+        //                            item.IsPasswordGenerated = true;
+        //                        });
+        //                        nISEntitiesDataContext.SaveChanges();
+        //                    }
+        //                }
+        //            }
+        //            else if (dm_customerMasterRecords != null && dm_customerMasterRecords.Count > 0)
+        //            {
+        //                dm_customerMasterRecords.ToList().ForEach(item =>
+        //                {
+        //                    string password = string.Empty;
+        //                    JObject customerDetails = JObject.FromObject(item);
+        //                    int count = 0;
 
-                            fields.ToList().ForEach(field =>
-                            {
-                                string fieldValue = string.Empty;
-                                List<string> fieldDetail = field.Split(':').ToList();
-                                if (customerDetails[fieldDetail[0]].ToString() == "")
-                                {
-                                    throw new TenantSecurityCodeFieldDataNotAvailable(tenantCode);
-                                }
-                                if (fieldDetail.Count == 1)
-                                {
-                                    fieldValue = customerDetails[fieldDetail[0]].ToString();
-                                }
-                                else if (fieldDetail.Count == 3)
-                                {
-                                    fieldValue = fieldDetail[0];
-                                    if (fieldDetail[2] == "F")
-                                    {
-                                        count = Convert.ToInt32(fieldDetail[1]);
-                                        fieldValue = customerDetails[fieldDetail[0]].ToString().Substring(0, count);
-                                    }
-                                    else if (fieldDetail[2] == "L")
-                                    {
-                                        count = Convert.ToInt32(fieldDetail[1]);
-                                        int length = customerDetails[fieldDetail[0]].ToString().Length;
-                                        fieldValue = customerDetails[fieldDetail[0]].ToString().Substring(length - count, count);
-                                    }
-                                }
-                                password = password + fieldValue;
-                            });
-                            statementMetadataRecords.Where(stmt => stmt.CustomerId == item.Id).ToList().ForEach(st =>
-                            {
-                                StatementMetadataRecord statement = new StatementMetadataRecord();
-                                statement = st;
-                                statement.Password = this.cryptoManager.Encrypt(password);
-                                newStatementMetadataRecords.Add(statement);
-                            });
-                        });
+        //                    fields.ToList().ForEach(field =>
+        //                    {
+        //                        string fieldValue = string.Empty;
+        //                        List<string> fieldDetail = field.Split(':').ToList();
+        //                        if (customerDetails[fieldDetail[0]].ToString() == "")
+        //                        {
+        //                            throw new TenantSecurityCodeFieldDataNotAvailable(tenantCode);
+        //                        }
+        //                        if (fieldDetail.Count == 1)
+        //                        {
+        //                            fieldValue = customerDetails[fieldDetail[0]].ToString();
+        //                        }
+        //                        else if (fieldDetail.Count == 3)
+        //                        {
+        //                            fieldValue = fieldDetail[0];
+        //                            if (fieldDetail[2] == "F")
+        //                            {
+        //                                count = Convert.ToInt32(fieldDetail[1]);
+        //                                fieldValue = customerDetails[fieldDetail[0]].ToString().Substring(0, count);
+        //                            }
+        //                            else if (fieldDetail[2] == "L")
+        //                            {
+        //                                count = Convert.ToInt32(fieldDetail[1]);
+        //                                int length = customerDetails[fieldDetail[0]].ToString().Length;
+        //                                fieldValue = customerDetails[fieldDetail[0]].ToString().Substring(length - count, count);
+        //                            }
+        //                        }
+        //                        password = password + fieldValue;
+        //                    });
+        //                    statementMetadataRecords.Where(stmt => stmt.CustomerId == item.Id).ToList().ForEach(st =>
+        //                    {
+        //                        StatementMetadataRecord statement = new StatementMetadataRecord();
+        //                        statement = st;
+        //                        statement.Password = this.cryptoManager.Encrypt(password);
+        //                        newStatementMetadataRecords.Add(statement);
+        //                    });
+        //                });
 
-                        if (newStatementMetadataRecords?.Count > 0)
-                        {
-                            IList<StatementMetadataRecord> statementToBeUpdate = new List<StatementMetadataRecord>();
-                            query = new StringBuilder();
-                            query = query.Append("(" + string.Join("or ", newStatementMetadataRecords.Select(item => string.Format("Id.Equals({0}) ", item.Id))) + ") ");
-                            using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                            {
-                                statementToBeUpdate = nISEntitiesDataContext.StatementMetadataRecords.Where(query.ToString()).ToList();
-                                statementToBeUpdate.ToList().ForEach(item =>
-                                {
-                                    item.Password = newStatementMetadataRecords.Where(s => s.Id == item.Id).FirstOrDefault().Password;
-                                    item.IsPasswordGenerated = true;
-                                });
-                                nISEntitiesDataContext.SaveChanges();
-                            }
-                        }
-                    }
-                }
+        //                if (newStatementMetadataRecords?.Count > 0)
+        //                {
+        //                    IList<StatementMetadataRecord> statementToBeUpdate = new List<StatementMetadataRecord>();
+        //                    query = new StringBuilder();
+        //                    query = query.Append("(" + string.Join("or ", newStatementMetadataRecords.Select(item => string.Format("Id.Equals({0}) ", item.Id))) + ") ");
+        //                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+        //                    {
+        //                        statementToBeUpdate = nISEntitiesDataContext.StatementMetadataRecords.Where(query.ToString()).ToList();
+        //                        statementToBeUpdate.ToList().ForEach(item =>
+        //                        {
+        //                            item.Password = newStatementMetadataRecords.Where(s => s.Id == item.Id).FirstOrDefault().Password;
+        //                            item.IsPasswordGenerated = true;
+        //                        });
+        //                        nISEntitiesDataContext.SaveChanges();
+        //                    }
+        //                }
+        //            }
+        //        }
 
-                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                {
-                    var batchs = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == BatchIdentifier && item.TenantCode == tenantCode).ToList();
-                    batchs.ForEach(batch =>
-                    {
-                        batch.Status = BatchStatus.Approved.ToString();
+        //        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+        //        {
+        //            var batchs = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == BatchIdentifier && item.TenantCode == tenantCode).ToList();
+        //            batchs.ForEach(batch =>
+        //            {
+        //                batch.Status = BatchStatus.Approved.ToString();
 
-                        Records.Add(new SystemActivityHistoryRecord()
-                        {
-                            Module = ModelConstant.SCHEDULE_MODEL_SECTION,
-                            EntityId = batch.ScheduleId,
-                            EntityName = (scheduleLogRecords != null && scheduleLogRecords.Count > 0) ? scheduleLogRecords[0].ScheduleName : string.Empty,
-                            SubEntityId = batch.Id,
-                            SubEntityName = batch.BatchName,
-                            ActionTaken = "ApproveBatch",
-                            ActionTakenBy = userId,
-                            ActionTakenByUserName = userFullName,
-                            ActionTakenDate = DateTime.Now,
-                            TenantCode = tenantCode
-                        });
-                    });
+        //                Records.Add(new SystemActivityHistoryRecord()
+        //                {
+        //                    Module = ModelConstant.SCHEDULE_MODEL_SECTION,
+        //                    EntityId = batch.ScheduleId,
+        //                    EntityName = (scheduleLogRecords != null && scheduleLogRecords.Count > 0) ? scheduleLogRecords[0].ScheduleName : string.Empty,
+        //                    SubEntityId = batch.Id,
+        //                    SubEntityName = batch.BatchName,
+        //                    ActionTaken = "ApproveBatch",
+        //                    ActionTakenBy = userId,
+        //                    ActionTakenByUserName = userFullName,
+        //                    ActionTakenDate = DateTime.Now,
+        //                    TenantCode = tenantCode
+        //                });
+        //            });
 
-                    if (Records.Count > 0)
-                    {
-                        nISEntitiesDataContext.SystemActivityHistoryRecords.AddRange(Records);
-                    }
+        //            if (Records.Count > 0)
+        //            {
+        //                nISEntitiesDataContext.SystemActivityHistoryRecords.AddRange(Records);
+        //            }
 
-                    nISEntitiesDataContext.SaveChanges();
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //            nISEntitiesDataContext.SaveChanges();
+        //        }
+        //        return true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
-        /// <summary>
-        /// This method helps to approve batch of the respective schedule.
-        /// </summary>
-        /// <param name="BatchIdentifier">The batch identifier.</param>
-        /// <param name="tenantCode">The tenant code.</param>
-        /// <returns>
-        /// True if success, otherwise false
-        /// </returns>
-        /// <exception cref="nIS.TenantSecurityCodeFormatNotAvailableException"></exception>
-        public bool ValidateApproveScheduleBatch(long BatchIdentifier, string tenantCode)
-        {
-            List<CustomerMasterRecord> customerMasterRecords = new List<CustomerMasterRecord>();
-            List<DM_CustomerMasterRecord> dm_customerMasterRecords = new List<DM_CustomerMasterRecord>();
-            List<StatementMetadataRecord> statementMetadataRecords = new List<StatementMetadataRecord>();
-            IList<ScheduleLogRecord> scheduleLogRecords = new List<ScheduleLogRecord>();
-            IList<ScheduleLogDetailRecord> scheduleLogDetailRecords = new List<ScheduleLogDetailRecord>();
+        ///// <summary>
+        ///// This method helps to approve batch of the respective schedule.
+        ///// </summary>
+        ///// <param name="BatchIdentifier">The batch identifier.</param>
+        ///// <param name="tenantCode">The tenant code.</param>
+        ///// <returns>
+        ///// True if success, otherwise false
+        ///// </returns>
+        ///// <exception cref="nIS.TenantSecurityCodeFormatNotAvailableException"></exception>
+        //public bool ValidateApproveScheduleBatch(long BatchIdentifier, string tenantCode)
+        //{
+        //    List<CustomerMasterRecord> customerMasterRecords = new List<CustomerMasterRecord>();
+        //    List<DM_CustomerMasterRecord> dm_customerMasterRecords = new List<DM_CustomerMasterRecord>();
+        //    List<StatementMetadataRecord> statementMetadataRecords = new List<StatementMetadataRecord>();
+        //    IList<ScheduleLogRecord> scheduleLogRecords = new List<ScheduleLogRecord>();
+        //    IList<ScheduleLogDetailRecord> scheduleLogDetailRecords = new List<ScheduleLogDetailRecord>();
 
-            try
-            {
-                this.SetAndValidateConnectionString(tenantCode);
-                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                {
-                    customerMasterRecords = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.BatchId == BatchIdentifier && item.TenantCode == tenantCode)?.ToList();
-                    if (customerMasterRecords == null || customerMasterRecords.Count == 0)
-                    {
-                        dm_customerMasterRecords = nISEntitiesDataContext.DM_CustomerMasterRecord.Where(it => it.BatchId == BatchIdentifier && it.TenantCode == tenantCode)?.ToList();
-                    }
-                    scheduleLogRecords = nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.BatchId == BatchIdentifier).ToList();
-                }
-                StringBuilder query = new StringBuilder();
-                if (scheduleLogRecords?.Count > 0)
-                {
-                    query = query.Append("(" + string.Join("or ", scheduleLogRecords.Select(item => string.Format("ScheduleLogId.Equals({0}) ", item.Id))) + ") and ");
-                    query.Append(string.Format(" TenantCode.Equals(\"{0}\") ", tenantCode));
-                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                    {
-                        statementMetadataRecords = nISEntitiesDataContext.StatementMetadataRecords.Where(query.ToString()).ToList();
-                    }
-                }
-                if (statementMetadataRecords?.Count > 0)
-                {
-                    TenantSecurityCodeFormatRecord tenantSecurityCodeFormatRecord;
-                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                    {
-                        tenantSecurityCodeFormatRecord = nISEntitiesDataContext.TenantSecurityCodeFormatRecords.Where(item => item.TenantCode == tenantCode).ToList().FirstOrDefault();
-                    }
-                    if (tenantSecurityCodeFormatRecord == null)
-                    {
-                        throw new TenantSecurityCodeFormatNotAvailableException(tenantCode);
-                    }
-                    List<string> fields = tenantSecurityCodeFormatRecord.Format.Split('<').ToList();
-                    fields.RemoveAt(0);
-                    for (int i = 0; i < fields.Count; i++)
-                    {
-                        fields[i] = fields[i].Remove(fields[i].Length - 1);
-                    }
-                    IList<StatementMetadataRecord> newStatementMetadataRecords = new List<StatementMetadataRecord>();
-                    if (customerMasterRecords != null && customerMasterRecords.Count > 0)
-                    {
-                        customerMasterRecords.ToList().ForEach(item =>
-                        {
-                            JObject customerDetails = JObject.FromObject(item);
-                            fields.ToList().ForEach(field =>
-                            {
-                                string fieldValue = string.Empty;
-                                List<string> fieldDetail = field.Split(':').ToList();
-                                if (customerDetails[fieldDetail[0]].ToString() == "")
-                                {
-                                    throw new TenantSecurityCodeFieldDataNotAvailable(tenantCode);
-                                }
-                            });
-                        });
-                    }
-                    else if (dm_customerMasterRecords != null && dm_customerMasterRecords.Count > 0)
-                    {
-                        dm_customerMasterRecords.ToList().ForEach(item =>
-                        {
-                            JObject customerDetails = JObject.FromObject(item);
-                            fields.ToList().ForEach(field =>
-                            {
-                                string fieldValue = string.Empty;
-                                List<string> fieldDetail = field.Split(':').ToList();
-                                if (customerDetails[fieldDetail[0]].ToString() == "")
-                                {
-                                    throw new TenantSecurityCodeFieldDataNotAvailable(tenantCode);
-                                }
-                            });
-                        });
-                    }
-                }
-                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                {
-                    var batchs = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == BatchIdentifier && item.TenantCode == tenantCode).ToList();
-                    batchs.ForEach(batch =>
-                    {
-                        batch.Status = BatchStatus.ApprovalInProgress.ToString();
-                    });
+        //    try
+        //    {
+        //        this.SetAndValidateConnectionString(tenantCode);
+        //        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+        //        {
+        //            customerMasterRecords = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.BatchId == BatchIdentifier && item.TenantCode == tenantCode)?.ToList();
+        //            if (customerMasterRecords == null || customerMasterRecords.Count == 0)
+        //            {
+        //                dm_customerMasterRecords = nISEntitiesDataContext.DM_CustomerMasterRecord.Where(it => it.BatchId == BatchIdentifier && it.TenantCode == tenantCode)?.ToList();
+        //            }
+        //            scheduleLogRecords = nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.BatchId == BatchIdentifier).ToList();
+        //        }
+        //        StringBuilder query = new StringBuilder();
+        //        if (scheduleLogRecords?.Count > 0)
+        //        {
+        //            query = query.Append("(" + string.Join("or ", scheduleLogRecords.Select(item => string.Format("ScheduleLogId.Equals({0}) ", item.Id))) + ") and ");
+        //            query.Append(string.Format(" TenantCode.Equals(\"{0}\") ", tenantCode));
+        //            using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+        //            {
+        //                statementMetadataRecords = nISEntitiesDataContext.StatementMetadataRecords.Where(query.ToString()).ToList();
+        //            }
+        //        }
+        //        if (statementMetadataRecords?.Count > 0)
+        //        {
+        //            TenantSecurityCodeFormatRecord tenantSecurityCodeFormatRecord;
+        //            using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+        //            {
+        //                tenantSecurityCodeFormatRecord = nISEntitiesDataContext.TenantSecurityCodeFormatRecords.Where(item => item.TenantCode == tenantCode).ToList().FirstOrDefault();
+        //            }
+        //            if (tenantSecurityCodeFormatRecord == null)
+        //            {
+        //                throw new TenantSecurityCodeFormatNotAvailableException(tenantCode);
+        //            }
+        //            List<string> fields = tenantSecurityCodeFormatRecord.Format.Split('<').ToList();
+        //            fields.RemoveAt(0);
+        //            for (int i = 0; i < fields.Count; i++)
+        //            {
+        //                fields[i] = fields[i].Remove(fields[i].Length - 1);
+        //            }
+        //            IList<StatementMetadataRecord> newStatementMetadataRecords = new List<StatementMetadataRecord>();
+        //            if (customerMasterRecords != null && customerMasterRecords.Count > 0)
+        //            {
+        //                customerMasterRecords.ToList().ForEach(item =>
+        //                {
+        //                    JObject customerDetails = JObject.FromObject(item);
+        //                    fields.ToList().ForEach(field =>
+        //                    {
+        //                        string fieldValue = string.Empty;
+        //                        List<string> fieldDetail = field.Split(':').ToList();
+        //                        if (customerDetails[fieldDetail[0]].ToString() == "")
+        //                        {
+        //                            throw new TenantSecurityCodeFieldDataNotAvailable(tenantCode);
+        //                        }
+        //                    });
+        //                });
+        //            }
+        //            else if (dm_customerMasterRecords != null && dm_customerMasterRecords.Count > 0)
+        //            {
+        //                dm_customerMasterRecords.ToList().ForEach(item =>
+        //                {
+        //                    JObject customerDetails = JObject.FromObject(item);
+        //                    fields.ToList().ForEach(field =>
+        //                    {
+        //                        string fieldValue = string.Empty;
+        //                        List<string> fieldDetail = field.Split(':').ToList();
+        //                        if (customerDetails[fieldDetail[0]].ToString() == "")
+        //                        {
+        //                            throw new TenantSecurityCodeFieldDataNotAvailable(tenantCode);
+        //                        }
+        //                    });
+        //                });
+        //            }
+        //        }
+        //        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+        //        {
+        //            var batchs = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == BatchIdentifier && item.TenantCode == tenantCode).ToList();
+        //            batchs.ForEach(batch =>
+        //            {
+        //                batch.Status = BatchStatus.ApprovalInProgress.ToString();
+        //            });
 
-                    nISEntitiesDataContext.SaveChanges();
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //            nISEntitiesDataContext.SaveChanges();
+        //        }
+        //        return true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
         public bool ValidateApproveScheduleBatches(List<long> BatchIdentifier, string tenantCode)
         {
@@ -2950,10 +2950,10 @@ namespace nIS
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
                     customerMasterRecords = nISEntitiesDataContext.CustomerMasterRecords.Where(item => BatchIdentifier.Contains(item.BatchId) && item.TenantCode == tenantCode)?.ToList();
-                    if (customerMasterRecords == null || customerMasterRecords.Count == 0)
-                    {
-                        dm_customerMasterRecords = nISEntitiesDataContext.DM_CustomerMasterRecord.Where(it => BatchIdentifier.Contains((long)it.BatchId) && it.TenantCode == tenantCode)?.ToList();
-                    }
+                    //if (customerMasterRecords == null || customerMasterRecords.Count == 0)
+                    //{
+                    //    dm_customerMasterRecords = nISEntitiesDataContext.DM_CustomerMasterRecord.Where(it => BatchIdentifier.Contains((long)it.BatchId) && it.TenantCode == tenantCode)?.ToList();
+                    //}
                     scheduleLogRecords = nISEntitiesDataContext.ScheduleLogRecords.Where(item => BatchIdentifier.Contains(item.BatchId)).ToList();
                 }
                 StringBuilder query = new StringBuilder();

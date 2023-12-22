@@ -64,62 +64,62 @@ namespace nIS
 
         #region Public Functions
 
-        /// <summary>
-        /// Gets the customers by invester identifier.
-        /// </summary>
-        /// <param name="investorId">The investor identifier.</param>
-        /// <param name="tenantCode">The tenant code.</param>
-        /// <returns></returns>
-        /// <exception cref="NedBankException.RepositoryStoreNotAccessibleException"></exception>
-        public IList<CustomerInformation> GetCustomersByInvesterId(long investorId, string tenantCode)
-        {
-            IList<CustomerInformation> customers = new List<CustomerInformation>();
-            IList<NB_CustomerMaster> customerRecords = null;
-            try
-            {
-                this.SetAndValidateConnectionString(tenantCode);
-                using (NISEntities nedbankEntities = new NISEntities(this.connectionString))
-                {
-                    string whereClause = this.WhereClauseGenerator(investorId, tenantCode);
-                    customerRecords = new List<NB_CustomerMaster>();
-                    customerRecords = nedbankEntities.NB_CustomerMaster.Where(whereClause).ToList();
-                }
-                IList<CustomerInformation> tempCustomers = new List<CustomerInformation>();
-                customerRecords?.ToList().ForEach(customerRecord =>
-                {
-                    tempCustomers.Add(new CustomerInformation()
-                    {
-                        Id = customerRecord.Id,
-                        BatchId = customerRecord.BatchId,
-                        CustomerId = customerRecord.CustomerId,
-                        InvestorId = customerRecord.InvestorId,
-                        BranchId = customerRecord.BranchId,
-                        Title = customerRecord.Title,
-                        FirstName = customerRecord.FirstName,
-                        SurName = customerRecord.SurName,
-                        AddressLine0 = customerRecord.AddressLine0,
-                        AddressLine1 = customerRecord.AddressLine1,
-                        AddressLine2 = customerRecord.AddressLine2,
-                        AddressLine3 = customerRecord.AddressLine3,
-                        AddressLine4 = customerRecord.AddressLine4,
-                        EmailAddress = customerRecord.EmailAddress,
-                        MaskCellNo = customerRecord.MaskCellNo,
-                        Barcode = customerRecord.Barcode,
-                        TenantCode = customerRecord.TenantCode,
-                    });
-                });
-                customers = tempCustomers;
-            }
-            catch (SqlException)
-            {
-                throw new RepositoryStoreNotAccessibleException(tenantCode);
-            }
-            catch (Exception exception)
-            {
-                throw exception;
-            }
-            return customers;
-        }
+        ///// <summary>
+        ///// Gets the customers by invester identifier.
+        ///// </summary>
+        ///// <param name="investorId">The investor identifier.</param>
+        ///// <param name="tenantCode">The tenant code.</param>
+        ///// <returns></returns>
+        ///// <exception cref="NedBankException.RepositoryStoreNotAccessibleException"></exception>
+        //public IList<CustomerInformation> GetCustomersByInvesterId(long investorId, string tenantCode)
+        //{
+        //    IList<CustomerInformation> customers = new List<CustomerInformation>();
+        //    IList<NB_CustomerMaster> customerRecords = null;
+        //    try
+        //    {
+        //        this.SetAndValidateConnectionString(tenantCode);
+        //        using (NISEntities nedbankEntities = new NISEntities(this.connectionString))
+        //        {
+        //            string whereClause = this.WhereClauseGenerator(investorId, tenantCode);
+        //            customerRecords = new List<NB_CustomerMaster>();
+        //            customerRecords = nedbankEntities.NB_CustomerMaster.Where(whereClause).ToList();
+        //        }
+        //        IList<CustomerInformation> tempCustomers = new List<CustomerInformation>();
+        //        customerRecords?.ToList().ForEach(customerRecord =>
+        //        {
+        //            tempCustomers.Add(new CustomerInformation()
+        //            {
+        //                Id = customerRecord.Id,
+        //                BatchId = customerRecord.BatchId,
+        //                CustomerId = customerRecord.CustomerId,
+        //                InvestorId = customerRecord.InvestorId,
+        //                BranchId = customerRecord.BranchId,
+        //                Title = customerRecord.Title,
+        //                FirstName = customerRecord.FirstName,
+        //                SurName = customerRecord.SurName,
+        //                AddressLine0 = customerRecord.AddressLine0,
+        //                AddressLine1 = customerRecord.AddressLine1,
+        //                AddressLine2 = customerRecord.AddressLine2,
+        //                AddressLine3 = customerRecord.AddressLine3,
+        //                AddressLine4 = customerRecord.AddressLine4,
+        //                EmailAddress = customerRecord.EmailAddress,
+        //                MaskCellNo = customerRecord.MaskCellNo,
+        //                Barcode = customerRecord.Barcode,
+        //                TenantCode = customerRecord.TenantCode,
+        //            });
+        //        });
+        //        customers = tempCustomers;
+        //    }
+        //    catch (SqlException)
+        //    {
+        //        throw new RepositoryStoreNotAccessibleException(tenantCode);
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        throw exception;
+        //    }
+        //    return customers;
+        //}
         #endregion
 
         #region Private Method

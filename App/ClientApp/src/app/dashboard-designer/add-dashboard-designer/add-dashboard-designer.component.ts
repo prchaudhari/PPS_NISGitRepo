@@ -10,19 +10,14 @@ import { DialogService } from '@tomblue/ng2-bootstrap-modal';
 import { TemplateService } from '../../layout/template/template.service';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 import { Template } from '../../layout/template/template';
-import { TemplateWidget } from '../../layout/template/templateWidget';
+//import { TemplateWidget } from '../../layout/template/templateWidget';CorporateSaverAgentMessageComponent
 import {
   CustomerInformationComponent, AccountInformationComponent, PaymentSummaryComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
   SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
   SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
-  DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent, CustomerDetailsComponent, CorporateSaverAgentAddressComponent, BankDetailsComponent, WealthBankDetailsComponent,
-  InvestmentPortfolioStatementComponent, InvestmentWealthPortfolioStatementComponent, InvestorPerformanceComponent, WealthInvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, WealthExplanatoryNotesComponent, NedbankServiceComponent, WealthNedbankServiceComponent,
-  PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
-  PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent, HomeLoanTotalAmountDetailComponent, HomeLoanAccountsBreakdownComponent, HomeLoanPaymentDueSpecialMsgComponent,
-  HomeLoanInstalmentDetailComponent, PortfolioCustomerDetailsComponent, PortfolioCustomerAddressDetailsComponent, PortfolioClientContactDetailsComponent, PortfolioAccountSummaryDetailsComponent,
-  PortfolioAccountAnalysisComponent, PortfolioRemindersComponent, PortfolioNewsAlertsComponent, GreenbacksContactUsComponent, YTDRewardPointsComponent, PointsRedeemedYTDComponent, ProductRelatedPointsEarnedComponent, CategorySpendRewardsComponent, GreenbacksTotalRewardPointsComponent, WealthBreakdownOfInvestmentAccountsComponent, HomeLoanSummaryTaxPurposeComponent,
-  HomeLoanInstalmentComponent, WealthHomeLoanTotalAmountDetailComponent, WealthHomeLoanAccountsBreakdownComponent, WealthHomeLoanSummaryTaxPurposeComponent, WealthHomeLoanInstalmentComponent, WealthHomeLoanBankDetailsComponent,
-  MCAAccountSummaryComponent, MCATransactionComponent, MCAVATAnalysisComponent, WealthMCAVATAnalysisComponent, WealthMCATransactionComponent, WealthMCAAccountSummaryComponent, WealthMCABranchDetailsComponent, CorporateSaverAgentMessageComponent, CorporateSaverTransactionComponent, CorporateSaverClientDetailsComponent, CorporateSaverTableTotalComponent, CorporateAgentDetailsComponent, CSAgentLogoComponent, FSPDetailsComponent
+  DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent,
+  SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
+  CSAgentLogoComponent, FSPDetailsComponent
 } from '../widgetComponent/widgetComponent';
 import { AssetLibraryService } from '../../layout/asset-libraries/asset-library.service';
 import { AssetSearchParameter } from '../../layout/asset-libraries/asset-library';
@@ -38,6 +33,7 @@ import { DynamicWidgetService } from '../../layout/widget-dynamic/dynamicwidget.
 import { PreviewDialogService } from '../../shared/services/preview-dialog.service';
 import { RichTextEditorComponent } from '@syncfusion/ej2-angular-richtexteditor';
 import { ToolbarService, LinkService, ImageService, HtmlEditorService, QuickToolbarService } from '@syncfusion/ej2-angular-richtexteditor';
+import { TemplateWidget } from '../../layout/template/templateWidget';
 
 @Component({
   selector: 'app-add-dashboard-designer',
@@ -1178,231 +1174,231 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: false
             })
           }
-          else if (widget.WidgetName == "CustomerDetails") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 6,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: CustomerDetailsComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "CorporateSaverAgentAddress") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 6,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: CorporateSaverAgentAddressComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "BranchDetails") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 6,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: BankDetailsComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "WealthBranchDetails") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 6,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: WealthBankDetailsComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "InvestmentPortfolioStatement") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: InvestmentPortfolioStatementComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "InvestmentWealthPortfolioStatement") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: InvestmentWealthPortfolioStatementComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "InvestorPerformance") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: InvestorPerformanceComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "WealthInvestorPerformance") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: WealthInvestorPerformanceComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "BreakdownOfInvestmentAccounts") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 5,
-              y: 0,
-              x: 0,
-              component: BreakdownOfInvestmentAccountsComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "WealthBreakdownOfInvestmentAccounts") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 5,
-              y: 0,
-              x: 0,
-              component: WealthBreakdownOfInvestmentAccountsComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "ExplanatoryNotes") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: ExplanatoryNotesComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "WealthExplanatoryNotes") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: WealthExplanatoryNotesComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "PersonalLoanDetail") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 3,
-              y: 0,
-              x: 0,
-              component: PersonalLoanDetailComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "PersonalLoanTransaction") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: PersonalLoanTransactionComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "PersonalLoanPaymentDue") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: PersonalLoanPaymentDueComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
+          //else if (widget.WidgetName == "CustomerDetails") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 6,
+          //    rows: 2,
+          //    y: 0,
+          //    x: 0,
+          //    component: CustomerDetailsComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "CorporateSaverAgentAddress") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 6,
+          //    rows: 2,
+          //    y: 0,
+          //    x: 0,
+          //    component: CorporateSaverAgentAddressComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "BranchDetails") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 6,
+          //    rows: 2,
+          //    y: 0,
+          //    x: 0,
+          //    component: BankDetailsComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "WealthBranchDetails") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 6,
+          //    rows: 2,
+          //    y: 0,
+          //    x: 0,
+          //    component: WealthBankDetailsComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "InvestmentPortfolioStatement") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 12,
+          //    rows: 2,
+          //    y: 0,
+          //    x: 0,
+          //    component: InvestmentPortfolioStatementComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "InvestmentWealthPortfolioStatement") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 12,
+          //    rows: 2,
+          //    y: 0,
+          //    x: 0,
+          //    component: InvestmentWealthPortfolioStatementComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "InvestorPerformance") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 12,
+          //    rows: 2,
+          //    y: 0,
+          //    x: 0,
+          //    component: InvestorPerformanceComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "WealthInvestorPerformance") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 12,
+          //    rows: 2,
+          //    y: 0,
+          //    x: 0,
+          //    component: WealthInvestorPerformanceComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "BreakdownOfInvestmentAccounts") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 12,
+          //    rows: 5,
+          //    y: 0,
+          //    x: 0,
+          //    component: BreakdownOfInvestmentAccountsComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "WealthBreakdownOfInvestmentAccounts") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 12,
+          //    rows: 5,
+          //    y: 0,
+          //    x: 0,
+          //    component: WealthBreakdownOfInvestmentAccountsComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "ExplanatoryNotes") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 12,
+          //    rows: 2,
+          //    y: 0,
+          //    x: 0,
+          //    component: ExplanatoryNotesComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "WealthExplanatoryNotes") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 12,
+          //    rows: 2,
+          //    y: 0,
+          //    x: 0,
+          //    component: WealthExplanatoryNotesComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "PersonalLoanDetail") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 12,
+          //    rows: 3,
+          //    y: 0,
+          //    x: 0,
+          //    component: PersonalLoanDetailComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "PersonalLoanTransaction") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 12,
+          //    rows: 2,
+          //    y: 0,
+          //    x: 0,
+          //    component: PersonalLoanTransactionComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "PersonalLoanPaymentDue") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 12,
+          //    rows: 2,
+          //    y: 0,
+          //    x: 0,
+          //    component: PersonalLoanPaymentDueComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
           else if (widget.WidgetName == "SpecialMessage") {
             return this.widgetsGridsterItemArray.push({
               cols: 12,
@@ -1418,336 +1414,336 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: false
             })
           }
-          else if (widget.WidgetName == "PL_InsuranceMessage") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: PersonalLoanInsuranceMessageComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "NedbankService") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 3,
-              y: 0,
-              x: 0,
-              component: NedbankServiceComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "WealthNedbankService") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 6,
-              rows: 3,
-              y: 0,
-              x: 0,
-              component: WealthNedbankServiceComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "PersonalLoanTotalAmountDetail") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: PersonalLoanTotalAmountDetailComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "PersonalLoanAccountsBreakdown") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 4,
-              y: 0,
-              x: 0,
-              component: PersonalLoanAccountsBreakdownComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "HomeLoanTotalAmountDetail") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: HomeLoanTotalAmountDetailComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "HomeLoanAccountsBreakdown") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 10,
-              y: 0,
-              x: 0,
-              component: HomeLoanAccountsBreakdownComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "HomeLoanPaymentDueSpecialMsg") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 1,
-              y: 0,
-              x: 0,
-              component: HomeLoanPaymentDueSpecialMsgComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "HomeLoanInstalmentDetail") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 4,
-              y: 0,
-              x: 0,
-              component: HomeLoanInstalmentDetailComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "PortfolioCustomerDetails") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 4,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: PortfolioCustomerDetailsComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "CustomerAddressDetails") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 4,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: PortfolioCustomerAddressDetailsComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "ClientContactDetails") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 4,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: PortfolioClientContactDetailsComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "AccountSummary") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 5,
-              rows: 3,
-              y: 0,
-              x: 0,
-              component: PortfolioAccountSummaryDetailsComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "AccountAnalysis") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 7,
-              rows: 3,
-              y: 0,
-              x: 0,
-              component: PortfolioAccountAnalysisComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "PortfolioReminders") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 6,
-              rows: 3,
-              y: 0,
-              x: 0,
-              component: PortfolioRemindersComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "PortfolioNewsAlerts") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 6,
-              rows: 3,
-              y: 0,
-              x: 0,
-              component: PortfolioNewsAlertsComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "GreenbacksTotalRewardPoints") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 4,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: GreenbacksTotalRewardPointsComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "GreenbacksContactUs") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 4,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: GreenbacksContactUsComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "YTDRewardsPoints") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 6,
-              rows: 3,
-              y: 0,
-              x: 0,
-              component: YTDRewardPointsComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "PointsRedeemedYTD") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 6,
-              rows: 3,
-              y: 0,
-              x: 0,
-              component: PointsRedeemedYTDComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "ProductRelatedPointsEarned") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 6,
-              rows: 3,
-              y: 0,
-              x: 0,
-              component: ProductRelatedPointsEarnedComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "CategorySpendRewards") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 6,
-              rows: 3,
-              y: 0,
-              x: 0,
-              component: CategorySpendRewardsComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
+          //else if (widget.WidgetName == "PL_InsuranceMessage") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 12,
+          //    rows: 2,
+          //    y: 0,
+          //    x: 0,
+          //    component: PersonalLoanInsuranceMessageComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "NedbankService") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 12,
+          //    rows: 3,
+          //    y: 0,
+          //    x: 0,
+          //    component: NedbankServiceComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "WealthNedbankService") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 6,
+          //    rows: 3,
+          //    y: 0,
+          //    x: 0,
+          //    component: WealthNedbankServiceComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "PersonalLoanTotalAmountDetail") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 12,
+          //    rows: 2,
+          //    y: 0,
+          //    x: 0,
+          //    component: PersonalLoanTotalAmountDetailComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "PersonalLoanAccountsBreakdown") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 12,
+          //    rows: 4,
+          //    y: 0,
+          //    x: 0,
+          //    component: PersonalLoanAccountsBreakdownComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "HomeLoanTotalAmountDetail") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 12,
+          //    rows: 2,
+          //    y: 0,
+          //    x: 0,
+          //    component: HomeLoanTotalAmountDetailComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "HomeLoanAccountsBreakdown") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 12,
+          //    rows: 10,
+          //    y: 0,
+          //    x: 0,
+          //    component: HomeLoanAccountsBreakdownComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "HomeLoanPaymentDueSpecialMsg") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 12,
+          //    rows: 1,
+          //    y: 0,
+          //    x: 0,
+          //    component: HomeLoanPaymentDueSpecialMsgComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "HomeLoanInstalmentDetail") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 12,
+          //    rows: 4,
+          //    y: 0,
+          //    x: 0,
+          //    component: HomeLoanInstalmentDetailComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "PortfolioCustomerDetails") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 4,
+          //    rows: 2,
+          //    y: 0,
+          //    x: 0,
+          //    component: PortfolioCustomerDetailsComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "CustomerAddressDetails") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 4,
+          //    rows: 2,
+          //    y: 0,
+          //    x: 0,
+          //    component: PortfolioCustomerAddressDetailsComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "ClientContactDetails") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 4,
+          //    rows: 2,
+          //    y: 0,
+          //    x: 0,
+          //    component: PortfolioClientContactDetailsComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "AccountSummary") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 5,
+          //    rows: 3,
+          //    y: 0,
+          //    x: 0,
+          //    component: PortfolioAccountSummaryDetailsComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "AccountAnalysis") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 7,
+          //    rows: 3,
+          //    y: 0,
+          //    x: 0,
+          //    component: PortfolioAccountAnalysisComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "PortfolioReminders") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 6,
+          //    rows: 3,
+          //    y: 0,
+          //    x: 0,
+          //    component: PortfolioRemindersComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "PortfolioNewsAlerts") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 6,
+          //    rows: 3,
+          //    y: 0,
+          //    x: 0,
+          //    component: PortfolioNewsAlertsComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "GreenbacksTotalRewardPoints") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 4,
+          //    rows: 2,
+          //    y: 0,
+          //    x: 0,
+          //    component: GreenbacksTotalRewardPointsComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "GreenbacksContactUs") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 4,
+          //    rows: 2,
+          //    y: 0,
+          //    x: 0,
+          //    component: GreenbacksContactUsComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "YTDRewardsPoints") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 6,
+          //    rows: 3,
+          //    y: 0,
+          //    x: 0,
+          //    component: YTDRewardPointsComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "PointsRedeemedYTD") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 6,
+          //    rows: 3,
+          //    y: 0,
+          //    x: 0,
+          //    component: PointsRedeemedYTDComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "ProductRelatedPointsEarned") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 6,
+          //    rows: 3,
+          //    y: 0,
+          //    x: 0,
+          //    component: ProductRelatedPointsEarnedComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "CategorySpendRewards") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 6,
+          //    rows: 3,
+          //    y: 0,
+          //    x: 0,
+          //    component: CategorySpendRewardsComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    IsDynamicWidget: false
+          //  })
+          //}
           else if (widget.WidgetName == "StaticHtml") {
             debugger;
             return this.widgetsGridsterItemArray.push({
@@ -1781,86 +1777,86 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: false
             })
           }
-          else if (widget.WidgetName == "CorporateSaverAgentMessage") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 4,
-              rows: 3,
-              y: 0,
-              x: 0,
-              component: CorporateSaverAgentMessageComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "CorporateSaverTransaction") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 4,
-              rows: 3,
-              y: 0,
-              x: 0,
-              component: CorporateSaverTransactionComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "CorporateSaverTableTotal") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 4,
-              rows: 3,
-              y: 0,
-              x: 0,
-              component: CorporateSaverTableTotalComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "CorporateSaverClientandAgentDetails") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 4,
-              rows: 3,
-              y: 0,
-              x: 0,
-              component: CorporateSaverClientDetailsComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "CorporateAgentDetails") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 4,
-              rows: 3,
-              y: 0,
-              x: 0,
-              component: CorporateAgentDetailsComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
-              IsDynamicWidget: false
-            })
-          }
+          //else if (widget.WidgetName == "CorporateSaverAgentMessage") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 4,
+          //    rows: 3,
+          //    y: 0,
+          //    x: 0,
+          //    component: CorporateSaverAgentMessageComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "CorporateSaverTransaction") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 4,
+          //    rows: 3,
+          //    y: 0,
+          //    x: 0,
+          //    component: CorporateSaverTransactionComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "CorporateSaverTableTotal") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 4,
+          //    rows: 3,
+          //    y: 0,
+          //    x: 0,
+          //    component: CorporateSaverTableTotalComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "CorporateSaverClientandAgentDetails") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 4,
+          //    rows: 3,
+          //    y: 0,
+          //    x: 0,
+          //    component: CorporateSaverClientDetailsComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
+          //    IsDynamicWidget: false
+          //  })
+          //}
+          //else if (widget.WidgetName == "CorporateAgentDetails") {
+          //  return this.widgetsGridsterItemArray.push({
+          //    cols: 4,
+          //    rows: 3,
+          //    y: 0,
+          //    x: 0,
+          //    component: CorporateAgentDetailsComponent,
+          //    value: widget.WidgetName,
+          //    WidgetId: widget.Identifier,
+          //    widgetItemCount: this.widgetItemCount,
+          //    WidgetSetting: '',
+          //    WidgetType: widget.WidgetType,
+          //    TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
+          //    IsDynamicWidget: false
+          //  })
+          //}
           else if (widget.WidgetName == "SegmentBasedContent") {
             return this.widgetsGridsterItemArray.push({
               cols: 4,
@@ -1877,220 +1873,220 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: false
             })
           }
-          else if (widget.WidgetName == "HomeLoanSummaryTaxPurpose") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: HomeLoanSummaryTaxPurposeComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "HomeLoanInstalment") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: HomeLoanInstalmentComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "WealthHomeLoanTotalAmountDetail") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: WealthHomeLoanTotalAmountDetailComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "WealthHomeLoanAccountsBreakdown") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 10,
-              y: 0,
-              x: 0,
-              component: WealthHomeLoanAccountsBreakdownComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "WealthHomeLoanSummaryTaxPurpose") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: WealthHomeLoanSummaryTaxPurposeComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "WealthHomeLoanInstalment") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: WealthHomeLoanInstalmentComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "WealthHomeLoanBranchDetails") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 6,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: WealthHomeLoanBankDetailsComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "MCAAccountSummary") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 3,
-              y: 0,
-              x: 0,
-              component: MCAAccountSummaryComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "MCATransaction") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 4,
-              y: 0,
-              x: 0,
-              component: MCATransactionComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "MCAVATAnalysis") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: MCAVATAnalysisComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "WealthMCAAccountSummary") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 3,
-              y: 0,
-              x: 0,
-              component: WealthMCAAccountSummaryComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "WealthMCATransaction") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 4,
-              y: 0,
-              x: 0,
-              component: WealthMCATransactionComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "WealthMCAVATAnalysis") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: WealthMCAVATAnalysisComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "WealthMCABranchDetails") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 6,
-              rows: 2,
-              y: 0,
-              x: 0,
-              component: WealthMCABranchDetailsComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
+        ////  else if (widget.WidgetName == "HomeLoanSummaryTaxPurpose") {
+        ////    return this.widgetsGridsterItemArray.push({
+        ////      cols: 12,
+        ////      rows: 2,
+        ////      y: 0,
+        ////      x: 0,
+        ////      component: HomeLoanSummaryTaxPurposeComponent,
+        ////      value: widget.WidgetName,
+        ////      WidgetId: widget.Identifier,
+        ////      widgetItemCount: this.widgetItemCount,
+        ////      WidgetSetting: '',
+        ////      WidgetType: widget.WidgetType,
+        ////      TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
+        ////      IsDynamicWidget: false
+        ////    })
+        ////  }
+        ////  else if (widget.WidgetName == "HomeLoanInstalment") {
+        ////    return this.widgetsGridsterItemArray.push({
+        ////      cols: 12,
+        ////      rows: 2,
+        ////      y: 0,
+        ////      x: 0,
+        ////      component: HomeLoanInstalmentComponent,
+        ////      value: widget.WidgetName,
+        ////      WidgetId: widget.Identifier,
+        ////      widgetItemCount: this.widgetItemCount,
+        ////      WidgetSetting: '',
+        ////      WidgetType: widget.WidgetType,
+        ////      TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
+        ////      IsDynamicWidget: false
+        ////    })
+        ////  }
+        ////  else if (widget.WidgetName == "WealthHomeLoanTotalAmountDetail") {
+        ////    return this.widgetsGridsterItemArray.push({
+        ////      cols: 12,
+        ////      rows: 2,
+        ////      y: 0,
+        ////      x: 0,
+        ////      component: WealthHomeLoanTotalAmountDetailComponent,
+        ////      value: widget.WidgetName,
+        ////      WidgetId: widget.Identifier,
+        ////      widgetItemCount: this.widgetItemCount,
+        ////      WidgetSetting: '',
+        ////      WidgetType: widget.WidgetType,
+        ////      IsDynamicWidget: false
+        ////    })
+        ////  }
+        ////  else if (widget.WidgetName == "WealthHomeLoanAccountsBreakdown") {
+        ////    return this.widgetsGridsterItemArray.push({
+        ////      cols: 12,
+        ////      rows: 10,
+        ////      y: 0,
+        ////      x: 0,
+        ////      component: WealthHomeLoanAccountsBreakdownComponent,
+        ////      value: widget.WidgetName,
+        ////      WidgetId: widget.Identifier,
+        ////      widgetItemCount: this.widgetItemCount,
+        ////      WidgetSetting: '',
+        ////      WidgetType: widget.WidgetType,
+        ////      IsDynamicWidget: false
+        ////    })
+        ////  }
+        ////  else if (widget.WidgetName == "WealthHomeLoanSummaryTaxPurpose") {
+        ////    return this.widgetsGridsterItemArray.push({
+        ////      cols: 12,
+        ////      rows: 2,
+        ////      y: 0,
+        ////      x: 0,
+        ////      component: WealthHomeLoanSummaryTaxPurposeComponent,
+        ////      value: widget.WidgetName,
+        ////      WidgetId: widget.Identifier,
+        ////      widgetItemCount: this.widgetItemCount,
+        ////      WidgetSetting: '',
+        ////      WidgetType: widget.WidgetType,
+        ////      TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
+        ////      IsDynamicWidget: false
+        ////    })
+        ////  }
+        ////  else if (widget.WidgetName == "WealthHomeLoanInstalment") {
+        ////    return this.widgetsGridsterItemArray.push({
+        ////      cols: 12,
+        ////      rows: 2,
+        ////      y: 0,
+        ////      x: 0,
+        ////      component: WealthHomeLoanInstalmentComponent,
+        ////      value: widget.WidgetName,
+        ////      WidgetId: widget.Identifier,
+        ////      widgetItemCount: this.widgetItemCount,
+        ////      WidgetSetting: '',
+        ////      WidgetType: widget.WidgetType,
+        ////      TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
+        ////      IsDynamicWidget: false
+        ////    })
+        ////  }
+        ////  else if (widget.WidgetName == "WealthHomeLoanBranchDetails") {
+        ////    return this.widgetsGridsterItemArray.push({
+        ////      cols: 6,
+        ////      rows: 2,
+        ////      y: 0,
+        ////      x: 0,
+        ////      component: WealthHomeLoanBankDetailsComponent,
+        ////      value: widget.WidgetName,
+        ////      WidgetId: widget.Identifier,
+        ////      widgetItemCount: this.widgetItemCount,
+        ////      WidgetSetting: '',
+        ////      WidgetType: widget.WidgetType,
+        ////      IsDynamicWidget: false
+        ////    })
+        ////  }
+        ////  else if (widget.WidgetName == "MCAAccountSummary") {
+        ////    return this.widgetsGridsterItemArray.push({
+        ////      cols: 12,
+        ////      rows: 3,
+        ////      y: 0,
+        ////      x: 0,
+        ////      component: MCAAccountSummaryComponent,
+        ////      value: widget.WidgetName,
+        ////      WidgetId: widget.Identifier,
+        ////      widgetItemCount: this.widgetItemCount,
+        ////      WidgetSetting: '',
+        ////      WidgetType: widget.WidgetType,
+        ////      IsDynamicWidget: false
+        ////    })
+        ////  }
+        ////  else if (widget.WidgetName == "MCATransaction") {
+        ////    return this.widgetsGridsterItemArray.push({
+        ////      cols: 12,
+        ////      rows: 4,
+        ////      y: 0,
+        ////      x: 0,
+        ////      component: MCATransactionComponent,
+        ////      value: widget.WidgetName,
+        ////      WidgetId: widget.Identifier,
+        ////      widgetItemCount: this.widgetItemCount,
+        ////      WidgetSetting: '',
+        ////      WidgetType: widget.WidgetType,
+        ////      IsDynamicWidget: false
+        ////    })
+        ////  }
+        ////  else if (widget.WidgetName == "MCAVATAnalysis") {
+        ////    return this.widgetsGridsterItemArray.push({
+        ////      cols: 12,
+        ////      rows: 2,
+        ////      y: 0,
+        ////      x: 0,
+        ////      component: MCAVATAnalysisComponent,
+        ////      value: widget.WidgetName,
+        ////      WidgetId: widget.Identifier,
+        ////      widgetItemCount: this.widgetItemCount,
+        ////      WidgetSetting: '',
+        ////      WidgetType: widget.WidgetType,
+        ////      IsDynamicWidget: false
+        ////    })
+        ////  }
+        ////  else if (widget.WidgetName == "WealthMCAAccountSummary") {
+        ////    return this.widgetsGridsterItemArray.push({
+        ////      cols: 12,
+        ////      rows: 3,
+        ////      y: 0,
+        ////      x: 0,
+        ////      component: WealthMCAAccountSummaryComponent,
+        ////      value: widget.WidgetName,
+        ////      WidgetId: widget.Identifier,
+        ////      widgetItemCount: this.widgetItemCount,
+        ////      WidgetSetting: '',
+        ////      WidgetType: widget.WidgetType,
+        ////      IsDynamicWidget: false
+        ////    })
+        ////  }
+        ////  else if (widget.WidgetName == "WealthMCATransaction") {
+        ////    return this.widgetsGridsterItemArray.push({
+        ////      cols: 12,
+        ////      rows: 4,
+        ////      y: 0,
+        ////      x: 0,
+        ////      component: WealthMCATransactionComponent,
+        ////      value: widget.WidgetName,
+        ////      WidgetId: widget.Identifier,
+        ////      widgetItemCount: this.widgetItemCount,
+        ////      WidgetSetting: '',
+        ////      WidgetType: widget.WidgetType,
+        ////      IsDynamicWidget: false
+        ////    })
+        ////  }
+        ////  else if (widget.WidgetName == "WealthMCAVATAnalysis") {
+        ////    return this.widgetsGridsterItemArray.push({
+        ////      cols: 12,
+        ////      rows: 2,
+        ////      y: 0,
+        ////      x: 0,
+        ////      component: WealthMCAVATAnalysisComponent,
+        ////      value: widget.WidgetName,
+        ////      WidgetId: widget.Identifier,
+        ////      widgetItemCount: this.widgetItemCount,
+        ////      WidgetSetting: '',
+        ////      WidgetType: widget.WidgetType,
+        ////      IsDynamicWidget: false
+        ////    })
+        ////  }
+        ////  else if (widget.WidgetName == "WealthMCABranchDetails") {
+        ////    return this.widgetsGridsterItemArray.push({
+        ////      cols: 6,
+        ////      rows: 2,
+        ////      y: 0,
+        ////      x: 0,
+        ////      component: WealthMCABranchDetailsComponent,
+        ////      value: widget.WidgetName,
+        ////      WidgetId: widget.Identifier,
+        ////      widgetItemCount: this.widgetItemCount,
+        ////      WidgetSetting: '',
+        ////      WidgetType: widget.WidgetType,
+        ////      IsDynamicWidget: false
+        ////    })
+        ////  }
         }
         else {
           if (widget.WidgetType == 'Table') {
@@ -2304,183 +2300,183 @@ export class AddDashboardDesignerComponent implements OnInit {
       else if (widgetName == 'ReminderaAndRecommendation') {
         gridObj.component = ReminderAndRecommComponent;
       }
-      else if (widgetName == 'CustomerDetails') {
-        gridObj.component = CustomerDetailsComponent;
-      }
-      else if (widgetName == 'CorporateSaverAgentAddress') {
-        gridObj.component = CorporateSaverAgentAddressComponent;
-      }
-      else if (widgetName == 'BranchDetails') {
-        gridObj.component = BankDetailsComponent;
-      }
-      else if (widgetName == 'WealthBranchDetails') {
-        gridObj.component = WealthBankDetailsComponent;
-      }
-      else if (widgetName == 'InvestmentPortfolioStatement') {
-        gridObj.component = InvestmentPortfolioStatementComponent;
-      }
-      else if (widgetName == 'InvestmentWealthPortfolioStatement') {
-        gridObj.component = InvestmentWealthPortfolioStatementComponent;
-      }
-      else if (widgetName == 'InvestorPerformance') {
-        gridObj.component = InvestorPerformanceComponent;
-      }
-      else if (widgetName == 'WealthInvestorPerformance') {
-        gridObj.component = WealthInvestorPerformanceComponent;
-      }
-      else if (widgetName == 'BreakdownOfInvestmentAccounts') {
-        gridObj.component = BreakdownOfInvestmentAccountsComponent;
-      }
-      else if (widgetName == 'ExplanatoryNotes') {
-        gridObj.component = ExplanatoryNotesComponent;
-      }
-      else if (widgetName == 'WealthExplanatoryNotes') {
-        gridObj.component = WealthExplanatoryNotesComponent;
-      }
-      else if (widgetName == 'PersonalLoanDetail') {
-        gridObj.component = PersonalLoanDetailComponent;
-      }
-      else if (widgetName == 'PersonalLoanTransaction') {
-        gridObj.component = PersonalLoanTransactionComponent;
-      }
-      else if (widgetName == 'PersonalLoanPaymentDue') {
-        gridObj.component = PersonalLoanPaymentDueComponent;
-      }
+      //else if (widgetName == 'CustomerDetails') {
+      //  gridObj.component = CustomerDetailsComponent;
+      //}
+      //else if (widgetName == 'CorporateSaverAgentAddress') {
+      //  gridObj.component = CorporateSaverAgentAddressComponent;
+      //}
+      //else if (widgetName == 'BranchDetails') {
+      //  gridObj.component = BankDetailsComponent;
+      //}
+      //else if (widgetName == 'WealthBranchDetails') {
+      //  gridObj.component = WealthBankDetailsComponent;
+      //}
+      //else if (widgetName == 'InvestmentPortfolioStatement') {
+      //  gridObj.component = InvestmentPortfolioStatementComponent;
+      //}
+      //else if (widgetName == 'InvestmentWealthPortfolioStatement') {
+      //  gridObj.component = InvestmentWealthPortfolioStatementComponent;
+      //}
+      //else if (widgetName == 'InvestorPerformance') {
+      //  gridObj.component = InvestorPerformanceComponent;
+      //}
+      //else if (widgetName == 'WealthInvestorPerformance') {
+      //  gridObj.component = WealthInvestorPerformanceComponent;
+      //}
+      //else if (widgetName == 'BreakdownOfInvestmentAccounts') {
+      //  gridObj.component = BreakdownOfInvestmentAccountsComponent;
+      //}
+      //else if (widgetName == 'ExplanatoryNotes') {
+      //  gridObj.component = ExplanatoryNotesComponent;
+      //}
+      //else if (widgetName == 'WealthExplanatoryNotes') {
+      //  gridObj.component = WealthExplanatoryNotesComponent;
+      //}
+      //else if (widgetName == 'PersonalLoanDetail') {
+      //  gridObj.component = PersonalLoanDetailComponent;
+      //}
+      //else if (widgetName == 'PersonalLoanTransaction') {
+      //  gridObj.component = PersonalLoanTransactionComponent;
+      //}
+      //else if (widgetName == 'PersonalLoanPaymentDue') {
+      //  gridObj.component = PersonalLoanPaymentDueComponent;
+      //}
       else if (widgetName == 'SpecialMessage') {
         gridObj.component = SpecialMessageComponent;
       }
-      else if (widgetName == 'PL_InsuranceMessage') {
-        gridObj.component = PersonalLoanInsuranceMessageComponent;
-      }
-      else if (widgetName == 'NedbankService') {
-        gridObj.component = NedbankServiceComponent;
-      }
-      else if (widgetName == 'WealthNedbankService') {
-        gridObj.component = WealthNedbankServiceComponent;
-      }
-      else if (widgetName == 'PersonalLoanTotalAmountDetail') {
-        gridObj.component = PersonalLoanTotalAmountDetailComponent;
-      }
-      else if (widgetName == 'PersonalLoanAccountsBreakdown') {
-        gridObj.component = PersonalLoanAccountsBreakdownComponent;
-      }
-      else if (widget.WidgetName == "HomeLoanTotalAmountDetail") {
-        gridObj.component = HomeLoanTotalAmountDetailComponent;
-      }
-      else if (widget.WidgetName == "HomeLoanAccountsBreakdown") {
-        gridObj.component = HomeLoanAccountsBreakdownComponent
-      }
-      else if (widget.WidgetName == "HomeLoanPaymentDueSpecialMsg") {
-        gridObj.component = HomeLoanPaymentDueSpecialMsgComponent
-      }
-      else if (widget.WidgetName == "HomeLoanInstalmentDetail") {
-        gridObj.component = HomeLoanInstalmentDetailComponent
-      }
-      else if (widget.WidgetName == "PortfolioCustomerDetails") {
-        gridObj.component = PortfolioCustomerDetailsComponent
-      }
-      else if (widget.WidgetName == "CustomerAddressDetails") {
-        gridObj.component = PortfolioCustomerAddressDetailsComponent
-      }
-      else if (widget.WidgetName == "ClientContactDetails") {
-        gridObj.component = PortfolioClientContactDetailsComponent
-      }
-      else if (widget.WidgetName == "AccountSummary") {
-        gridObj.component = PortfolioAccountSummaryDetailsComponent
-      }
-      else if (widget.WidgetName == "AccountAnalysis") {
-        gridObj.component = PortfolioAccountAnalysisComponent
-      }
-      else if (widget.WidgetName == "PortfolioReminders") {
-        gridObj.component = PortfolioRemindersComponent
-      }
-      else if (widget.WidgetName == "PortfolioNewsAlerts") {
-        gridObj.component = PortfolioNewsAlertsComponent
-      }
-      else if (widget.WidgetName == "GreenbacksTotalRewardPoints") {
-        gridObj.component = GreenbacksTotalRewardPointsComponent
-      }
-      else if (widget.WidgetName == "GreenbacksContactUs") {
-        gridObj.component = GreenbacksContactUsComponent
-      }
-      else if (widget.WidgetName == "YTDRewardsPoints") {
-        gridObj.component = YTDRewardPointsComponent
-      }
-      else if (widget.WidgetName == "PointsRedeemedYTD") {
-        gridObj.component = PointsRedeemedYTDComponent
-      }
-      else if (widget.WidgetName == "ProductRelatedPointsEarned") {
-        gridObj.component = ProductRelatedPointsEarnedComponent
-      }
-      else if (widget.WidgetName == "CategorySpendRewards") {
-        gridObj.component = CategorySpendRewardsComponent
-      }
+      //else if (widgetName == 'PL_InsuranceMessage') {
+      //  gridObj.component = PersonalLoanInsuranceMessageComponent;
+      //}
+      //else if (widgetName == 'NedbankService') {
+      //  gridObj.component = NedbankServiceComponent;
+      //}
+      //else if (widgetName == 'WealthNedbankService') {
+      //  gridObj.component = WealthNedbankServiceComponent;
+      //}
+      //else if (widgetName == 'PersonalLoanTotalAmountDetail') {
+      //  gridObj.component = PersonalLoanTotalAmountDetailComponent;
+      //}
+      //else if (widgetName == 'PersonalLoanAccountsBreakdown') {
+      //  gridObj.component = PersonalLoanAccountsBreakdownComponent;
+      //}
+      //else if (widget.WidgetName == "HomeLoanTotalAmountDetail") {
+      //  gridObj.component = HomeLoanTotalAmountDetailComponent;
+      //}
+      //else if (widget.WidgetName == "HomeLoanAccountsBreakdown") {
+      //  gridObj.component = HomeLoanAccountsBreakdownComponent
+      //}
+      //else if (widget.WidgetName == "HomeLoanPaymentDueSpecialMsg") {
+      //  gridObj.component = HomeLoanPaymentDueSpecialMsgComponent
+      //}
+      //else if (widget.WidgetName == "HomeLoanInstalmentDetail") {
+      //  gridObj.component = HomeLoanInstalmentDetailComponent
+      //}
+      //else if (widget.WidgetName == "PortfolioCustomerDetails") {
+      //  gridObj.component = PortfolioCustomerDetailsComponent
+      //}
+      //else if (widget.WidgetName == "CustomerAddressDetails") {
+      //  gridObj.component = PortfolioCustomerAddressDetailsComponent
+      //}
+      //else if (widget.WidgetName == "ClientContactDetails") {
+      //  gridObj.component = PortfolioClientContactDetailsComponent
+      //}
+      //else if (widget.WidgetName == "AccountSummary") {
+      //  gridObj.component = PortfolioAccountSummaryDetailsComponent
+      //}
+      //else if (widget.WidgetName == "AccountAnalysis") {
+      //  gridObj.component = PortfolioAccountAnalysisComponent
+      //}
+      //else if (widget.WidgetName == "PortfolioReminders") {
+      //  gridObj.component = PortfolioRemindersComponent
+      //}
+      //else if (widget.WidgetName == "PortfolioNewsAlerts") {
+      //  gridObj.component = PortfolioNewsAlertsComponent
+      //}
+      //else if (widget.WidgetName == "GreenbacksTotalRewardPoints") {
+      //  gridObj.component = GreenbacksTotalRewardPointsComponent
+      //}
+      //else if (widget.WidgetName == "GreenbacksContactUs") {
+      //  gridObj.component = GreenbacksContactUsComponent
+      //}
+      //else if (widget.WidgetName == "YTDRewardsPoints") {
+      //  gridObj.component = YTDRewardPointsComponent
+      //}
+      //else if (widget.WidgetName == "PointsRedeemedYTD") {
+      //  gridObj.component = PointsRedeemedYTDComponent
+      //}
+      //else if (widget.WidgetName == "ProductRelatedPointsEarned") {
+      //  gridObj.component = ProductRelatedPointsEarnedComponent
+      //}
+      //else if (widget.WidgetName == "CategorySpendRewards") {
+      //  gridObj.component = CategorySpendRewardsComponent
+      //}
       else if (widget.WidgetName == "StaticHtml") {
         gridObj.component = StaticHtmlComponent
       }
       else if (widget.WidgetName == "CSAgentLogo") {
         gridObj.component = CSAgentLogoComponent
       }
-      else if (widget.WidgetName == "CorporateSaverAgentMessage") {
-        gridObj.component = CorporateSaverAgentMessageComponent
-      }
-      else if (widget.WidgetName == "CorporateSaverTransaction") {
-        gridObj.component = CorporateSaverTransactionComponent
-      }
-      else if (widget.WidgetName == "CorporateSaverClientandAgentDetails") {
-        gridObj.component = CorporateSaverClientDetailsComponent
-      }
-      else if (widget.WidgetName == "CorporateSaverTableTotal") {
-        gridObj.component = CorporateSaverTableTotalComponent
-      }
-      else if (widget.WidgetName == "CorporateAgentDetails") {
-        gridObj.component = CorporateAgentDetailsComponent
-      }
+      //else if (widget.WidgetName == "CorporateSaverAgentMessage") {
+      //  gridObj.component = CorporateSaverAgentMessageComponent
+      //}
+      //else if (widget.WidgetName == "CorporateSaverTransaction") {
+      //  gridObj.component = CorporateSaverTransactionComponent
+      //}
+      //else if (widget.WidgetName == "CorporateSaverClientandAgentDetails") {
+      //  gridObj.component = CorporateSaverClientDetailsComponent
+      //}
+      //else if (widget.WidgetName == "CorporateSaverTableTotal") {
+      //  gridObj.component = CorporateSaverTableTotalComponent
+      //}
+      //else if (widget.WidgetName == "CorporateAgentDetails") {
+      //  gridObj.component = CorporateAgentDetailsComponent
+      //}
       else if (widget.WidgetName == "SegmentBasedContent") {
         gridObj.component = SegmentBasedContentComponent
       }
-      else if (widget.WidgetName == "HomeLoanSummaryTaxPurpose") {
-        gridObj.component = HomeLoanSummaryTaxPurposeComponent
-      }
-      else if (widget.WidgetName == "HomeLoanInstalment") {
-        gridObj.component = HomeLoanInstalmentComponent
-      }
-      else if (widget.WidgetName == "WealthHomeLoanTotalAmountDetail") {
-        gridObj.component = WealthHomeLoanTotalAmountDetailComponent
-      }
-      else if (widget.WidgetName == "WealthHomeLoanAccountsBreakdown") {
-        gridObj.component = WealthHomeLoanAccountsBreakdownComponent
-      }
-      else if (widget.WidgetName == "WealthHomeLoanSummaryTaxPurpose") {
-        gridObj.component = WealthHomeLoanSummaryTaxPurposeComponent
-      }
-      else if (widget.WidgetName == "WealthHomeLoanInstalment") {
-        gridObj.component = WealthHomeLoanInstalmentComponent
-      }
-      else if (widget.WidgetName == "WealthHomeLoanBranchDetails") {
-        gridObj.component = WealthHomeLoanBankDetailsComponent
-      }
-      else if (widget.WidgetName == "MCAAccountSummary") {
-        gridObj.component = MCAAccountSummaryComponent
-      }
-      else if (widget.WidgetName == "MCATransaction") {
-        gridObj.component = MCATransactionComponent
-      }
-      else if (widget.WidgetName == "MCAVATAnalysis") {
-        gridObj.component = MCAVATAnalysisComponent
-      }
-      else if (widget.WidgetName == "WealthMCAAccountSummary") {
-        gridObj.component = WealthMCAAccountSummaryComponent
-      }
-      else if (widget.WidgetName == "WealthMCATransaction") {
-        gridObj.component = WealthMCATransactionComponent
-      }
-      else if (widget.WidgetName == "WealthMCAVATAnalysis") {
-        gridObj.component = WealthMCAVATAnalysisComponent
-      }
-      else if (widget.WidgetName == "WealthMCABranchDetails") {
-        gridObj.component = WealthMCABranchDetailsComponent
-      }
+      //else if (widget.WidgetName == "HomeLoanSummaryTaxPurpose") {
+      //  gridObj.component = HomeLoanSummaryTaxPurposeComponent
+      //}
+      //else if (widget.WidgetName == "HomeLoanInstalment") {
+      //  gridObj.component = HomeLoanInstalmentComponent
+      //}
+      //else if (widget.WidgetName == "WealthHomeLoanTotalAmountDetail") {
+      //  gridObj.component = WealthHomeLoanTotalAmountDetailComponent
+      //}
+      //else if (widget.WidgetName == "WealthHomeLoanAccountsBreakdown") {
+      //  gridObj.component = WealthHomeLoanAccountsBreakdownComponent
+      //}
+      //else if (widget.WidgetName == "WealthHomeLoanSummaryTaxPurpose") {
+      //  gridObj.component = WealthHomeLoanSummaryTaxPurposeComponent
+      //}
+      //else if (widget.WidgetName == "WealthHomeLoanInstalment") {
+      //  gridObj.component = WealthHomeLoanInstalmentComponent
+      //}
+      //else if (widget.WidgetName == "WealthHomeLoanBranchDetails") {
+      //  gridObj.component = WealthHomeLoanBankDetailsComponent
+      //}
+      //else if (widget.WidgetName == "MCAAccountSummary") {
+      //  gridObj.component = MCAAccountSummaryComponent
+      //}
+      //else if (widget.WidgetName == "MCATransaction") {
+      //  gridObj.component = MCATransactionComponent
+      //}
+      //else if (widget.WidgetName == "MCAVATAnalysis") {
+      //  gridObj.component = MCAVATAnalysisComponent
+      //}
+      //else if (widget.WidgetName == "WealthMCAAccountSummary") {
+      //  gridObj.component = WealthMCAAccountSummaryComponent
+      //}
+      //else if (widget.WidgetName == "WealthMCATransaction") {
+      //  gridObj.component = WealthMCATransactionComponent
+      //}
+      //else if (widget.WidgetName == "WealthMCAVATAnalysis") {
+      //  gridObj.component = WealthMCAVATAnalysisComponent
+      //}
+      //else if (widget.WidgetName == "WealthMCABranchDetails") {
+      //  gridObj.component = WealthMCABranchDetailsComponent
+      //}
     }
     else {
       let dynaWidgets = this.widgetsArray.filter(item => item.Identifier == widget.WidgetId && item.WidgetName == widgetName && item.WidgetType != 'Static');

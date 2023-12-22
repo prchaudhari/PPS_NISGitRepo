@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace nIS.NedBank
+namespace nIS.PPS
 {
     public class ScheduleListModel
     {

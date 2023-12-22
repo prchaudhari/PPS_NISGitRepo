@@ -19,11 +19,11 @@ namespace nIS
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using nIS.Models;
-    using nIS.NedBank;
+    using nIS.PPS;
     using NIS.Repository;
     using NIS.Repository.Entities;
     using nIS;
-    using nIS.Models.NedBank;
+    using nIS.Models.PPS;
     using System.Data.Entity;
     using log4net;
     using System.Configuration;
