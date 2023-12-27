@@ -337,6 +337,8 @@ namespace nIS
                 {
                     string currency = string.Empty;
                     var accountrecords = new List<AccountMaster>();
+                    var paymentSummary = new List<spIAA_PaymentDetail>();
+                    //var ppsDetails = new List<spIAA_PaymentDetail>();
                     var savingaccountrecords = new List<AccountMaster>();
                     var curerntaccountrecords = new List<AccountMaster>();
                     var CustomerAcccountTransactions = new List<AccountTransaction>();
@@ -497,6 +499,12 @@ namespace nIS
                                             break;
                                         case HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME:
                                             this.BindPaymentSummaryWidgetData(pageContent, customer, statement, page, widget, customerMedias, BatchDetails, accountrecords);
+                                            break;
+                                        case HtmlConstants.PPS_HEADING_WIDGET_NAME:
+                                            this.BindPpsHeadingWidgetData(pageContent, customer, statement, page, widget, customerMedias, BatchDetails, accountrecords);
+                                            break;
+                                        case HtmlConstants.PPS_DETAILS_WIDGET_NAME:
+                                            this.BindPpsDetailsWidgetData(pageContent, customer, statement, page, widget, customerMedias, BatchDetails, accountrecords);
                                             break;
                                         case HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME:
                                             this.BindAccountInformationWidgetData(pageContent, customer, page, widget);
@@ -1251,6 +1259,23 @@ namespace nIS
             pageContent.Replace("{{TotalDue}}", (Convert.ToDouble(accountrecords.First().GrandTotal) +
                 Convert.ToDouble(accountrecords.First().FeesPaid)).ToString());
         }
+
+        private void BindPpsHeadingWidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<BatchDetail> batchDetails, IList<AccountMaster> accountrecords)
+        {
+            //pageContent.Replace("{{IntTotal}}", accountrecords.First().GrandTotal);
+            //pageContent.Replace("{{Vat}}", accountrecords.First().FeesPaid);
+            //pageContent.Replace("{{TotalDue}}", (Convert.ToDouble(accountrecords.First().GrandTotal) +
+            //    Convert.ToDouble(accountrecords.First().FeesPaid)).ToString());
+        }
+
+        private void BindPpsDetailsWidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<BatchDetail> batchDetails, IList<AccountMaster> accountrecords)
+        {
+            //pageContent.Replace("{{IntTotal}}", accountrecords.First().GrandTotal);
+            //pageContent.Replace("{{Vat}}", accountrecords.First().FeesPaid);
+            //pageContent.Replace("{{TotalDue}}", (Convert.ToDouble(accountrecords.First().GrandTotal) +
+            //    Convert.ToDouble(accountrecords.First().FeesPaid)).ToString());
+        }
+
 
         private void BindAccountInformationWidgetData(StringBuilder pageContent, CustomerMaster customer, Page page, PageWidget widget)
         {

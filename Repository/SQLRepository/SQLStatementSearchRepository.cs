@@ -396,6 +396,9 @@ namespace nIS
                 {
                     string currency = string.Empty;
                     IList<AccountMasterRecord> accountrecords = new List<AccountMasterRecord>();
+                    IList<spIAA_PaymentDetail> paymentSummary = new List<spIAA_PaymentDetail>();
+                    IList<spIAA_PaymentDetail> ppsheading = new List<spIAA_PaymentDetail>();
+                    IList<spIAA_PaymentDetail> ppsDetails = new List<spIAA_PaymentDetail>();
                     IList<AccountMasterRecord> savingaccountrecords = new List<AccountMasterRecord>();
                     IList<AccountMasterRecord> curerntaccountrecords = new List<AccountMasterRecord>();
                     IList<CustomerMediaRecord> customerMedias = new List<CustomerMediaRecord>();
@@ -407,6 +410,12 @@ namespace nIS
                     }
                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
+                        // payment syummary
+                        paymentSummary = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
+                        // pps heading
+                        ppsheading = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
+                        // pps details
+                        ppsDetails = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
                         var pages = statement.Pages.Where(item => item.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || item.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE).ToList();
                         IsSavingOrCurrentAccountPagePresent = pages.Count > 0 ? true : false;
                         if (IsSavingOrCurrentAccountPagePresent)
@@ -563,13 +572,27 @@ namespace nIS
                                             }
                                         }
                                     }
-                                   else if (widget.WidgetName == HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME) //Customer Information Widget
+                                   else if (widget.WidgetName == HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME) 
                                     {
-                                        pageContent.Replace("{{IntTotal}}", accountrecords.First().GrandTotal.ToString());
-                                        pageContent.Replace("{{Vat}}", accountrecords.First().FeesPaid.ToString());
-                                        pageContent.Replace("{{TotalDue}}", (Convert.ToDouble(accountrecords.First().GrandTotal) +
-                Convert.ToDouble(accountrecords.First().FeesPaid)).ToString());
+                                        pageContent.Replace("{{IntTotal}}", paymentSummary.First().Earning_Amount.ToString());
+                                        pageContent.Replace("{{Vat}}", paymentSummary.First().VAT_Amount.ToString());
+                                        pageContent.Replace("{{TotalDue}}", (Convert.ToDouble(paymentSummary.First().Earning_Amount) +
+                Convert.ToDouble(paymentSummary.First().VAT_Amount)).ToString());
                                     }
+
+                                    else if (widget.WidgetName == HtmlConstants.PPS_HEADING_WIDGET_NAME)
+                                    {
+                                        pageContent.Replace("{{FSPName}}", ppsheading.FirstOrDefault().FSP_Name);
+                                        pageContent.Replace("{{FSPTradingName}}", ppsheading.FirstOrDefault().FSP_Trading_Name);
+                                    }
+
+                                    else if (widget.WidgetName == HtmlConstants.PPS_DETAILS_WIDGET_NAME)
+                                    {
+                                        pageContent.Replace("{{FSPNumber}}", ppsDetails.FirstOrDefault().FSP_Ext_Ref);
+                                        pageContent.Replace("{{FSPAgreeNumber}}", ppsDetails.FirstOrDefault().FSP_REF);
+                                        pageContent.Replace("{{VATRegNumber}}", ppsDetails.FirstOrDefault().FSP_VAT_Number);
+                                    }
+
                                     else if (widget.WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME) //Account Information Widget
                                     {
                                         StringBuilder AccDivData = new StringBuilder();

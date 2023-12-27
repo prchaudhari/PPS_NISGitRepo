@@ -141,13 +141,11 @@ export class FSPDetailsComponent {
                 </tr>
                 <tr>
                     <td class="tds1">Total Due</td>
-                    <td class="tds"> R291671.93</td>
-                   
+                    <td class="tds"> R291671.93</td>               
                 </tr>
-<tr>
-                   
+<tr>                
                     <td> </td>
-                    <td>Posted- 3<sup>rd</sup> March</td>
+                    <td><i>Posted- 3<sup>rd</sup> March</i></td>
                 </tr>
                </table>
             </div>
@@ -156,6 +154,78 @@ export class FSPDetailsComponent {
   </div>`
 })
 export class PaymentSummaryComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+
+}
+
+// Component Created for PPS Heading--
+@Component({
+  selector: 'ppsHeading',
+  template: `<div class="widget">
+    <div class="widget-header">
+      <span class="widget-header-title"> PPS Heading </span>
+    </div>
+        <header class="header-logo">
+        <div class="pps-logo">
+            <img src="assets/images/ppsLogo.png" alt="PPS logo"><br>
+          </div>
+          <div class="pps-heading">
+            <div class="pps-heading1">
+                Financial Service Provider (FSP) Statement
+            </div><br>
+            <div class="pps-heading2">
+                Miss Yvonne van Heerden T/A Yvonne Van Heerden Financial Planner CC
+            </div>
+          </div>
+    </header>
+  </div>`
+})
+export class PPSHeadingComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+
+}
+
+// Component Created for PPS Details--
+@Component({
+  selector: 'ppsDetails',
+  template: `<div class="widget">
+    <div class="widget-header">
+      <span class="widget-header-title"> PPS Details </span>
+    </div>
+        <section class="details-section">
+            <div class="details-subsection1">
+                <b>FSP:</b>
+                     &nbsp;&nbsp;&nbsp;
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  27959<br>
+                <b>FSB Agreement #:</b>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  124411742<br>
+                <b>Vat Reg #:</b>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    4370245823<br>
+                <b>Month:</b>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  September 2023
+            </div>
+
+            <div class="details-subsection2">
+                <b>Contact details:</b><br>
+                Mobile &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0821234567<br>
+                Email &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<u class="blue">y.vanheerden@google.com</u><br>
+                Address &nbsp;&nbsp;&nbsp;&nbsp;1 John Vorster Drive,<br>
+                &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Randburg, Gauteng
+                <!-- <b>Month </b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: September 2023    -->
+            </div>
+        </section>
+  </div>`
+})
+export class PPSDetailsComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
 

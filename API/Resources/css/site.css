@@ -2978,3 +2978,67 @@ a {
 #customers tr:hover {
     background-color: #ddd;
 }
+
+/*PPS Heading*/
+
+.header-logo {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pps-logo {
+    margin-left: 10px;
+    display: flex;
+    gap: 40px;
+}
+
+    .pps-logo img {
+        height: 140px;
+        width: 140px;
+    }
+
+.pps-heading {
+    width: 100%;
+}
+
+.pps-heading1 {
+    color: #222a35;
+    font-family: Calibri;
+    font-size: 50px;
+    margin-top: 40px;
+}
+
+.pps-heading2 {
+    color: #222a35;
+    font-family: Calibri;
+    font-weight: bold;
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+/* PPS Details*/
+.details-section {
+    padding-left: 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.details-subsection1 {
+    text-align: left;
+    font-family: Calibri;
+    font-size: 25px;
+}
+
+.details-subsection2 {
+    margin-right: 10%;
+    text-align: left;
+    font-family: Calibri;
+    font-size: 25px;
+}
+
+.blue {
+    color: #0965c2;
+}

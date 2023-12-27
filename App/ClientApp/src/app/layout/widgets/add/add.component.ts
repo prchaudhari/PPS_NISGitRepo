@@ -87,7 +87,14 @@ export class AddComponent implements OnInit {
           this.widgetList[i].ImageSource = "assets/images/PaymentSummary.png";
           this.widgetList[i].WidgetIcon = "fa fa-address-book-o";
         }
-
+        else if (this.widgetList[i].WidgetName == "PPSHeading") {
+          this.widgetList[i].ImageSource = "assets/images/PPSHeading.png";
+          this.widgetList[i].WidgetIcon = "fa fa-address-book-o";
+        }
+        else if (this.widgetList[i].WidgetName == "PPSDetails") {
+          this.widgetList[i].ImageSource = "assets/images/PPSDetails.PNG";
+          this.widgetList[i].WidgetIcon = "fa fa-address-book-o";
+        }
         else if (this.widgetList[i].WidgetName == "AccountInformation") {
           this.widgetList[i].ImageSource = "assets/images/AccountInfoWidget.PNG"
           this.widgetList[i].WidgetIcon = "fa fa-address-card-o";

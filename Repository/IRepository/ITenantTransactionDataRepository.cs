@@ -97,6 +97,12 @@ namespace nIS
         /// </returns>
         IList<ReminderAndRecommendation> GetReminderAndRecommendation(long CustomerIdentifier, long BatchIdentifier, string tenantCode);
 
+        #region pps
+         IList<spIAA_PaymentDetail> Get_PaymentSummary(string tenantCode);
+         IList<spIAA_PaymentDetail> Get_PPSHeading(string tenantCode);
+         IList<spIAA_PaymentDetail> Get_PPSDetails(string tenantCode);
+        #endregion
+
         #region Nedbank
 
         ///// <summary>

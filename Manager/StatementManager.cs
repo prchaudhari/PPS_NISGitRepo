@@ -508,6 +508,13 @@ namespace nIS
                                                             case HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME:
                                                                 pageHtmlContent.Append(this.PaymentSummaryWidgetFormatting(pageWidget, counter, statement, page, divHeight));
                                                                 break;
+                                                            case HtmlConstants.PPS_HEADING_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.PpsHeadingWidgetFormatting(pageWidget, counter, statement, page, divHeight));
+                                                                break;
+
+                                                            case HtmlConstants.PPS_DETAILS_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.PpsDetailsWidgetFormatting(pageWidget, counter, statement, page, divHeight));
+                                                                break;
 
                                                             case HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME:
                                                                 pageHtmlContent.Append(this.AccountInformationWidgetFormatting(pageWidget, counter, statement, page, divHeight));
@@ -1308,6 +1315,14 @@ namespace nIS
 
                                 case HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME:
                                     this.BindDummyDataToPaymentSummaryWidget(pageContent, statement, page, widget, AppBaseDirectory);
+                                    break;
+                                    
+                                case HtmlConstants.PPS_HEADING_WIDGET_NAME:
+                                    this.BindDummyDataToPpsHeadingWidget(pageContent, statement, page, widget, AppBaseDirectory);
+                                    break;
+
+                                case HtmlConstants.PPS_DETAILS_WIDGET_NAME:
+                                    this.BindDummyDataToPpsDetailsWidget(pageContent, statement, page, widget, AppBaseDirectory);
                                     break;
 
                                 case HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME:
@@ -2174,18 +2189,52 @@ namespace nIS
                                                 }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME)
                                                 {
-                                                    string paymentInfoJson = "{'CustomerId':'7','BatchId':'35','AccountNumber':'LD01254-222222','AccountType':'Current Account','Currency':'$','Balance':'6235.34','TotalDeposit':'15432.00','TotalSpend':'5760.00','ProfitEarned':'3456.00','Indicator':'Up','FeesPaid':'345.00','GrandTotal':'24356.00','Percentage':'50.00','TenantCode':'00000000-0000-0000-0000-000000000000'}";
+                                                    string paymentInfoJson = "{Reg_ID : 1,Start_Date : '2023-01-01',End_Date : '2023-01-01',Request_DateTime : 'DummyText1',ID : '124529534',Intermediary_Code : 'DummyText1',FSP_ID : 'DummyText1',Policy_Number : 'DummyText1',FSP_Party_ID : 'DummyText1',Client_Number : '124556686',FSP_REF : '2452953',Client_Name : 'Mr SCHOELER',Int_ID : 'DummyText1',Product_Type : 'DummyText1',Commission_Amount : 'DummyText1',INT_EXT_REF : '124411745',Int_Name : 'Kruger Van Heerden',Int_Type : 'DummyText1',Policy_Ref : '5596100',Member_Ref : '124556686',Member_Name : 'DummyText1',Transaction_Amount : 'DummyText1',Mem_Age : 'DummyText1',Months_In_Force : 'DummyText1',Commission_Type : 'Safe Custody Fee',Description : 'Safe Custody Service Fee',POSTED_DATE : '2023-03-03',AE_Type_ID : 'DummyText1',AE_Amount : 'DummyText1',DR_CR : 'DummyText1',NAME : 'DummyText1',Member_Surname : 'DummyText1',Jurisdiction : 'DummyText1',Sales_Office : 'DummyText1',FSP_Name : 'Miss Yvonne van Heerden',FSP_Trading_Name : 'T/A Yvonne Van Heerden Financial Planner CC',FSP_Ext_Ref : '124529534',FSP_Kind : 'DummyText1',  		FSP_VAT_Number : '2452953',Product : 'DummyText1',Prod_Group : 'Service Fee',Prod_Seq : 'DummyText1',Report_Seq : 'DummyText1',TYPE : 'DummyText1',Display_Amount : '17.55',VAT_Amount : '38001.27',Earning_Amount : '256670.66',Payment_Amount : 'DummyText1',START_DATE : 'DummyText1',END_DATE : 'DummyText1',Business_Type : 'DummyText1',Lifecycle_Description : 'DummyText1',Lifecycle_Start_Date : 'DummyText1',AE_Scheduler_ID : 'DummyText1',VAT_Amount_1 : 'DummyText1',Final_Amount : 'DummyText1'}";
                                                     if (paymentInfoJson != string.Empty && validationEngine.IsValidJson(paymentInfoJson))
                                                     {
-                                                        AccountMaster paymentInfo = JsonConvert.DeserializeObject<AccountMaster>(paymentInfoJson);
+                                                        spIAA_PaymentDetail paymentInfo = JsonConvert.DeserializeObject<spIAA_PaymentDetail>(paymentInfoJson);
                                                         var paymentHtmlWidget = HtmlConstants.PAYMENT_SUMMARY_WIDGET_HTML;
                                                         paymentHtmlWidget = paymentHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
-                                                        paymentHtmlWidget = paymentHtmlWidget.Replace("{{IntTotal}}", paymentInfo.GrandTotal);
-                                                        paymentHtmlWidget = paymentHtmlWidget.Replace("{{Vat}}", paymentInfo.FeesPaid);
-                                                        paymentHtmlWidget = paymentHtmlWidget.Replace("{{TotalDue}}", (Convert.ToDouble(paymentInfo.GrandTotal) + Convert.ToDouble(paymentInfo.FeesPaid)).ToString());
+                                                        paymentHtmlWidget = paymentHtmlWidget.Replace("{{IntTotal}}", paymentInfo.Earning_Amount);
+                                                        paymentHtmlWidget = paymentHtmlWidget.Replace("{{Vat}}", paymentInfo.VAT_Amount);
+                                                        paymentHtmlWidget = paymentHtmlWidget.Replace("{{TotalDue}}", (Convert.ToDouble(paymentInfo.Earning_Amount) + Convert.ToDouble(paymentInfo.VAT_Amount)).ToString());
                                                         htmlString.Append(paymentHtmlWidget);
                                                     }
                                                 }
+
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.PPS_HEADING_WIDGET_NAME)
+                                                {
+                                                    string headingInfoJson = "{Reg_ID : 1,Start_Date : '2023-01-01',End_Date : '2023-01-01',Request_DateTime : 'DummyText1',ID : '124529534',Intermediary_Code : 'DummyText1',FSP_ID : 'DummyText1',Policy_Number : 'DummyText1',FSP_Party_ID : 'DummyText1',Client_Number : '124556686',FSP_REF : '2452953',Client_Name : 'Mr SCHOELER',Int_ID : 'DummyText1',Product_Type : 'DummyText1',Commission_Amount : 'DummyText1',INT_EXT_REF : '124411745',Int_Name : 'Kruger Van Heerden',Int_Type : 'DummyText1',Policy_Ref : '5596100',Member_Ref : '124556686',Member_Name : 'DummyText1',Transaction_Amount : 'DummyText1',Mem_Age : 'DummyText1',Months_In_Force : 'DummyText1',Commission_Type : 'Safe Custody Fee',Description : 'Safe Custody Service Fee',POSTED_DATE : '2023-03-03',AE_Type_ID : 'DummyText1',AE_Amount : 'DummyText1',DR_CR : 'DummyText1',NAME : 'DummyText1',Member_Surname : 'DummyText1',Jurisdiction : 'DummyText1',Sales_Office : 'DummyText1',FSP_Name : 'Miss Yvonne van Heerden',FSP_Trading_Name : 'T/A Yvonne Van Heerden Financial Planner CC',FSP_Ext_Ref : '124529534',FSP_Kind : 'DummyText1',  		FSP_VAT_Number : '2452953',Product : 'DummyText1',Prod_Group : 'Service Fee',Prod_Seq : 'DummyText1',Report_Seq : 'DummyText1',TYPE : 'DummyText1',Display_Amount : '17.55',VAT_Amount : '38001.27',Earning_Amount : '256670.66',Payment_Amount : 'DummyText1',START_DATE : 'DummyText1',END_DATE : 'DummyText1',Business_Type : 'DummyText1',Lifecycle_Description : 'DummyText1',Lifecycle_Start_Date : 'DummyText1',AE_Scheduler_ID : 'DummyText1',VAT_Amount_1 : 'DummyText1',Final_Amount : 'DummyText1'}";
+                                                    if (headingInfoJson != string.Empty && validationEngine.IsValidJson(headingInfoJson))
+                                                    {
+                                                        spIAA_PaymentDetail headingInfo = JsonConvert.DeserializeObject<spIAA_PaymentDetail>(headingInfoJson);
+                                                        var headingHtmlWidget = HtmlConstants.PPS_HEADING_WIDGET_HTML;
+                                                        headingHtmlWidget = headingHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
+
+                                                        headingHtmlWidget = headingHtmlWidget.Replace("{{FSPName}}", headingInfo.FSP_Name);
+                                                        headingHtmlWidget = headingHtmlWidget.Replace("{{FSPTradingName}}", headingInfo.FSP_Trading_Name);
+
+                                                        htmlString.Append(headingHtmlWidget);
+                                                    }
+                                                }
+
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.PPS_DETAILS_WIDGET_NAME)
+                                                {
+                                                    string ppsDetailsInfoJson = "{Reg_ID : 1,Start_Date : '2023-01-01',End_Date : '2023-01-01',Request_DateTime : 'DummyText1',ID : '124529534',Intermediary_Code : 'DummyText1',FSP_ID : 'DummyText1',Policy_Number : 'DummyText1',FSP_Party_ID : 'DummyText1',Client_Number : '124556686',FSP_REF : '2452953',Client_Name : 'Mr SCHOELER',Int_ID : 'DummyText1',Product_Type : 'DummyText1',Commission_Amount : 'DummyText1',INT_EXT_REF : '124411745',Int_Name : 'Kruger Van Heerden',Int_Type : 'DummyText1',Policy_Ref : '5596100',Member_Ref : '124556686',Member_Name : 'DummyText1',Transaction_Amount : 'DummyText1',Mem_Age : 'DummyText1',Months_In_Force : 'DummyText1',Commission_Type : 'Safe Custody Fee',Description : 'Safe Custody Service Fee',POSTED_DATE : '2023-03-03',AE_Type_ID : 'DummyText1',AE_Amount : 'DummyText1',DR_CR : 'DummyText1',NAME : 'DummyText1',Member_Surname : 'DummyText1',Jurisdiction : 'DummyText1',Sales_Office : 'DummyText1',FSP_Name : 'Miss Yvonne van Heerden',FSP_Trading_Name : 'T/A Yvonne Van Heerden Financial Planner CC',FSP_Ext_Ref : '124529534',FSP_Kind : 'DummyText1',  		FSP_VAT_Number : '2452953',Product : 'DummyText1',Prod_Group : 'Service Fee',Prod_Seq : 'DummyText1',Report_Seq : 'DummyText1',TYPE : 'DummyText1',Display_Amount : '17.55',VAT_Amount : '38001.27',Earning_Amount : '256670.66',Payment_Amount : 'DummyText1',START_DATE : 'DummyText1',END_DATE : 'DummyText1',Business_Type : 'DummyText1',Lifecycle_Description : 'DummyText1',Lifecycle_Start_Date : 'DummyText1',AE_Scheduler_ID : 'DummyText1',VAT_Amount_1 : 'DummyText1',Final_Amount : 'DummyText1'}";
+                                                    if (ppsDetailsInfoJson != string.Empty && validationEngine.IsValidJson(ppsDetailsInfoJson))
+                                                    {
+                                                        spIAA_PaymentDetail ppsDetailsInfo = JsonConvert.DeserializeObject<spIAA_PaymentDetail>(ppsDetailsInfoJson);
+                                                        var ppsDetailsHtmlWidget = HtmlConstants.PPS_DETAILS_WIDGET_HTML;
+                                                        ppsDetailsHtmlWidget = ppsDetailsHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
+
+                                                        ppsDetailsHtmlWidget = ppsDetailsHtmlWidget.Replace("{{FSPNumber}}", ppsDetailsInfo.FSP_Ext_Ref);
+                                                        ppsDetailsHtmlWidget = ppsDetailsHtmlWidget.Replace("{{FSPAgreeNumber}}", ppsDetailsInfo.FSP_REF);
+                                                        ppsDetailsHtmlWidget = ppsDetailsHtmlWidget.Replace("{{VATRegNumber}}", ppsDetailsInfo.FSP_VAT_Number);
+
+                                                        htmlString.Append(ppsDetailsHtmlWidget);
+                                                    }
+                                                }
+
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME)
                                                 {
                                                     string accountInfoJson = "{'StatementDate':'1-APR-2020','StatementPeriod':'Annual Statement', 'CustomerID':'ID2-8989-5656','RmName':'James Wiilims','RmContactNumber':'+4487867833'}";
@@ -5619,6 +5668,25 @@ namespace nIS
             return widgetHTML;
         }
 
+
+        private string PpsHeadingWidgetFormatting(PageWidget pageWidget, int counter, Statement statement, Page page, string divHeight)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var widgetHTML = HtmlConstants.PPS_HEADING_WIDGET_HTML_FOR_STMT;
+            widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
+            widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+            return widgetHTML;
+        }
+
+        private string PpsDetailsWidgetFormatting(PageWidget pageWidget, int counter, Statement statement, Page page, string divHeight)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var widgetHTML = HtmlConstants.PPS_DETAILS_WIDGET_HTML_FOR_STMT;
+            widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
+            widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+            return widgetHTML;
+        }
+
         private string AccountInformationWidgetFormatting(PageWidget pageWidget, int counter, Statement statement, Page page, string divHeight)
         {
             var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
@@ -6456,6 +6524,30 @@ namespace nIS
                 pageContent.Replace("{{TotalDue}}", (Convert.ToDouble(paymentInfo.GrandTotal) + Convert.ToDouble(paymentInfo.FeesPaid)).ToString());
             }
         }
+
+        private void BindDummyDataToPpsHeadingWidget(StringBuilder pageContent, Statement statement, Page page, PageWidget widget, string AppBaseDirectory)
+        {
+            var headingInfoJson = "{Reg_ID : 1,Start_Date : '2023-01-01',End_Date : '2023-01-01',Request_DateTime : 'DummyText1',ID : '124529534',Intermediary_Code : 'DummyText1',FSP_ID : 'DummyText1',Policy_Number : 'DummyText1',FSP_Party_ID : 'DummyText1',Client_Number : '124556686',FSP_REF : '2452953',Client_Name : 'Mr SCHOELER',Int_ID : 'DummyText1',Product_Type : 'DummyText1',Commission_Amount : 'DummyText1',INT_EXT_REF : '124411745',Int_Name : 'Kruger Van Heerden',Int_Type : 'DummyText1',Policy_Ref : '5596100',Member_Ref : '124556686',Member_Name : 'DummyText1',Transaction_Amount : 'DummyText1',Mem_Age : 'DummyText1',Months_In_Force : 'DummyText1',Commission_Type : 'Safe Custody Fee',Description : 'Safe Custody Service Fee',POSTED_DATE : '2023-03-03',AE_Type_ID : 'DummyText1',AE_Amount : 'DummyText1',DR_CR : 'DummyText1',NAME : 'DummyText1',Member_Surname : 'DummyText1',Jurisdiction : 'DummyText1',Sales_Office : 'DummyText1',FSP_Name : 'Miss Yvonne van Heerden',FSP_Trading_Name : 'T/A Yvonne Van Heerden Financial Planner CC',FSP_Ext_Ref : '124529534',FSP_Kind : 'DummyText1',  		FSP_VAT_Number : '2452953',Product : 'DummyText1',Prod_Group : 'Service Fee',Prod_Seq : 'DummyText1',Report_Seq : 'DummyText1',TYPE : 'DummyText1',Display_Amount : '17.55',VAT_Amount : '38001.27',Earning_Amount : '256670.66',Payment_Amount : 'DummyText1',START_DATE : 'DummyText1',END_DATE : 'DummyText1',Business_Type : 'DummyText1',Lifecycle_Description : 'DummyText1',Lifecycle_Start_Date : 'DummyText1',AE_Scheduler_ID : 'DummyText1',VAT_Amount_1 : 'DummyText1',Final_Amount : 'DummyText1'}";
+            if (headingInfoJson != string.Empty && validationEngine.IsValidJson(headingInfoJson))
+            {
+                var headingInfo = JsonConvert.DeserializeObject<spIAA_PaymentDetail>(headingInfoJson);
+                pageContent.Replace("{{FSPName}}", headingInfo.FSP_Name);
+                pageContent.Replace("{{FSPTradingName}}", headingInfo.FSP_Trading_Name);
+            }
+        }
+
+        private void BindDummyDataToPpsDetailsWidget(StringBuilder pageContent, Statement statement, Page page, PageWidget widget, string AppBaseDirectory)
+        {
+            var ppsDetailsInfoJson = "{Reg_ID : 1,Start_Date : '2023-01-01',End_Date : '2023-01-01',Request_DateTime : 'DummyText1',ID : '124529534',Intermediary_Code : 'DummyText1',FSP_ID : 'DummyText1',Policy_Number : 'DummyText1',FSP_Party_ID : 'DummyText1',Client_Number : '124556686',FSP_REF : '2452953',Client_Name : 'Mr SCHOELER',Int_ID : 'DummyText1',Product_Type : 'DummyText1',Commission_Amount : 'DummyText1',INT_EXT_REF : '124411745',Int_Name : 'Kruger Van Heerden',Int_Type : 'DummyText1',Policy_Ref : '5596100',Member_Ref : '124556686',Member_Name : 'DummyText1',Transaction_Amount : 'DummyText1',Mem_Age : 'DummyText1',Months_In_Force : 'DummyText1',Commission_Type : 'Safe Custody Fee',Description : 'Safe Custody Service Fee',POSTED_DATE : '2023-03-03',AE_Type_ID : 'DummyText1',AE_Amount : 'DummyText1',DR_CR : 'DummyText1',NAME : 'DummyText1',Member_Surname : 'DummyText1',Jurisdiction : 'DummyText1',Sales_Office : 'DummyText1',FSP_Name : 'Miss Yvonne van Heerden',FSP_Trading_Name : 'T/A Yvonne Van Heerden Financial Planner CC',FSP_Ext_Ref : '124529534',FSP_Kind : 'DummyText1',  		FSP_VAT_Number : '2452953',Product : 'DummyText1',Prod_Group : 'Service Fee',Prod_Seq : 'DummyText1',Report_Seq : 'DummyText1',TYPE : 'DummyText1',Display_Amount : '17.55',VAT_Amount : '38001.27',Earning_Amount : '256670.66',Payment_Amount : 'DummyText1',START_DATE : 'DummyText1',END_DATE : 'DummyText1',Business_Type : 'DummyText1',Lifecycle_Description : 'DummyText1',Lifecycle_Start_Date : 'DummyText1',AE_Scheduler_ID : 'DummyText1',VAT_Amount_1 : 'DummyText1',Final_Amount : 'DummyText1'}";
+            if (ppsDetailsInfoJson != string.Empty && validationEngine.IsValidJson(ppsDetailsInfoJson))
+            {
+                var ppsDetailsInfo = JsonConvert.DeserializeObject<spIAA_PaymentDetail>(ppsDetailsInfoJson);
+                pageContent.Replace("{{FSPNumber}}", ppsDetailsInfo.FSP_Ext_Ref);
+                pageContent.Replace("{{FSPAgreeNumber}}", ppsDetailsInfo.FSP_REF);
+                pageContent.Replace("{{VATRegNumber}}", ppsDetailsInfo.FSP_VAT_Number);
+            }
+        }
+
 
         private void BindDummyDataToAccountInformationWidget(StringBuilder pageContent, Page page, PageWidget widget)
         {

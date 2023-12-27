@@ -445,6 +445,77 @@ namespace nIS
         }
 
         #endregion
+        #region pps
+
+        // payment summary
+        public IList<spIAA_PaymentDetail> Get_PaymentSummary( string tenantCode)
+        {
+            //List<spIAA_PaymentDetail> spData = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
+            
+            try
+            {
+                IList<spIAA_PaymentDetail> paymentSummary = new List<spIAA_PaymentDetail>();
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    paymentSummary = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
+                    
+                   
+                }
+                return paymentSummary;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        // pps heading
+        public IList<spIAA_PaymentDetail> Get_PPSHeading(string tenantCode)
+        {
+            //List<spIAA_PaymentDetail> spData = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
+
+            try
+            {
+                IList<spIAA_PaymentDetail> ppsHeading = new List<spIAA_PaymentDetail>();
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    ppsHeading = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
+
+
+                }
+                return ppsHeading;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        // pps details
+        public IList<spIAA_PaymentDetail> Get_PPSDetails(string tenantCode)
+        {
+            //List<spIAA_PaymentDetail> spData = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
+
+            try
+            {
+                IList<spIAA_PaymentDetail> ppsDetails = new List<spIAA_PaymentDetail>();
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    ppsDetails = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
+
+
+                }
+                return ppsDetails;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
 
         //#region Public methods for Nedbank Tenant
 

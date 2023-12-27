@@ -13,7 +13,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { DynamicModule } from 'ng-dynamic-component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
-  CustomerInformationComponent, FSPDetailsComponent, PaymentSummaryComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent,
+  CustomerInformationComponent, FSPDetailsComponent, PaymentSummaryComponent, PPSHeadingComponent, PPSDetailsComponent,
+  AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent,
   TransactionDetailsComponent, SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent, SpendindTrendsComponent,
   TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent, SavingTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, 
   SpendindTrendsPreviewComponent, DynamicLineChartWidgetComponent, DynamicBarChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, PageBreakComponent, SegmentBasedContentComponent,
@@ -25,7 +26,7 @@ import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor'
 import { SafeHtmlPip } from '../shared/pagepreview/pagepreview.component';
 import { MatIconModule } from '@angular/material/icon';
 @NgModule({
-  declarations: [AddDashboardDesignerComponent, PaymentSummaryComponent, ViewDashboardDesignerComponent, CustomerInformationComponent, FSPDetailsComponent,
+  declarations: [AddDashboardDesignerComponent, PaymentSummaryComponent, PPSHeadingComponent, ViewDashboardDesignerComponent, CustomerInformationComponent, FSPDetailsComponent, PPSDetailsComponent,
     AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
     SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
     SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent, SavingTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, 
@@ -38,7 +39,7 @@ import { MatIconModule } from '@angular/material/icon';
     GridsterModule, LayoutModule, MatSortModule, MatTableModule, MatPaginatorModule, DynamicModule, RichTextEditorAllModule, MatIconModule
   ],
   entryComponents: [
-    CustomerInformationComponent, FSPDetailsComponent, PaymentSummaryComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent, SavingAvailableBalanceComponent,
+    CustomerInformationComponent, PPSDetailsComponent, FSPDetailsComponent, PaymentSummaryComponent, PPSHeadingComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent, SavingAvailableBalanceComponent,
     CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent, SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent,
     ReminderAndRecommComponent, SavingTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, SpendindTrendsPreviewComponent,
     DynamicLineChartWidgetComponent, DynamicBarChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, PageBreakComponent, SegmentBasedContentComponent,

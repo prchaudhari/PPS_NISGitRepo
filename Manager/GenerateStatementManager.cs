@@ -1102,6 +1102,9 @@ namespace nIS
                 {
                     string currency = string.Empty;
                     var accountrecords = new List<AccountMaster>();
+                    var ppsheading = new List<spIAA_PaymentDetail>();
+                    var ppsDetails = new List<spIAA_PaymentDetail>();
+                    var paymentSummary = new List<spIAA_PaymentDetail>();
                     var savingaccountrecords = new List<AccountMaster>();
                     var curerntaccountrecords = new List<AccountMaster>();
                     var CustomerAcccountTransactions = new List<AccountTransaction>();
@@ -1110,6 +1113,9 @@ namespace nIS
                     var pages = statement.Pages.Where(item => item.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || item.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE).ToList();
                     IsSavingOrCurrentAccountPagePresent = pages.Count > 0 ? true : false;
 
+                    ppsheading = this.tenantTransactionDataRepository.Get_PPSHeading(tenantCode)?.ToList();
+                    ppsDetails = this.tenantTransactionDataRepository.Get_PPSDetails(tenantCode)?.ToList();
+                    paymentSummary = this.tenantTransactionDataRepository.Get_PaymentSummary(tenantCode)?.ToList();
                     //collecting all required transaction required for static widgets in financial tenant html statement
                     if (IsSavingOrCurrentAccountPagePresent)
                     {
@@ -1297,7 +1303,13 @@ namespace nIS
                                             this.BindCustomerInformationWidgetData(pageContent, customer, statement, page, widget, customerMedias, statementRawData.BatchDetails);
                                             break;
                                         case HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME:
-                                            this.BindPaymentSummaryWidgetData(pageContent, customer, statement, page, widget, customerMedias, accountrecords, statementRawData.BatchDetails);
+                                            this.BindPaymentSummaryWidgetData(pageContent, customer, statement, page, widget, customerMedias, paymentSummary, statementRawData.BatchDetails);
+                                            break;
+                                        case HtmlConstants.PPS_HEADING_WIDGET_NAME:
+                                            this.BindPpsHeadingWidgetData(pageContent, customer, statement, page, widget, customerMedias, ppsheading, statementRawData.BatchDetails);
+                                            break;
+                                        case HtmlConstants.PPS_DETAILS_WIDGET_NAME:
+                                            this.BindPpsDetailsWidgetData(pageContent, customer, statement, page, widget, customerMedias, ppsDetails, statementRawData.BatchDetails);
                                             break;
                                         case HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME:
                                             this.BindAccountInformationWidgetData(pageContent, customer, page, widget);
@@ -2241,31 +2253,26 @@ namespace nIS
             }
         }
 
-        private void BindPaymentSummaryWidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<AccountMaster> accountrecords, IList<BatchDetail> batchDetails)
+        private void BindPaymentSummaryWidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<spIAA_PaymentDetail> paymentSummary, IList<BatchDetail> batchDetails)
         {
-            //pageContent.Replace("{{CustomerName}}", (customer.FirstName.Trim() + " " + (customer.MiddleName == string.Empty ? string.Empty : " " + customer.MiddleName.Trim()) + " " + customer.LastName.Trim()));
-            pageContent.Replace("{{IntTotal}}", accountrecords.First().GrandTotal);
-            pageContent.Replace("{{Vat}}", accountrecords.First().FeesPaid);
-            pageContent.Replace("{{TotalDue}}", (Convert.ToDouble( accountrecords.First().GrandTotal) +
-                Convert.ToDouble( accountrecords.First().FeesPaid)).ToString());
-            //string address2 = (customer.AddressLine2 != "" ? customer.AddressLine2 + ", " : "") + (customer.City != "" ? customer.City + ", " : "") + (customer.State != "" ? customer.State + ", " : "") + (customer.Country != "" ? customer.Country + ", " : "") + (customer.Zip != "" ? customer.Zip : "");
-            //pageContent.Replace("{{Address2}}", address2);
-
-            //var custMedia = customerMedias.Where(item => item.PageId == page.Identifier && item.WidgetId == widget.Identifier)?.ToList()?.FirstOrDefault();
-            //if (custMedia != null && custMedia.VideoURL != string.Empty)
-            //{
-            //    pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", custMedia.VideoURL);
-            //}
-            //else
-            
-                //var batchDetail = batchDetails.Where(item => item.StatementId == statement.Identifier && item.WidgetId == widget.Identifier && item.PageId == page.Identifier)?.ToList()?.FirstOrDefault();
-                //if (batchDetail != null && batchDetail.VideoURL != string.Empty)
-            //    {
-            //        pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", batchDetail.VideoURL);
-            //    }
-            //}
+            pageContent.Replace("{{IntTotal}}", paymentSummary.First().Earning_Amount);
+            pageContent.Replace("{{Vat}}", paymentSummary.First().VAT_Amount);
+            pageContent.Replace("{{TotalDue}}", (Convert.ToDouble(paymentSummary.First().Earning_Amount) +
+                Convert.ToDouble(paymentSummary.First().VAT_Amount)).ToString());
         }
 
+        private void BindPpsHeadingWidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<spIAA_PaymentDetail> ppsheading, IList<BatchDetail> batchDetails)
+        {
+            pageContent.Replace("{{FSPName}}", ppsheading.FirstOrDefault().FSP_Name);
+            pageContent.Replace("{{FSPTradingName}}", ppsheading.FirstOrDefault().FSP_Trading_Name);
+        }
+
+        private void BindPpsDetailsWidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<spIAA_PaymentDetail> ppsDetails, IList<BatchDetail> batchDetails)
+        {
+            pageContent.Replace("{{FSPNumber}}", ppsDetails.FirstOrDefault().FSP_Ext_Ref);
+            pageContent.Replace("{{FSPAgreeNumber}}", ppsDetails.FirstOrDefault().FSP_REF);
+            pageContent.Replace("{{VATRegNumber}}", ppsDetails.FirstOrDefault().FSP_VAT_Number);
+        }
         private void BindAccountInformationWidgetData(StringBuilder pageContent, CustomerMaster customer, Page page, PageWidget widget)
         {
             StringBuilder AccDivData = new StringBuilder();
