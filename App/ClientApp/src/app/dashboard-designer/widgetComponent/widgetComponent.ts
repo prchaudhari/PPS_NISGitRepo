@@ -231,6 +231,32 @@ export class PPSDetailsComponent {
 
 }
 
+// Component Created for PPS Details--
+@Component({
+  selector: 'ppsFooter',
+  template: `<div class="widget">
+    <div class="widget-header">
+      <span class="widget-header-title"> PPS Footer </span>
+    </div>
+<div class="widget-area">
+       <div class="footer_bar1">
+        <table>
+            <tr>
+              <th class="footer_img"><img src="assets/images/multipleFont.png"></th>
+              <th class="footer_data1">PPS Insurance is a registered Insurer and FSP</th>
+              <th class="footer_data2"> Page 1/2</th>
+            </tr>
+          </table>
+        </div>
+        </div>
+  </div>`
+})
+export class PPSFooter1Component {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+
+}
+
 // Component Created for Account Information Widget--
 @Component({
   selector: 'accountInformation',

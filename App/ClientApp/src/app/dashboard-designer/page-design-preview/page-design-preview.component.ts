@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
 import * as $ from 'jquery';
 import { DomSanitizer } from '@angular/platform-browser';
 import {
-  SummaryAtGlanceComponent, AccountInformationComponent, FSPDetailsComponent, PaymentSummaryComponent, PPSHeadingComponent, PPSDetailsComponent,
+  SummaryAtGlanceComponent, AccountInformationComponent, FSPDetailsComponent, PaymentSummaryComponent, PPSHeadingComponent, PPSDetailsComponent, PPSFooter1Component,
   SavingTrendsPreviewComponent, SpendindTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent, 
   DynamicBarChartWidgetPreviewComponent, DynamicHhtmlComponent, StaticHtmlComponent, PageBreakComponent, SegmentBasedContentComponent} from '../widgetComponent/widgetComponent';
 import { DynamicWidgetService } from '../../layout/widget-dynamic/dynamicwidget.service';
@@ -154,12 +154,12 @@ export class PageDesignPreviewComponent extends DialogComponent<PageDesignPrevie
       widgetType = dynaWidgets[0].WidgetType;
     }
 
-    if(widgetType == 'Static') {
+    if (widgetType == 'Static') {
       if (widgetName == 'SavingTrend') {
         return SavingTrendsPreviewComponent;
-      }else if(widgetName == 'Analytics') {
+      } else if (widgetName == 'Analytics') {
         return AnalyticsWidgetPreviewComponent;
-      }else if(widgetName == 'SpendingTrend') {
+      } else if (widgetName == 'SpendingTrend') {
         return SpendindTrendsPreviewComponent;
       }
       //else if (widgetName == 'AccountAnalysis') {
@@ -187,26 +187,27 @@ export class PageDesignPreviewComponent extends DialogComponent<PageDesignPrevie
         return SegmentBasedContentComponent;
       }
     }
-    else{
+    else {
       if (widgetType == 'LineGraph') {
         return DynamicPieChartWidgetPreviewComponent;
-      }else if(widgetType == 'BarGraph') {
+      } else if (widgetType == 'BarGraph') {
         return DynamicBarChartWidgetPreviewComponent;
-      }else if(widgetType == 'PieChart') {
+      } else if (widgetType == 'PieChart') {
         return DynamicPieChartWidgetPreviewComponent;
-      }else if(widgetType == 'Table') {
+      } else if (widgetType == 'Table') {
         return SummaryAtGlanceComponent;
-      }else if(widgetType == 'Form') {
+      } else if (widgetType == 'Form') {
         return AccountInformationComponent;
       } else if (widgetType == 'Form') {
         return FSPDetailsComponent;
       } else if (widgetType == 'Form') {
         return PPSDetailsComponent;
-      }else if(widgetType == 'Html') {
+      } else if (widgetType == 'Html') {
         return DynamicHhtmlComponent;
+      } else if (widgetType == 'Form') {
+        return PPSFooter1Component;
       }
     }
-    
 }
 
   cancel() {
