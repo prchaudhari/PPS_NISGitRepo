@@ -645,7 +645,7 @@ export class AddDashboardDesignerComponent implements OnInit {
   }
 
   isStaticHtmlConfigForm(widgetId, widgetItemCount) {
-    debugger;
+    //debugger;
     this.isMasterSaveBtnDisabled = true;
     this.isStaticHtmlConfig = true;
     this.staticHtmlWidgetId = widgetId;
@@ -822,7 +822,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     searchParameter.SearchMode = Constants.Contains;
     searchParameter.PageTypeId = this.PageTypeId;
     searchParameter.IsPageTypeDetailsRequired = false;
-    debugger;
+    //debugger;
     this._http.post(this.baseURL + URLConfiguration.widgetGetUrl, searchParameter).subscribe(
       data => {
         this.widgetsArray = <any[]>data;
@@ -1775,7 +1775,7 @@ export class AddDashboardDesignerComponent implements OnInit {
           //  })
           //}
           else if (widget.WidgetName == "StaticHtml") {
-            debugger;
+            //debugger;
             return this.widgetsGridsterItemArray.push({
               cols: 4,
               rows: 3,
@@ -2560,7 +2560,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     if (!this.pageEditModeOn) {
       this.uiLoader.start();
     }
-    debugger;
+    //debugger;
     this._http.post(this.baseURL + URLConfiguration.assetLibraryGetUrl, searchParameter).subscribe(
       data => {
         if (!this.pageEditModeOn) {
@@ -2725,7 +2725,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     assetSearchParameter.SearchMode = Constants.Contains;
     let assets: any[];
     this.uiLoader.start();
-    debugger;
+    //debugger;
     this._http.post(this.baseURL + URLConfiguration.assetGetUrl, assetSearchParameter).subscribe(
       data => {
         this.uiLoader.stop();
@@ -2801,7 +2801,7 @@ export class AddDashboardDesignerComponent implements OnInit {
   }
 
   OnStaticHtmlConfigBtnClicked(actionFor) {
-    debugger;
+    //debugger;
     if (actionFor == 'submit') {
       let staticHtmlContent = this.StaticConfigForm.value['staticHtml'];
       let staticHtmlConfig: any = {};
