@@ -516,6 +516,10 @@ namespace nIS
                                                                 pageHtmlContent.Append(this.PpsDetailsWidgetFormatting(pageWidget, counter, statement, page, divHeight));
                                                                 break;
 
+                                                            case HtmlConstants.PPS_FOOTER1_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.PpsFooter1WidgetFormatting(pageWidget, counter, statement, page, divHeight));
+                                                                break;
+
                                                             case HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME:
                                                                 pageHtmlContent.Append(this.AccountInformationWidgetFormatting(pageWidget, counter, statement, page, divHeight));
                                                                 break;
@@ -1323,6 +1327,10 @@ namespace nIS
 
                                 case HtmlConstants.PPS_DETAILS_WIDGET_NAME:
                                     this.BindDummyDataToPpsDetailsWidget(pageContent, statement, page, widget, AppBaseDirectory);
+                                    break;
+
+                                case HtmlConstants.PPS_FOOTER1_WIDGET_NAME:
+                                    this.BindDummyDataToPpsFooter1Widget(pageContent, statement, page, widget, AppBaseDirectory);
                                     break;
 
                                 case HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME:
@@ -2232,6 +2240,23 @@ namespace nIS
                                                         ppsDetailsHtmlWidget = ppsDetailsHtmlWidget.Replace("{{VATRegNumber}}", ppsDetailsInfo.FSP_VAT_Number);
 
                                                         htmlString.Append(ppsDetailsHtmlWidget);
+                                                    }
+                                                }
+
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.PPS_FOOTER1_WIDGET_NAME)
+                                                {
+                                                    string ppsFooter1InfoJson = "{Reg_ID : 1,Start_Date : '2023-01-01',End_Date : '2023-01-01',Request_DateTime : 'DummyText1',ID : '124529534',Intermediary_Code : 'DummyText1',FSP_ID : 'DummyText1',Policy_Number : 'DummyText1',FSP_Party_ID : 'DummyText1',Client_Number : '124556686',FSP_REF : '2452953',Client_Name : 'Mr SCHOELER',Int_ID : 'DummyText1',Product_Type : 'DummyText1',Commission_Amount : 'DummyText1',INT_EXT_REF : '124411745',Int_Name : 'Kruger Van Heerden',Int_Type : 'DummyText1',Policy_Ref : '5596100',Member_Ref : '124556686',Member_Name : 'DummyText1',Transaction_Amount : 'DummyText1',Mem_Age : 'DummyText1',Months_In_Force : 'DummyText1',Commission_Type : 'Safe Custody Fee',Description : 'Safe Custody Service Fee',POSTED_DATE : '2023-03-03',AE_Type_ID : 'DummyText1',AE_Amount : 'DummyText1',DR_CR : 'DummyText1',NAME : 'DummyText1',Member_Surname : 'DummyText1',Jurisdiction : 'DummyText1',Sales_Office : 'DummyText1',FSP_Name : 'Miss Yvonne van Heerden',FSP_Trading_Name : 'T/A Yvonne Van Heerden Financial Planner CC',FSP_Ext_Ref : '124529534',FSP_Kind : 'DummyText1',  		FSP_VAT_Number : '2452953',Product : 'DummyText1',Prod_Group : 'Service Fee',Prod_Seq : 'DummyText1',Report_Seq : 'DummyText1',TYPE : 'DummyText1',Display_Amount : '17.55',VAT_Amount : '38001.27',Earning_Amount : '256670.66',Payment_Amount : 'DummyText1',START_DATE : 'DummyText1',END_DATE : 'DummyText1',Business_Type : 'DummyText1',Lifecycle_Description : 'DummyText1',Lifecycle_Start_Date : 'DummyText1',AE_Scheduler_ID : 'DummyText1',VAT_Amount_1 : 'DummyText1',Final_Amount : 'DummyText1'}";
+                                                    if (ppsFooter1InfoJson != string.Empty && validationEngine.IsValidJson(ppsFooter1InfoJson))
+                                                    {
+                                                        string middleText = "PPS Insurance is a registered Insurer and FSP";
+                                                        string pageText = "Page 1/2";
+                                                        spIAA_PaymentDetail ppsFooter1Info = JsonConvert.DeserializeObject<spIAA_PaymentDetail>(ppsFooter1InfoJson);
+                                                        var ppsFooter1HtmlWidget = HtmlConstants.PPS_FOOTER1_WIDGET_HTML;
+                                                        ppsFooter1HtmlWidget = ppsFooter1HtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
+
+                                                        ppsFooter1HtmlWidget = ppsFooter1HtmlWidget.Replace("{{FSPFooterDetails}}", middleText);
+                                                        ppsFooter1HtmlWidget = ppsFooter1HtmlWidget.Replace("{{FSPPage}}", pageText);
+                                                        htmlString.Append(ppsFooter1HtmlWidget);
                                                     }
                                                 }
 
@@ -5696,6 +5721,15 @@ namespace nIS
             return widgetHTML;
         }
 
+        private string PpsFooter1WidgetFormatting(PageWidget pageWidget, int counter, Statement statement, Page page, string divHeight)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var widgetHTML = HtmlConstants.PPS_FOOTER1_WIDGET_HTML_FOR_STMT;
+            widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
+            widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+            return widgetHTML;
+        }
+
         private string SummaryAtGlanceWidgetFormatting(PageWidget pageWidget, int counter, Page page, string divHeight)
         {
             var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
@@ -6548,6 +6582,19 @@ namespace nIS
             }
         }
 
+        private void BindDummyDataToPpsFooter1Widget(StringBuilder pageContent, Statement statement, Page page, PageWidget widget, string AppBaseDirectory)
+        {
+            var ppsFooter1InfoJson = "{Reg_ID : 1,Start_Date : '2023-01-01',End_Date : '2023-01-01',Request_DateTime : 'DummyText1',ID : '124529534',Intermediary_Code : 'DummyText1',FSP_ID : 'DummyText1',Policy_Number : 'DummyText1',FSP_Party_ID : 'DummyText1',Client_Number : '124556686',FSP_REF : '2452953',Client_Name : 'Mr SCHOELER',Int_ID : 'DummyText1',Product_Type : 'DummyText1',Commission_Amount : 'DummyText1',INT_EXT_REF : '124411745',Int_Name : 'Kruger Van Heerden',Int_Type : 'DummyText1',Policy_Ref : '5596100',Member_Ref : '124556686',Member_Name : 'DummyText1',Transaction_Amount : 'DummyText1',Mem_Age : 'DummyText1',Months_In_Force : 'DummyText1',Commission_Type : 'Safe Custody Fee',Description : 'Safe Custody Service Fee',POSTED_DATE : '2023-03-03',AE_Type_ID : 'DummyText1',AE_Amount : 'DummyText1',DR_CR : 'DummyText1',NAME : 'DummyText1',Member_Surname : 'DummyText1',Jurisdiction : 'DummyText1',Sales_Office : 'DummyText1',FSP_Name : 'Miss Yvonne van Heerden',FSP_Trading_Name : 'T/A Yvonne Van Heerden Financial Planner CC',FSP_Ext_Ref : '124529534',FSP_Kind : 'DummyText1',  		FSP_VAT_Number : '2452953',Product : 'DummyText1',Prod_Group : 'Service Fee',Prod_Seq : 'DummyText1',Report_Seq : 'DummyText1',TYPE : 'DummyText1',Display_Amount : '17.55',VAT_Amount : '38001.27',Earning_Amount : '256670.66',Payment_Amount : 'DummyText1',START_DATE : 'DummyText1',END_DATE : 'DummyText1',Business_Type : 'DummyText1',Lifecycle_Description : 'DummyText1',Lifecycle_Start_Date : 'DummyText1',AE_Scheduler_ID : 'DummyText1',VAT_Amount_1 : 'DummyText1',Final_Amount : 'DummyText1'}";
+            if (ppsFooter1InfoJson != string.Empty && validationEngine.IsValidJson(ppsFooter1InfoJson))
+            {
+                string middleText = "PPS Insurance is a registered Insurer and FSP";
+                string pageText = "Page 1/2";
+                var ppsFooter1Info = JsonConvert.DeserializeObject<spIAA_PaymentDetail>(ppsFooter1InfoJson);
+                pageContent.Replace("{{FSPFooterDetails}}", middleText);
+                pageContent.Replace("{{FSPPage}}", pageText);
+
+            }
+        }
 
         private void BindDummyDataToAccountInformationWidget(StringBuilder pageContent, Page page, PageWidget widget)
         {

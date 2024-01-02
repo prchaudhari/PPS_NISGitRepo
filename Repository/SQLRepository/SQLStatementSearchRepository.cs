@@ -396,9 +396,7 @@ namespace nIS
                 {
                     string currency = string.Empty;
                     IList<AccountMasterRecord> accountrecords = new List<AccountMasterRecord>();
-                    IList<spIAA_PaymentDetail> paymentSummary = new List<spIAA_PaymentDetail>();
-                    IList<spIAA_PaymentDetail> ppsheading = new List<spIAA_PaymentDetail>();
-                    IList<spIAA_PaymentDetail> ppsDetails = new List<spIAA_PaymentDetail>();
+                    IList<spIAA_PaymentDetail> fspDetails = new List<spIAA_PaymentDetail>();
                     IList<AccountMasterRecord> savingaccountrecords = new List<AccountMasterRecord>();
                     IList<AccountMasterRecord> curerntaccountrecords = new List<AccountMasterRecord>();
                     IList<CustomerMediaRecord> customerMedias = new List<CustomerMediaRecord>();
@@ -410,12 +408,9 @@ namespace nIS
                     }
                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
-                        // payment syummary
-                        paymentSummary = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
-                        // pps heading
-                        ppsheading = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
-                        // pps details
-                        ppsDetails = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
+                        // fsp details
+                        fspDetails = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
+
                         var pages = statement.Pages.Where(item => item.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || item.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE).ToList();
                         IsSavingOrCurrentAccountPagePresent = pages.Count > 0 ? true : false;
                         if (IsSavingOrCurrentAccountPagePresent)
@@ -574,23 +569,31 @@ namespace nIS
                                     }
                                    else if (widget.WidgetName == HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME) 
                                     {
-                                        pageContent.Replace("{{IntTotal}}", paymentSummary.First().Earning_Amount.ToString());
-                                        pageContent.Replace("{{Vat}}", paymentSummary.First().VAT_Amount.ToString());
-                                        pageContent.Replace("{{TotalDue}}", (Convert.ToDouble(paymentSummary.First().Earning_Amount) +
-                Convert.ToDouble(paymentSummary.First().VAT_Amount)).ToString());
+                                        pageContent.Replace("{{IntTotal}}", fspDetails.First().Earning_Amount.ToString());
+                                        pageContent.Replace("{{Vat}}", fspDetails.First().VAT_Amount.ToString());
+                                        pageContent.Replace("{{TotalDue}}", (Convert.ToDouble(fspDetails.First().Earning_Amount) +
+                Convert.ToDouble(fspDetails.First().VAT_Amount)).ToString());
                                     }
 
                                     else if (widget.WidgetName == HtmlConstants.PPS_HEADING_WIDGET_NAME)
                                     {
-                                        pageContent.Replace("{{FSPName}}", ppsheading.FirstOrDefault().FSP_Name);
-                                        pageContent.Replace("{{FSPTradingName}}", ppsheading.FirstOrDefault().FSP_Trading_Name);
+                                        pageContent.Replace("{{FSPName}}", fspDetails.FirstOrDefault().FSP_Name);
+                                        pageContent.Replace("{{FSPTradingName}}", fspDetails.FirstOrDefault().FSP_Trading_Name);
                                     }
 
                                     else if (widget.WidgetName == HtmlConstants.PPS_DETAILS_WIDGET_NAME)
                                     {
-                                        pageContent.Replace("{{FSPNumber}}", ppsDetails.FirstOrDefault().FSP_Ext_Ref);
-                                        pageContent.Replace("{{FSPAgreeNumber}}", ppsDetails.FirstOrDefault().FSP_REF);
-                                        pageContent.Replace("{{VATRegNumber}}", ppsDetails.FirstOrDefault().FSP_VAT_Number);
+                                        pageContent.Replace("{{FSPNumber}}", fspDetails.FirstOrDefault().FSP_Ext_Ref);
+                                        pageContent.Replace("{{FSPAgreeNumber}}", fspDetails.FirstOrDefault().FSP_REF);
+                                        pageContent.Replace("{{VATRegNumber}}", fspDetails.FirstOrDefault().FSP_VAT_Number);
+                                    }
+
+                                    else if (widget.WidgetName == HtmlConstants.PPS_FOOTER1_WIDGET_NAME)
+                                    {
+                                        string middleText = "PPS Insurance is a registered Insurer and FSP";
+                                        string pageText = "Page 1/2";
+                                        pageContent.Replace("{{FSPFooterDetails}}", middleText);
+                                        pageContent.Replace("{{FSPPage}}", pageText);
                                     }
 
                                     else if (widget.WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME) //Account Information Widget

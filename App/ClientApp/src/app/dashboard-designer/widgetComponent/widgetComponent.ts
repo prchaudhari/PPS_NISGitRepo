@@ -108,9 +108,7 @@ export class FSPDetailsComponent {
     <div class="widget-header">
       <span class="widget-header-title"> Payment Summary </span>
     </div>
-    <div class="heading-container2">
-            <b>Payment Summary</b>
-        </div>
+<h2 class="pps_area_title"><b>Payment summary</b></h2>
         <section class="info-section">
             <div >
                <table class="table-subsection">
