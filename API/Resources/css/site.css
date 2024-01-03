@@ -2856,19 +2856,19 @@ a {
 
 .horizontal-line {
     height: 10px;
-    background-color: #222a35;
+    background-color: #091e35;
     margin-top: 0%;
 }
 
 .horizontal-line1 {
     height: 10px;
     width: 300px;
-    background-color: #222a35;
+    background-color: #091e35;
     margin-top: 0%;
 }
 
 .heading-container {
-    background-color: #222a35; /* Set black background color for the heading */
+    background-color: #091e35; /* Set black background color for the heading */
     color: white;
     padding: 5px;
     text-align: center;
@@ -2877,7 +2877,7 @@ a {
 }
 
 .heading-container2 {
-    color: #222a35;
+    color: #091e35;
     text-align: center;
     font-family: Calibri;
     font-size: 35px;
@@ -2948,7 +2948,7 @@ a {
 }
 
 .vl {
-    border-left: 6px solid #222a35;
+    border-left: 6px solid #091e35;
     height: 200px;
 }
 
@@ -3004,14 +3004,14 @@ a {
 }
 
 .pps-heading1 {
-    color: #222a35;
+    color: #091e35;
     font-family: Calibri;
     font-size: 50px;
     margin-top: 40px;
 }
 
 .pps-heading2 {
-    color: #222a35;
+    color: #091e35;
     font-family: Calibri;
     font-weight: bold;
     font-size: 25px;
