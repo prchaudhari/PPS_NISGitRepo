@@ -255,6 +255,76 @@ export class PPSFooter1Component {
 
 }
 
+// Component Created for Summary at glance Widget--
+@Component({
+  selector: 'productSummary',
+  template: `<div class="widget">
+    <div class="widget-header">
+      <span class="widget-header-title"> Product Summary </span>
+    </div>
+        <section class="info-section">
+            <div >
+               <table class="pps_prod_sum_tab-subsection">
+<thead>
+                <tr>
+                   <td class="pps_prod_sum_num_wid">No.</td>
+                   <td class="pps_prod_sum_commtype_wid" colspan=2 >Product Summary</td>
+                   <td class="pps_prod_amt_pay_wid">Amount Payable </td>
+                   <td class="pps_prod_qry_width">Query</td>
+</tr>
+
+</thead>
+ <tbody>
+  <tr *ngFor="let item of actionPSList;let index=index">
+<td> {{index+1}}</td>
+<td> {{item.Commission_Type}}  </td>
+ <td>
+    {{ item.Prod_Group.trim() == 'Service Fee' ? 'Premium Under Advise Fee' : item.Prod_Group }}
+  </td>
+    <td> {{item.Display_Amount}} 
+    </td><td><a href="{{item.Query_Link}}" target="_blank"> <img class="leftarrowlogo" src = "assets/images/leftarrowlogo.jpg" alt = "Left Arrow"> </a></td></tr>
+      <tr>
+                    <td colspan="3">Total Due</td>
+                    <td colspan="2">R256670,66</td>
+                </tr>
+                 <tr>
+                    <td colspan="3">VAT Due</td>
+                    <td colspan="2">R38001,27</td>
+                </tr>
+                <tr>
+                    <td colspan="3">Grand Total Due</td>
+                    <td colspan="2">R294671,93</td>
+                </tr>
+                <tr>
+                    <td colspan="3">PPS Payment</td>
+                    <td colspan="2">-R294671,93</td>
+                </tr>
+                <tr>
+                    <td colspan="3">Balance</td>
+                    <td colspan="2">R0,00</td>
+                </tr>
+</tbody>
+               </table>
+            </div>
+        </section>
+    
+  </div>`
+})
+
+export class ProductSummaryComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+
+  public actionPSList: any[] = [
+    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Safe Custody Fee', Display_Amount: 'R52,65', Query_Link: "https://facebook.com" },
+    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Service Fee', Display_Amount: 'R52,66', Query_Link: "https://facebook.com" },
+    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Safe Custody Fee', Display_Amount: 'R52,67', Query_Link: "https://facebook.com" },
+    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Service Fee', Display_Amount: 'R52,68', Query_Link: "https://facebook.com" }
+  ]
+
+
+}
+
 // Component Created for Account Information Widget--
 @Component({
   selector: 'accountInformation',
