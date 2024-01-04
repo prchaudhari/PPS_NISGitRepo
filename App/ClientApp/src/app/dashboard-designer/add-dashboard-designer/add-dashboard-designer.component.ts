@@ -12,7 +12,7 @@ import { LocalStorageService } from 'src/app/shared/services/local-storage.servi
 import { Template } from '../../layout/template/template';
 //import { TemplateWidget } from '../../layout/template/templateWidget';CorporateSaverAgentMessageComponent
 import {
-  CustomerInformationComponent, AccountInformationComponent, PaymentSummaryComponent, PPSHeadingComponent, PPSDetailsComponent, PPSFooter1Component, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
+  CustomerInformationComponent, AccountInformationComponent, ProductSummaryComponent, PaymentSummaryComponent, PPSHeadingComponent, PPSDetailsComponent, PPSFooter1Component, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
   SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
   SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
   DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent,
@@ -1016,6 +1016,21 @@ export class AddDashboardDesignerComponent implements OnInit {
               y: 0,
               x: 0,
               component: PPSFooter1Component,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "ProductSummary") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 11,
+              rows: 4,
+              y: 0,
+              x: 0,
+              component: ProductSummaryComponent,
               value: widget.WidgetName,
               WidgetId: widget.Identifier,
               widgetItemCount: this.widgetItemCount,
@@ -2305,6 +2320,9 @@ export class AddDashboardDesignerComponent implements OnInit {
       }
       else if (widgetName == 'PaymentSummary') {
         gridObj.component = PaymentSummaryComponent;
+      }
+      else if (widgetName == 'ProductSummary') {
+        gridObj.component = ProductSummaryComponent;
       }
       else if (widgetName == 'PPSHeading') {
         gridObj.component = PPSHeadingComponent;

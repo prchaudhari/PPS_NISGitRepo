@@ -500,6 +500,9 @@ namespace nIS
                                         case HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME:
                                             this.BindPaymentSummaryWidgetData(pageContent, customer, statement, page, widget, customerMedias, BatchDetails, accountrecords);
                                             break;
+                                        case HtmlConstants.PRODUCT_SUMMARY_WIDGET_NAME:
+                                            this.BindProductSummaryWidgetData(pageContent, paymentSummary, page, widget);
+                                            break;
                                         case HtmlConstants.PPS_HEADING_WIDGET_NAME:
                                             this.BindPpsHeadingWidgetData(pageContent, customer, statement, page, widget, customerMedias, BatchDetails, accountrecords);
                                             break;
@@ -1305,6 +1308,28 @@ namespace nIS
                 pageContent.Replace("{{AccountSummary_" + page.Identifier + "_" + widget.Identifier + "}}", accSummary.ToString());
             }
         }
+
+        private void BindProductSummaryWidgetData(StringBuilder pageContent, IList<spIAA_PaymentDetail> productSummary, Page page, PageWidget widget)
+            {
+                if (productSummary != null && productSummary.Count > 0)
+                {
+                    StringBuilder productSummarySrc = new StringBuilder();
+                    long index = 1;
+                    productSummary.ToList().ForEach(item =>
+                    {
+                        productSummarySrc.Append("<tr><td>" + index + "</td><td>" + item.Commission_Type + "</td>" + "<td> " + (item.Prod_Group == "Service Fee" ? "Premium Under Advise Fee" : item.Prod_Group) + "</td><td>" + item.Display_Amount + "</td><td><a target_blank href ='https://facebook.com'><img class='leftarrowlogo' src ='assets/images/leftarrowlogo.jpg' alt = 'Left Arrow'></a></td></tr>");
+                        index++;
+                    });
+                pageContent.Replace("{{ProductSummary}}", productSummarySrc.ToString());
+                pageContent.Replace("{{TotalDue}}", "R" + productSummary.FirstOrDefault().Earning_Amount);
+                pageContent.Replace("{{VATDue}}", "R" + productSummary.FirstOrDefault().VAT_Amount);
+                double grandTotalDue = (Convert.ToDouble(productSummary.FirstOrDefault().Earning_Amount) + Convert.ToDouble(productSummary.FirstOrDefault().VAT_Amount));
+                pageContent.Replace("{{GrandTotalDue}}", "R" + grandTotalDue.ToString());
+                double ppsPayment = grandTotalDue;
+                pageContent.Replace("{{PPSPayment}}", "-R" + ppsPayment.ToString());
+                pageContent.Replace("{{Balance}}", "R" + Convert.ToDouble((grandTotalDue - ppsPayment)).ToString());
+             }
+            }
 
         private void BindCurrentAvailBalanceWidgetData(StringBuilder pageContent, CustomerMaster customer, BatchMaster batchMaster, long accountId, IList<AccountMaster> accountrecords, Page page, PageWidget widget, string currency)
         {

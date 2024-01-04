@@ -527,6 +527,34 @@ namespace nIS
                                                     htmlString.Append(ppsDetailsHtmlWidget);
                                                 }
                                             }
+                                            else if (mergedlst[i].WidgetName == HtmlConstants.PRODUCT_SUMMARY_WIDGET_NAME)
+                                            {
+                                                string productSummaryListJson = "[{ 'Commission_Type': 'Safe Custody Fee', 'Prod_Group':'Safe Custody Fee', 'Display_Amount': 'R52,65','QueryLink': 'https://facebook.com'},{ 'Commission_Type': 'Safe Custody Fee', 'Prod_Group':'Service Fee', 'Display_Amount': 'R52,66', 'QueryLink': 'https://facebook.com' }, { 'Commission_Type': 'Safe Custody Fee', 'Prod_Group':'Safe Custody Fee', 'Display_Amount': 'R52,67', 'QueryLink': 'https://facebook.com' }, { 'Commission_Type': 'Safe Custody Fee', 'Prod_Group':'Service Fee', 'Display_Amount': 'R52,68', 'QueryLink': 'https://facebook.com' } ]";
+
+                                                if (productSummaryListJson != string.Empty && validationEngine.IsValidJson(productSummaryListJson))
+                                                {
+                                                    IList<spIAA_PaymentDetail> productSummary = JsonConvert.DeserializeObject<List<spIAA_PaymentDetail>>(productSummaryListJson);
+                                                    StringBuilder productSummarySrc = new StringBuilder();
+                                                    long index = 1;
+                                                    productSummary.ToList().ForEach(item =>
+                                                    {
+                                                        productSummarySrc.Append("<tr><td>" + index + "</td><td>" + item.Commission_Type + "</td>" + "<td> " + (item.Prod_Group == "Service Fee" ? "Premium Under Advise Fee" : item.Prod_Group) + "</td><td>" + item.Display_Amount + "</td><td><a  href ='https://facebook.com' target='_blank'><img class='leftarrowlogo' src ='assets/images/leftarrowlogo.jpg' alt = 'Left Arrow'></a></td></tr>");
+                                                        index++;
+                                                    });
+                                                    string productSumstring = HtmlConstants.PRODUCT_SUMMARY_WIDGET_HTML.Replace("{{ProductSummary}}", productSummarySrc.ToString());
+                                                    string productInfoJson = "{Earning_Amount : '256670.66',VAT_Amount : '38001.27'}";                                      
+                                                        spIAA_PaymentDetail productInfo = JsonConvert.DeserializeObject<spIAA_PaymentDetail>(productInfoJson);
+                                                        productSumstring = productSumstring.Replace("{{WidgetDivHeight}}", divHeight);
+                                                        productSumstring = productSumstring.Replace("{{TotalDue}}", "R" + productInfo.Earning_Amount.ToString());
+                                                        productSumstring = productSumstring.Replace("{{VATDue}}", "R" + productInfo.VAT_Amount.ToString());
+                                                       double grandTotalDue = (Convert.ToDouble(productInfo.Earning_Amount) + Convert.ToDouble(productInfo.VAT_Amount));
+                                                       productSumstring = productSumstring.Replace("{{GrandTotalDue}}", "R" + grandTotalDue.ToString());
+                                                       double ppsPayment = grandTotalDue;
+                                                       productSumstring = productSumstring.Replace("{{PPSPayment}}", "-R" + (grandTotalDue).ToString());
+                                                       productSumstring = productSumstring.Replace("{{Balance}}", "R"+ Convert.ToDouble((grandTotalDue - ppsPayment)).ToString());
+                                                    htmlString.Append(productSumstring);
+                                                }
+                                            }
                                             else if (mergedlst[i].WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME)
                                             {
                                                 string accountInfoJson = "{'StatementDate':'1-APR-2020','StatementPeriod':'Annual Statement','CustomerID':'ID2-8989-5656','RmName':'James Wiilims','RmContactNumber':'+4487867833'}";

@@ -262,6 +262,7 @@
     <Content Include="Resources\fonts\fontawesome-webfont.svg" />
     <Content Include="Resources\images\CorporateSaverConfirmLogo.png" />
     <Content Include="Resources\images\eConfirm.png" />
+    <Content Include="Resources\images\leftarrowlogo.jpg" />
     <Content Include="Resources\images\logo.png" />
     <Content Include="Resources\images\NEDBANKLogo.png" />
     <Content Include="Resources\images\nisLogo.png" />
