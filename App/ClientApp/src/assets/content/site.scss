@@ -2564,13 +2564,6 @@
   font-size: 40px;
 }
 
-.heading-container2 {
-  color: #222a35;
-  text-align: center;
-  font-family: Calibri;
-  font-size: 35px;
-}
-
 .info-section {
     width:100%;
   display: flex;
@@ -2759,6 +2752,18 @@
   text-align: right;
   padding-right: 25px
 }
+
+.pps_area_title {
+  background-color: #091e35; /* Set black background color for the heading */
+  color: white;
+  padding: 10px;
+  
+  text-align: center;
+  font-family: Calibri;
+  font-size: 30px;
+}
+
+ 
 /*pps product summary*/
 
 .pps_prod_sum_tab-subsection td {
@@ -2787,6 +2792,7 @@
 /*pps product summary end*/
 
  
+
 
 
 

@@ -1102,9 +1102,7 @@ namespace nIS
                 {
                     string currency = string.Empty;
                     var accountrecords = new List<AccountMaster>();
-                    var ppsheading = new List<spIAA_PaymentDetail>();
-                    var ppsDetails = new List<spIAA_PaymentDetail>();
-                    var paymentSummary = new List<spIAA_PaymentDetail>();
+                    var fspDetails = new List<spIAA_PaymentDetail>();
                     var savingaccountrecords = new List<AccountMaster>();
                     var curerntaccountrecords = new List<AccountMaster>();
                     var CustomerAcccountTransactions = new List<AccountTransaction>();
@@ -1114,9 +1112,8 @@ namespace nIS
                     var pages = statement.Pages.Where(item => item.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || item.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE).ToList();
                     IsSavingOrCurrentAccountPagePresent = pages.Count > 0 ? true : false;
 
-                    ppsheading = this.tenantTransactionDataRepository.Get_PPSHeading(tenantCode)?.ToList();
-                    ppsDetails = this.tenantTransactionDataRepository.Get_PPSDetails(tenantCode)?.ToList();
-                    paymentSummary = this.tenantTransactionDataRepository.Get_PaymentSummary(tenantCode)?.ToList();
+
+                    fspDetails = this.tenantTransactionDataRepository.Get_PPSDetails(tenantCode)?.ToList();
                     //collecting all required transaction required for static widgets in financial tenant html statement
                     if (IsSavingOrCurrentAccountPagePresent)
                     {
@@ -1304,16 +1301,19 @@ namespace nIS
                                             this.BindCustomerInformationWidgetData(pageContent, customer, statement, page, widget, customerMedias, statementRawData.BatchDetails);
                                             break;
                                         case HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME:
-                                            this.BindPaymentSummaryWidgetData(pageContent, customer, statement, page, widget, customerMedias, paymentSummary, statementRawData.BatchDetails);
+                                            this.BindPaymentSummaryWidgetData(pageContent, customer, statement, page, widget, customerMedias, fspDetails, statementRawData.BatchDetails);
                                             break;
                                         case HtmlConstants.PRODUCT_SUMMARY_WIDGET_NAME:
-                                            IsFailed = this.BindProductSummaryWidgetData(pageContent, ErrorMessages, ppsDetails, page, widget);
+                                            IsFailed = this.BindProductSummaryWidgetData(pageContent, ErrorMessages, fspDetails, page, widget);
                                             break;
                                         case HtmlConstants.PPS_HEADING_WIDGET_NAME:
-                                            this.BindPpsHeadingWidgetData(pageContent, customer, statement, page, widget, customerMedias, ppsheading, statementRawData.BatchDetails);
+                                            this.BindPpsHeadingWidgetData(pageContent, customer, statement, page, widget, customerMedias, fspDetails, statementRawData.BatchDetails);
                                             break;
                                         case HtmlConstants.PPS_DETAILS_WIDGET_NAME:
-                                            this.BindPpsDetailsWidgetData(pageContent, customer, statement, page, widget, customerMedias, ppsDetails, statementRawData.BatchDetails);
+                                            this.BindPpsDetailsWidgetData(pageContent, customer, statement, page, widget, customerMedias, fspDetails, statementRawData.BatchDetails);
+                                            break;
+                                        case HtmlConstants.PPS_FOOTER1_WIDGET_NAME:
+                                            this.BindPpsFooter1WidgetData(pageContent, customer, statement, page, widget, customerMedias, fspDetails, statementRawData.BatchDetails);
                                             break;
                                         case HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME:
                                             this.BindAccountInformationWidgetData(pageContent, customer, page, widget);
@@ -2313,6 +2313,14 @@ namespace nIS
             pageContent.Replace("{{FSPNumber}}", ppsDetails.FirstOrDefault().FSP_Ext_Ref);
             pageContent.Replace("{{FSPAgreeNumber}}", ppsDetails.FirstOrDefault().FSP_REF);
             pageContent.Replace("{{VATRegNumber}}", ppsDetails.FirstOrDefault().FSP_VAT_Number);
+        }
+
+        private void BindPpsFooter1WidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<spIAA_PaymentDetail> fspDetails, IList<BatchDetail> batchDetails)
+        {
+            string middleText = "PPS Insurance is a registered Insurer and FSP";
+            string pageText = "Page 1/2";
+            pageContent.Replace("{{FSPFooterDetails}}", middleText);
+            pageContent.Replace("{{FSPPage}}", pageText);
         }
         private void BindAccountInformationWidgetData(StringBuilder pageContent, CustomerMaster customer, Page page, PageWidget widget)
         {
