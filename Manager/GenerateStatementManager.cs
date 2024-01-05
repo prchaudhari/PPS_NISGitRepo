@@ -2276,7 +2276,7 @@ namespace nIS
                     long index = 1;
                     productSummary.ToList().ForEach(item =>
                     {
-                        productSummarySrc.Append("<tr><td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" + index + "</td><td class='fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td>" + "<td class='fsp-bdr-right fsp-bdr-bottom px-1'> " + (item.Prod_Group == "Service Fee" ? "Premium Under Advise Fee" : item.Prod_Group) + "</td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1'>R" + item.Display_Amount.ToString().Replace('.', ',') + "</td><td class='text-center fsp-bdr-bottom px-1'><a  href ='https://facebook.com' target='_blank'><img class='leftarrowlogo' src ='../common/images/leftarrowlogo.png' alt = 'Left Arrow'></a></td></tr>");
+                        productSummarySrc.Append("<tr><td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" + index + "</td><td class='fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td>" + "<td class='fsp-bdr-right fsp-bdr-bottom px-1'> " + (item.Prod_Group == "Service Fee" ? "Premium Under Advise Fee" : item.Prod_Group) + "</td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1'>R" + item.Display_Amount.ToString().Replace(',', '.') + "</td><td class='text-center fsp-bdr-bottom px-1'><a  href ='https://facebook.com' target='_blank'><img class='leftarrowlogo' src ='../common/images/leftarrowlogo.png' alt = 'Left Arrow'></a></td></tr>");
                         index++;
                     });
                     pageContent.Replace("{{ProductSummary}}", productSummarySrc.ToString());
@@ -2289,11 +2289,11 @@ namespace nIS
                     vatAmount = vatAmount.Replace('.', ',');
                     pageContent.Replace("{{VATDue}}", "R" + vatAmount);
                     double grandTotalDue = (Convert.ToDouble(productSummary.FirstOrDefault().Earning_Amount) + Convert.ToDouble(productSummary.FirstOrDefault().VAT_Amount));
-                    String grandTotalDueStr = grandTotalDue.ToString().Replace('.', ',');
+                    String grandTotalDueStr = grandTotalDue.ToString().Replace(',', '.');
                     pageContent.Replace("{{GrandTotalDue}}", "R" + grandTotalDueStr);
                     double ppsPayment = grandTotalDue;
                     pageContent.Replace("{{PPSPayment}}", "-R" + grandTotalDueStr);
-                    String Balance=Convert.ToDouble((grandTotalDue - ppsPayment)).ToString().Replace('.', ',');
+                    String Balance=Convert.ToDouble((grandTotalDue - ppsPayment)).ToString().Replace(',', '.');
 
                     pageContent.Replace("{{Balance}}", "R" + Balance);
 

@@ -2458,11 +2458,11 @@ namespace nIS
                                             vatAmount = vatAmount.Replace('.', ',');
                                             pageContent.Replace("{{VATDue}}", "R" + vatAmount);
                                             double grandTotalDue = (Convert.ToDouble(productSummary.FirstOrDefault().Earning_Amount) + Convert.ToDouble(productSummary.FirstOrDefault().VAT_Amount));
-                                            String grandTotalDueStr = grandTotalDue.ToString().Replace('.', ',');
+                                            String grandTotalDueStr = grandTotalDue.ToString().Replace(',', '.');
                                             pageContent.Replace("{{GrandTotalDue}}", "R" + grandTotalDueStr);
                                             double ppsPayment = grandTotalDue;
                                             pageContent.Replace("{{PPSPayment}}", "-R" + grandTotalDueStr);
-                                            String Balance = Convert.ToDouble((grandTotalDue - ppsPayment)).ToString().Replace('.', ',');
+                                            String Balance = Convert.ToDouble((grandTotalDue - ppsPayment)).ToString().Replace(',', '.');
                                             pageContent.Replace("{{Balance}}", "R" + Balance);
                                         }
                                     }
