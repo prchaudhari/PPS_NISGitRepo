@@ -12,12 +12,12 @@ import { LocalStorageService } from 'src/app/shared/services/local-storage.servi
 import { Template } from '../../layout/template/template';
 //import { TemplateWidget } from '../../layout/template/templateWidget';CorporateSaverAgentMessageComponent
 import {
-  CustomerInformationComponent, AccountInformationComponent, PaymentSummaryComponent, PPSHeadingComponent, PPSDetailsComponent, PPSFooter1Component, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
+  CustomerInformationComponent, AccountInformationComponent, PaymentSummaryComponent, FSPHeadingComponent, FSPDetailsComponent, PPSFooter1Component, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
   SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
   SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
   DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent,
   SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
-  CSAgentLogoComponent, FSPDetailsComponent
+  CSAgentLogoComponent
 } from '../widgetComponent/widgetComponent';
 import { AssetLibraryService } from '../../layout/asset-libraries/asset-library.service';
 import { AssetSearchParameter } from '../../layout/asset-libraries/asset-library';
@@ -952,7 +952,7 @@ export class AddDashboardDesignerComponent implements OnInit {
           else if (widget.WidgetName == "FSPDetails") {
             return this.widgetsGridsterItemArray.push({
               cols: 10,
-              rows: 4,
+              rows: 2,
               y: 0,
               x: 0,
               component: FSPDetailsComponent,
@@ -967,7 +967,7 @@ export class AddDashboardDesignerComponent implements OnInit {
           else if (widget.WidgetName == "PaymentSummary") {
             return this.widgetsGridsterItemArray.push({
               cols: 11,
-              rows: 4,
+              rows: 3,
               y: 0,
               x: 0,
               component: PaymentSummaryComponent,
@@ -979,28 +979,13 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: false
             })
           }
-          else if (widget.WidgetName == "PPSHeading") {
+          else if (widget.WidgetName == "FSPHeading") {
             return this.widgetsGridsterItemArray.push({
               cols: 12,
-              rows: 3,
+              rows: 2,
               y: 0,
               x: 0,
-              component: PPSHeadingComponent,
-              value: widget.WidgetName,
-              WidgetId: widget.Identifier,
-              widgetItemCount: this.widgetItemCount,
-              WidgetSetting: '',
-              WidgetType: widget.WidgetType,
-              IsDynamicWidget: false
-            })
-          }
-          else if (widget.WidgetName == "PPSDetails") {
-            return this.widgetsGridsterItemArray.push({
-              cols: 12,
-              rows: 3,
-              y: 0,
-              x: 0,
-              component: PPSDetailsComponent,
+              component: FSPHeadingComponent,
               value: widget.WidgetName,
               WidgetId: widget.Identifier,
               widgetItemCount: this.widgetItemCount,
@@ -2306,8 +2291,8 @@ export class AddDashboardDesignerComponent implements OnInit {
       else if (widgetName == 'PaymentSummary') {
         gridObj.component = PaymentSummaryComponent;
       }
-      else if (widgetName == 'PPSHeading') {
-        gridObj.component = PPSHeadingComponent;
+      else if (widgetName == 'FSPHeading') {
+        gridObj.component = FSPHeadingComponent;
       }
       else if (widgetName == 'AccountInformation') {
         gridObj.component = AccountInformationComponent;

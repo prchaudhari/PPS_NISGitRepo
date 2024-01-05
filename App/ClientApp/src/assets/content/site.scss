@@ -2517,7 +2517,7 @@
 }
 
 
-// FSP widget document css
+/*// FSP widget document css
 
 .header-logo {
   padding: 10px;
@@ -2533,13 +2533,13 @@
 }
 
 .social-icons a img {
-  width: 70px; /* Adjust the size of your social icons */
-  height: 70px;
+  width: 70px;*/ /* Adjust the size of your social icons */
+  /*height: 70px;
 }
 
 .pps-logo img {
-  width: 130px; /* Adjust the size of your logo */
-  height: 130px;
+  width: 130px;*/ /* Adjust the size of your logo */
+  /*height: 130px;
 }
 
 .horizontal-line {
@@ -2556,8 +2556,8 @@
 }
 
 .heading-container {
-  background-color: #222a35; /* Set black background color for the heading */
-  color: white;
+  background-color: #222a35;*/ /* Set black background color for the heading */
+  /*color: white;
   padding: 5px;
   text-align: center;
   font-family: Calibri;
@@ -2754,16 +2754,137 @@
 }
 
 .pps_area_title {
-  background-color: #091e35; /* Set black background color for the heading */
-  color: white;
+  background-color: #091e35;*/ /* Set black background color for the heading */
+  /*color: white;
   padding: 10px;
   
   text-align: center;
   font-family: Calibri;
   font-size: 30px;
+}*/
+
+/*css new */
+.container_area {
+  font-family: 'Calibri','Helvetica Neue', Arial,sans-serif;
+  font-weight: 400;
+  margin: 0 auto;
+  background-color: #fff;
+}
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 0 1rem 0;
+  flex-direction: column;
+}
+.fsp-header-logo {
+  display: flex;
+  width: 100%;
+  gap: 20px;
+  align-items: center;
 }
 
- 
+.fsp-logo img {
+  max-width: 170px;
+  width: 100%;
+}
+.intermediary_title {
+  font-size: 1.80rem;
+  text-shadow: #c6ced9 1px 1px 1px;
+  margin-bottom: 0px;
+}
 
+.fsp_inter_subheading {
+  font-size: 1rem;
+  color: #5b5a5a;
+  margin-bottom: 0;
+}
+
+.px-20 {
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+// FSP Details
+.col-49 {
+  width: 49%;
+}
+.text-gray {
+  color: #5b5a5a !important;
+}
+.col-49 {
+  width: 49%;
+}
+.header-contact {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+}
+.header-contact ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.header-contact ul li {
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0px;
+}
+
+.header-contact ul li dd {
+  margin-bottom: 0;
+  font-weight: bold;
+  width: 40%;
+  margin-right: 2%;
+  font-size: 0.9rem;
+}
+
+.header-contact ul li dt {
+  margin-bottom: 0;
+  font-weight: 400;
+  width: 58%;
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+// Payment summary
+.dark-blue-bg {
+  background-color: #091E35 !important;
+}
+.payment-sum {
+  font-size: 1.25rem;
+  font-weight: 700;
+  padding: 5px 10px;
+  text-align: center;
+  width: 100%;
+}
+
+/*FSP Footer*/
+.fsp-footer-section {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.dark-blue-bg {
+  background-color: #091E35 !important;
+}
+.fsp-social-icons {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+.fsp-copyright {
+  font-size: 0.75rem;
+  color: #fff;
+}
+.fsp-page {
+  float:right;
+  font-size: 1.5rem;
+  color: #fff;
+}
 
 
