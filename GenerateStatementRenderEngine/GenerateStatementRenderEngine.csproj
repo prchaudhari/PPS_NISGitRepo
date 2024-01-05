@@ -262,7 +262,7 @@
     <Content Include="Resources\fonts\fontawesome-webfont.svg" />
     <Content Include="Resources\images\CorporateSaverConfirmLogo.png" />
     <Content Include="Resources\images\eConfirm.png" />
-    <Content Include="Resources\images\leftarrowlogo.jpg" />
+    <Content Include="Resources\images\IfQueryBtn.jpg" />
     <Content Include="Resources\images\logo.png" />
     <Content Include="Resources\images\NEDBANKLogo.png" />
     <Content Include="Resources\images\nisLogo.png" />
@@ -275,6 +275,7 @@
     <Content Include="Resources\js\popper.min.js" />
     <Content Include="Resources\js\script.js" />
     <Content Include="Resources\js\series-label.js" />
+    <Content Include="Resources\images\leftarrowlogo.png" />
     <Content Include="Resources\sampledata\icon-image.png" />
     <Content Include="Resources\sampledata\SampleVideo.mp4" />
     <Content Include="Web.config" />

@@ -1026,7 +1026,7 @@ export class AddDashboardDesignerComponent implements OnInit {
           }
           else if (widget.WidgetName == "ProductSummary") {
             return this.widgetsGridsterItemArray.push({
-              cols: 11,
+              cols: 7,
               rows: 4,
               y: 0,
               x: 0,

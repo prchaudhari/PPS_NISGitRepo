@@ -2763,34 +2763,99 @@
   font-size: 30px;
 }
 
- 
-/*pps product summary*/
+.dark-blue-bg {
+  background-color: #091E35 !important;
+}
 
-.pps_prod_sum_tab-subsection td {
-  border: 2px solid black;
-  border-collapse: collapse;
-  font-family: Calibri;
-  font-size: 25px;
+.text-dark-blue {
+  color: #091E35 !important;
+}
+
+.text-gray {
+  color: #5b5a5a !important;
+}
+
+.payment-sum {
+  font-size: 1.25rem;
+  font-weight: 700;
+  padding: 5px 10px;
   text-align: center;
+  width: 100%;
 }
 
-.pps_prod_sum_num_wid {
-  width: 50px;
+.px-50 {
+  padding-left: 2rem !important;
+  padding-right: 2rem !important;
 }
 
-.pps_prod_sum_commtype_wid {
-  width: 600px;
+.prouct-table-block table th {
+  background-color: #8F897E;
+  padding: 5px;
+  border-right: 1px solid #999489;
+  font-size: 0.75rem;
+  line-height: 1;
 }
 
-.pps_prod_amt_pay_wid {
-  width: 300px;
+.prouct-table-block table td {
+  padding: 0px;
+  font-size: 0.75rem;
 }
 
-.pps_prod_qry_width {
-  width: 50px;
+.fsp-bdr-right {
+  border-right: 1px solid #A39F94;
 }
-/*pps product summary end*/
 
+.fsp-bdr-bottom {
+  border-bottom: 1px solid #A39F94;
+}
+
+.bdr-r-0 {
+  border-right: 0px !important;
+}
+
+.prouct-table-block table tr:nth-child(even) td {
+  background-color: #F7F7F7;
+}
+
+.fsp-copyright {
+  font-size: 0.75rem;
+  color: #fff;
+}
+
+.fsp-social-icons {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+.fsp-footer-section {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.fsp-bottom-image-car {
+  border-top: 5px solid #091E35;
+}
+
+.colom-4 {
+  max-width: 33%;
+  padding: 0 5px;
+}
+
+.colom-4 img {
+  max-width: 100%;
+}
+/* Product Summary*/
+.container_area {
+  font-family: 'Calibri','Helvetica Neue', Arial,sans-serif;
+  font-weight: 400;
+  margin: 0 auto;
+  background-color: #fff;
+}
+/*------------CSS end for FSP Statement Mokeup Design 03-01-2024------------------*/
  
 
 

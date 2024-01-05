@@ -262,52 +262,75 @@ export class PPSFooter1Component {
     <div class="widget-header">
       <span class="widget-header-title"> Product Summary </span>
     </div>
-        <section class="info-section">
-            <div >
-               <table class="pps_prod_sum_tab-subsection">
-<thead>
-                <tr>
-                   <td class="pps_prod_sum_num_wid">No.</td>
-                   <td class="pps_prod_sum_commtype_wid" colspan=2 >Product Summary</td>
-                   <td class="pps_prod_amt_pay_wid">Amount Payable </td>
-                   <td class="pps_prod_qry_width">Query</td>
-</tr>
-
-</thead>
- <tbody>
-  <tr *ngFor="let item of actionPSList;let index=index">
-<td> {{index+1}}</td>
-<td> {{item.Commission_Type}}  </td>
- <td>
-    {{ item.Prod_Group.trim() == 'Service Fee' ? 'Premium Under Advise Fee' : item.Prod_Group }}
-  </td>
-    <td> {{item.Display_Amount}} 
-    </td><td><a href="{{item.Query_Link}}" target="_blank"> <img class="leftarrowlogo" src = "assets/images/leftarrowlogo.jpg" alt = "Left Arrow"> </a></td></tr>
-      <tr>
-                    <td colspan="3">Total Due</td>
-                    <td colspan="2">R256670,66</td>
-                </tr>
-                 <tr>
-                    <td colspan="3">VAT Due</td>
-                    <td colspan="2">R38001,27</td>
-                </tr>
-                <tr>
-                    <td colspan="3">Grand Total Due</td>
-                    <td colspan="2">R294671,93</td>
-                </tr>
-                <tr>
-                    <td colspan="3">PPS Payment</td>
-                    <td colspan="2">-R294671,93</td>
-                </tr>
-                <tr>
-                    <td colspan="3">Balance</td>
-                    <td colspan="2">R0,00</td>
-                </tr>
-</tbody>
-               </table>
+          <div class="container_area" >
+            <div class="fsp-earnings-section" >
+                <div class="dark-blue-bg payment-sum text-white text-center">Product summary</div>
+                <div class="fsp-product-summery">
+                    <div class="text-center py-3">
+                        <a href="#"><img src="././assets/images/IfQueryBtn.jpg"></a>
+                    </div>
+                    <div class="px-50">
+                        <div class="prouct-table-block pb-4">
+              <table width="100%" cellpadding="0" cellspacing="0">
+                  <thead>
+                                <tr>
+                                    <th class="fw-bold text-white">No.</th>
+                                    <th class="fw-bold text-white text-right pe-0 bdr-r-0">Product</th>
+                                    <th class="fw-bold text-white text-left">Summary</th>
+                                    <th class="fw-bold text-white text-center">Amount Payable</th>
+                                    <th class="fw-bold text-white">Query</th>
+                                </tr>
+                       </thead>
+                            <tbody>
+                              <tr *ngFor="let item of actionPSList;let index=index">
+                                    <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"> {{index+1}}</td>
+                                    <td class="fsp-bdr-right fsp-bdr-bottom px-1"> {{item.Commission_Type}}  </td>
+                                    <td class="fsp-bdr-right fsp-bdr-bottom px-1">
+                                {{ item.Prod_Group.trim() == 'Service Fee' ? 'Premium Under Advise Fee' : item.Prod_Group }}
+                                    </td>
+                                <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">R{{item.Display_Amount}}
+                                </td><td class="text-center fsp-bdr-bottom px-1"><a href="{{item.Query_Link}}" target="_blank"> <img class="leftarrowlogo" src = "assets/images/leftarrowlogo.png" alt = "Left Arrow"> </a></td></tr>
+                                <tr>
+                                    <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"></td>
+                                    <td class="fsp-bdr-bottom ps-1 text-right">Total</td>
+                                    <td class="fsp-bdr-right fsp-bdr-bottom ps-1 text-left">Due</td>
+                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">R256 670,66</td>
+                                    <td class="text-center fsp-bdr-bottom px-1"></td>
+                                </tr>
+                                <tr>
+                                    <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"></td>
+                                    <td class="fsp-bdr-bottom ps-1 text-right">VAT</td>
+                                    <td class="fsp-bdr-right fsp-bdr-bottom ps-1 text-left">Due</td>
+                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">R38 001,27</td>
+                                    <td class="text-center fsp-bdr-bottom px-1"></td>
+                                </tr>
+                                <tr>
+                                    <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"></td>
+                                    <td class="fsp-bdr-bottom ps-1 text-right">Grand</td>
+                                    <td class="fsp-bdr-right fsp-bdr-bottom ps-1 text-left">Total Due</td>
+                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">R294 671,93</td>
+                                    <td class="text-center fsp-bdr-bottom px-1"></td>
+                                </tr>
+                                <tr>
+                                    <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"></td>
+                                    <td class="fsp-bdr-bottom ps-1 text-right">PPS</td>
+                                    <td class="fsp-bdr-right fsp-bdr-bottom ps-1 text-left">Payment</td>
+                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">-R294 671,93</td>
+                                    <td class="text-center fsp-bdr-bottom px-1"></td>
+                                </tr>
+                                <tr>
+                                    <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"></td>
+                                    <td class="fsp-bdr-bottom ps-1 text-right font-weight-bold">Balance</td>
+                                    <td class="fsp-bdr-right fsp-bdr-bottom ps-1 text-left"></td>
+                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1 font-weight-bold">R0,00</td>
+                                    <td class="text-center fsp-bdr-bottom px-1"></td>
+                                </tr>
+                      </tbody>
+                           </table>
+                          </div>
+                    </div>
+                </div>
             </div>
-        </section>
-    
   </div>`
 })
 
@@ -316,10 +339,10 @@ export class ProductSummaryComponent {
   widgetsGridsterItemArray: any[] = [];
 
   public actionPSList: any[] = [
-    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Safe Custody Fee', Display_Amount: 'R52,65', Query_Link: "https://facebook.com" },
-    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Service Fee', Display_Amount: 'R52,66', Query_Link: "https://facebook.com" },
-    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Safe Custody Fee', Display_Amount: 'R52,67', Query_Link: "https://facebook.com" },
-    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Service Fee', Display_Amount: 'R52,68', Query_Link: "https://facebook.com" }
+    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Safe Custody Fee', Display_Amount: '52,65', Query_Link: "https://facebook.com" },
+    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Service Fee', Display_Amount: '52,66', Query_Link: "https://facebook.com" },
+    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Safe Custody Fee', Display_Amount: '52,67', Query_Link: "https://facebook.com" },
+    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Service Fee', Display_Amount: '52,68', Query_Link: "https://facebook.com" }
   ]
 
 

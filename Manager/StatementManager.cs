@@ -2259,13 +2259,14 @@ namespace nIS
                                                         long index = 1;
                                                         productSummary.ToList().ForEach(item =>
                                                         {
-                                                            productSummarySrc.Append("<tr><td>" + index + "</td><td>" + item.Commission_Type + "</td>" + "<td> " + (item.Prod_Group == "Service Fee" ? "Premium Under Advise Fee" : item.Prod_Group) + "</td><td>" + item.Display_Amount + "</td><td><a target_blank href ='https://facebook.com'><img class='leftarrowlogo' src ='assets/images/leftarrowlogo.jpg' alt = 'Left Arrow'></a></td></tr>");
+                                                            productSummarySrc.Append("<tr><td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" + index + "</td><td class='fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td>" + "<td class='fsp-bdr-right fsp-bdr-bottom px-1'> " + (item.Prod_Group == "Service Fee" ? "Premium Under Advise Fee" : item.Prod_Group) + "</td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1'>R" + item.Display_Amount + "</td><td class='text-center fsp-bdr-bottom px-1'><a  href ='https://facebook.com' target='_blank'><img class='leftarrowlogo' src ='assets/images/leftarrowlogo.png' alt = 'Left Arrow'></a></td></tr>");
                                                             index++;
                                                         });
                                                         string productSumstring = HtmlConstants.PRODUCT_SUMMARY_WIDGET_HTML.Replace("{{ProductSummary}}", productSummarySrc.ToString());
-                                                        string productInfoJson = "{Earning_Amount : '256670.66',VAT_Amount : '38001.27',}";
+                                                        string productInfoJson = "{Earning_Amount : '256670,66',VAT_Amount : '38001,27'}";
                                                         spIAA_PaymentDetail productInfo = JsonConvert.DeserializeObject<spIAA_PaymentDetail>(productInfoJson);
                                                         productSumstring = productSumstring.Replace("{{WidgetDivHeight}}", divHeight);
+                                                        productSumstring = productSumstring.Replace("{{QueryBtn}}", "assets/images/IfQueryBtn.jpg");
                                                         productSumstring = productSumstring.Replace("{{TotalDue}}","R"+ (Convert.ToDouble(productInfo.Earning_Amount)).ToString());
                                                         productSumstring = productSumstring.Replace("{{VATDue}}", "R" + productInfo.VAT_Amount.ToString());
                                                         double grandTotalDue = (Convert.ToDouble(productInfo.Earning_Amount) + Convert.ToDouble(productInfo.VAT_Amount));
@@ -6603,12 +6604,13 @@ namespace nIS
                 long index = 1;
                 productSummary.ToList().ForEach(item =>
                 {
-                    productSummarySrc.Append("<tr><td>" + index + "</td><td>" + item.Commission_Type + "</td>" + "<td> " + (item.Prod_Group == "Service Fee" ? "Premium Under Advise Fee" : item.Prod_Group) + "</td><td>" + item.Display_Amount + "</td><td><a target_blank href ='https://facebook.com'><img class='leftarrowlogo' src ='assets/images/leftarrowlogo.jpg' alt = 'Left Arrow'></a></td></tr>");
+                    productSummarySrc.Append("<tr><td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" + index + "</td><td class='fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td>" + "<td class='fsp-bdr-right fsp-bdr-bottom px-1'> " + (item.Prod_Group == "Service Fee" ? "Premium Under Advise Fee" : item.Prod_Group) + "</td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1'>R" + item.Display_Amount + "</td><td class='text-center fsp-bdr-bottom px-1'><a  href ='https://facebook.com' target='_blank'><img class='leftarrowlogo' src ='assets/images/leftarrowlogo.png' alt = 'Left Arrow'></a></td></tr>");
                     index++;
                 });
                 pageContent.Replace("{{ProductSummary}}", productSummarySrc.ToString());
-                string productInfoJson = "{Earning_Amount : '256670.66',VAT_Amount : '38001.27',}";
+                string productInfoJson = "{Earning_Amount : '256670,66',VAT_Amount : '38001,27'}";
                 spIAA_PaymentDetail productInfo = JsonConvert.DeserializeObject<spIAA_PaymentDetail>(productInfoJson);
+                pageContent.Replace("{{QueryBtn}}", "assets/images/IfQueryBtn.jpg");
                 pageContent.Replace("{{TotalDue}}", "R" + (Convert.ToDouble(productInfo.Earning_Amount)).ToString());
                 pageContent.Replace("{{VATDue}}", "R" + productInfo.VAT_Amount.ToString());
                 double grandTotalDue = (Convert.ToDouble(productInfo.Earning_Amount) + Convert.ToDouble(productInfo.VAT_Amount));
