@@ -8,6 +8,7 @@ import * as $ from 'jquery';
 import { DomSanitizer } from '@angular/platform-browser';
 import {
   SummaryAtGlanceComponent, AccountInformationComponent, FSPDetailsComponent, PaymentSummaryComponent, FSPHeadingComponent, PPSFooter1Component,
+  SummaryAtGlanceComponent, AccountInformationComponent, FSPDetailsComponent, ProductSummaryComponent,PaymentSummaryComponent, PPSHeadingComponent, PPSDetailsComponent, PPSFooter1Component,
   SavingTrendsPreviewComponent, SpendindTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent, 
   DynamicBarChartWidgetPreviewComponent, DynamicHhtmlComponent, StaticHtmlComponent, PageBreakComponent, SegmentBasedContentComponent} from '../widgetComponent/widgetComponent';
 import { DynamicWidgetService } from '../../layout/widget-dynamic/dynamicwidget.service';

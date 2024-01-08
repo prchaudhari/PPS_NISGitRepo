@@ -508,6 +508,7 @@ namespace nIS
                                                             case HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME:
                                                                 pageHtmlContent.Append(this.PaymentSummaryWidgetFormatting(pageWidget, counter, statement, page, divHeight));
                                                                 break;
+
                                                             case HtmlConstants.PPS_HEADING_WIDGET_NAME:
                                                                 pageHtmlContent.Append(this.PpsHeadingWidgetFormatting(pageWidget, counter, statement, page, divHeight));
                                                                 break;
@@ -520,6 +521,9 @@ namespace nIS
                                                                 pageHtmlContent.Append(this.PpsFooter1WidgetFormatting(pageWidget, counter, statement, page, divHeight));
                                                                 break;
 
+                                                            case HtmlConstants.PRODUCT_SUMMARY_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.ProductSummaryWidgetFormatting(pageWidget, counter, statement, page, divHeight));
+                                                                break;
                                                             case HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME:
                                                                 pageHtmlContent.Append(this.AccountInformationWidgetFormatting(pageWidget, counter, statement, page, divHeight));
                                                                 break;
@@ -1316,7 +1320,9 @@ namespace nIS
                                 case HtmlConstants.CUSTOMER_INFORMATION_WIDGET_NAME:
                                     this.BindDummyDataToCustomerInformationWidget(pageContent, statement, page, widget, AppBaseDirectory);
                                     break;
-
+                                      case HtmlConstants.PRODUCT_SUMMARY_WIDGET_NAME:
+                                    this.BindDummyDataToProductSummaryWidget(pageContent, statement, page, widget, AppBaseDirectory);
+                                    break;
                                 case HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME:
                                     this.BindDummyDataToPaymentSummaryWidget(pageContent, statement, page, widget, AppBaseDirectory);
                                     break;
@@ -2240,6 +2246,35 @@ namespace nIS
                                                         ppsDetailsHtmlWidget = ppsDetailsHtmlWidget.Replace("{{VATRegNumber}}", ppsDetailsInfo.FSP_VAT_Number);
 
                                                         htmlString.Append(ppsDetailsHtmlWidget);
+                                                    }
+                                                }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.PRODUCT_SUMMARY_WIDGET_NAME)
+                                                {
+                                                    string productSummaryListJson = "[{ 'Commission_Type': 'Safe Custody Fee', 'Prod_Group':'Safe Custody Fee', 'Display_Amount': 'R52,65','QueryLink': 'https://facebook.com'},{ 'Commission_Type': 'Safe Custody Fee', 'Prod_Group':'Service Fee', 'Display_Amount': 'R52,66', 'QueryLink': 'https://facebook.com' }, { 'Commission_Type': 'Safe Custody Fee', 'Prod_Group':'Safe Custody Fee', 'Display_Amount': 'R52,67', 'QueryLink': 'https://facebook.com' }, { 'Commission_Type': 'Safe Custody Fee', 'Prod_Group':'Service Fee', 'Display_Amount': 'R52,68', 'QueryLink': 'https://facebook.com' } ]";
+
+                                                    if (productSummaryListJson != string.Empty && validationEngine.IsValidJson(productSummaryListJson))
+                                                    {
+                                                        IList<spIAA_PaymentDetail> productSummary = JsonConvert.DeserializeObject<List<spIAA_PaymentDetail>>(productSummaryListJson);
+                                                        StringBuilder productSummarySrc = new StringBuilder();
+                                                        long index = 1;
+                                                        productSummary.ToList().ForEach(item =>
+                                                        {
+                                                            productSummarySrc.Append("<tr><td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" + index + "</td><td class='fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td>" + "<td class='fsp-bdr-right fsp-bdr-bottom px-1'> " + (item.Prod_Group == "Service Fee" ? "Premium Under Advise Fee" : item.Prod_Group) + "</td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1'>R" + item.Display_Amount + "</td><td class='text-center fsp-bdr-bottom px-1'><a  href ='https://facebook.com' target='_blank'><img class='leftarrowlogo' src ='assets/images/leftarrowlogo.png' alt = 'Left Arrow'></a></td></tr>");
+                                                            index++;
+                                                        });
+                                                        string productSumstring = HtmlConstants.PRODUCT_SUMMARY_WIDGET_HTML.Replace("{{ProductSummary}}", productSummarySrc.ToString());
+                                                        string productInfoJson = "{Earning_Amount : '256670,66',VAT_Amount : '38001,27'}";
+                                                        spIAA_PaymentDetail productInfo = JsonConvert.DeserializeObject<spIAA_PaymentDetail>(productInfoJson);
+                                                        productSumstring = productSumstring.Replace("{{WidgetDivHeight}}", divHeight);
+                                                        productSumstring = productSumstring.Replace("{{QueryBtn}}", "assets/images/IfQueryBtn.jpg");
+                                                        productSumstring = productSumstring.Replace("{{TotalDue}}","R"+ (Convert.ToDouble(productInfo.Earning_Amount)).ToString());
+                                                        productSumstring = productSumstring.Replace("{{VATDue}}", "R" + productInfo.VAT_Amount.ToString());
+                                                        double grandTotalDue = (Convert.ToDouble(productInfo.Earning_Amount) + Convert.ToDouble(productInfo.VAT_Amount));
+                                                        productSumstring = productSumstring.Replace("{{GrandTotalDue}}", "R" + grandTotalDue.ToString());
+                                                        double ppsPayment = grandTotalDue;
+                                                        productSumstring = productSumstring.Replace("{{PPSPayment}}", "-R" + (grandTotalDue).ToString());
+                                                        productSumstring = productSumstring.Replace("{{Balance}}", "R" + Convert.ToDouble((grandTotalDue - ppsPayment)).ToString());
+                                                        htmlString.Append(productSumstring);
                                                     }
                                                 }
 
@@ -5683,7 +5718,7 @@ namespace nIS
             widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
             return widgetHTML;
         }
-
+        
         private string PaymentSummaryWidgetFormatting(PageWidget pageWidget, int counter, Statement statement, Page page, string divHeight)
         {
             var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
@@ -5707,6 +5742,17 @@ namespace nIS
         {
             var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
             var widgetHTML = HtmlConstants.PPS_DETAILS_WIDGET_HTML_FOR_STMT;
+            widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
+            widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+            return widgetHTML;
+        }
+
+        private string ProductSummaryWidgetFormatting(PageWidget pageWidget, int counter, Statement statement, Page page, string divHeight)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            //var widgetHTML = HtmlConstants.PRODUCT_SUMMARY_WIDGET_HTML_FOR_STMT.Replace("{{ProductSummary}}", "{{ProductSummary_" + page.Identifier + "_" + pageWidget.Identifier + "}}").Replace("{{TotalDue}}", "{{TotalDue_" + page.Identifier + "_" + pageWidget.Identifier + "}}").Replace("{{VATDue}}", "{{VATDue_" + page.Identifier + "_" + pageWidget.Identifier + "}}").Replace("{{GrandTotalDue}}", "{{GrandTotalDue_" + page.Identifier + "_" + pageWidget.Identifier + "}}").Replace("{{PPSPayment}}", "{{PPSPayment_" + page.Identifier + "_" + pageWidget.Identifier + "}}").Replace("{{Balance}}", "{{Balance_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+
+            var widgetHTML = HtmlConstants.PRODUCT_SUMMARY_WIDGET_HTML_FOR_STMT;
             widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
             widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
             return widgetHTML;
@@ -6546,7 +6592,38 @@ namespace nIS
                 pageContent.Replace("{{Address2}}", customerInfo.AddressLine3 + ", " + customerInfo.AddressLine4 + ", ");
             }
         }
+        private void BindDummyDataToProductSummaryWidget(StringBuilder pageContent, Statement statement, Page page, PageWidget widget, string AppBaseDirectory)
+        {
+           
+            string productSummaryListJson = "[{ 'Commission_Type': 'Safe Custody Fee', 'Prod_Group':'Safe Custody Fee', 'Display_Amount': 'R52,65','QueryLink': 'https://facebook.com'},{ 'Commission_Type': 'Safe Custody Fee', 'Prod_Group':'Service Fee', 'Display_Amount': 'R52,66', 'QueryLink': 'https://facebook.com' }, { 'Commission_Type': 'Safe Custody Fee', 'Prod_Group':'Safe Custody Fee', 'Display_Amount': 'R52,67', 'QueryLink': 'https://facebook.com' }, { 'Commission_Type': 'Safe Custody Fee', 'Prod_Group':'Service Fee', 'Display_Amount': 'R52,68', 'QueryLink': 'https://facebook.com' } ]";
 
+            if (productSummaryListJson != string.Empty && validationEngine.IsValidJson(productSummaryListJson))
+            {
+                IList<spIAA_PaymentDetail> productSummary = JsonConvert.DeserializeObject<List<spIAA_PaymentDetail>>(productSummaryListJson);
+                StringBuilder productSummarySrc = new StringBuilder();
+                long index = 1;
+                productSummary.ToList().ForEach(item =>
+                {
+                    productSummarySrc.Append("<tr><td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" + index + "</td><td class='fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td>" + "<td class='fsp-bdr-right fsp-bdr-bottom px-1'> " + (item.Prod_Group == "Service Fee" ? "Premium Under Advise Fee" : item.Prod_Group) + "</td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1'>R" + item.Display_Amount + "</td><td class='text-center fsp-bdr-bottom px-1'><a  href ='https://facebook.com' target='_blank'><img class='leftarrowlogo' src ='assets/images/leftarrowlogo.png' alt = 'Left Arrow'></a></td></tr>");
+                    index++;
+                });
+                pageContent.Replace("{{ProductSummary}}", productSummarySrc.ToString());
+                string productInfoJson = "{Earning_Amount : '256670,66',VAT_Amount : '38001,27'}";
+                spIAA_PaymentDetail productInfo = JsonConvert.DeserializeObject<spIAA_PaymentDetail>(productInfoJson);
+                pageContent.Replace("{{QueryBtn}}", "assets/images/IfQueryBtn.jpg");
+                pageContent.Replace("{{TotalDue}}", "R" + (Convert.ToDouble(productInfo.Earning_Amount)).ToString());
+                pageContent.Replace("{{VATDue}}", "R" + productInfo.VAT_Amount.ToString());
+                double grandTotalDue = (Convert.ToDouble(productInfo.Earning_Amount) + Convert.ToDouble(productInfo.VAT_Amount));
+                pageContent.Replace("{{GrandTotalDue}}", "R" + grandTotalDue.ToString());
+                double ppsPayment = grandTotalDue;
+                pageContent.Replace("{{PPSPayment}}", "-R" + (grandTotalDue).ToString());
+                pageContent.Replace("{{Balance}}", "R" + Convert.ToDouble((grandTotalDue - ppsPayment)).ToString());
+               
+
+            }
+        }
+
+   
         private void BindDummyDataToPaymentSummaryWidget(StringBuilder pageContent, Statement statement, Page page, PageWidget widget, string AppBaseDirectory)
         {
             var paymentInfoJson = "{'CustomerId':'7','BatchId':'35','AccountNumber':'LD01254-222222','AccountType':'Current Account','Currency':'$','Balance':'6235.34','TotalDeposit':'15432.00','TotalSpend':'5760.00','ProfitEarned':'3456.00','Indicator':'Up','FeesPaid':'345.00','GrandTotal':'24356.00','Percentage':'50.00','TenantCode':'00000000-0000-0000-0000-000000000000'}";

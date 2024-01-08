@@ -12,8 +12,7 @@ import { LocalStorageService } from 'src/app/shared/services/local-storage.servi
 import { Template } from '../../layout/template/template';
 //import { TemplateWidget } from '../../layout/template/templateWidget';CorporateSaverAgentMessageComponent
 import {
-  CustomerInformationComponent, AccountInformationComponent, PaymentSummaryComponent, FSPHeadingComponent, FSPDetailsComponent, PPSFooter1Component, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
-  SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
+  CustomerInformationComponent, AccountInformationComponent, ProductSummaryComponent, PaymentSummaryComponent, PPSFooter1Component, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent, FSPHeadingComponent, FSPDetailsComponent, SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
   SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
   DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent,
   SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
@@ -1001,6 +1000,21 @@ export class AddDashboardDesignerComponent implements OnInit {
               y: 0,
               x: 0,
               component: PPSFooter1Component,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "ProductSummary") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 7,
+              rows: 4,
+              y: 0,
+              x: 0,
+              component: ProductSummaryComponent,
               value: widget.WidgetName,
               WidgetId: widget.Identifier,
               widgetItemCount: this.widgetItemCount,

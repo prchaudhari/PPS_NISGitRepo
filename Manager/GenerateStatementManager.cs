@@ -1107,6 +1107,7 @@ namespace nIS
                     var curerntaccountrecords = new List<AccountMaster>();
                     var CustomerAcccountTransactions = new List<AccountTransaction>();
                     var CustomerSavingTrends = new List<SavingTrend>();
+                  
 
                     var pages = statement.Pages.Where(item => item.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || item.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE).ToList();
                     IsSavingOrCurrentAccountPagePresent = pages.Count > 0 ? true : false;
@@ -1301,6 +1302,9 @@ namespace nIS
                                             break;
                                         case HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME:
                                             this.BindPaymentSummaryWidgetData(pageContent, customer, statement, page, widget, customerMedias, fspDetails, statementRawData.BatchDetails);
+                                            break;
+                                        case HtmlConstants.PRODUCT_SUMMARY_WIDGET_NAME:
+                                            IsFailed = this.BindProductSummaryWidgetData(pageContent, ErrorMessages, fspDetails, page, widget);
                                             break;
                                         case HtmlConstants.PPS_HEADING_WIDGET_NAME:
                                             this.BindPpsHeadingWidgetData(pageContent, customer, statement, page, widget, customerMedias, fspDetails, statementRawData.BatchDetails);
@@ -2261,6 +2265,52 @@ namespace nIS
                 Convert.ToDouble(paymentSummary.First().VAT_Amount)).ToString());
         }
 
+        private bool BindProductSummaryWidgetData(StringBuilder pageContent, StringBuilder ErrorMessages, IList<spIAA_PaymentDetail> productSummary, Page page, PageWidget widget)
+        {
+            var IsFailed = false;
+            try
+            {
+                if (productSummary != null && productSummary.Count > 0)
+                {
+                    StringBuilder productSummarySrc = new StringBuilder();
+                    long index = 1;
+                    productSummary.ToList().ForEach(item =>
+                    {
+                        productSummarySrc.Append("<tr><td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" + index + "</td><td class='fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td>" + "<td class='fsp-bdr-right fsp-bdr-bottom px-1'> " + (item.Prod_Group == "Service Fee" ? "Premium Under Advise Fee" : item.Prod_Group) + "</td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1'>R" + item.Display_Amount.ToString().Replace(',', '.') + "</td><td class='text-center fsp-bdr-bottom px-1'><a  href ='https://facebook.com' target='_blank'><img class='leftarrowlogo' src ='../common/images/leftarrowlogo.png' alt = 'Left Arrow'></a></td></tr>");
+                        index++;
+                    });
+                    pageContent.Replace("{{ProductSummary}}", productSummarySrc.ToString());
+                    pageContent.Replace("{{QueryBtn}}", "../common/images/IfQueryBtn.jpg");
+
+                   String totalDue= productSummary.FirstOrDefault().Earning_Amount;
+                    totalDue = totalDue.Replace('.', ',');
+                    pageContent.Replace("{{TotalDue}}", "R" + totalDue);
+                    String vatAmount = productSummary.FirstOrDefault().VAT_Amount;
+                    vatAmount = vatAmount.Replace('.', ',');
+                    pageContent.Replace("{{VATDue}}", "R" + vatAmount);
+                    double grandTotalDue = (Convert.ToDouble(productSummary.FirstOrDefault().Earning_Amount) + Convert.ToDouble(productSummary.FirstOrDefault().VAT_Amount));
+                    String grandTotalDueStr = grandTotalDue.ToString().Replace(',', '.');
+                    pageContent.Replace("{{GrandTotalDue}}", "R" + grandTotalDueStr);
+                    double ppsPayment = grandTotalDue;
+                    pageContent.Replace("{{PPSPayment}}", "-R" + grandTotalDueStr);
+                    String Balance=Convert.ToDouble((grandTotalDue - ppsPayment)).ToString().Replace(',', '.');
+
+                    pageContent.Replace("{{Balance}}", "R" + Balance);
+
+                }
+                else
+                {
+                    ErrorMessages.Append("<li>Product master data is not available related to Product Summary widget..!!</li>");
+                    IsFailed = true;
+                }
+                return IsFailed;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
         private void BindPpsHeadingWidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<spIAA_PaymentDetail> ppsheading, IList<BatchDetail> batchDetails)
         {
             pageContent.Replace("{{FSPName}}", ppsheading.FirstOrDefault().FSP_Name);

@@ -866,7 +866,15 @@ namespace nIS
                                                             pageHtmlContent.Append(widgetHTML);
 
                                                         }
-
+                                                        else if (mergedlst[x].WidgetName == HtmlConstants.PRODUCT_SUMMARY_WIDGET_NAME)
+                                                        {
+                                                            string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
+                                                            //string widgetHTML = HtmlConstants.PAYMENT_SUMMARY_WIDGET_HTML_FOR_STMT.Replace("{{VideoSource}}", "{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
+                                                            string widgetHTML = HtmlConstants.PRODUCT_SUMMARY_WIDGET_HTML_FOR_STMT;
+                                                            widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
+                                                            widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                            pageHtmlContent.Append(widgetHTML);
+                                                        }
                                                         else if (mergedlst[x].WidgetName == HtmlConstants.PPS_FOOTER1_WIDGET_NAME)
                                                         {
                                                             string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
@@ -1234,6 +1242,7 @@ namespace nIS
                                     pageContent.Replace("{{Address2}}", address2);
                                 }
                             }
+
                             else if (widget.WidgetName == HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME)
                             {
                                  string paymentInfoJson = "{Reg_ID : 1,Start_Date : '2023-01-01',End_Date : '2023-01-01',Request_DateTime : 'DummyText1',ID : '124529534',Intermediary_Code : 'DummyText1',FSP_ID : 'DummyText1',Policy_Number : 'DummyText1',FSP_Party_ID : 'DummyText1',Client_Number : '124556686',FSP_REF : '2452953',Client_Name : 'Mr SCHOELER',Int_ID : 'DummyText1',Product_Type : 'DummyText1',Commission_Amount : 'DummyText1',INT_EXT_REF : '124411745',Int_Name : 'Kruger Van Heerden',Int_Type : 'DummyText1',Policy_Ref : '5596100',Member_Ref : '124556686',Member_Name : 'DummyText1',Transaction_Amount : 'DummyText1',Mem_Age : 'DummyText1',Months_In_Force : 'DummyText1',Commission_Type : 'Safe Custody Fee',Description : 'Safe Custody Service Fee',POSTED_DATE : '2023-03-03',AE_Type_ID : 'DummyText1',AE_Amount : 'DummyText1',DR_CR : 'DummyText1',NAME : 'DummyText1',Member_Surname : 'DummyText1',Jurisdiction : 'DummyText1',Sales_Office : 'DummyText1',FSP_Name : 'Miss Yvonne van Heerden',FSP_Trading_Name : 'T/A Yvonne Van Heerden Financial Planner CC',FSP_Ext_Ref : '124529534',FSP_Kind : 'DummyText1',  		FSP_VAT_Number : '2452953',Product : 'DummyText1',Prod_Group : 'Service Fee',Prod_Seq : 'DummyText1',Report_Seq : 'DummyText1',TYPE : 'DummyText1',Display_Amount : '17.55',VAT_Amount : '38001.27',Earning_Amount : '256670.66',Payment_Amount : 'DummyText1',START_DATE : 'DummyText1',END_DATE : 'DummyText1',Business_Type : 'DummyText1',Lifecycle_Description : 'DummyText1',Lifecycle_Start_Date : 'DummyText1',AE_Scheduler_ID : 'DummyText1',VAT_Amount_1 : 'DummyText1',Final_Amount : 'DummyText1'}";
@@ -1273,6 +1282,33 @@ namespace nIS
                                 }
                             }
 
+                            else if (widget.WidgetName == HtmlConstants.PRODUCT_SUMMARY_WIDGET_NAME)
+                            {
+                                string productSummaryListJson = "[{ 'Commission_Type': 'Safe Custody Fee', 'Prod_Group':'Safe Custody Fee', 'Display_Amount': 'R52,65','QueryLink': 'https://facebook.com'},{ 'Commission_Type': 'Safe Custody Fee', 'Prod_Group':'Service Fee', 'Display_Amount': 'R52,66', 'QueryLink': 'https://facebook.com' }, { 'Commission_Type': 'Safe Custody Fee', 'Prod_Group':'Safe Custody Fee', 'Display_Amount': 'R52,67', 'QueryLink': 'https://facebook.com' }, { 'Commission_Type': 'Safe Custody Fee', 'Prod_Group':'Service Fee', 'Display_Amount': 'R52,68', 'QueryLink': 'https://facebook.com' } ]";
+
+                                if (productSummaryListJson != string.Empty && validationEngine.IsValidJson(productSummaryListJson))
+                                {
+                                    IList<spIAA_PaymentDetail> productSummary = JsonConvert.DeserializeObject<List<spIAA_PaymentDetail>>(productSummaryListJson);
+                                    StringBuilder productSummarySrc = new StringBuilder();
+                                    long index = 1;
+                                    productSummary.ToList().ForEach(item =>
+                                    {
+                                        productSummarySrc.Append("<tr><td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" + index + "</td><td class='fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td>" + "<td class='fsp-bdr-right fsp-bdr-bottom px-1'> " + (item.Prod_Group == "Service Fee" ? "Premium Under Advise Fee" : item.Prod_Group) + "</td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1'>R" + item.Display_Amount + "</td><td class='text-center fsp-bdr-bottom px-1'><a  href ='https://facebook.com' target='_blank'><img class='leftarrowlogo' src ='assets/images/leftarrowlogo.png' alt = 'Left Arrow'></a></td></tr>");
+                                        index++;
+                                    });
+                                    pageContent.Replace("{{ProductSummary}}", productSummarySrc.ToString());
+                                    string productInfoJson = "{Earning_Amount : '256670,66',VAT_Amount : '38001,27'}";
+                                    spIAA_PaymentDetail productInfo = JsonConvert.DeserializeObject<spIAA_PaymentDetail>(productInfoJson);
+                                    pageContent.Replace("{{QueryBtn}}", "assets/images/IfQueryBtn.jpg");
+                                    pageContent.Replace("{{TotalDue}}", "R" + (Convert.ToDouble(productInfo.Earning_Amount)).ToString());
+                                    pageContent.Replace("{{VATDue}}", "R" + productInfo.VAT_Amount.ToString());
+                                    double grandTotalDue = (Convert.ToDouble(productInfo.Earning_Amount) + Convert.ToDouble(productInfo.VAT_Amount));
+                                    pageContent.Replace("{{GrandTotalDue}}", "R" + grandTotalDue.ToString());
+                                    double ppsPayment = grandTotalDue;
+                                    pageContent.Replace("{{PPSPayment}}", "-R" + (grandTotalDue).ToString());
+                                    pageContent.Replace("{{Balance}}", "R" + Convert.ToDouble((grandTotalDue - ppsPayment)).ToString());
+                                }
+                            }
                             else if (widget.WidgetName == HtmlConstants.PPS_FOOTER1_WIDGET_NAME)
                             {
                                 string ppsFooter1InfoJson = "{Reg_ID : 1,Start_Date : '2023-01-01',End_Date : '2023-01-01',Request_DateTime : 'DummyText1',ID : '124529534',Intermediary_Code : 'DummyText1',FSP_ID : 'DummyText1',Policy_Number : 'DummyText1',FSP_Party_ID : 'DummyText1',Client_Number : '124556686',FSP_REF : '2452953',Client_Name : 'Mr SCHOELER',Int_ID : 'DummyText1',Product_Type : 'DummyText1',Commission_Amount : 'DummyText1',INT_EXT_REF : '124411745',Int_Name : 'Kruger Van Heerden',Int_Type : 'DummyText1',Policy_Ref : '5596100',Member_Ref : '124556686',Member_Name : 'DummyText1',Transaction_Amount : 'DummyText1',Mem_Age : 'DummyText1',Months_In_Force : 'DummyText1',Commission_Type : 'Safe Custody Fee',Description : 'Safe Custody Service Fee',POSTED_DATE : '2023-03-03',AE_Type_ID : 'DummyText1',AE_Amount : 'DummyText1',DR_CR : 'DummyText1',NAME : 'DummyText1',Member_Surname : 'DummyText1',Jurisdiction : 'DummyText1',Sales_Office : 'DummyText1',FSP_Name : 'Miss Yvonne van Heerden',FSP_Trading_Name : 'T/A Yvonne Van Heerden Financial Planner CC',FSP_Ext_Ref : '124529534',FSP_Kind : 'DummyText1',  		FSP_VAT_Number : '2452953',Product : 'DummyText1',Prod_Group : 'Service Fee',Prod_Seq : 'DummyText1',Report_Seq : 'DummyText1',TYPE : 'DummyText1',Display_Amount : '17.55',VAT_Amount : '38001.27',Earning_Amount : '256670.66',Payment_Amount : 'DummyText1',START_DATE : 'DummyText1',END_DATE : 'DummyText1',Business_Type : 'DummyText1',Lifecycle_Description : 'DummyText1',Lifecycle_Start_Date : 'DummyText1',AE_Scheduler_ID : 'DummyText1',VAT_Amount_1 : 'DummyText1',Final_Amount : 'DummyText1'}";
@@ -1785,6 +1821,35 @@ namespace nIS
 
                                 }
                             }
+                            else if (widget.WidgetName == HtmlConstants.PRODUCT_SUMMARY_WIDGET_NAME)
+                            {
+                                {
+                                    string productSummaryListJson = "[{ 'Commission_Type': 'Safe Custody Fee', 'Prod_Group':'Safe Custody Fee', 'Display_Amount': 'R52,65','QueryLink': 'https://facebook.com'},{ 'Commission_Type': 'Safe Custody Fee', 'Prod_Group':'Service Fee', 'Display_Amount': 'R52,66', 'QueryLink': 'https://facebook.com' }, { 'Commission_Type': 'Safe Custody Fee', 'Prod_Group':'Safe Custody Fee', 'Display_Amount': 'R52,67', 'QueryLink': 'https://facebook.com' }, { 'Commission_Type': 'Safe Custody Fee', 'Prod_Group':'Service Fee', 'Display_Amount': 'R52,68', 'QueryLink': 'https://facebook.com' } ]";
+
+                                    if (productSummaryListJson != string.Empty && validationEngine.IsValidJson(productSummaryListJson))
+                                    {
+                                        IList<spIAA_PaymentDetail> productSummary = JsonConvert.DeserializeObject<List<spIAA_PaymentDetail>>(productSummaryListJson);
+                                        StringBuilder productSummarySrc = new StringBuilder();
+                                        long index = 1;
+                                        productSummary.ToList().ForEach(item =>
+                                        {
+                                            productSummarySrc.Append("<tr><td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" + index + "</td><td class='fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td>" + "<td class='fsp-bdr-right fsp-bdr-bottom px-1'> " + (item.Prod_Group == "Service Fee" ? "Premium Under Advise Fee" : item.Prod_Group) + "</td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1'>R" + item.Display_Amount + "</td><td class='text-center fsp-bdr-bottom px-1'><a  href ='https://facebook.com' target='_blank'><img class='leftarrowlogo' src ='assets/images/leftarrowlogo.png' alt = 'Left Arrow'></a></td></tr>");
+                                            index++;
+                                        });
+                                        pageContent.Replace("{{ProductSummary}}", productSummarySrc.ToString());
+                                        string productInfoJson = "{Earning_Amount : '256670,66',VAT_Amount : '38001,27'}";
+                                        spIAA_PaymentDetail productInfo = JsonConvert.DeserializeObject<spIAA_PaymentDetail>(productInfoJson);
+                                        pageContent.Replace("{{QueryBtn}}", "assets/images/IfQueryBtn.jpg");
+                                        pageContent.Replace("{{TotalDue}}", "R" + (Convert.ToDouble(productInfo.Earning_Amount)).ToString());
+                                        pageContent.Replace("{{VATDue}}", "R" + productInfo.VAT_Amount.ToString());
+                                        double grandTotalDue = (Convert.ToDouble(productInfo.Earning_Amount) + Convert.ToDouble(productInfo.VAT_Amount));
+                                        pageContent.Replace("{{GrandTotalDue}}", "R" + grandTotalDue.ToString());
+                                        double ppsPayment = grandTotalDue;
+                                        pageContent.Replace("{{PPSPayment}}", "-R" + (grandTotalDue).ToString());
+                                        pageContent.Replace("{{Balance}}", "R" + Convert.ToDouble((grandTotalDue - ppsPayment)).ToString());
+                                    }
+                                }
+                            }
 
                             else if (widget.WidgetName == HtmlConstants.PPS_FOOTER1_WIDGET_NAME)
                             {
@@ -2172,6 +2237,8 @@ namespace nIS
                     var customerMedias = new List<CustomerMediaRecord>();
                     var CustomerAcccountTransactions = new List<AccountTransactionRecord>();
                     var CustomerSavingTrends = new List<SavingTrendRecord>();
+                    var productSummary = new List<spIAA_PaymentDetail>();
+              
 
                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
@@ -2371,7 +2438,35 @@ namespace nIS
                                             }
                                         }
                                     }
-                                   else if (widget.WidgetName == HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME) //Customer Information Widget
+                                    else if (widget.WidgetName == HtmlConstants.PRODUCT_SUMMARY_WIDGET_NAME) //Customer Information Widget
+                                    {
+                                        if (productSummary != null && productSummary.Count > 0)
+                                        {
+                                            StringBuilder productSummarySrc = new StringBuilder();
+                                            long index = 1;
+                                            productSummary.ToList().ForEach(item =>
+                                            {
+                                                productSummarySrc.Append("<tr><td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" + index + "</td><td class='fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td>" + "<td class='fsp-bdr-right fsp-bdr-bottom px-1'> " + (item.Prod_Group == "Service Fee" ? "Premium Under Advise Fee" : item.Prod_Group) + "</td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1'>R" + item.Display_Amount + "</td><td class='text-center fsp-bdr-bottom px-1'><a  href ='https://facebook.com' target='_blank'><img class='leftarrowlogo' src ='assets/images/leftarrowlogo.png' alt = 'Left Arrow'></a></td></tr>");
+                                                index++;
+                                            });
+                                            pageContent.Replace("{{ProductSummary}}", productSummarySrc.ToString());
+                                            pageContent.Replace("{{QueryBtn}}", "assets/images/IfQueryBtn.jpg");
+                                            String totalDue = productSummary.FirstOrDefault().Earning_Amount;
+                                            totalDue = totalDue.Replace('.', ',');
+                                            pageContent.Replace("{{TotalDue}}", "R" + totalDue);
+                                            String vatAmount = productSummary.FirstOrDefault().VAT_Amount;
+                                            vatAmount = vatAmount.Replace('.', ',');
+                                            pageContent.Replace("{{VATDue}}", "R" + vatAmount);
+                                            double grandTotalDue = (Convert.ToDouble(productSummary.FirstOrDefault().Earning_Amount) + Convert.ToDouble(productSummary.FirstOrDefault().VAT_Amount));
+                                            String grandTotalDueStr = grandTotalDue.ToString().Replace(',', '.');
+                                            pageContent.Replace("{{GrandTotalDue}}", "R" + grandTotalDueStr);
+                                            double ppsPayment = grandTotalDue;
+                                            pageContent.Replace("{{PPSPayment}}", "-R" + grandTotalDueStr);
+                                            String Balance = Convert.ToDouble((grandTotalDue - ppsPayment)).ToString().Replace(',', '.');
+                                            pageContent.Replace("{{Balance}}", "R" + Balance);
+                                        }
+                                    }
+                                    else if (widget.WidgetName == HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME) //Customer Information Widget
                                     {
                                         pageContent.Replace("{{IntTotal}}", accountrecords.First().GrandTotal.ToString());
                                         pageContent.Replace("{{Vat}}", accountrecords.First().FeesPaid.ToString());
@@ -2381,10 +2476,10 @@ namespace nIS
 
                                     else if (widget.WidgetName == HtmlConstants.PPS_HEADING_WIDGET_NAME)
                                     {
-                //                        pageContent.Replace("{{IntTotal}}", ppsheading.First().GrandTotal.ToString());
-                //                        pageContent.Replace("{{Vat}}", ppsheading.First().FeesPaid.ToString());
-                //                        pageContent.Replace("{{TotalDue}}", (Convert.ToDouble(accountrecords.First().GrandTotal) +
-                //Convert.ToDouble(accountrecords.First().FeesPaid)).ToString());
+                                        //                        pageContent.Replace("{{IntTotal}}", ppsheading.First().GrandTotal.ToString());
+                                        //                        pageContent.Replace("{{Vat}}", ppsheading.First().FeesPaid.ToString());
+                                        //                        pageContent.Replace("{{TotalDue}}", (Convert.ToDouble(accountrecords.First().GrandTotal) +
+                                        //Convert.ToDouble(accountrecords.First().FeesPaid)).ToString());
                                     }
 
                                     else if (widget.WidgetName == HtmlConstants.PPS_FOOTER1_WIDGET_NAME)
@@ -2769,7 +2864,7 @@ namespace nIS
                                             pageContent.Replace("{{IncomeSourceList_" + page.Identifier + "_" + widget.Identifier + "}}", incomeSources.ToString());
                                         }
 
-                                        
+
                                     }
                                     else if (widget.WidgetName == HtmlConstants.ANALYTICS_WIDGET_NAME)
                                     {
