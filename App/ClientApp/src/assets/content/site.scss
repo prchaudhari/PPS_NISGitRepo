@@ -1,5 +1,4 @@
 .site {
-
   /*tenant start*/
   .account-maincontainer {
     width: 100%;
@@ -81,7 +80,6 @@
   .account-title-box p {
     font-size: 14px;
   }
-
   /*.account-heading h5 {
     font-family: 'Roboto', sans-serif;
     font-weight: 500;
@@ -110,7 +108,6 @@
     overflow: hidden;
     padding: 15px;
   }
-
   /*tenent end*/
   .ftr-vrsn {
     position: fixed;
@@ -128,7 +125,6 @@
     width: 40px;
     height: 30px;
   }
-
   /*html editor start*/
   .html {
     border: 1px solid #ddd;
@@ -157,7 +153,6 @@
     margin-top: 40px;
     font-weight: normal;
   }
-
   /*html editor end*/
   .overflow-auto {
     overflow: auto;
@@ -245,11 +240,11 @@
     height: auto;
   }
 
-  .custom-control-input:focus~.custom-control-label::before {
+  .custom-control-input:focus ~ .custom-control-label::before {
     box-shadow: none;
   }
 
-  .custom-control-input:focus~.custom-control-label::before {
+  .custom-control-input:focus ~ .custom-control-label::before {
     box-shadow: none;
   }
 
@@ -316,7 +311,6 @@
   .hide-side-bar-footer {
     display: none;
   }
-
   /*.side-bar-container:hover {
     width: 190px;
   }
@@ -791,7 +785,6 @@
   .btn-icon-outline-grey {
     border-radius: .25rem 0 0 .25rem;
   }
-
   /* .tooltip-inner {
     background: #dddddd;
   }
@@ -851,7 +844,6 @@
     width: 50px;
     height: 24px;
   }
-
   /* Hide default HTML checkbox */
   .switch input {
     opacity: 0;
@@ -999,7 +991,6 @@
   .height100minus50 {
     height: calc(100% - 50px) !important;
   }
-
   /*drag and drop*/
   .example-container {
     width: 400px;
@@ -1163,7 +1154,6 @@
     display: inline-block;
     line-height: 50px;
   }
-
   /*switch*/
   /* The slider */
   .slider {
@@ -1189,20 +1179,19 @@
     transition: .4s;
   }
 
-  input:checked+.slider {
+  input:checked + .slider {
     background-color: #28a745;
   }
 
-  input:focus+.slider {
+  input:focus + .slider {
     box-shadow: 0 0 1px #ffffff;
   }
 
-  input:checked+.slider:before {
+  input:checked + .slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
   }
-
   /* Rounded sliders */
   .slider.round {
     border-radius: 34px;
@@ -1232,7 +1221,6 @@
     border-bottom: solid thin #f5f5f5;
     border-radius: 10px 10px 0px 0px;
   }
-
   /*.card-header .icon-filter, .card-header label, .filter-head label {
         color: #fff;
     }*/
@@ -1300,7 +1288,6 @@
     height: 50px;
     line-height: 50px;
   }
-
   /*login style*/
   .login-container {
     width: 100%;
@@ -1462,7 +1449,6 @@
     float: left;
     margin-right: 5px;
   }
-
   /* new styles*/
   .back-home {
     position: fixed;
@@ -1662,15 +1648,27 @@
     -moz-box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.2);
     transition: 0.2s;
     z-index: 999;
-    padding: 0px 10px 10px 10px;
+    padding: 0px; /*0px 10px 10px 10px;*/
     overflow: auto;
+    max-height: 93%;
   }
+  /*
+  .widget-sidebar ul.side-bar-ul {
+    max-height: 93%;
+  }*/
 
   .dashboard-container {
     width: 100%;
     float: left;
     padding: 50px 0px 0px 0px;
     height: 100vh;
+  }
+
+  .dashboard-container_preview {
+    width: 100%;
+    float: left;
+    padding: 50px 0px 0px 0px;
+    height: 87vh;
   }
 
   .dashboard-inner-container {
@@ -1697,7 +1695,7 @@
     height: 0;
   }
 
-  .hide-radio input[type="radio"]+img {
+  .hide-radio input[type="radio"] + img {
     cursor: pointer;
   }
 
@@ -2030,7 +2028,6 @@
     .side-bar-container {
       top: 50px;
     }
-
     /*.fa-long-arrow-left:before {
             content: "\f00d";
         }*/
@@ -2225,7 +2222,6 @@
       max-width: 100%;
       background: transparent;
     }
-
     /*.thumbs-icon {
             color: $bg-controls
         }*/
@@ -2291,7 +2287,6 @@
     .nav-toolbar .top-nav-link {
       color: rgba(0, 0, 0, .8) !important;
     }
-
     /*.dropdown-menu {
             left: 10px !important;
             right: inherit !important;
@@ -2374,7 +2369,6 @@
     .small-docs .card-deck-doc {
       width: 100%;
     }
-
     /*.card-doc-img, .small-docs .card-deck-doc .card-doc-img {
             height: auto;
         }*/
@@ -2501,7 +2495,6 @@
       display: block;
       visibility: visible;
     }
-
     /*.pr-xs-0 {
             padding-right: 0;
         }*/
