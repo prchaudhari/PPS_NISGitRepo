@@ -305,17 +305,14 @@ export class ViewDashboardDesignerComponent implements OnInit {
       if (widgetName == 'CustomerInformation') {
         gridObj.component = CustomerInformationComponent;
       }
-      else if (widgetName == 'FSPDetails') {
-        gridObj.component = FSPDetailsComponent;
-      }
       else if (widgetName == 'PaymentSummary') {
         gridObj.component = PaymentSummaryComponent;
       }
-      else if (widgetName == 'PPSHeading') {
-        gridObj.component = PPSHeadingComponent;
+      else if (widgetName == 'FSPHeading') {
+        gridObj.component = FSPHeadingComponent;
       } 
-      else if (widgetName == 'PPSDetails') {
-        gridObj.component = PPSDetailsComponent;
+      else if (widgetName == 'FSPDetails') {
+        gridObj.component = FSPDetailsComponent;
       }
       else if (widgetName == 'PPSFooter1') {
         gridObj.component = PPSFooter1Component;
