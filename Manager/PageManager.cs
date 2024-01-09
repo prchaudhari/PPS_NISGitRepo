@@ -495,6 +495,11 @@ namespace nIS
                                                     paymentHtmlWidget = paymentHtmlWidget.Replace("{{IntTotal}}", paymentInfo.Earning_Amount);
                                                     paymentHtmlWidget = paymentHtmlWidget.Replace("{{Vat}}", paymentInfo.VAT_Amount);
                                                     paymentHtmlWidget = paymentHtmlWidget.Replace("{{TotalDue}}",(Convert.ToDouble( paymentInfo.Earning_Amount) +Convert.ToDouble( paymentInfo.VAT_Amount)).ToString());
+                                                    // Format the date to month-year format                                                   
+                                                    paymentHtmlWidget = paymentHtmlWidget.Replace("{{IntTotalDate}}", paymentInfo.POSTED_DATE.ToString("MMMM yyyy"));
+                                                    // Format the date with a custom format
+                                                    string formattedOrdinalDate = FormatDateWithOrdinal(paymentInfo.POSTED_DATE);
+                                                    paymentHtmlWidget = paymentHtmlWidget.Replace("{{IntPostedDate}}", formattedOrdinalDate);
                                                     htmlString.Append(paymentHtmlWidget);
                                                 }
                                             }
@@ -3517,6 +3522,41 @@ namespace nIS
             return html;
         }
 
+        static string FormatDateWithOrdinal(DateTime date)
+        {
+            // Get the day of the month
+            int day = date.Day;
+
+            // Create an ordinal suffix (e.g., "st", "nd", "rd", "th")
+            string ordinalSuffix;
+            if (day % 100 >= 11 && day % 100 <= 13)
+            {
+                ordinalSuffix = "th";
+            }
+            else
+            {
+                switch (day % 10)
+                {
+                    case 1:
+                        ordinalSuffix = "st";
+                        break;
+                    case 2:
+                        ordinalSuffix = "nd";
+                        break;
+                    case 3:
+                        ordinalSuffix = "rd";
+                        break;
+                    default:
+                        ordinalSuffix = "th";
+                        break;
+                }
+            }
+
+            // Format the date with the ordinal suffix
+            string formattedDate = $"{day}<sup>{ordinalSuffix}</sup> {date:MMMM yyyy}";
+
+            return formattedDate;
+        }
         #endregion
     }
 }
