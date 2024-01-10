@@ -314,6 +314,7 @@
     <Content Include="Resources\css\font-awesome.min.css" />
     <Content Include="Resources\css\ltr.css" />
     <Content Include="Resources\fonts\fontawesome-webfont.svg" />
+    <Content Include="Resources\images\click-print-stmt-btn.jpg" />
     <Content Include="Resources\images\CorporateSaverConfirmLogo.png" />
     <Content Include="Resources\images\eConfirm-round.png" />
     <Content Include="Resources\images\eConfirm.png" />

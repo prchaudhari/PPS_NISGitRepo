@@ -3056,4 +3056,11 @@
     .colom-4 img {
         max-width: 100%;
     }
+.container_area {
+    font-family: 'Calibri','Helvetica Neue', Arial,sans-serif;
+    font-weight: 400;
+    margin: 0 auto;
+    background-color: #fff;
+    width: 100%;
+}
 /*pps product summary end*/

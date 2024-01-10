@@ -260,6 +260,7 @@
     <Content Include="Resources\css\ltr.css" />
     <Content Include="Resources\css\site.css" />
     <Content Include="Resources\fonts\fontawesome-webfont.svg" />
+    <Content Include="Resources\images\click-print-stmt-btn.jpg" />
     <Content Include="Resources\images\CorporateSaverConfirmLogo.png" />
     <Content Include="Resources\images\eConfirm.png" />
     <Content Include="Resources\images\IfQueryBtn.jpg" />

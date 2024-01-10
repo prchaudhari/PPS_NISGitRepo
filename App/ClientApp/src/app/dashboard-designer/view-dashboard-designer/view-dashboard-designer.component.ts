@@ -10,7 +10,7 @@ import { Template } from '../../layout/template/template';
 import { TemplateWidget } from '../../layout/template/templateWidget';
 import { ConfigConstants } from '../../shared/constants/configConstants';
 import {
-  CustomerInformationComponent, PageBreakComponent, PPSFooter1Component, FSPDetailsComponent, ProductSummaryComponent, PaymentSummaryComponent, PPSHeadingComponent, PPSDetailsComponent,
+  CustomerInformationComponent, PageBreakComponent, PPSFooter1Component, FSPDetailsComponent, ProductSummaryComponent, DetailedTransactionsComponent, PaymentSummaryComponent, PPSHeadingComponent, PPSDetailsComponent,
   AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
   SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
   SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
@@ -313,6 +313,9 @@ export class ViewDashboardDesignerComponent implements OnInit {
       }
       else if (widgetName == 'ProductSummary') {
         gridObj.component = ProductSummaryComponent;
+      }
+      else if (widgetName == 'DetailedTransactions') {
+        gridObj.component = DetailedTransactionsComponent;
       }
       else if (widgetName == 'PPSHeading') {
         gridObj.component = PPSHeadingComponent;

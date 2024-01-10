@@ -8,21 +8,17 @@ namespace nIS
 
     #region References
 
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
     using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Configuration;
-    using System.Globalization;
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
-    using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Text;
     using System.Text.RegularExpressions;
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
     using Unity;
 
     #endregion
@@ -1306,6 +1302,9 @@ namespace nIS
                                         case HtmlConstants.PRODUCT_SUMMARY_WIDGET_NAME:
                                             IsFailed = this.BindProductSummaryWidgetData(pageContent, ErrorMessages, fspDetails, page, widget);
                                             break;
+                                        case HtmlConstants.DETAILED_TRANSACTIONS_WIDGET_NAME:
+                                            IsFailed = this.BindDetailedTransactionsWidgetData(pageContent, ErrorMessages, fspDetails, page, widget);
+                                            break;
                                         case HtmlConstants.PPS_HEADING_WIDGET_NAME:
                                             this.BindPpsHeadingWidgetData(pageContent, customer, statement, page, widget, customerMedias, fspDetails, statementRawData.BatchDetails);
                                             break;
@@ -2297,6 +2296,50 @@ namespace nIS
 
                     pageContent.Replace("{{Balance}}", "R" + Balance);
 
+                }
+                else
+                {
+                    ErrorMessages.Append("<li>Product master data is not available related to Product Summary widget..!!</li>");
+                    IsFailed = true;
+                }
+                return IsFailed;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+        private bool BindDetailedTransactionsWidgetData(StringBuilder pageContent, StringBuilder ErrorMessages, IList<spIAA_PaymentDetail> transaction, Page page, PageWidget widget)
+        {
+            var IsFailed = false;
+            double TotalPostedAmount = 0;
+            try
+            {
+                if (transaction != null && transaction.Count > 0)
+                {
+                     var records = transaction.GroupBy(gptransactionitem => gptransactionitem.INT_EXT_REF).ToList();
+                    records?.ForEach(transactionitem =>
+                    {
+                        pageContent.Replace("{{QueryBtnImgLink}}", "www.facebook.com");
+                        pageContent.Replace("{{QueryBtn}}", "../common/images/IfQueryBtn.jpg");
+                        pageContent.Replace("{{ExtRef}}", transactionitem.FirstOrDefault().INT_EXT_REF);
+                        pageContent.Replace("{{ExtName}}", transactionitem.FirstOrDefault().Int_Name);
+                        StringBuilder detailedTransactionSrc = new StringBuilder();
+                        transaction.Where(witem => witem.INT_EXT_REF == transactionitem.FirstOrDefault().INT_EXT_REF).ToList().ForEach(item =>
+                        {
+                            detailedTransactionSrc.Append("< tr ><td align = 'center' valign = 'center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" +
+                                item.Client_Name + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Member_Ref + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1' > " + item.Policy_Ref + "</td><td class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1' >" + item.Description + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1' >" + item.Commission_Type + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1' >" + item.POSTED_DATE + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'> R" + item.Display_Amount + "</td><td class= 'text-center fsp-bdr-bottom px-1' >< a href = '{{item.Query_Link}}' target = '_blank' >< img class= 'leftarrowlogo' src = '../common/images/leftarrowlogo.png' alt = 'Left Arrow' ></ a ></td></ tr > ");
+                            TotalPostedAmount += (Convert.ToDouble(item.Display_Amount));
+                        });
+                        pageContent.Replace("{{detailedTransaction}}", detailedTransactionSrc.ToString());
+                        pageContent.Replace("{{TotalPostedAmount}}", TotalPostedAmount.ToString());
+                        pageContent.Replace("{{TotalPostedAmountImgExtLink}}", "www.facebook.com");
+                        pageContent.Replace("{{TotalPostedAmountExtImg}}", "../common/images/leftarrowlogo.png");
+                        pageContent.Replace("{{clickPrintStmtBtnExtImgLink}}", "www.facebook.com");
+                        pageContent.Replace("{{clickPrintStmtBtnImg}}", "../common/images/click-print-stmt-btn.jpg");
+                    });
                 }
                 else
                 {

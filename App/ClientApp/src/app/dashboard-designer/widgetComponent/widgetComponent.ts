@@ -1,4 +1,4 @@
-import { Component, ViewChild, Output, Input,OnInit, EventEmitter, SecurityContext, Directive } from '@angular/core';
+import { Component, ViewChild, Output, Input, OnInit, EventEmitter, SecurityContext, Directive } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { MatSort } from '@angular/material/sort';
@@ -274,11 +274,11 @@ export class PPSFooter1Component {
               <table width="100%" cellpadding="0" cellspacing="0">
                   <thead>
                                 <tr>
-                                    <th class="fw-bold text-white">No.</th>
-                                    <th class="fw-bold text-white text-right pe-0 bdr-r-0">Product</th>
-                                    <th class="fw-bold text-white text-left">Summary</th>
-                                    <th class="fw-bold text-white text-center">Amount Payable</th>
-                                    <th class="fw-bold text-white">Query</th>
+                                    <th class="font-weight-bold text-white">No.</th>
+                                    <th class="font-weight-bold text-white text-right pe-0 bdr-r-0">Product</th>
+                                    <th class="font-weight-bold text-white text-left">Summary</th>
+                                    <th class="font-weight-bold text-white text-center">Amount Payable</th>
+                                    <th class="font-weight-bold text-white">Query</th>
                                 </tr>
                        </thead>
                             <tbody>
@@ -346,6 +346,137 @@ export class ProductSummaryComponent {
   ]
 
 
+}
+
+// Component Created for Summary at glance Widget--
+@Component({
+  selector: 'detailedTransactions',
+  template: `<div class="widget">
+    <div class="widget-header">
+      <span class="widget-header-title">Detailed Transactions</span>
+    </div>
+<div class="container_area" >
+        <div class="fsp-earnings-section">
+            <div class="dark-blue-bg payment-sum text-white text-center">Detailed Transactions</div>
+            <div class="fsp-product-summery">
+                <div class="text-center py-3">
+                    <a href="#"><img src="assets/images/IfQueryBtn.jpg"></a>
+                </div>
+                <div class="px-50">
+                    <!--table 1 start here-->
+                    <div class="prouct-table-block py-4">
+                        <div class="fsp-transaction-title font-weight-bold mb-3">Intermediary: 124411745 Kruger Van Heerden</div>
+                        <table width="100%" cellpadding="0" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th class="font-weight-bold text-white">Client name</th>
+                                    <th class="font-weight-bold text-white text-center pe-0 bdr-r-0">Member<br />number</th>
+                                    <th class="font-weight-bold text-white text-center">Will<br />number</th>
+                                    <th class="font-weight-bold text-white text-center">Fiduciary fees</th>
+                                    <th class="font-weight-bold text-white text-center">Commission<br />type</th>
+                                    <th class="font-weight-bold text-white text-center">Posted date</th>
+                                    <th class="font-weight-bold text-white text-center">Posted amount</th>
+                                    <th class="font-weight-bold text-white">Query</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of detailedTransactionList">
+                                    <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"> {{item.Client_Name}}  </td>
+                                    <td class="fsp-bdr-right fsp-bdr-bottom px-1"> {{item.Member_Ref}} </td>
+                                    <td class="fsp-bdr-right fsp-bdr-bottom px-1"> {{item.Policy_Ref}} </td>
+                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">{{item.Description}}</td>
+                                    <td class="text-center fsp-bdr-right fsp-bdr-bottom px-1">{{item.Commission_Type}}</td>
+                                    <td class="text-center fsp-bdr-right fsp-bdr-bottom px-1">{{item.POSTED_DATE}}</td>
+                                    <td class="text-center fsp-bdr-right fsp-bdr-bottom px-1">R{{item.Display_Amount}}</td>
+                                    <td class="text-center fsp-bdr-bottom px-1">
+                                        <a href="{{item.Query_Link}}" target="_blank">
+                                            <img class="leftarrowlogo" src="assets/images/leftarrowlogo.png" alt="Left Arrow">
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"></td>
+                                    <td class="fsp-bdr-right fsp-bdr-bottom px-1 py-1"></td>
+                                    <td class="fsp-bdr-right fsp-bdr-bottom px-1 py-1"></td>
+                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1"></td>
+                                    <td class="text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1"><br /></td>
+                                    <td class="text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1"></td>
+                                    <td class="text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1">R20.18</td>
+                                    <td class="text-center fsp-bdr-bottom px-1"><a href="#"><img src="assets/images/leftarrowlogo.png"></a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="text-right w-100 pt-3">
+                            <a href="#"><img src="assets/images/click-print-stmt-btn.jpg"></a>
+                        </div>
+                    </div>
+
+                    <!--table 2 start here-->
+
+                    <div class="prouct-table-block py-4">
+                        <div class="fsp-transaction-title font-weight-bold mb-3">Intermediary: 2164250 Yvonne Van Heerden</div>
+                        <table width="100%" cellpadding="0" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th class="font-weight-bold text-white">Client name</th>
+                                    <th class="font-weight-bold text-white text-center pe-0 bdr-r-0">Member<br />number</th>
+                                    <th class="font-weight-bold text-white text-center">Will<br />number</th>
+                                    <th class="font-weight-bold text-white text-center">Fiduciary fees</th>
+                                    <th class="font-weight-bold text-white text-center">Commission<br />type</th>
+                                    <th class="font-weight-bold text-white text-center">Posted date</th>
+                                    <th class="font-weight-bold text-white text-center">Posted amount</th>
+                                    <th class="font-weight-bold text-white">Query</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of detailedTransactionIntList">
+                                    <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"> {{item.Client_Name}}  </td>
+                                    <td class="fsp-bdr-right fsp-bdr-bottom px-1"> {{item.Member_Ref}} </td>
+                                    <td class="fsp-bdr-right fsp-bdr-bottom px-1"> {{item.Policy_Ref}} </td>
+                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">{{item.Description}}</td>
+                                    <td class="text-center fsp-bdr-right fsp-bdr-bottom px-1">{{item.Commission_Type}}</td>
+                                    <td class="text-center fsp-bdr-right fsp-bdr-bottom px-1">{{item.POSTED_DATE}}</td>
+                                    <td class="text-center fsp-bdr-right fsp-bdr-bottom px-1">R{{item.Display_Amount}}</td>
+                                    <td class="text-center fsp-bdr-bottom px-1">
+                                        <a href="{{item.Query_Link}}" target="_blank">
+                                            <img class="leftarrowlogo" src="assets/images/leftarrowlogo.png" alt="Left Arrow">
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"></td>
+                                    <td class="fsp-bdr-right fsp-bdr-bottom px-1 py-1"></td>
+                                    <td class="fsp-bdr-right fsp-bdr-bottom px-1 py-1"></td>
+                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1"></td>
+                                    <td class="text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1"><br /></td>
+                                    <td class="text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1"></td>
+                                    <td class="text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1">R20.18</td>
+                                    <td class="text-center fsp-bdr-bottom px-1"><a href="#"><img src="assets/images/leftarrowlogo.png"></a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="text-right w-100 pt-3">
+                            <a href="#"><img src="assets/images/click-print-stmt-btn.jpg"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>`
+})
+
+export class DetailedTransactionsComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+  public detailedTransactionList: any[] = [
+    { Client_Name: 'Mr SCHOELER', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount:'17.55',Query_Link: "https://facebook.com" },
+    { Client_Name: 'Mr SCHOELER', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee VAT', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '2.63', Query_Link: "https://facebook.com" },
+  ]
+  public detailedTransactionIntList: any[] = [
+    { Client_Name: 'DR N J Olivier', Member_Ref: '1217181', Policy_Ref: '5524069', Description: 'Safe Custody Service Fee', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '17.55', Query_Link: "https://facebook.com" },
+    { Client_Name: 'DR N J Olivier', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee VAT	', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '2.63', Query_Link: "https://facebook.com" },
+  ]
 }
 
 // Component Created for Account Information Widget--
@@ -1685,7 +1816,7 @@ export class DynamicBarChartWidgetComponent {
 export class DynamicHhtmlComponent {
 
   constructor() { }
-  
+
   ngOnInit() {
   }
 
@@ -1709,17 +1840,17 @@ export class DynamicHhtmlComponent {
 })
 export class StaticHtmlComponent {
   public staticHtmlContent: string = "";
-  WidgetHTML:string;
+  WidgetHTML: string;
   // constructor(private addDashboardDesignerComponent: AddDashboardDesignerComponent) {
   //  }
-  ngOnInit(){
+  ngOnInit() {
     // debugger;
     // console.log(this.addDashboardDesignerComponent.staticHtmlContent);
     // console.log( this.addDashboardDesignerComponent.StaticConfigForm.value['staticHtml']);
     // this.WidgetHTML= this.addDashboardDesignerComponent.staticHtmlContent;
   }
 
-  ngONDestroy(){
+  ngONDestroy() {
     // debugger;
     // console.log(this.addDashboardDesignerComponent.staticHtmlContent);
     // console.log( this.addDashboardDesignerComponent.StaticConfigForm.value['staticHtml']);
@@ -2636,7 +2767,7 @@ export class DynamicPieChartWidgetPreviewComponent {
 //      <div class='card border-0'>
 //          <div class='card-body text-left'>
 //              <div class="card-body-header pb-2">Breakdown of your investment accounts</div>
-              
+
 //                  <div id='JustInvest-9929' class='tab-pane fade in active show'>
 //                      <div style="background-color: #F2F2F2;padding:10px 0px">
 //                          <h4 class="pl-25px"><span class='InvestmentProdDesc'>Product Desc</span></h4>
@@ -2841,7 +2972,7 @@ export class DynamicPieChartWidgetPreviewComponent {
 //                              </tbody>
 //                          </table>
 //                      </div>
-                  
+
 //              </div>
 
 //          </div>
@@ -2862,7 +2993,7 @@ export class DynamicPieChartWidgetPreviewComponent {
 //      <div class='card border-0'>
 //          <div class='card-body text-left'>
 //              <div class="card-body-header-w pb-2">Breakdown of your investment accounts</div>
-              
+
 //                  <div id='JustInvest-9929' class='tab-pane fade in active show'>
 //                      <div style="background-color: #F2F2F2;padding:10px 0px">
 //                          <h4 class="pl-25px"><span class='InvestmentProdDescW'>Product Desc</span></h4>
@@ -3067,7 +3198,7 @@ export class DynamicPieChartWidgetPreviewComponent {
 //                              </tbody>
 //                          </table>
 //                      </div>
-                  
+
 //              </div>
 
 //          </div>

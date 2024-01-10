@@ -12,7 +12,7 @@ import { LocalStorageService } from 'src/app/shared/services/local-storage.servi
 import { Template } from '../../layout/template/template';
 //import { TemplateWidget } from '../../layout/template/templateWidget';CorporateSaverAgentMessageComponent
 import {
-  CustomerInformationComponent, AccountInformationComponent, ProductSummaryComponent, PaymentSummaryComponent, PPSHeadingComponent, PPSDetailsComponent, PPSFooter1Component, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
+  CustomerInformationComponent, AccountInformationComponent, ProductSummaryComponent, DetailedTransactionsComponent,PaymentSummaryComponent, PPSHeadingComponent, PPSDetailsComponent, PPSFooter1Component, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
   SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
   SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
   DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent,
@@ -1026,11 +1026,26 @@ export class AddDashboardDesignerComponent implements OnInit {
           }
           else if (widget.WidgetName == "ProductSummary") {
             return this.widgetsGridsterItemArray.push({
-              cols: 7,
+              cols: 9,
               rows: 4,
               y: 0,
               x: 0,
               component: ProductSummaryComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "DetailedTransactions") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 8,
+              rows: 5,
+              y: 0,
+              x: 0,
+              component: DetailedTransactionsComponent,
               value: widget.WidgetName,
               WidgetId: widget.Identifier,
               widgetItemCount: this.widgetItemCount,
@@ -2323,6 +2338,9 @@ export class AddDashboardDesignerComponent implements OnInit {
       }
       else if (widgetName == 'ProductSummary') {
         gridObj.component = ProductSummaryComponent;
+      }
+      else if (widgetName == 'DetailedTransactions') {
+        gridObj.component = DetailedTransactionsComponent;
       }
       else if (widgetName == 'PPSHeading') {
         gridObj.component = PPSHeadingComponent;
