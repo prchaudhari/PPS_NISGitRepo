@@ -2212,6 +2212,14 @@ namespace nIS
                                                         paymentHtmlWidget = paymentHtmlWidget.Replace("{{IntTotal}}", paymentInfo.Earning_Amount);
                                                         paymentHtmlWidget = paymentHtmlWidget.Replace("{{Vat}}", paymentInfo.VAT_Amount);
                                                         paymentHtmlWidget = paymentHtmlWidget.Replace("{{TotalDue}}", (Convert.ToDouble(paymentInfo.Earning_Amount) + Convert.ToDouble(paymentInfo.VAT_Amount)).ToString());
+
+                                                        // Format the date to month-year format                                                   
+                                                        paymentHtmlWidget = paymentHtmlWidget.Replace("{{IntTotalDate}}", paymentInfo.POSTED_DATE.ToString("MMMM yyyy"));
+                                                        // Format the date with a custom format
+                                                        string formattedOrdinalDate = FormatDateWithOrdinal(paymentInfo.POSTED_DATE);
+                                                        paymentHtmlWidget = paymentHtmlWidget.Replace("{{IntPostedDate}}", formattedOrdinalDate);
+
+
                                                         htmlString.Append(paymentHtmlWidget);
                                                     }
                                                 }
@@ -6626,13 +6634,19 @@ namespace nIS
    
         private void BindDummyDataToPaymentSummaryWidget(StringBuilder pageContent, Statement statement, Page page, PageWidget widget, string AppBaseDirectory)
         {
-            var paymentInfoJson = "{'CustomerId':'7','BatchId':'35','AccountNumber':'LD01254-222222','AccountType':'Current Account','Currency':'$','Balance':'6235.34','TotalDeposit':'15432.00','TotalSpend':'5760.00','ProfitEarned':'3456.00','Indicator':'Up','FeesPaid':'345.00','GrandTotal':'24356.00','Percentage':'50.00','TenantCode':'00000000-0000-0000-0000-000000000000'}";
+            var paymentInfoJson = "{Reg_ID : 1,Start_Date : '2023-01-01',End_Date : '2023-01-01',Request_DateTime : 'DummyText1',ID : '124529534',Intermediary_Code : 'DummyText1',FSP_ID : 'DummyText1',Policy_Number : 'DummyText1',FSP_Party_ID : 'DummyText1',Client_Number : '124556686',FSP_REF : '2452953',Client_Name : 'Mr SCHOELER',Int_ID : 'DummyText1',Product_Type : 'DummyText1',Commission_Amount : 'DummyText1',INT_EXT_REF : '124411745',Int_Name : 'Kruger Van Heerden',Int_Type : 'DummyText1',Policy_Ref : '5596100',Member_Ref : '124556686',Member_Name : 'DummyText1',Transaction_Amount : 'DummyText1',Mem_Age : 'DummyText1',Months_In_Force : 'DummyText1',Commission_Type : 'Safe Custody Fee',Description : 'Safe Custody Service Fee',POSTED_DATE : '2023-03-03',AE_Type_ID : 'DummyText1',AE_Amount : 'DummyText1',DR_CR : 'DummyText1',NAME : 'DummyText1',Member_Surname : 'DummyText1',Jurisdiction : 'DummyText1',Sales_Office : 'DummyText1',FSP_Name : 'Miss Yvonne van Heerden',FSP_Trading_Name : 'T/A Yvonne Van Heerden Financial Planner CC',FSP_Ext_Ref : '124529534',FSP_Kind : 'DummyText1',  		FSP_VAT_Number : '2452953',Product : 'DummyText1',Prod_Group : 'Service Fee',Prod_Seq : 'DummyText1',Report_Seq : 'DummyText1',TYPE : 'DummyText1',Display_Amount : '17.55',VAT_Amount : '38001.27',Earning_Amount : '256670.66',Payment_Amount : 'DummyText1',START_DATE : 'DummyText1',END_DATE : 'DummyText1',Business_Type : 'DummyText1',Lifecycle_Description : 'DummyText1',Lifecycle_Start_Date : 'DummyText1',AE_Scheduler_ID : 'DummyText1',VAT_Amount_1 : 'DummyText1',Final_Amount : 'DummyText1'}";
             if (paymentInfoJson != string.Empty && validationEngine.IsValidJson(paymentInfoJson))
             {
-                var paymentInfo = JsonConvert.DeserializeObject<AccountMaster>(paymentInfoJson);
-                pageContent.Replace("{{IntTotal}}", paymentInfo.GrandTotal);
-                pageContent.Replace("{{Vat}}", paymentInfo.FeesPaid);
-                pageContent.Replace("{{TotalDue}}", (Convert.ToDouble(paymentInfo.GrandTotal) + Convert.ToDouble(paymentInfo.FeesPaid)).ToString());
+                var paymentInfo = JsonConvert.DeserializeObject<spIAA_PaymentDetail>(paymentInfoJson);
+                pageContent.Replace("{{IntTotal}}", paymentInfo.Earning_Amount);
+                pageContent.Replace("{{Vat}}", paymentInfo.VAT_Amount);
+                pageContent.Replace("{{TotalDue}}", (Convert.ToDouble(paymentInfo.Earning_Amount) + Convert.ToDouble(paymentInfo.VAT_Amount)).ToString());
+              
+                // Format the date to month-year format                                                   
+                pageContent.Replace("{{IntTotalDate}}", paymentInfo.POSTED_DATE.ToString("MMMM yyyy"));
+                // Format the date with a custom format
+                string formattedOrdinalDate = FormatDateWithOrdinal(paymentInfo.POSTED_DATE);
+                pageContent.Replace("{{IntPostedDate}}", formattedOrdinalDate);
             }
         }
 
@@ -8897,6 +8911,41 @@ namespace nIS
 
         #endregion
 
+        static string FormatDateWithOrdinal(DateTime date)
+        {
+            // Get the day of the month
+            int day = date.Day;
+
+            // Create an ordinal suffix (e.g., "st", "nd", "rd", "th")
+            string ordinalSuffix;
+            if (day % 100 >= 11 && day % 100 <= 13)
+            {
+                ordinalSuffix = "th";
+            }
+            else
+            {
+                switch (day % 10)
+                {
+                    case 1:
+                        ordinalSuffix = "st";
+                        break;
+                    case 2:
+                        ordinalSuffix = "nd";
+                        break;
+                    case 3:
+                        ordinalSuffix = "rd";
+                        break;
+                    default:
+                        ordinalSuffix = "th";
+                        break;
+                }
+            }
+
+            // Format the date with the ordinal suffix
+            string formattedDate = $"{day}<sup>{ordinalSuffix}</sup> {date:MMMM yyyy}";
+
+            return formattedDate;
+        }
         #endregion
     }
 }

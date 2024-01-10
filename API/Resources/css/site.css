@@ -1384,8 +1384,9 @@ a {
     -moz-box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.2);
     transition: 0.2s;
     z-index: 999;
-    padding: 0px 10px 10px 10px;
+    padding: 0px; /*0px 10px 10px 10px;*/
     overflow: auto;
+    max-height: 93%;
 }
 
 .dashboard-container {
@@ -2831,7 +2832,7 @@ a {
 
 /*PPS payment summary*/
 
-.header-logo {
+/*.header-logo {
     padding: 10px;
     display: flex;
     justify-content: space-between;
@@ -2845,13 +2846,13 @@ a {
 }
 
     .social-icons a img {
-        width: 70px; /* Adjust the size of your social icons */
-        height: 70px;
+        width: 70px;*/ /* Adjust the size of your social icons */
+        /*height: 70px;
     }
 
 .pps-logo img {
-    width: 130px; /* Adjust the size of your logo */
-    height: 130px;
+    width: 130px;*/ /* Adjust the size of your logo */
+    /*height: 130px;
 }
 
 .horizontal-line {
@@ -2868,8 +2869,8 @@ a {
 }
 
 .heading-container {
-    background-color: #091e35; /* Set black background color for the heading */
-    color: white;
+    background-color: #091e35;*/ /* Set black background color for the heading */
+    /*color: white;
     padding: 5px;
     text-align: center;
     font-family: Calibri;
@@ -2977,11 +2978,11 @@ a {
 
 #customers tr:hover {
     background-color: #ddd;
-}
+}*/
 
 /*PPS Heading*/
 
-.header-logo {
+/*.header-logo {
     padding: 10px;
     display: flex;
     justify-content: space-between;
@@ -3016,10 +3017,10 @@ a {
     font-weight: bold;
     font-size: 25px;
     margin-bottom: 20px;
-}
+}*/
 
 /* PPS Details*/
-.details-section {
+/*.details-section {
     padding-left: 35px;
     display: flex;
     justify-content: space-between;
@@ -3041,10 +3042,10 @@ a {
 
 .blue {
     color: #0965c2;
-}
+}*/
 
 /*PPS Footer*/
-.footer_bar1 table {
+/*.footer_bar1 table {
     background-color: #091e35;
     color: white;
     font-family: calibri;
@@ -3070,8 +3071,8 @@ a {
 }
 
 .pps_area_title {
-    background-color: #091e35; /* Set black background color for the heading */
-    color: white;
+    background-color: #091e35;*/ /* Set black background color for the heading */
+    /*color: white;
     padding: 10px;
     
     text-align: center;
@@ -3165,11 +3166,142 @@ a {
     .colom-4 img {
         max-width: 100%;
     }
+/*pps product summary end*/
+}*/
+
+/*css new */
 .container_area {
     font-family: 'Calibri','Helvetica Neue', Arial,sans-serif;
     font-weight: 400;
     margin: 0 auto;
     background-color: #fff;
+}
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0 1rem 0;
+    flex-direction: column;
+}
+
+.fsp-header-logo {
+    display: flex;
+    width: 100%;
+    gap: 20px;
+    align-items: center;
+}
+
+.fsp-logo img {
+    max-width: 170px;
     width: 100%;
 }
-/*pps product summary end*/
+
+.intermediary_title {
+    font-size: 1.80rem;
+    text-shadow: #c6ced9 1px 1px 1px;
+    margin-bottom: 0px;
+}
+
+.fsp_inter_subheading {
+    font-size: 1rem;
+    color: #5b5a5a;
+    margin-bottom: 0;
+}
+
+.px-20 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+}
+
+/*FSP Details*/ 
+.col-49 {
+    width: 49%;
+}
+
+.text-gray {
+    color: #5b5a5a !important;
+}
+
+.col-49 {
+    width: 49%;
+}
+
+.header-contact {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+}
+
+    .header-contact ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+        .header-contact ul li {
+            list-style-type: none;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0px;
+        }
+
+            .header-contact ul li dd {
+                margin-bottom: 0;
+                font-weight: 700;
+                width: 40%;
+                margin-right: 2%;
+                font-size: 0.9rem;
+            }
+
+            .header-contact ul li dt {
+                margin-bottom: 0;
+                font-weight: 400;
+                width: 58%;
+                font-size: 0.9rem;
+                line-height: 1;
+            }
+
+/*Payment summary*/ 
+.dark-blue-bg {
+    background-color: #091E35 !important;
+}
+
+.fsp-payment-sum {
+    font-size: 1.25rem;
+    font-weight: 700;
+    padding: 5px 10px;
+    text-align: center;
+    width: 100%;
+}
+
+/*FSP Footer*/
+.fsp-footer-section {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.dark-blue-bg {
+    background-color: #091E35 !important;
+}
+
+.fsp-social-icons {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+.fsp-copyright {
+    font-size: 0.75rem;
+    color: #fff;
+}
+
+.fsp-page {
+    float: right;
+    font-size: 1.5rem;
+    color: #fff;
+}

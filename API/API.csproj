@@ -319,8 +319,6 @@
     <Content Include="Resources\images\eConfirm-round.png" />
     <Content Include="Resources\images\eConfirm.png" />
     <Content Include="Resources\images\Footer_Image.png" />
-    <Content Include="Resources\images\IfQueryBtn.jpg" />
-    <Content Include="Resources\images\leftarrowlogo.png" />
     <Content Include="Resources\images\logo.png" />
     <Content Include="Resources\images\NEDBANKLogo.png" />
     <Content Include="Resources\images\NedBankLogoBlack.png" />

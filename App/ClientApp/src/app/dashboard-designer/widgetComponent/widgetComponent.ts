@@ -47,60 +47,6 @@ export class CustomerInformationComponent {
 
 }
 
-// Component Created for FSP Widget--
-@Component({
-  selector: 'fsp',
-  template: `<div class="widget">
-    <div class="widget-header">
-      <span class="widget-header-title"> FSPDetails </span>
-    </div>
-    <section class="info-section">
-
-            <div class="subsection">
-
-               <b>Yvonne van Heerden</b> <br>
-               T/A Yvonne Van Heerden Financial<br>
-               Planner CC<br>
-               Mobile : 082- 1234567<br>
-               Email y.vanheerden@google.com
-            </div>
-
-                    <div class="vl"></div>
-
-            <div class="subsection">
-                <b>Address</b><br>
-                1 John Vorster Drive<br>
-                Randburg<br>
-                Gauteng
-
-            </div>
-
-                <div class="vl"></div>
-
-            <div class="subsection">
-                <b>FSP</b>&nbsp;&nbsp; &emsp;&emsp;&emsp;&emsp;&emsp;&em 0000<br>
-                <b>FSB Agreement number</b>&nbsp;: 0000<br>
-                <b>Vat Reg no.</b> &emsp;&emsp;&emsp;&emsp;&emsp; : 0000<br>
-                <b>Month </b> &nbsp;&nbsp;&nbsp;&nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; : September 2023
-            </div>
-        </section>
-        <hr class="horizontal-line">
-  </div>`
-})
-export class FSPDetailsComponent {
-  @Input()
-  widgetsGridsterItemArray: any[] = [];
-  //account info
-  //accountInfoLists: any[] = [
-  //  { title: 'Statement Date', value: '1-APR-2020' },
-  //  { title: 'Statement Period', value: 'Annual Statement' },
-  //  { title: 'Customer ID', value: 'ID2-8989-5656' },
-  //  { title: 'RM Name', value: 'David Miller' },
-  //  { title: 'RM Contact Number', value: '+4487867833' },
-  //];
-
-}
-
 // Component Created for Payment Summary--
 @Component({
   selector: 'paymentSummary',
@@ -108,47 +54,28 @@ export class FSPDetailsComponent {
     <div class="widget-header">
       <span class="widget-header-title"> Payment Summary </span>
     </div>
-<h2 class="pps_area_title"><b>Payment summary</b></h2>
-        <section class="info-section">
-            <div >
-               <table class="table-subsection">
-                <tr>
-                    <td class="tds1">Intermediary Total - March 2023
-                    </td>
-                    <td class="tds">R256670.66</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="tds1">Vat</td>
-                    <td class="tds">R38001.27</td>
-                </tr>
-                <tr>
-                    <td class="tds"></td>
-                    <td ><hr class="horizontal-line1"></td>
-                </tr>
-                <tr>
-                    <td class="tds1">Total Due</td>
-                    <td class="tds"> R291671.93</td>               
-                </tr>
-<tr>                
-                    <td> </td>
-                    <td><i>Posted- 3<sup>rd</sup> March</i></td>
-                </tr>
-               </table>
+<div class="container_area" style="max-width: 730px;">
+            <div class="fsp-earnings-section">
+                <div class="dark-blue-bg payment-sum text-white text-center">Payment summary</div>
+                  <div class="fsp-payment-sum d-flex gap-1 w-100 py-4">
+                        <div class="col-2"></div>
+                        <div class="col-4">
+                            <div class="fw-bold mb-1">Intermediary Total – March 2023</div>
+                            <div class="fw-bold mb-1">Vat</div>
+                            <div class="pt-1 mb-1"></div>
+                            <div class="fw-bold">Total Due</div>
+                        </div>
+                        <div class="col-3">
+                            <div class="fw-bold mb-1 text-end pe-2">R256 670.66</div>
+                            <div class="fw-bold mb-1 text-end pe-2">R38 001.27</div>
+                            <div class="pt-1 dark-blue-bg mb-1"></div>
+                            <div class="fw-bold text-end pe-2">R291 671.93</div>
+                            <div class="text-end pe-2 fst-italic">Posted – 3rd March</div>
+                        </div>
+                        <div class="col-3"></div>
+                  </div>
             </div>
-        </section>
-        <hr class="horizontal-line">
+        </div>
   </div>`
 })
 export class PaymentSummaryComponent {
@@ -157,29 +84,27 @@ export class PaymentSummaryComponent {
 
 }
 
-// Component Created for PPS Heading--
+// Component Created for FSP Heading--
 @Component({
-  selector: 'ppsHeading',
+  selector: 'fspHeading',
   template: `<div class="widget">
     <div class="widget-header">
-      <span class="widget-header-title"> PPS Heading </span>
+      <span class="widget-header-title"> FSP Heading </span>
     </div>
-        <header class="header-logo">
-        <div class="pps-logo">
-            <img src="assets/images/ppsLogo.png" alt="PPS logo"><br>
-          </div>
-          <div class="pps-heading">
-            <div class="pps-heading1">
-                Financial Service Provider (FSP) Statement
-            </div><br>
-            <div class="pps-heading2">
-                Miss Yvonne van Heerden T/A Yvonne Van Heerden Financial Planner CC
+        <div class="container_area" style="max-width: 730px;">
+            <div class="header-section px-20">
+                <div class="fsp-header-logo">
+                    <div class="fsp-logo"><img src="assets/images/logo3.jpg" alt=""></div>
+                    <div class="fsp-logo-text">
+                        <h1 class="intermediary_title">Financial Service Provider (FSP) Statement</h1>
+                        <h6 class="fw-bold fsp_inter_subheading">Miss Yvonne van Heerden T/A Yvonne Van Heerden Financial Planner CC</h6>
+                    </div>
+                </div>
             </div>
-          </div>
-    </header>
+        </div>
   </div>`
 })
-export class PPSHeadingComponent {
+export class FSPHeadingComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
 
@@ -187,43 +112,58 @@ export class PPSHeadingComponent {
 
 // Component Created for PPS Details--
 @Component({
-  selector: 'ppsDetails',
+  selector: 'fspDetails',
   template: `<div class="widget">
     <div class="widget-header">
       <span class="widget-header-title"> PPS Details </span>
     </div>
-        <section class="details-section">
-            <div class="details-subsection1">
-                <b>FSP:</b>
-                     &nbsp;&nbsp;&nbsp;
-                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  27959<br>
-                <b>FSB Agreement #:</b>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  124411742<br>
-                <b>Vat Reg #:</b>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    4370245823<br>
-                <b>Month:</b>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  September 2023
+        <div class="container_area" style="max-width: 730px;">
+            <div class="header-contact px-20">
+                <div class="col-49">
+                    <ul>
+                        <li>
+                            <dd>FSP:</dd>
+                            <dt class="text-gray">124529534</dt>
+                        </li>
+                        <li>
+                            <dd>FSP Agreement #:</dd>
+                            <dt class="text-gray">2452953</dt>
+                        </li>
+                        <li>
+                            <dd>Vat Reg #:</dd>
+                            <dt class="text-gray">2452953</dt>
+                        </li>
+                        <li>
+                            <dd>Month:</dd>
+                            <dt class="text-gray">September 2023</dt>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-49">
+                    <ul>
+                        <li>
+                            <dd>Contact details:</dd>
+                            <dt></dt>
+                        </li>
+                        <li>
+                            <dd>Mobile</dd>
+                            <dt class="text-gray">0821234567</dt>
+                        </li>
+                        <li>
+                            <dd>Email</dd>
+                            <dt class="text-gray">y.vanheerden@google.com</dt>
+                        </li>
+                        <li>
+                            <dd>Address</dd>
+                            <dt class="text-gray">1 John Vorster Drive,<br/>Randburg, Gauteng</dt>
+                        </li>
+                    </ul>
+                </div>
             </div>
-
-            <div class="details-subsection2">
-                <b>Contact details:</b><br>
-                Mobile &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0821234567<br>
-                Email &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<u class="blue">y.vanheerden@google.com</u><br>
-                Address &nbsp;&nbsp;&nbsp;&nbsp;1 John Vorster Drive,<br>
-                &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Randburg, Gauteng
-                <!-- <b>Month </b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: September 2023    -->
-            </div>
-        </section>
+        </div>
   </div>`
 })
-export class PPSDetailsComponent {
+export class FSPDetailsComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
 
@@ -237,15 +177,23 @@ export class PPSDetailsComponent {
       <span class="widget-header-title"> PPS Footer </span>
     </div>
 <div class="widget-area">
-       <div class="footer_bar1">
-        <table>
-            <tr>
-              <th class="footer_img"><img src="assets/images/multipleFont.png"></th>
-              <th class="footer_data1">PPS Insurance is a registered Insurer and FSP</th>
-              <th class="footer_data2"> Page 1/2</th>
-            </tr>
-          </table>
-        </div>
+       <div class="container_area" style="max-width: 730px;">
+            <div class="fsp-footer-section dark-blue-bg py-1 px-2">
+                    <ul class="fsp-social-icons">
+                        <li><a href="#"><img src="assets/images/fb_foot.png"></a></li>
+                        <li><a href="#"><img src="assets/images/insta_foot.png"></a></li>
+                        <li><a href="#"><img src="assets/images/twitter_foot.png"></a></li>
+                        <li><a href="#"><img src="assets/images/in_foot.png"></a></li>
+                        <li><a href="#"><img src="assets/images/you_foot.png"></a></li>
+                        <li><a href="#"><img src="assets/images/ticktok_foot.png"></a></li>
+                    </ul>
+                    <div class="fsp-copyright mb-0">PPS Insurance is a registered Insurer and FSP</div>
+                    <div></div>
+                    <div></div>
+                     <div></div>
+                    <div class="fsp-page mb-0">Page 1/2</div>
+                </div>
+            </div>
         </div>
   </div>`
 })

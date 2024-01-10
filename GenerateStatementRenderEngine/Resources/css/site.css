@@ -1376,16 +1376,17 @@
     border: none;
   }
 
-  .widget-sidebar {
+.widget-sidebar {
     height: 100%;
     position: fixed;
     box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.2);
     -moz-box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.2);
     transition: 0.2s;
     z-index: 999;
-    padding: 0px 10px 10px 10px;
+    padding: 0px; /*0px 10px 10px 10px;*/
     overflow: auto;
-  }
+    max-height: 93%;
+}
 
   .dashboard-container {
     width: 100%;
