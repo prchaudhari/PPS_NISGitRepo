@@ -1303,9 +1303,9 @@ namespace nIS
                                         case HtmlConstants.PRODUCT_SUMMARY_WIDGET_NAME:
                                             IsFailed = this.BindProductSummaryWidgetData(pageContent, ErrorMessages, fspDetails, page, widget);
                                             break;
-                                        //case HtmlConstants.DETAILED_TRANSACTIONS_WIDGET_NAME:
-                                        //    IsFailed = this.BindDetailedTransactionsWidgetData(pageContent, ErrorMessages, fspDetails, page, widget);
-                                        //    break;
+                                        case HtmlConstants.DETAILED_TRANSACTIONS_WIDGET_NAME:
+                                            IsFailed = this.BindDetailedTransactionsWidgetData(pageContent, ErrorMessages, fspDetails, page, widget);
+                                            break;
                                         case HtmlConstants.PPS_HEADING_WIDGET_NAME:
                                             this.BindPpsHeadingWidgetData(pageContent, customer, statement, page, widget, customerMedias, fspDetails, statementRawData.BatchDetails);
                                             break;

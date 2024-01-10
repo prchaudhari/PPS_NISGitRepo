@@ -594,38 +594,38 @@ namespace nIS
                                                     htmlString.Append(footerImageHtmlWidget);
                                                 }
                                             }
-                                            //else if (mergedlst[i].WidgetName == HtmlConstants.DETAILED_TRANSACTIONS_WIDGET_NAME)
-                                            //{
-                                            //    string transactionListJson = "[{INT_EXT_REF: 124411745,Int_Name: 'Mr SCHOELER',Client_Name: 'Kruger Van Heerden', Member_Ref: 124556686, Policy_Ref: 5596100, Description: 'Safe Custody Service Fee', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '17.55',Query_Link: 'https://facebook.com' }, INT_EXT_REF:2164250,Int_Name: 'Yvonne Van Heerden',{ Client_Name: 'Mr SCHOELER', Member_Ref: 124556686, Policy_Ref: '5596100', Description: 'Safe Custody Service Fee VAT', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '2.63', Query_Link: 'https://facebook.com' },{ INT_EXT_REF:124411745,Int_Name: 'Kruger Van Heerden',Client_Name: 'DR N J Olivier', Member_Ref: '1217181', Policy_Ref: '5524069', Description: 'Safe Custody Service Fee', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '17.55', Query_Link: 'https://facebook.com' },{INT_EXT_REF:124411745, Int_Name: 'Kruger Van Heerden',Client_Name: 'DR N J Olivier', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee VAT	', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '2.63', Query_Link: 'https://facebook.com' }]";
-                                            //    double TotalPostedAmount = 0;
-                                            //    if (transactionListJson != string.Empty && validationEngine.IsValidJson(transactionListJson))
-                                            //    {
-                                            //        IList<spIAA_PaymentDetail> transaction = JsonConvert.DeserializeObject<List<spIAA_PaymentDetail>>(transactionListJson);
+                                            else if (mergedlst[i].WidgetName == HtmlConstants.DETAILED_TRANSACTIONS_WIDGET_NAME)
+                                            {
+                                                string transactionListJson = "[{INT_EXT_REF: 124411745,Int_Name: 'Mr SCHOELER',Client_Name: 'Kruger Van Heerden', Member_Ref: 124556686, Policy_Ref: 5596100, Description: 'Safe Custody Service Fee', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '17.55',Query_Link: 'https://facebook.com' }, INT_EXT_REF:2164250,Int_Name: 'Yvonne Van Heerden',{ Client_Name: 'Mr SCHOELER', Member_Ref: 124556686, Policy_Ref: '5596100', Description: 'Safe Custody Service Fee VAT', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '2.63', Query_Link: 'https://facebook.com' },{ INT_EXT_REF:124411745,Int_Name: 'Kruger Van Heerden',Client_Name: 'DR N J Olivier', Member_Ref: '1217181', Policy_Ref: '5524069', Description: 'Safe Custody Service Fee', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '17.55', Query_Link: 'https://facebook.com' },{INT_EXT_REF:124411745, Int_Name: 'Kruger Van Heerden',Client_Name: 'DR N J Olivier', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee VAT	', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '2.63', Query_Link: 'https://facebook.com' }]";
+                                                double TotalPostedAmount = 0;
+                                                if (transactionListJson != string.Empty && validationEngine.IsValidJson(transactionListJson))
+                                                {
+                                                    IList<spIAA_PaymentDetail> transaction = JsonConvert.DeserializeObject<List<spIAA_PaymentDetail>>(transactionListJson);
 
-                                            //        string detailedTransactionString = HtmlConstants.DETAILED_TRANSACTIONS_WIDGET_HTML;
-                                            //        var records = transaction.GroupBy(gptransactionitem => gptransactionitem.INT_EXT_REF).ToList();
-                                            //        records?.ForEach(transactionitem =>
-                                            //        {
-                                            //            detailedTransactionString = detailedTransactionString.Replace("{{QueryBtnImgLink}}", "www.facebook.com");
-                                            //            detailedTransactionString = detailedTransactionString.Replace("{{QueryBtn}}", "assets/images/IfQueryBtn.jpg");
-                                            //            detailedTransactionString = detailedTransactionString.Replace("{{ExtRef}}", transactionitem.FirstOrDefault().INT_EXT_REF);
-                                            //            detailedTransactionString = detailedTransactionString.Replace("{{ExtName}}", transactionitem.FirstOrDefault().Int_Name);
-                                            //            StringBuilder detailedTransactionSrc = new StringBuilder();
-                                            //            transaction.Where(witem => witem.INT_EXT_REF == transactionitem.FirstOrDefault().INT_EXT_REF).ToList().ForEach(item =>
-                                            //            {
-                                            //                detailedTransactionSrc.Append("< tr ><td align = 'center' valign = 'center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" +
-                                            //                    item.Client_Name + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Member_Ref + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1' > " + item.Policy_Ref + "</td><td class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1' >" + item.Description + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1' >" + item.Commission_Type + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1' >" + item.POSTED_DATE + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'> R" + item.Display_Amount + "</td><td class= 'text-center fsp-bdr-bottom px-1' >< a href = '{{item.Query_Link}}' target = '_blank' >< img class= 'leftarrowlogo' src = 'assets/images/leftarrowlogo.png' alt = 'Left Arrow' ></ a ></td></ tr > ");
-                                            //                TotalPostedAmount += (Convert.ToDouble(item.Display_Amount));
-                                            //            });
-                                            //            detailedTransactionString = detailedTransactionString.Replace("{{detailedTransaction}}", detailedTransactionSrc.ToString());
-                                            //            detailedTransactionString = detailedTransactionString.Replace("{{TotalPostedAmount}}", TotalPostedAmount.ToString());
-                                            //            detailedTransactionString = detailedTransactionString.Replace("{{TotalPostedAmountImgExtLink}}", "www.facebook.com");
-                                            //            detailedTransactionString = detailedTransactionString.Replace("{{TotalPostedAmountExtImg}}", "assets/images/leftarrowlogo.png");
-                                            //            detailedTransactionString = detailedTransactionString.Replace("{{clickPrintStmtBtnExtImgLink}}", "www.facebook.com");
-                                            //            detailedTransactionString = detailedTransactionString.Replace("{{clickPrintStmtBtnImg}}", "assets/images/click-print-stmt-btn.jpg");
-                                            //        });
-                                            //    }
-                                            //    }
+                                                    string detailedTransactionString = HtmlConstants.DETAILED_TRANSACTIONS_WIDGET_HTML;
+                                                    var records = transaction.GroupBy(gptransactionitem => gptransactionitem.INT_EXT_REF).ToList();
+                                                    records?.ForEach(transactionitem =>
+                                                    {
+                                                        detailedTransactionString = detailedTransactionString.Replace("{{QueryBtnImgLink}}", "www.facebook.com");
+                                                        detailedTransactionString = detailedTransactionString.Replace("{{QueryBtn}}", "assets/images/IfQueryBtn.jpg");
+                                                        detailedTransactionString = detailedTransactionString.Replace("{{ExtRef}}", transactionitem.FirstOrDefault().INT_EXT_REF);
+                                                        detailedTransactionString = detailedTransactionString.Replace("{{ExtName}}", transactionitem.FirstOrDefault().Int_Name);
+                                                        StringBuilder detailedTransactionSrc = new StringBuilder();
+                                                        transaction.Where(witem => witem.INT_EXT_REF == transactionitem.FirstOrDefault().INT_EXT_REF).ToList().ForEach(item =>
+                                                        {
+                                                            detailedTransactionSrc.Append("< tr ><td align = 'center' valign = 'center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" +
+                                                                item.Client_Name + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Member_Ref + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1' > " + item.Policy_Ref + "</td><td class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1' >" + item.Description + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1' >" + item.Commission_Type + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1' >" + item.POSTED_DATE + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'> R" + item.Display_Amount + "</td><td class= 'text-center fsp-bdr-bottom px-1' >< a href = '{{item.Query_Link}}' target = '_blank' >< img class= 'leftarrowlogo' src = 'assets/images/leftarrowlogo.png' alt = 'Left Arrow' ></ a ></td></ tr > ");
+                                                            TotalPostedAmount += (Convert.ToDouble(item.Display_Amount));
+                                                        });
+                                                        detailedTransactionString = detailedTransactionString.Replace("{{detailedTransaction}}", detailedTransactionSrc.ToString());
+                                                        detailedTransactionString = detailedTransactionString.Replace("{{TotalPostedAmount}}", TotalPostedAmount.ToString());
+                                                        detailedTransactionString = detailedTransactionString.Replace("{{TotalPostedAmountImgExtLink}}", "www.facebook.com");
+                                                        detailedTransactionString = detailedTransactionString.Replace("{{TotalPostedAmountExtImg}}", "assets/images/leftarrowlogo.png");
+                                                        detailedTransactionString = detailedTransactionString.Replace("{{clickPrintStmtBtnExtImgLink}}", "www.facebook.com");
+                                                        detailedTransactionString = detailedTransactionString.Replace("{{clickPrintStmtBtnImg}}", "assets/images/click-print-stmt-btn.jpg");
+                                                    });
+                                                }
+                                            }
 
                                             else if (mergedlst[i].WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME)
                                             {
