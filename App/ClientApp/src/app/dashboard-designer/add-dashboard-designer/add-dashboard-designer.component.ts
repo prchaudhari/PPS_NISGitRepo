@@ -12,7 +12,7 @@ import { LocalStorageService } from 'src/app/shared/services/local-storage.servi
 import { Template } from '../../layout/template/template';
 //import { TemplateWidget } from '../../layout/template/templateWidget';CorporateSaverAgentMessageComponent
 import {
-  CustomerInformationComponent, AccountInformationComponent, ProductSummaryComponent, DetailedTransactionsComponent,  PaymentSummaryComponent, PPSFooter1Component, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent, FSPHeadingComponent, FSPDetailsComponent, SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
+    CustomerInformationComponent, AccountInformationComponent, ProductSummaryComponent, DetailedTransactionsComponent, PaymentSummaryComponent, PPSFooter1Component, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent, FSPHeadingComponent, FSPDetailsComponent, FooterImageComponent, SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
   SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
   DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent,
   SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
@@ -1015,6 +1015,21 @@ export class AddDashboardDesignerComponent implements OnInit {
               y: 0,
               x: 0,
               component: ProductSummaryComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "FooterImage") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 12,
+              rows: 4,
+              y: 0,
+              x: 0,
+              component: FooterImageComponent,
               value: widget.WidgetName,
               WidgetId: widget.Identifier,
               widgetItemCount: this.widgetItemCount,
@@ -2328,6 +2343,12 @@ export class AddDashboardDesignerComponent implements OnInit {
       }
       else if (widgetName == 'DetailedTransactions') {
         gridObj.component = DetailedTransactionsComponent;
+      }
+      else if (widgetName == 'PPSFooter1') {
+        gridObj.component = PPSFooter1Component;
+      }
+      else if (widgetName == 'FooterImage') {
+        gridObj.component = FooterImageComponent;
       }
       else if (widgetName == 'AccountInformation') {
         gridObj.component = AccountInformationComponent;

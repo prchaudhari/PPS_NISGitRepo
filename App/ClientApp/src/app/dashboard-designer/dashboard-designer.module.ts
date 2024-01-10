@@ -13,8 +13,10 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { DynamicModule } from 'ng-dynamic-component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
-  CustomerInformationComponent, PPSFooter1Component, DetailedTransactionsComponent,FSPDetailsComponent, ProductSummaryComponent, PaymentSummaryComponent,
-  FSPHeadingComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent,TransactionDetailsComponent, SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent, SpendindTrendsComponent,
+  CustomerInformationComponent, PPSFooter1Component, FSPDetailsComponent, ProductSummaryComponent, PaymentSummaryComponent,
+    FSPHeadingComponent, FooterImageComponent, DetailedTransactionsComponent,
+  AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent,
+  TransactionDetailsComponent, SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent, SpendindTrendsComponent,
   TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent, SavingTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, 
   SpendindTrendsPreviewComponent, DynamicLineChartWidgetComponent, DynamicBarChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, PageBreakComponent, SegmentBasedContentComponent,
   DynamicBarChartWidgetPreviewComponent, DynamicLineChartWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent,
@@ -25,10 +27,10 @@ import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor'
 import { SafeHtmlPip } from '../shared/pagepreview/pagepreview.component';
 import { MatIconModule } from '@angular/material/icon';
 @NgModule({
-
-    declarations: [AddDashboardDesignerComponent, DetailedTransactionsComponent, PPSFooter1Component, ProductSummaryComponent, PaymentSummaryComponent, ViewDashboardDesignerComponent, CustomerInformationComponent, FSPDetailsComponent,
-    AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent, FSPHeadingComponent,
-    SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent, SavingTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, 
+  declarations: [AddDashboardDesignerComponent, PPSFooter1Component, ProductSummaryComponent, PaymentSummaryComponent, FooterImageComponent, ViewDashboardDesignerComponent, CustomerInformationComponent, FSPDetailsComponent,
+        AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent, FSPHeadingComponent, DetailedTransactionsComponent,
+    SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
+    SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent, SavingTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, 
     SpendindTrendsPreviewComponent, DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, PageBreakComponent, SegmentBasedContentComponent,
     DynamicBarChartWidgetPreviewComponent, DynamicLineChartWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent,
     SpecialMessageComponent, PersonalLoanInsuranceMessageComponent, 
@@ -38,8 +40,9 @@ import { MatIconModule } from '@angular/material/icon';
     GridsterModule, LayoutModule, MatSortModule, MatTableModule, MatPaginatorModule, DynamicModule, RichTextEditorAllModule, MatIconModule
   ],
   entryComponents: [
-    CustomerInformationComponent, PPSFooter1Component, FSPDetailsComponent , DetailedTransactionsComponent,ProductSummaryComponent,PaymentSummaryComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent, SavingAvailableBalanceComponent,
-    FSPHeadingComponent,CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent, SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent,
+    CustomerInformationComponent, PPSFooter1Component, FSPDetailsComponent,ProductSummaryComponent,PaymentSummaryComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent, SavingAvailableBalanceComponent,
+      FSPHeadingComponent, FooterImageComponent, DetailedTransactionsComponent,
+    CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent, SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent,
     ReminderAndRecommComponent, SavingTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, SpendindTrendsPreviewComponent,
     DynamicLineChartWidgetComponent, DynamicBarChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, PageBreakComponent, SegmentBasedContentComponent,
     DynamicBarChartWidgetPreviewComponent, DynamicLineChartWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent,

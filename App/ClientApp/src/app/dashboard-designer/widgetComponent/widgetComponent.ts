@@ -427,6 +427,37 @@ export class DetailedTransactionsComponent {
   ]
 }
 
+// Component Created for PPS Details--
+@Component({
+  selector: 'footerImage',
+  template: `<div class="widget">
+<div class="widget-area">
+       <div class="container_area">
+            <div class="fsp-bottom-image-car"></div>
+            <div class="px-2 py-2">
+                <div class="d-flex gap-1 image">
+                    <div class="colom-4">
+                        <img src="assets/images/img_1.png">
+                    </div>
+                    <div class="colom-4">
+                        <img src="assets/images/img_2.png">
+                    </div>
+                    <div class="colom-4">
+                        <img src="assets/images/img_3.png">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        </div>
+  </div>`
+})
+export class FooterImageComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+
+}
+
 // Component Created for Account Information Widget--
 @Component({
   selector: 'accountInformation',

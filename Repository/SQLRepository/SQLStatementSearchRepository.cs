@@ -603,6 +603,14 @@ namespace nIS
                                         pageContent.Replace("{{FSPPage}}", pageText);
                                     }
 
+                                    else if (widget.WidgetName == HtmlConstants.FOOTER_IMAGE_WIDGET_NAME)
+                                    {
+                                        //string middleText = "PPS Insurance is a registered Insurer and FSP";
+                                        //string pageText = "Page 1/2";
+                                        //pageContent.Replace("{{FSPFooterDetails}}", middleText);
+                                        //pageContent.Replace("{{FSPPage}}", pageText);
+                                    }
+
                                     else if (widget.WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME) //Account Information Widget
                                     {
                                         StringBuilder AccDivData = new StringBuilder();

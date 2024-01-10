@@ -1303,9 +1303,9 @@ namespace nIS
                                         case HtmlConstants.PRODUCT_SUMMARY_WIDGET_NAME:
                                             IsFailed = this.BindProductSummaryWidgetData(pageContent, ErrorMessages, fspDetails, page, widget);
                                             break;
-                                        case HtmlConstants.DETAILED_TRANSACTIONS_WIDGET_NAME:
-                                            IsFailed = this.BindDetailedTransactionsWidgetData(pageContent, ErrorMessages, fspDetails, page, widget);
-                                            break;
+                                        //case HtmlConstants.DETAILED_TRANSACTIONS_WIDGET_NAME:
+                                        //    IsFailed = this.BindDetailedTransactionsWidgetData(pageContent, ErrorMessages, fspDetails, page, widget);
+                                        //    break;
                                         case HtmlConstants.PPS_HEADING_WIDGET_NAME:
                                             this.BindPpsHeadingWidgetData(pageContent, customer, statement, page, widget, customerMedias, fspDetails, statementRawData.BatchDetails);
                                             break;
@@ -1314,6 +1314,9 @@ namespace nIS
                                             break;
                                         case HtmlConstants.PPS_FOOTER1_WIDGET_NAME:
                                             this.BindPpsFooter1WidgetData(pageContent, customer, statement, page, widget, customerMedias, fspDetails, statementRawData.BatchDetails);
+                                            break;
+                                        case HtmlConstants.FOOTER_IMAGE_WIDGET_NAME:
+                                            this.BindFooterImageWidgetData(pageContent, customer, statement, page, widget, customerMedias, fspDetails, statementRawData.BatchDetails);
                                             break;
                                         case HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME:
                                             this.BindAccountInformationWidgetData(pageContent, customer, page, widget);
@@ -2374,6 +2377,13 @@ namespace nIS
             string pageText = "Page 1/2";
             pageContent.Replace("{{FSPFooterDetails}}", middleText);
             pageContent.Replace("{{FSPPage}}", pageText);
+        }
+             private void BindFooterImageWidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<spIAA_PaymentDetail> fspDetails, IList<BatchDetail> batchDetails)
+        {
+            //string middleText = "PPS Insurance is a registered Insurer and FSP";
+            //string pageText = "Page 1/2";
+            //pageContent.Replace("{{FSPFooterDetails}}", middleText);
+            //pageContent.Replace("{{FSPPage}}", pageText);
         }
         private void BindAccountInformationWidgetData(StringBuilder pageContent, CustomerMaster customer, Page page, PageWidget widget)
         {

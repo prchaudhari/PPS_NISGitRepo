@@ -74,7 +74,7 @@
           <span class="nav-icon fa"
                 [class.fa-address-book]="widget.WidgetName == 'FSPDetails'"
                 [class.fa-address-book-o]="['CustomerInformation', 'CustomerDetails', 'PortfolioCustomerDetails'].includes(widget.WidgetName)"
-                [class.fa-address-card-o]="['AccountInformation', 'CustomerAddressDetails'].includes(widget.WidgetName)"            
+                [class.fa-address-card-o]="['AccountInformation', 'CustomerAddressDetails','FooterImage'].includes(widget.WidgetName)"            
                 [class.icon-videoWidget]="widget.WidgetName == 'Video'"
                 [class.icon-home-line2]="widget.WidgetName == 'Image'"               
                 [class.icon-widget-single-column2.fa-lg]="['PPSFooter1','PaymentSummary', 'FSPHeading','DetailedTransactions','FSPDetails','Summary','BreakdownOfInvestmentAccounts',
@@ -86,6 +86,7 @@
                 [class.icon-rp-quality1]="widget.WidgetName == 'Top4IncomeSources'"
                 [class.icon-rp-production1]="widget.WidgetName == 'SpendingTrend'"
                 [class.icon-AvailableBalanceWidget]="['SavingAvailableBalance', 'CurrentAvailableBalance'].includes(widget.WidgetName)" 
+            
                 [class.fa-bell-o]="widget.WidgetName == 'ReminderaAndRecommendation'"
                 [class.fa-code.fa-code]="widget.WidgetName == 'StaticHtml'"
                 [class.fa-credit-card]="widget.WidgetName == 'CurrentTransaction'">

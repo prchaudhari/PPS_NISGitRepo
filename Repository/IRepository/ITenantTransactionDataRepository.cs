@@ -102,6 +102,7 @@ namespace nIS
          IList<spIAA_PaymentDetail> Get_PPSHeading(string tenantCode);
          IList<spIAA_PaymentDetail> Get_PPSDetails(string tenantCode);
          IList<spIAA_PaymentDetail> Get_PPSFooter1(string tenantCode);
+         IList<spIAA_PaymentDetail> Get_FooterImage(string tenantCode);
         #endregion
 
         #region Nedbank
