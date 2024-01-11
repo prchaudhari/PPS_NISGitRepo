@@ -51,10 +51,8 @@ export class CustomerInformationComponent {
 @Component({
   selector: 'paymentSummary',
   template: `<div class="widget">
-    <div class="widget-header">
-      <span class="widget-header-title"> Payment Summary </span>
-    </div>
-<div class="container_area" style="max-width: 730px;">
+   
+<div class="container_area">
             <div class="fsp-earnings-section">
                 <div class="dark-blue-bg payment-sum text-white text-center">Payment summary</div>
                   <div class="fsp-payment-sum d-flex gap-1 w-100 py-4">
@@ -88,10 +86,8 @@ export class PaymentSummaryComponent {
 @Component({
   selector: 'fspHeading',
   template: `<div class="widget">
-    <div class="widget-header">
-      <span class="widget-header-title"> FSP Heading </span>
-    </div>
-        <div class="container_area" style="max-width: 730px;">
+    
+        <div class="container_area" >
             <div class="header-section px-20">
                 <div class="fsp-header-logo">
                     <div class="fsp-logo"><img src="assets/images/logo3.jpg" alt=""></div>
@@ -114,10 +110,8 @@ export class FSPHeadingComponent {
 @Component({
   selector: 'fspDetails',
   template: `<div class="widget">
-    <div class="widget-header">
-      <span class="widget-header-title"> PPS Details </span>
-    </div>
-        <div class="container_area" style="max-width: 730px;">
+   
+        <div class="container_area">
             <div class="header-contact px-20">
                 <div class="col-49">
                     <ul>
@@ -173,11 +167,9 @@ export class FSPDetailsComponent {
 @Component({
   selector: 'ppsFooter',
   template: `<div class="widget">
-    <div class="widget-header">
-      <span class="widget-header-title"> PPS Footer </span>
-    </div>
+    
 <div class="widget-area">
-       <div class="container_area" style="max-width: 730px;">
+       <div class="container_area">
             <div class="fsp-footer-section dark-blue-bg py-1 px-2">
                     <ul class="fsp-social-icons">
                         <li><a href="#"><img src="assets/images/fb_foot.png"></a></li>
@@ -207,9 +199,7 @@ export class PPSFooter1Component {
 @Component({
   selector: 'productSummary',
   template: `<div class="widget">
-    <div class="widget-header">
-      <span class="widget-header-title"> Product Summary </span>
-    </div>
+   
           <div class="container_area" >
             <div class="fsp-earnings-section" >
                 <div class="dark-blue-bg payment-sum text-white text-center">Product summary</div>
@@ -300,9 +290,7 @@ export class ProductSummaryComponent {
 @Component({
   selector: 'detailedTransactions',
   template: `<div class="widget">
-    <div class="widget-header">
-      <span class="widget-header-title">Detailed Transactions</span>
-    </div>
+  
 <div class="container_area" >
         <div class="fsp-earnings-section">
             <div class="dark-blue-bg payment-sum text-white text-center">Detailed Transactions</div>
