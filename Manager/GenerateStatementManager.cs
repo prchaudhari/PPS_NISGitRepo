@@ -2260,12 +2260,16 @@ namespace nIS
             }
         }
 
-        private void BindPaymentSummaryWidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<spIAA_PaymentDetail> paymentSummary, IList<BatchDetail> batchDetails)
+        private void BindPaymentSummaryWidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<spIAA_PaymentDetail> fspDetails, IList<BatchDetail> batchDetails)
         {
-            pageContent.Replace("{{IntTotal}}", paymentSummary.First().Earning_Amount);
-            pageContent.Replace("{{Vat}}", paymentSummary.First().VAT_Amount);
-            pageContent.Replace("{{TotalDue}}", (Convert.ToDouble(paymentSummary.First().Earning_Amount) +
-                Convert.ToDouble(paymentSummary.First().VAT_Amount)).ToString());
+            pageContent.Replace("{{IntTotal}}", fspDetails.First().Earning_Amount);
+            pageContent.Replace("{{Vat}}", fspDetails.First().VAT_Amount);
+            pageContent.Replace("{{TotalDue}}", (Convert.ToDouble(fspDetails.First().Earning_Amount) +
+                Convert.ToDouble(fspDetails.First().VAT_Amount)).ToString());
+            pageContent.Replace("{{IntTotalDate}}", fspDetails.First().POSTED_DATE.ToString("MMMM yyyy"));
+            // Format the date with a custom format
+            string formattedOrdinalDate = FormatDateWithOrdinal(fspDetails.First().POSTED_DATE);
+            pageContent.Replace("{{IntPostedDate}}", formattedOrdinalDate);
         }
 
         private bool BindProductSummaryWidgetData(StringBuilder pageContent, StringBuilder ErrorMessages, IList<spIAA_PaymentDetail> productSummary, Page page, PageWidget widget)
@@ -2355,17 +2359,17 @@ namespace nIS
             }
 
         }
-        private void BindPpsHeadingWidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<spIAA_PaymentDetail> ppsheading, IList<BatchDetail> batchDetails)
+        private void BindPpsHeadingWidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<spIAA_PaymentDetail> fspDetails, IList<BatchDetail> batchDetails)
         {
-            pageContent.Replace("{{FSPName}}", ppsheading.FirstOrDefault().FSP_Name);
-            pageContent.Replace("{{FSPTradingName}}", ppsheading.FirstOrDefault().FSP_Trading_Name);
+            pageContent.Replace("{{FSPName}}", fspDetails.FirstOrDefault().FSP_Name);
+            pageContent.Replace("{{FSPTradingName}}", fspDetails.FirstOrDefault().FSP_Trading_Name);
         }
 
-        private void BindPpsDetailsWidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<spIAA_PaymentDetail> ppsDetails, IList<BatchDetail> batchDetails)
+        private void BindPpsDetailsWidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<spIAA_PaymentDetail> fspDetails, IList<BatchDetail> batchDetails)
         {
-            pageContent.Replace("{{FSPNumber}}", ppsDetails.FirstOrDefault().FSP_Ext_Ref);
-            pageContent.Replace("{{FSPAgreeNumber}}", ppsDetails.FirstOrDefault().FSP_REF);
-            pageContent.Replace("{{VATRegNumber}}", ppsDetails.FirstOrDefault().FSP_VAT_Number);
+            pageContent.Replace("{{FSPNumber}}", fspDetails.FirstOrDefault().FSP_Ext_Ref);
+            pageContent.Replace("{{FSPAgreeNumber}}", fspDetails.FirstOrDefault().FSP_REF);
+            pageContent.Replace("{{VATRegNumber}}", fspDetails.FirstOrDefault().FSP_VAT_Number);
         }
 
         private void BindPpsFooter1WidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<spIAA_PaymentDetail> fspDetails, IList<BatchDetail> batchDetails)
@@ -3757,7 +3761,7 @@ namespace nIS
         //             {
         //                 InvestmentAccountDetailHtml.Replace("{{InterestRate}}", string.Empty);
         //             }
-                     
+
         //             InvestmentAccountDetailHtml.Replace("{{MaturityDate}}", acc.ExpiryDate != null ? acc.ExpiryDate?.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) : string.Empty);
         //             InvestmentAccountDetailHtml.Replace("{{InterestDisposal}}", acc.InterestDisposalDesc != null ? acc.InterestDisposalDesc : string.Empty);
         //             InvestmentAccountDetailHtml.Replace("{{NoticePeriod}}", acc.NoticePeriod != null ? acc.NoticePeriod : string.Empty);
@@ -6279,7 +6283,42 @@ namespace nIS
         //}
 
         #endregion
+        // pps
+        static string FormatDateWithOrdinal(DateTime date)
+        {
+            // Get the day of the month
+            int day = date.Day;
 
+            // Create an ordinal suffix (e.g., "st", "nd", "rd", "th")
+            string ordinalSuffix;
+            if (day % 100 >= 11 && day % 100 <= 13)
+            {
+                ordinalSuffix = "th";
+            }
+            else
+            {
+                switch (day % 10)
+                {
+                    case 1:
+                        ordinalSuffix = "st";
+                        break;
+                    case 2:
+                        ordinalSuffix = "nd";
+                        break;
+                    case 3:
+                        ordinalSuffix = "rd";
+                        break;
+                    default:
+                        ordinalSuffix = "th";
+                        break;
+                }
+            }
+
+            // Format the date with the ordinal suffix
+            string formattedDate = $"{day}<sup>{ordinalSuffix}</sup> {date:MMMM}";
+
+            return formattedDate;
+        }
         //#endregion
     }
 

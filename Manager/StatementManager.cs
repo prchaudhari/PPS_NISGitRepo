@@ -9095,7 +9095,7 @@ namespace nIS
             }
 
             // Format the date with the ordinal suffix
-            string formattedDate = $"{day}<sup>{ordinalSuffix}</sup> {date:MMMM yyyy}";
+            string formattedDate = $"{day}<sup>{ordinalSuffix}</sup> {date:MMMM}";
 
             return formattedDate;
         }
