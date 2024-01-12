@@ -406,12 +406,12 @@ export class DetailedTransactionsComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
   public detailedTransactionList: any[] = [
-    { Client_Name: 'Mr SCHOELER', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount:'17.55',Query_Link: "https://facebook.com" },
-    { Client_Name: 'Mr SCHOELER', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee VAT', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '2.63', Query_Link: "https://facebook.com" },
+    { INT_EXT_REF: '2164250', Int_Name: 'Mr SCHOELER', Client_Name: 'Mr SCHOELER', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '17.55', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'Safe Custody Fee' },
+    { INT_EXT_REF: '2164250', Int_Name: 'Yvonne Van Heerden', Client_Name: 'Mr SCHOELER', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee VAT', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '2.63', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'Safe Custody Fee' },
   ]
   public detailedTransactionIntList: any[] = [
-    { Client_Name: 'DR N J Olivier', Member_Ref: '1217181', Policy_Ref: '5524069', Description: 'Safe Custody Service Fee', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '17.55', Query_Link: "https://facebook.com" },
-    { Client_Name: 'DR N J Olivier', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee VAT	', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '2.63', Query_Link: "https://facebook.com" },
+    { INT_EXT_REF: '124411745', Int_Name: 'Kruger Van Heerden', Client_Name: 'DR N J Olivier', Member_Ref: '1217181', Policy_Ref: '5524069', Description: 'Safe Custody Service Fee', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '17.55', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'Safe Custody Fee' },
+    { INT_EXT_REF: '124411745', Int_Name: 'Kruger Van Heerden', Client_Name: 'DR N J Olivier', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee VAT	', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '2.63', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'VAT'},
   ]
 }
 
