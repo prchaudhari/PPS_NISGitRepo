@@ -41,12 +41,12 @@
           </thead>
           <tbody>
             <ng-container *ngFor="let item of array">
-              <tr class="mat-row ng-star-inserted padding_bottom_15">
+              <!--<tr class="mat-row ng-star-inserted padding_bottom_15">
                 <td
                   class="mat-cell cdk-column-name mat-column-name ng-star-inserted font-weight-bold padding_bottom_8 padding_top_8"
                   colspan="7">
                   {{ item.ProductName }}</td>
-              </tr>
+              </tr>-->
 
               <tr class="mat-row ng-star-inserted" *ngFor="let childItem of item.ProductBatches">
                 <td class="mat-cell cdk-column-name mat-column-name ng-star-inserted padding_bottom_8 padding_top_8"
