@@ -103,6 +103,10 @@ export class AddComponent implements OnInit {
           this.widgetList[i].ImageSource = "assets/images/footer1.PNG";
           this.widgetList[i].WidgetIcon = "fa fa-address-book-o";
         }
+        else if (this.widgetList[i].WidgetName == "PPSDetails1") {
+          this.widgetList[i].ImageSource = "assets/images/Details1.PNG";
+          this.widgetList[i].WidgetIcon = "fa fa-address-book-o";
+        }
         else if (this.widgetList[i].WidgetName == "FooterImage") {
           this.widgetList[i].ImageSource = "assets/images/footerImage.png";
           this.widgetList[i].WidgetIcon = "fa fa-address-book-o";

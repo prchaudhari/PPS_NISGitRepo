@@ -14,7 +14,7 @@ import { DynamicModule } from 'ng-dynamic-component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   CustomerInformationComponent, PPSFooter1Component, FSPDetailsComponent, ProductSummaryComponent, PaymentSummaryComponent,
-    FSPHeadingComponent, FooterImageComponent, DetailedTransactionsComponent,
+    FSPHeadingComponent,PPSDetails1Component, FooterImageComponent, DetailedTransactionsComponent,
   AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent,
   TransactionDetailsComponent, SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent, SpendindTrendsComponent,
   TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent, SavingTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, 
@@ -28,7 +28,7 @@ import { SafeHtmlPip } from '../shared/pagepreview/pagepreview.component';
 import { MatIconModule } from '@angular/material/icon';
 @NgModule({
   declarations: [AddDashboardDesignerComponent, PPSFooter1Component, ProductSummaryComponent, PaymentSummaryComponent, FooterImageComponent, ViewDashboardDesignerComponent, CustomerInformationComponent, FSPDetailsComponent,
-        AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent, FSPHeadingComponent, DetailedTransactionsComponent,
+        AccountInformationComponent,PPSDetails1Component,ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent, FSPHeadingComponent, DetailedTransactionsComponent,
     SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
     SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent, SavingTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, 
     SpendindTrendsPreviewComponent, DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, PageBreakComponent, SegmentBasedContentComponent,
@@ -41,7 +41,7 @@ import { MatIconModule } from '@angular/material/icon';
   ],
   entryComponents: [
     CustomerInformationComponent, PPSFooter1Component, FSPDetailsComponent,ProductSummaryComponent,PaymentSummaryComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent, SavingAvailableBalanceComponent,
-      FSPHeadingComponent, FooterImageComponent, DetailedTransactionsComponent,
+      FSPHeadingComponent, PPSDetails1Component,FooterImageComponent, DetailedTransactionsComponent,
     CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent, SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent,
     ReminderAndRecommComponent, SavingTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, SpendindTrendsPreviewComponent,
     DynamicLineChartWidgetComponent, DynamicBarChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, PageBreakComponent, SegmentBasedContentComponent,

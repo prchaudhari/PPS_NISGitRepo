@@ -611,6 +611,16 @@ namespace nIS
                                         //pageContent.Replace("{{FSPPage}}", pageText);
                                     }
 
+                                    else if (widget.WidgetName == HtmlConstants.PPS_DETAILS1_WIDGET_NAME)
+                                    {
+                                       
+                                        pageContent.Replace("{{ref}}", ppsDetails1.FirstOrDefault().INT_EXT_REF);
+                                        pageContent.Replace("{{mtype}}", ppsDetails1.FirstOrDefault().FSP_REF);
+                                        pageContent.Replace("{{month}}", ppsDetails1.FirstOrDefault().Months_In_Force);
+                                       
+
+                                    }
+
                                     else if (widget.WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME) //Account Information Widget
                                     {
                                         StringBuilder AccDivData = new StringBuilder();

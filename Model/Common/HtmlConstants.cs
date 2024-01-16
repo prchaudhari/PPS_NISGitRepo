@@ -40,6 +40,8 @@ namespace nIS
 
         public const string IMAGE_WIDGET_NAME = "Image";
 
+        public const string PPS_DETAILS1_WIDGET_NAME = "ppsDetails1";
+
         public const string VIDEO_WIDGET_NAME = "Video";
 
         public const string STATIC_HTML_WIDGET_NAME = "StaticHtml";
@@ -265,7 +267,10 @@ namespace nIS
 
         public const string SUMMARY_AT_GLANCE_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'><div class='p-1 bg-light border-0 text-left'> <h5 class='m-0'>Summary at Glance</h5></div> <div class='card-body overflow-auto'><div class='table-responsive'> <table class='table m-0 table-hover'><thead><tr><th>Account</th><th>Currency</th><th>Amount</th></tr></thead><tbody>{{AccountSummary}}</tbody></table></div></div></div>";
 
+
         public const string IMAGE_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'><div class='card-body {{ImgAlignmentClass}}'><img src='{{ImageSource}}' class='{{NewImageClass}}' style='height:{{ImgHeight}};max-width:100%;'/></div></div>";
+
+        public const string PPS_DETAILS1_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'> <div class='container_area'> <div class='header-contact px-20'> <div class='col-49'> <ul> <li> <dd>Reference:</dd> <dt class='text-gray'>124529534</dt> </li> <li> <dd>Measure type:</dd> <dt class='text-gray'>Commission</dt> </li> <li> <dd>Month:</dd> <dt class='text-gray'>September 2023</dt> </li> <li> <dd>Date:</dd> <dt class='text-gray'>2023-09-01 to 2023-01-01</dt> </li> </ul> </div>  <div class='col-49'> <ul> <li> <dd>Contact details:</dd> <dt></dt> </li> <li> <dd>M:</dd> <dt class='text-gray'>0821234567</dt> </li> <li> <dd>E:</dd> <dt class='text-gray'>y.vanheerden @google.com</dt> </li> <li> <dd>A:</dd> <dt class='text-gray'>1 John Vorster Drive,<br/>Randburg, Gauteng</dt> </li> </ul> </div> </div> </div> </div>";
 
         public const string VIDEO_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'> <div class='card-body text-center'><video class='video-widget w-100 float-left {{NewVideoClass}}' controls><source src='{{VideoSource}}' type='video/mp4'></video></div></div>";
 
@@ -468,6 +473,8 @@ namespace nIS
         public const string SUMMARY_AT_GLANCE_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}}'><div class='card-header bg-light border-0 text-left'> <h5 class='m-0'>Summary at Glance</h5></div> <div class='card-body'><div class='table-responsive'> <table class='table m-0 table-hover'><thead><tr><th>Account</th><th>Currency</th><th>Amount</th></tr></thead><tbody>{{AccountSummary}}</tbody></table></div></div></div>";
 
         public const string IMAGE_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}}'> <div class='card-body {{ImgAlignmentClass}}'>{{TargetLink}}<img src='{{ImageSource}}' class='{{NewImageClass}}' style='height:{{ImgHeight}};max-width:100%;'/>{{EndTargetLink}}</div></div>";
+
+        public const string PPS_DETAILS1_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}} < div class='container_area'> <div class='header-contact px-20'> <div class='col-49'> <ul> <li> <dd>Reference:</dd> <dt class='text-gray'>124529534</dt> </li> <li> <dd>Measure type:</dd> <dt class='text-gray'>Commission</dt> </li> <li> <dd>Month:</dd> <dt class='text-gray'>September 2023</dt> </li> <li> <dd>Date:</dd> <dt class='text-gray'>2023-09-01 to 2023-01-01</dt> </li> </ul> </div>  <div class='col-49'> <ul> <li> <dd>Contact details:</dd> <dt></dt> </li> <li> <dd>M:</dd> <dt class='text-gray'>0821234567</dt> </li> <li> <dd>E:</dd> <dt class='text-gray'>y.vanheerden @google.com</dt> </li> <li> <dd>A:</dd> <dt class='text-gray'>1 John Vorster Drive,<br/>Randburg, Gauteng</dt> </li> </ul> </div> </div> </div> </div>";
 
         public const string VIDEO_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}}'><div class='card-body text-center'><video style='width: 100%;' controls><source src='{{VideoSource}}' type='video/mp4'></video></div></div>";
 

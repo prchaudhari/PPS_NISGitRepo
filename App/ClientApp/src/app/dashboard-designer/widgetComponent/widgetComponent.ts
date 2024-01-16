@@ -480,6 +480,62 @@ export class AccountInformationComponent {
   ];
 
 }
+// Component Created for PPSDetailS1 Firstpart.
+@Component({
+  selector: 'PPSDetails1',
+  template: `<div class="widget">
+   
+        <div class="container_area">
+            <div class="header-contact px-20">
+                <div class="col-49">
+                <ul>
+                        <li>
+                            <dd>Reference:</dd>
+                            <dt class="text-gray">124529534</dt>
+                        </li>
+                        <li>
+                            <dd>Measure type:</dd>
+                            <dt class="text-gray">Commission</dt>
+                        </li>
+                        <li>
+                            <dd>Month:</dd>
+                            <dt class="text-gray">September 2023</dt>
+                        </li>
+                        <li>
+                            <dd>Date:</dd>
+                            <dt class="text-gray">2023-09-01 to 2023-01-01</dt>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-49">
+                <ul>
+                        <li>
+                            <dd>Contact details:</dd>
+                            <dt></dt>
+                        </li>
+                        <li>
+                            <dd>M:</dd>
+                            <dt class="text-gray">0821234567</dt>
+                        </li>
+                        <li>
+                            <dd>E:</dd>
+                            <dt class="text-gray">y.vanheerden@google.com</dt>
+                        </li>
+                        <li>
+                            <dd>A:</dd>
+                            <dt class="text-gray">1 John Vorster Drive,<br/>Randburg, Gauteng  </dt>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+  </div>`
+})
+export class PPSDetails1Component {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+
+}
 
 
 // Component Created for Image Widget--

@@ -1324,6 +1324,9 @@ namespace nIS
                                         case HtmlConstants.IMAGE_WIDGET_NAME:
                                             IsFailed = this.BindImageWidgetData(pageContent, ErrorMessages, customer.Identifier, customerMedias, statementRawData.BatchDetails, statement, page, batchMaster, widget, tenantCode, statementRawData.OutputLocation);
                                             break;
+                                        case HtmlConstants.PPS_DETAILS1_WIDGET_NAME:
+                                            this.BindPpsDetailsWidgetData(pageContent, customer, statement, page, widget, customerMedias, fspDetails, statementRawData.BatchDetails);
+                                            break;
                                         case HtmlConstants.VIDEO_WIDGET_NAME:
                                             IsFailed = this.BindVideoWidgetData(pageContent, ErrorMessages, customer.Identifier, customerMedias, statementRawData.BatchDetails, statement, page, batchMaster, widget, tenantCode, statementRawData.OutputLocation);
                                             break;
@@ -2402,6 +2405,15 @@ namespace nIS
 
             AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>RM Contact Number" + "</div><label class='list-value mb-0'>" + customer.RmContactNumber + "</label></div></div>");
             pageContent.Replace("{{AccountInfoData_" + page.Identifier + "_" + widget.Identifier + "}}", AccDivData.ToString());
+        }
+
+
+        private void BindPpsDetails1WidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<spIAA_PaymentDetail> ppsDetails1, IList<BatchDetail> batchDetails)
+        {
+            pageContent.Replace("{{ref}}", ppsDetails1.FirstOrDefault().INT_EXT_REF);
+            pageContent.Replace("{{mtype}}", ppsDetails1.FirstOrDefault().FSP_REF);
+            pageContent.Replace("{{month}}", ppsDetails1.FirstOrDefault().Months_In_Force);
+            pageContent.Replace("{{date}}", ppsDetails1.FirstOrDefault().END_DATE);
         }
 
         private bool BindSummaryAtGlanceWidgetData(StringBuilder pageContent, StringBuilder ErrorMessages, IList<AccountMaster> accountrecords, Page page, PageWidget widget)

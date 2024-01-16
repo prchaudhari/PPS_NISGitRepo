@@ -11,7 +11,7 @@ import { TemplateWidget } from '../../layout/template/templateWidget';
 import { ConfigConstants } from '../../shared/constants/configConstants';
 import {
   CustomerInformationComponent, PageBreakComponent, PPSFooter1Component, FSPDetailsComponent, PaymentSummaryComponent, DetailedTransactionsComponent, FSPHeadingComponent, ProductSummaryComponent,
-  AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
+  AccountInformationComponent, PPSDetails1Component,ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
   SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
   SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
   DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent, 
@@ -325,6 +325,10 @@ export class ViewDashboardDesignerComponent implements OnInit {
       }
       else if (widgetName == 'AccountInformation') {
         gridObj.component = AccountInformationComponent;
+
+      }
+      else if (widgetName == 'PPSDetails1') {
+        gridObj.component = PPSDetails1Component;
       }
       else if (widgetName == 'Image') {
         gridObj.component = ImageComponent;
