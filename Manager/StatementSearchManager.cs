@@ -1343,7 +1343,7 @@ namespace nIS
                 pageContent.Replace("{{GrandTotalDue}}", "R" + grandTotalDueStr);
                 double ppsPayment = grandTotalDue;
                 pageContent.Replace("{{PPSPayment}}", "-R" + grandTotalDueStr);
-                String Balance = Convert.ToDouble((grandTotalDue - ppsPayment)).ToString().Replace(',', '.');
+                String Balance = Convert.ToDouble((grandTotalDue - ppsPayment)).ToString("F2").Replace(',', '.');
                 pageContent.Replace("{{Balance}}", "R" + Balance);
             }
             }

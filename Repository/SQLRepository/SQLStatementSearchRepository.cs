@@ -620,7 +620,7 @@ namespace nIS
                                         pageContent.Replace("{{ref}}", ppsDetails1.FirstOrDefault().INT_EXT_REF);
                                         pageContent.Replace("{{mtype}}", ppsDetails1.FirstOrDefault().MeasureType);
                                         pageContent.Replace("{{month}}", DateFrom.ToString("MMMM yyyy"));
-                                        pageContent.Replace("{{date}}", DateFrom.ToString() + " To " + DateTo.ToString());
+                                        pageContent.Replace("{{paramDate}}", DateFrom.ToString("yyyy-MM-dd") + " To " + DateTo.ToString("yyyy-MM-dd"));
 
                                     }
 
