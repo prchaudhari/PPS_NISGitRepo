@@ -2330,27 +2330,24 @@ namespace nIS
             {
                 if (transaction != null && transaction.Count > 0)
                 {
-                     var records = transaction.GroupBy(gptransactionitem => gptransactionitem.INT_EXT_REF).ToList();
+                    StringBuilder detailedTransactionSrc = new StringBuilder();
+                    var records = transaction.GroupBy(gptransactionitem => gptransactionitem.INT_EXT_REF).ToList();
                     records?.ForEach(transactionitem =>
                     {
-                        pageContent.Replace("{{QueryBtnImgLink}}", "www.facebook.com");
+                        detailedTransactionSrc.Append("<div class='px-50'><div class='prouct-table-block'><div class='text-left fsp-transaction-title font-weight-bold mb-3'>Intermediary:  " + transactionitem.FirstOrDefault().INT_EXT_REF + " " + transactionitem.FirstOrDefault().Int_Name + "</div><table width='100%' cellpadding='0' cellspacing='0'> <tr><th class='font-weight-bold text-white'>Client name</th> <th class='font-weight-bold text-white text-center pe-0 bdr-r-0'>Member<br /> number</th> <th class='font-weight-bold text-white text-center'>Will<br/> number</th> <th class='font-weight-bold text-white text-center'>Fiduciary fees</th> <th class='font-weight-bold text-white text-center'>Commission<br /> type</th> <th class='font-weight-bold text-white text-center'>Posted date</th> <th class='font-weight-bold text-white text-center'>Posted amount</th> <th class='font-weight-bold text-white'>Query</th> </tr> ");
+                        pageContent.Replace("{{QueryBtnImgLink}}", "https://www.google.com/");
                         pageContent.Replace("{{QueryBtn}}", "../common/images/IfQueryBtn.jpg");
-                        pageContent.Replace("{{ExtRef}}", transactionitem.FirstOrDefault().INT_EXT_REF);
-                        pageContent.Replace("{{ExtName}}", transactionitem.FirstOrDefault().Int_Name);
-                        StringBuilder detailedTransactionSrc = new StringBuilder();
                         transaction.Where(witem => witem.INT_EXT_REF == transactionitem.FirstOrDefault().INT_EXT_REF).ToList().ForEach(item =>
                         {
-                            detailedTransactionSrc.Append("< tr ><td align = 'center' valign = 'center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" +
-                                item.Client_Name + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Member_Ref + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1' > " + item.Policy_Ref + "</td><td class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1' >" + item.Description + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1' >" + item.Commission_Type + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1' >" + item.POSTED_DATE + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'> R" + item.Display_Amount + "</td><td class= 'text-center fsp-bdr-bottom px-1' >< a href = '{{item.Query_Link}}' target = '_blank' >< img class= 'leftarrowlogo' src = '../common/images/leftarrowlogo.png' alt = 'Left Arrow' ></ a ></td></ tr > ");
-                            TotalPostedAmount += (Convert.ToDouble(item.Display_Amount));
+                            detailedTransactionSrc.Append("<tr><td align = 'center' valign = 'center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" +
+                                    item.Client_Name + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Member_Ref + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'> " + item.Policy_Ref + "</td><td class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1'>" + (item.Description == "Commission Service Fee" ? "Premium Under Advise Fee" : item.Description)  + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.POSTED_DATE.ToString("dd-MMM-yyyy") + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'> R" + item.Display_Amount + "</td><td class= 'text-center fsp-bdr-bottom px-1'><a href ='https://www.google.com/' target ='_blank'><img class='leftarrowlogo' src='../common/images/leftarrowlogo.png' alt='Left Arrow'></a></td></tr>");
+                            TotalPostedAmount += ((item.TYPE == "Fiduciary_Data") && (item.Prod_Group != "VAT"))?  (Convert.ToDouble(item.Display_Amount)): 0.0;
                         });
-                        pageContent.Replace("{{detailedTransaction}}", detailedTransactionSrc.ToString());
-                        pageContent.Replace("{{TotalPostedAmount}}", TotalPostedAmount.ToString());
-                        pageContent.Replace("{{TotalPostedAmountImgExtLink}}", "www.facebook.com");
-                        pageContent.Replace("{{TotalPostedAmountExtImg}}", "../common/images/leftarrowlogo.png");
-                        pageContent.Replace("{{clickPrintStmtBtnExtImgLink}}", "www.facebook.com");
-                        pageContent.Replace("{{clickPrintStmtBtnImg}}", "../common/images/click-print-stmt-btn.jpg");
+                        string TotalPostedAmountR = (TotalPostedAmount == 0) ? "0" : ("R " + TotalPostedAmount.ToString());
+                        detailedTransactionSrc.Append("<tr> <td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'><br /></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'>R" + TotalPostedAmountR + "</td> <td class='text-center fsp-bdr-bottom px-1'><a href='https://www.google.com/' target = '_blank' ><img src='../common/images/leftarrowlogo.png'></a></td> </tr></table><div class='text-right w-100 pt-3'><a href='https://www.google.com/' target = '_blank'><img src='../common/images/click-print-stmt-btn.jpg'></a></div></div></div></div>");
+                        TotalPostedAmount = 0;
                     });
+                    pageContent.Replace("{{detailedTransaction}}", detailedTransactionSrc.ToString());
                 }
                 else
                 {

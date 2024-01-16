@@ -208,7 +208,7 @@ export class PPSFooter1Component {
                         <a href="#"><img src="././assets/images/IfQueryBtn.jpg"></a>
                     </div>
                     <div class="px-50">
-                        <div class="prouct-table-block pb-4">
+                        <div class="prouct-table-block">
               <table width="100%" cellpadding="0" cellspacing="0">
                   <thead>
                                 <tr>
@@ -300,7 +300,7 @@ export class ProductSummaryComponent {
                 </div>
                 <div class="px-50">
                     <!--table 1 start here-->
-                    <div class="prouct-table-block py-4">
+                    <div class="prouct-table-block">
                         <div class="fsp-transaction-title font-weight-bold mb-3">Intermediary: 124411745 Kruger Van Heerden</div>
                         <table width="100%" cellpadding="0" cellspacing="0">
                             <thead>
@@ -350,7 +350,7 @@ export class ProductSummaryComponent {
 
                     <!--table 2 start here-->
 
-                    <div class="prouct-table-block py-4">
+                    <div class="prouct-table-block">
                         <div class="fsp-transaction-title font-weight-bold mb-3">Intermediary: 2164250 Yvonne Van Heerden</div>
                         <table width="100%" cellpadding="0" cellspacing="0">
                             <thead>
@@ -399,6 +399,11 @@ export class ProductSummaryComponent {
                 </div>
             </div>
         </div>
+<div class="container_area">
+            <div class="click-btn text-center w-100" style="padding-top: 50px;">
+                <a href="#"><img src="assets/images/click-print-stmt-btn.jpg"></a>
+            </div>
+        </div>
     </div>`
 })
 
@@ -406,12 +411,12 @@ export class DetailedTransactionsComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
   public detailedTransactionList: any[] = [
-    { Client_Name: 'Mr SCHOELER', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount:'17.55',Query_Link: "https://facebook.com" },
-    { Client_Name: 'Mr SCHOELER', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee VAT', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '2.63', Query_Link: "https://facebook.com" },
+    { INT_EXT_REF: '2164250', Int_Name: 'Mr SCHOELER', Client_Name: 'Mr SCHOELER', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '17.55', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'Safe Custody Fee' },
+    { INT_EXT_REF: '2164250', Int_Name: 'Yvonne Van Heerden', Client_Name: 'Mr SCHOELER', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee VAT', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '2.63', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'Safe Custody Fee' },
   ]
   public detailedTransactionIntList: any[] = [
-    { Client_Name: 'DR N J Olivier', Member_Ref: '1217181', Policy_Ref: '5524069', Description: 'Safe Custody Service Fee', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '17.55', Query_Link: "https://facebook.com" },
-    { Client_Name: 'DR N J Olivier', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee VAT	', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '2.63', Query_Link: "https://facebook.com" },
+    { INT_EXT_REF: '124411745', Int_Name: 'Kruger Van Heerden', Client_Name: 'DR N J Olivier', Member_Ref: '1217181', Policy_Ref: '5524069', Description: 'Safe Custody Service Fee', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '17.55', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'Safe Custody Fee' },
+    { INT_EXT_REF: '124411745', Int_Name: 'Kruger Van Heerden', Client_Name: 'DR N J Olivier', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee VAT	', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '2.63', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'VAT' },
   ]
 }
 

@@ -184,7 +184,7 @@ namespace nIS
                     invalidSearchParameterException.Data.Add("InvalidPagingParameter", exception.Data);
                 }
 
-                if (invalidSearchParameterException.Data.Count > 0)
+                if (invalidSearchParameterException.Data.Count> 0)
                 {
                     throw invalidSearchParameterException;
                 }
@@ -222,7 +222,7 @@ namespace nIS
                     invalidSearchParameterException.Data.Add("InvalidPagingParameter", exception.Data);
                 }
 
-                if (invalidSearchParameterException.Data.Count > 0)
+                if (invalidSearchParameterException.Data.Count> 0)
                 {
                     throw invalidSearchParameterException;
                 }
@@ -334,9 +334,9 @@ namespace nIS
                 };
                 IList<Page> pages = this.pageRepository.GetPages(pageSearchParameter, tenantCode);
 
-                //var IsInvestmentStatement = pages.Where(it => it.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_ENGLISH || it.PageTypeName == HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_ENGLISH || it.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_AFRICAN || it.PageTypeName == HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_AFRICAN).ToList().Count > 0;
-                //var IsPersonalLoanStatement = pages.Where(it => it.PageTypeName == HtmlConstants.PERSONAL_LOAN_PAGE_TYPE).ToList().Count > 0;
-                //var IsHomeLoanStatement = pages.Where(it => it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE).ToList().Count > 0;
+                //var IsInvestmentStatement = pages.Where(it => it.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_ENGLISH || it.PageTypeName == HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_ENGLISH || it.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE_OTHER_AFRICAN || it.PageTypeName == HtmlConstants.WEALTH_INVESTMENT_PAGE_TYPE_WEALTH_AFRICAN).ToList().Count> 0;
+                //var IsPersonalLoanStatement = pages.Where(it => it.PageTypeName == HtmlConstants.PERSONAL_LOAN_PAGE_TYPE).ToList().Count> 0;
+                //var IsHomeLoanStatement = pages.Where(it => it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_ENG_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_OTHER_SEGMENT_AFR_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_ENG_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_PML_SEGMENT_AFR_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_AFR_PAGE_TYPE || it.PageTypeName == HtmlConstants.HOME_LOAN_FOR_WEA_SEGMENT_ENG_PAGE_TYPE).ToList().Count> 0;
                 var MarketingMessages = string.Empty;
                 //if (IsInvestmentStatement)
                 //{
@@ -360,7 +360,7 @@ namespace nIS
                     var isBackgroundImage = false;
                     var MarketingMessageCounter = 0;
                     htmlString.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
-                    for (int y = 0; y < pages.Count; y++)
+                    for (int y = 0; y <pages.Count; y++)
                     {
                         var page = pages[y];
                         string tabClassName = Regex.Replace(page.DisplayName, @"\s+", "-");
@@ -385,7 +385,7 @@ namespace nIS
                         htmlString.Append(pageHeaderHtml.Replace("{{DivId}}", tabClassName).Replace("{{ExtraClass}}", extraclass));
                         int tempRowWidth = 0;
                         int max = 0;
-                        if (page.PageWidgets.Count > 0)
+                        if (page.PageWidgets.Count> 0)
                         {
                             var completelst = new List<PageWidget>(page.PageWidgets);
                             var dynamicwidgetids = string.Join(", ", completelst.Where(item => item.IsDynamicWidget).ToList().Select(item => item.WidgetId));
@@ -412,14 +412,14 @@ namespace nIS
                             while (completelst.Count != 0)
                             {
                                 var lst = completelst.Where(it => it.Yposition == currentYPosition).ToList();
-                                if (lst.Count > 0)
+                                if (lst.Count> 0)
                                 {
                                     max = max + lst.Max(it => it.Height);
-                                    var _lst = completelst.Where(it => it.Yposition < max && it.Yposition != currentYPosition).ToList();
+                                    var _lst = completelst.Where(it => it.Yposition <max && it.Yposition != currentYPosition).ToList();
                                     var mergedlst = lst.Concat(_lst).OrderBy(it => it.Xposition).ToList();
                                     currentYPosition = max;
 
-                                    for (int i = 0; i < mergedlst.Count; i++)
+                                    for (int i = 0; i <mergedlst.Count; i++)
                                     {
                                         if (tempRowWidth == 0)
                                         {
@@ -432,7 +432,7 @@ namespace nIS
 
                                         // If current col-lg class length is greater than 12, 
                                         //then end parent row class div and then start new row class div
-                                        if (tempRowWidth > 12)
+                                        if (tempRowWidth> 12)
                                         {
                                             tempRowWidth = divLength;
                                             htmlString.Append("</div>");
@@ -441,7 +441,7 @@ namespace nIS
                                         }
 
                                         var PaddingClass = i != 0 ? " pl-0" : string.Empty;
-                                        //if (MarketingMessages.Length > 0 && mergedlst[i].WidgetName == HtmlConstants.SERVICE_WIDGET_NAME)
+                                        //if (MarketingMessages.Length> 0 && mergedlst[i].WidgetName == HtmlConstants.SERVICE_WIDGET_NAME)
                                         //{
                                         //    //to add Nedbank services header... to do-- Create separate static widgets for widget's header label
                                         //    if (MarketingMessageCounter == 0)
@@ -450,7 +450,7 @@ namespace nIS
                                         //    }
                                         //    PaddingClass = MarketingMessageCounter % 2 == 0 ? " pr-1 pl-35px" : " pl-1 pr-35px";
                                         //}
-                                        //else if (MarketingMessages.Length > 0 && mergedlst[i].WidgetName == HtmlConstants.WEALTH_SERVICE_WIDGET_NAME)
+                                        //else if (MarketingMessages.Length> 0 && mergedlst[i].WidgetName == HtmlConstants.WEALTH_SERVICE_WIDGET_NAME)
                                         //{
                                         //    //to add Nedbank services header... to do-- Create separate static widgets for widget's header label
                                         //    if (MarketingMessageCounter == 0)
@@ -596,34 +596,34 @@ namespace nIS
                                             }
                                             else if (mergedlst[i].WidgetName == HtmlConstants.DETAILED_TRANSACTIONS_WIDGET_NAME)
                                             {
-                                                string transactionListJson = "[{INT_EXT_REF: 124411745,Int_Name: 'Mr SCHOELER',Client_Name: 'Kruger Van Heerden', Member_Ref: 124556686, Policy_Ref: 5596100, Description: 'Safe Custody Service Fee', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '17.55',Query_Link: 'https://facebook.com' }, INT_EXT_REF:2164250,Int_Name: 'Yvonne Van Heerden',{ Client_Name: 'Mr SCHOELER', Member_Ref: 124556686, Policy_Ref: '5596100', Description: 'Safe Custody Service Fee VAT', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '2.63', Query_Link: 'https://facebook.com' },{ INT_EXT_REF:124411745,Int_Name: 'Kruger Van Heerden',Client_Name: 'DR N J Olivier', Member_Ref: '1217181', Policy_Ref: '5524069', Description: 'Safe Custody Service Fee', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '17.55', Query_Link: 'https://facebook.com' },{INT_EXT_REF:124411745, Int_Name: 'Kruger Van Heerden',Client_Name: 'DR N J Olivier', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee VAT	', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '2.63', Query_Link: 'https://facebook.com' }]";
+                                                string transactionListJson = "[{'INT_EXT_REF':'2164250','Int_Name':'Mr SCHOELER','Client_Name':'Kruger Van Heerden','Member_Ref':124556686,'Policy_Ref':5596100,'Description':'Safe Custody Service Fee','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'17.55','Query_Link':'https://facebook.com','TYPE':'Fiduciary_Data','Prod_Group':'Safe Custody Fee'},{'INT_EXT_REF':'2164250','Int_Name':'Yvonne Van Heerden','Client_Name':'Mr SCHOELER','Member_Ref':124556686,'Policy_Ref':'5596100','Description':'Safe Custody Service Fee VAT','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'2.63','Query_Link':'https://facebook.com','TYPE':'Fiduciary_Data','Prod_Group':'Safe Custody Fee'},{'INT_EXT_REF':'124411745','Int_Name':'Kruger Van Heerden','Client_Name':'DR N J Olivier','Member_Ref':'1217181','Policy_Ref':'5524069','Description':'Safe Custody Service Fee','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'17.55','Query_Link':'https://facebook.com','TYPE':'Fiduciary_Data','Prod_Group':'Safe Custody Fee'},{'INT_EXT_REF':'124411745','Int_Name':'Kruger Van Heerden','Client_Name':'DR N J Olivier','Member_Ref':'124556686','Policy_Ref':'5596100','Description':'Safe Custody Service Fee VAT','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'2.63','Query_Link':'https://facebook.com','TYPE':'Fiduciary_Data','Prod_Group':'VAT'}]";
                                                 double TotalPostedAmount = 0;
                                                 if (transactionListJson != string.Empty && validationEngine.IsValidJson(transactionListJson))
                                                 {
                                                     IList<spIAA_PaymentDetail> transaction = JsonConvert.DeserializeObject<List<spIAA_PaymentDetail>>(transactionListJson);
-
+                                                    StringBuilder detailedTransactionSrc = new StringBuilder();
                                                     string detailedTransactionString = HtmlConstants.DETAILED_TRANSACTIONS_WIDGET_HTML;
                                                     var records = transaction.GroupBy(gptransactionitem => gptransactionitem.INT_EXT_REF).ToList();
                                                     records?.ForEach(transactionitem =>
                                                     {
-                                                        detailedTransactionString = detailedTransactionString.Replace("{{QueryBtnImgLink}}", "www.facebook.com");
+                                                        detailedTransactionSrc.Append("<div class='px-50'><div class='prouct-table-block'><div class='text-left fsp-transaction-title font-weight-bold mb-3'>Intermediary:  " + transactionitem.FirstOrDefault().INT_EXT_REF+ " "+ transactionitem.FirstOrDefault().Int_Name + "</div><table width='100%' cellpadding='0' cellspacing='0'> <tr><th class='font-weight-bold text-white'>Client name</th> <th class='font-weight-bold text-white text-center pe-0 bdr-r-0'>Member<br /> number</th> <th class='font-weight-bold text-white text-center'>Will<br/> number</th> <th class='font-weight-bold text-white text-center'>Fiduciary fees</th> <th class='font-weight-bold text-white text-center'>Commission<br /> type</th> <th class='font-weight-bold text-white text-center'>Posted date</th> <th class='font-weight-bold text-white text-center'>Posted amount</th> <th class='font-weight-bold text-white'>Query</th> </tr> ");
+                                                        detailedTransactionString = detailedTransactionString.Replace("{{QueryBtnImgLink}}", "https://www.google.com/");
                                                         detailedTransactionString = detailedTransactionString.Replace("{{QueryBtn}}", "assets/images/IfQueryBtn.jpg");
-                                                        detailedTransactionString = detailedTransactionString.Replace("{{ExtRef}}", transactionitem.FirstOrDefault().INT_EXT_REF);
-                                                        detailedTransactionString = detailedTransactionString.Replace("{{ExtName}}", transactionitem.FirstOrDefault().Int_Name);
-                                                        StringBuilder detailedTransactionSrc = new StringBuilder();
+                                             
+
                                                         transaction.Where(witem => witem.INT_EXT_REF == transactionitem.FirstOrDefault().INT_EXT_REF).ToList().ForEach(item =>
-                                                        {
-                                                            detailedTransactionSrc.Append("< tr ><td align = 'center' valign = 'center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" +
-                                                                item.Client_Name + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Member_Ref + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1' > " + item.Policy_Ref + "</td><td class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1' >" + item.Description + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1' >" + item.Commission_Type + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1' >" + item.POSTED_DATE + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'> R" + item.Display_Amount + "</td><td class= 'text-center fsp-bdr-bottom px-1' >< a href = '{{item.Query_Link}}' target = '_blank' >< img class= 'leftarrowlogo' src = 'assets/images/leftarrowlogo.png' alt = 'Left Arrow' ></ a ></td></ tr > ");
-                                                            TotalPostedAmount += (Convert.ToDouble(item.Display_Amount));
-                                                        });
-                                                        detailedTransactionString = detailedTransactionString.Replace("{{detailedTransaction}}", detailedTransactionSrc.ToString());
-                                                        detailedTransactionString = detailedTransactionString.Replace("{{TotalPostedAmount}}", TotalPostedAmount.ToString());
-                                                        detailedTransactionString = detailedTransactionString.Replace("{{TotalPostedAmountImgExtLink}}", "www.facebook.com");
-                                                        detailedTransactionString = detailedTransactionString.Replace("{{TotalPostedAmountExtImg}}", "assets/images/leftarrowlogo.png");
-                                                        detailedTransactionString = detailedTransactionString.Replace("{{clickPrintStmtBtnExtImgLink}}", "www.facebook.com");
-                                                        detailedTransactionString = detailedTransactionString.Replace("{{clickPrintStmtBtnImg}}", "assets/images/click-print-stmt-btn.jpg");
+                                                    {
+                                                        detailedTransactionSrc.Append("<tr><td align = 'center' valign = 'center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" +
+                                                                item.Client_Name + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Member_Ref + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'> " + item.Policy_Ref + "</td><td class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1'>" + (item.Description == "Commission Service Fee" ? "Premium Under Advise Fee" : item.Description)  + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.POSTED_DATE.ToString("dd-MMM-yyyy") + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'> R" + item.Display_Amount + "</td><td class= 'text-center fsp-bdr-bottom px-1'><a href ='https://www.google.com/' target ='_blank'><img class='leftarrowlogo' src='assets/images/leftarrowlogo.png' alt='Left Arrow'></a></td></tr>");
+                                                        TotalPostedAmount += ((item.TYPE == "Fiduciary_Data") && (item.Prod_Group != "VAT"))?  (Convert.ToDouble(item.Display_Amount)): 0.0;
                                                     });
+                                                        string TotalPostedAmountR = (TotalPostedAmount == 0) ? "0" : ("R " + TotalPostedAmount.ToString());
+                                                        detailedTransactionSrc.Append("<tr> <td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'><br /></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'>"+ TotalPostedAmountR + "</td> <td class='text-center fsp-bdr-bottom px-1'><a href='https://www.google.com/' target = '_blank' ><img src='assets/images/leftarrowlogo.png'></a></td> </tr></table><div class='text-right w-100 pt-3'><a href='https://www.google.com/' target = '_blank'><img src='assets/images/click-print-stmt-btn.jpg'></a></div></div></div></div>");
+                                                        TotalPostedAmount = 0;
+
+                                                    });
+                                                    detailedTransactionString = detailedTransactionString.Replace("{{detailedTransaction}}", detailedTransactionSrc.ToString());
+                                                    htmlString.Append(detailedTransactionString);
                                                 }
                                             }
 
@@ -741,7 +741,7 @@ namespace nIS
                                                 if (mergedlst[i].WidgetSetting != string.Empty && validationEngine.IsValidJson(mergedlst[i].WidgetSetting))
                                                 {
                                                     dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
-                                                    if (widgetSetting.html.ToString().Length > 0)
+                                                    if (widgetSetting.html.ToString().Length> 0)
                                                     {
                                                         html = widgetSetting.html;
                                                     }
@@ -764,7 +764,7 @@ namespace nIS
                                                 {
                                                     //dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
                                                     dynamic widgetSetting = JArray.Parse(mergedlst[i].WidgetSetting);
-                                                    if (widgetSetting[0].Html.ToString().Length > 0)
+                                                    if (widgetSetting[0].Html.ToString().Length> 0)
                                                     {
                                                         html = widgetSetting[0].Html; //TODO: ***Deepak: Remove hard coded line
                                                     }
@@ -779,7 +779,7 @@ namespace nIS
                                                 if (accountBalanceDataJson != string.Empty && validationEngine.IsValidJson(accountBalanceDataJson))
                                                 {
                                                     IList<AccountSummary> lstAccountSummary = JsonConvert.DeserializeObject<List<AccountSummary>>(accountBalanceDataJson);
-                                                    if (lstAccountSummary.Count > 0)
+                                                    if (lstAccountSummary.Count> 0)
                                                     {
                                                         StringBuilder accSummary = new StringBuilder();
                                                         lstAccountSummary.ToList().ForEach(acc =>
@@ -882,7 +882,7 @@ namespace nIS
                                                     incomeSources.ToList().ForEach(item =>
                                                     {
                                                         var tdstring = string.Empty;
-                                                        if (Int32.Parse(item.CurrentSpend) > Int32.Parse(item.AverageSpend))
+                                                        if (Int32.Parse(item.CurrentSpend)> Int32.Parse(item.AverageSpend))
                                                         {
                                                             tdstring = "<span class='fa fa-sort-desc fa-2x text-danger' aria-hidden='true'></span><span class='ml-2'>" + item.AverageSpend + "</span>";
                                                         }
@@ -1091,7 +1091,7 @@ namespace nIS
                                             //        //create tab-content div if accounts is greater than 1, otherwise create simple div
                                             //        var TabContentHtml = new StringBuilder();
                                             //        var counter = 0;
-                                            //        TabContentHtml.Append((InvestmentAccountsCount > 1) ? "<div class='tab-content'>" : string.Empty);
+                                            //        TabContentHtml.Append((InvestmentAccountsCount> 1) ? "<div class='tab-content'>" : string.Empty);
                                             //        InvestmentAccounts.ToList().ForEach(acc =>
                                             //        {
                                             //            var InvestmentAccountDetailHtml = new StringBuilder(HtmlConstants.INVESTMENT_ACCOUNT_DETAILS_HTML);
@@ -1135,7 +1135,7 @@ namespace nIS
                                             //            TabContentHtml.Append(InvestmentAccountDetailHtml.ToString());
                                             //            counter++;
                                             //        });
-                                            //        TabContentHtml.Append((InvestmentAccountsCount > 1) ? HtmlConstants.END_DIV_TAG : string.Empty);
+                                            //        TabContentHtml.Append((InvestmentAccountsCount> 1) ? HtmlConstants.END_DIV_TAG : string.Empty);
 
                                             //        InvestmentAccountBreakdownHtml.Replace("{{TabContentsDiv}}", TabContentHtml.ToString());
                                             //        htmlString.Append(InvestmentAccountBreakdownHtml.ToString());
@@ -1158,7 +1158,7 @@ namespace nIS
                                             //        //create tab-content div if accounts is greater than 1, otherwise create simple div
                                             //        var TabContentHtml = new StringBuilder();
                                             //        var counter = 0;
-                                            //        TabContentHtml.Append((InvestmentAccountsCount > 1) ? "<div class='tab-content'>" : string.Empty);
+                                            //        TabContentHtml.Append((InvestmentAccountsCount> 1) ? "<div class='tab-content'>" : string.Empty);
                                             //        InvestmentAccounts.ToList().ForEach(acc =>
                                             //        {
                                             //            var InvestmentAccountDetailHtml = new StringBuilder(HtmlConstants.WEALTH_INVESTMENT_ACCOUNT_DETAILS_HTML);
@@ -1202,7 +1202,7 @@ namespace nIS
                                             //            TabContentHtml.Append(InvestmentAccountDetailHtml.ToString());
                                             //            counter++;
                                             //        });
-                                            //        TabContentHtml.Append((InvestmentAccountsCount > 1) ? HtmlConstants.END_DIV_TAG : string.Empty);
+                                            //        TabContentHtml.Append((InvestmentAccountsCount> 1) ? HtmlConstants.END_DIV_TAG : string.Empty);
 
                                             //        InvestmentAccountBreakdownHtml.Replace("{{TabContentsDiv}}", TabContentHtml.ToString());
                                             //        htmlString.Append(InvestmentAccountBreakdownHtml.ToString());
@@ -1349,7 +1349,7 @@ namespace nIS
                                             //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                             //    {
                                             //        var transactions = JsonConvert.DeserializeObject<List<DM_PersonalLoanTransaction>>(jsonstr);
-                                            //        if (transactions != null && transactions.Count > 0)
+                                            //        if (transactions != null && transactions.Count> 0)
                                             //        {
                                             //            var widgetHtml = new StringBuilder(HtmlConstants.PERSONAL_LOAN_TRANSACTION_HTML);
                                             //            var LoanTransactionRows = new StringBuilder();
@@ -1365,7 +1365,7 @@ namespace nIS
                                             //                var res = 0.0m;
                                             //                if (decimal.TryParse(trans.Debit, out res))
                                             //                {
-                                            //                    tr.Append("<td class='w-12 text-right'> " + (res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
+                                            //                    tr.Append("<td class='w-12 text-right'> " + (res> 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
                                             //                }
                                             //                else
                                             //                {
@@ -1375,7 +1375,7 @@ namespace nIS
                                             //                res = 0.0m;
                                             //                if (decimal.TryParse(trans.Credit, out res))
                                             //                {
-                                            //                    tr.Append("<td class='w-12 text-right'> " + (res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
+                                            //                    tr.Append("<td class='w-12 text-right'> " + (res> 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
                                             //                }
                                             //                else
                                             //                {
@@ -1385,7 +1385,7 @@ namespace nIS
                                             //                res = 0.0m;
                                             //                if (decimal.TryParse(trans.OutstandingCapital, out res))
                                             //                {
-                                            //                    tr.Append("<td class='w-13 text-right'> " + (res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
+                                            //                    tr.Append("<td class='w-13 text-right'> " + (res> 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
                                             //                }
                                             //                else
                                             //                {
@@ -1527,7 +1527,7 @@ namespace nIS
                                             //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                             //    {
                                             //        var PersonalLoans = JsonConvert.DeserializeObject<List<DM_PersonalLoanMaster>>(jsonstr);
-                                            //        if (PersonalLoans != null && PersonalLoans.Count > 0)
+                                            //        if (PersonalLoans != null && PersonalLoans.Count> 0)
                                             //        {
                                             //            var res = 0.0m;
                                             //            try
@@ -1573,15 +1573,15 @@ namespace nIS
                                             //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                             //    {
                                             //        var PersonalLoans = JsonConvert.DeserializeObject<List<DM_PersonalLoanMaster>>(jsonstr);
-                                            //        if (PersonalLoans != null && PersonalLoans.Count > 0)
+                                            //        if (PersonalLoans != null && PersonalLoans.Count> 0)
                                             //        {
                                             //            //create tab-content div if accounts is greater than 1, otherwise create simple div
                                             //            var TabContentHtml = new StringBuilder();
                                             //            var counter = 0;
-                                            //            TabContentHtml.Append((PersonalLoans.Count > 1) ? "<div class='tab-content'>" : string.Empty);
+                                            //            TabContentHtml.Append((PersonalLoans.Count> 1) ? "<div class='tab-content'>" : string.Empty);
                                             //            PersonalLoans.ForEach(PersonalLoan =>
                                             //            {
-                                            //                string lastFourDigisOfAccountNumber = PersonalLoan.InvestorId.ToString().Length > 4 ? PersonalLoan.InvestorId.ToString().Substring(Math.Max(0, PersonalLoan.InvestorId.ToString().Length - 4)) : PersonalLoan.InvestorId.ToString();
+                                            //                string lastFourDigisOfAccountNumber = PersonalLoan.InvestorId.ToString().Length> 4 ? PersonalLoan.InvestorId.ToString().Substring(Math.Max(0, PersonalLoan.InvestorId.ToString().Length - 4)) : PersonalLoan.InvestorId.ToString();
 
                                             //                TabContentHtml.Append("<div id='PersonalLoan-" + lastFourDigisOfAccountNumber + "'>");
 
@@ -1618,7 +1618,7 @@ namespace nIS
 
                                             //                var LoanTransactionRows = new StringBuilder();
                                             //                var tr = new StringBuilder();
-                                            //                if (PersonalLoan.LoanTransactions != null && PersonalLoan.LoanTransactions.Count > 0)
+                                            //                if (PersonalLoan.LoanTransactions != null && PersonalLoan.LoanTransactions.Count> 0)
                                             //                {
                                             //                    var LoanTransactionDetailHtml = new StringBuilder(HtmlConstants.PERSONAL_LOAN_ACCOUNT_TRANSACTION_DETAIL);
                                             //                    PersonalLoan.LoanTransactions.ForEach(trans =>
@@ -1632,7 +1632,7 @@ namespace nIS
                                             //                        res = 0.0m;
                                             //                        if (decimal.TryParse(trans.Debit, out res))
                                             //                        {
-                                            //                            tr.Append("<td class='w-12 text-right'> " + (res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
+                                            //                            tr.Append("<td class='w-12 text-right'> " + (res> 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
                                             //                        }
                                             //                        else
                                             //                        {
@@ -1642,7 +1642,7 @@ namespace nIS
                                             //                        res = 0.0m;
                                             //                        if (decimal.TryParse(trans.Credit, out res))
                                             //                        {
-                                            //                            tr.Append("<td class='w-12 text-right'> " + (res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
+                                            //                            tr.Append("<td class='w-12 text-right'> " + (res> 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
                                             //                        }
                                             //                        else
                                             //                        {
@@ -1652,7 +1652,7 @@ namespace nIS
                                             //                        res = 0.0m;
                                             //                        if (decimal.TryParse(trans.OutstandingCapital, out res))
                                             //                        {
-                                            //                            tr.Append("<td class='w-13 text-right'> " + (res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
+                                            //                            tr.Append("<td class='w-13 text-right'> " + (res> 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
                                             //                        }
                                             //                        else
                                             //                        {
@@ -1727,7 +1727,7 @@ namespace nIS
                                             //                counter++;
                                             //            });
 
-                                            //            TabContentHtml.Append((PersonalLoans.Count > 1) ? HtmlConstants.END_DIV_TAG : string.Empty);
+                                            //            TabContentHtml.Append((PersonalLoans.Count> 1) ? HtmlConstants.END_DIV_TAG : string.Empty);
                                             //            widgetHtml.Replace("{{TabContentsDiv}}", TabContentHtml.ToString());
                                             //            htmlString.Append(widgetHtml.ToString());
                                             //        }
@@ -1743,7 +1743,7 @@ namespace nIS
                                             //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                             //    {
                                             //        var HomeLoans = JsonConvert.DeserializeObject<List<DM_HomeLoanMaster>>(jsonstr);
-                                            //        if (HomeLoans != null && HomeLoans.Count > 0)
+                                            //        if (HomeLoans != null && HomeLoans.Count> 0)
                                             //        {
                                             //            var res = 0.0m;
                                             //            try
@@ -1797,18 +1797,18 @@ namespace nIS
                                             //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                             //    {
                                             //        var HomeLoans = JsonConvert.DeserializeObject<List<DM_HomeLoanMaster>>(jsonstr);
-                                            //        if (HomeLoans != null && HomeLoans.Count > 0)
+                                            //        if (HomeLoans != null && HomeLoans.Count> 0)
                                             //        {
                                             //            //create tab-content div if accounts is greater than 1, otherwise create simple div
                                             //            var TabContentHtml = new StringBuilder();
                                             //            var counter = 0;
-                                            //            TabContentHtml.Append((HomeLoans.Count > 1) ? "<div class='tab-content'>" : string.Empty);
+                                            //            TabContentHtml.Append((HomeLoans.Count> 1) ? "<div class='tab-content'>" : string.Empty);
                                             //            HomeLoans.ForEach(HomeLoan =>
                                             //            {
                                             //                var accNo = HomeLoan.InvestorId.ToString();
-                                            //                string lastFourDigisOfAccountNumber = accNo.Length > 4 ? accNo.Substring(Math.Max(0, accNo.Length - 4)) : accNo;
+                                            //                string lastFourDigisOfAccountNumber = accNo.Length> 4 ? accNo.Substring(Math.Max(0, accNo.Length - 4)) : accNo;
 
-                                            //                TabContentHtml.Append("<div id='HomeLoan-" + lastFourDigisOfAccountNumber + "' >");
+                                            //                TabContentHtml.Append("<div id='HomeLoan-" + lastFourDigisOfAccountNumber + "'>");
 
                                             //                var LoanDetailHtml = new StringBuilder(HtmlConstants.HOME_LOAN_ACCOUNT_DETAIL_DIV_HTML);
                                             //                LoanDetailHtml.Replace("{{BondNumber}}", accNo);
@@ -1817,10 +1817,10 @@ namespace nIS
                                             //                var secDesc1 = string.Empty;
                                             //                var secDesc2 = string.Empty;
                                             //                var secDesc3 = string.Empty;
-                                            //                if (HomeLoan.SecDescription1.Length > 15 || ((HomeLoan.SecDescription1 + " " + HomeLoan.SecDescription2).Length > 25))
+                                            //                if (HomeLoan.SecDescription1.Length> 15 || ((HomeLoan.SecDescription1 + " " + HomeLoan.SecDescription2).Length> 25))
                                             //                {
                                             //                    secDesc1 = HomeLoan.SecDescription1;
-                                            //                    if ((HomeLoan.SecDescription2 + " " + HomeLoan.SecDescription3).Length > 25)
+                                            //                    if ((HomeLoan.SecDescription2 + " " + HomeLoan.SecDescription3).Length> 25)
                                             //                    {
                                             //                        secDesc2 = HomeLoan.SecDescription2;
                                             //                        secDesc3 = HomeLoan.SecDescription3;
@@ -1879,7 +1879,7 @@ namespace nIS
                                             //                var LoanTransactionDetailHtml = new StringBuilder(HtmlConstants.HOME_LOAN_TRANSACTION_DETAIL_DIV_HTML);
 
                                             //                var tr = new StringBuilder();
-                                            //                if (HomeLoan.LoanTransactions != null && HomeLoan.LoanTransactions.Count > 0)
+                                            //                if (HomeLoan.LoanTransactions != null && HomeLoan.LoanTransactions.Count> 0)
                                             //                {
                                             //                    HomeLoan.LoanTransactions.ForEach(trans =>
                                             //                    {
@@ -1892,7 +1892,7 @@ namespace nIS
                                             //                        res = 0.0m;
                                             //                        if (decimal.TryParse(trans.Debit, out res))
                                             //                        {
-                                            //                            tr.Append("<td class='w-12 text-right'> " + (res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
+                                            //                            tr.Append("<td class='w-12 text-right'> " + (res> 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
                                             //                        }
                                             //                        else
                                             //                        {
@@ -1902,7 +1902,7 @@ namespace nIS
                                             //                        res = 0.0m;
                                             //                        if (decimal.TryParse(trans.Credit, out res))
                                             //                        {
-                                            //                            tr.Append("<td class='w-12 text-right'> " + (res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
+                                            //                            tr.Append("<td class='w-12 text-right'> " + (res> 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
                                             //                        }
                                             //                        else
                                             //                        {
@@ -1912,7 +1912,7 @@ namespace nIS
                                             //                        res = 0.0m;
                                             //                        if (decimal.TryParse(trans.RunningBalance, out res))
                                             //                        {
-                                            //                            tr.Append("<td class='w-13 text-right'> " + (res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
+                                            //                            tr.Append("<td class='w-13 text-right'> " + (res> 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
                                             //                        }
                                             //                        else
                                             //                        {
@@ -2018,7 +2018,7 @@ namespace nIS
                                             //                counter++;
                                             //            });
 
-                                            //            TabContentHtml.Append((HomeLoans.Count > 1) ? HtmlConstants.END_DIV_TAG : string.Empty);
+                                            //            TabContentHtml.Append((HomeLoans.Count> 1) ? HtmlConstants.END_DIV_TAG : string.Empty);
                                             //            widgetHtml.Replace("{{TabContentsDiv}}", TabContentHtml.ToString());
                                             //            htmlString.Append(widgetHtml.ToString());
                                             //        }
@@ -2131,7 +2131,7 @@ namespace nIS
                                             //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                             //    {
                                             //        var HomeLoans = JsonConvert.DeserializeObject<List<DM_HomeLoanMaster>>(jsonstr);
-                                            //        if (HomeLoans != null && HomeLoans.Count > 0)
+                                            //        if (HomeLoans != null && HomeLoans.Count> 0)
                                             //        {
                                             //            var res = 0.0m;
                                             //            try
@@ -2185,18 +2185,18 @@ namespace nIS
                                             //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                             //    {
                                             //        var HomeLoans = JsonConvert.DeserializeObject<List<DM_HomeLoanMaster>>(jsonstr);
-                                            //        if (HomeLoans != null && HomeLoans.Count > 0)
+                                            //        if (HomeLoans != null && HomeLoans.Count> 0)
                                             //        {
                                             //            //create tab-content div if accounts is greater than 1, otherwise create simple div
                                             //            var TabContentHtml = new StringBuilder();
                                             //            var counter = 0;
-                                            //            TabContentHtml.Append((HomeLoans.Count > 1) ? "<div class='tab-content'>" : string.Empty);
+                                            //            TabContentHtml.Append((HomeLoans.Count> 1) ? "<div class='tab-content'>" : string.Empty);
                                             //            HomeLoans.ForEach(HomeLoan =>
                                             //            {
                                             //                var accNo = HomeLoan.InvestorId.ToString();
-                                            //                string lastFourDigisOfAccountNumber = accNo.Length > 4 ? accNo.Substring(Math.Max(0, accNo.Length - 4)) : accNo;
+                                            //                string lastFourDigisOfAccountNumber = accNo.Length> 4 ? accNo.Substring(Math.Max(0, accNo.Length - 4)) : accNo;
 
-                                            //                TabContentHtml.Append("<div id='HomeLoan-" + lastFourDigisOfAccountNumber + "' >");
+                                            //                TabContentHtml.Append("<div id='HomeLoan-" + lastFourDigisOfAccountNumber + "'>");
 
                                             //                var LoanDetailHtml = new StringBuilder(HtmlConstants.HOME_LOAN_WEALTH_ACCOUNT_DETAIL_DIV_HTML);
                                             //                LoanDetailHtml.Replace("{{BondNumber}}", accNo);
@@ -2205,10 +2205,10 @@ namespace nIS
                                             //                var secDesc1 = string.Empty;
                                             //                var secDesc2 = string.Empty;
                                             //                var secDesc3 = string.Empty;
-                                            //                if (HomeLoan.SecDescription1.Length > 15 || ((HomeLoan.SecDescription1 + " " + HomeLoan.SecDescription2).Length > 25))
+                                            //                if (HomeLoan.SecDescription1.Length> 15 || ((HomeLoan.SecDescription1 + " " + HomeLoan.SecDescription2).Length> 25))
                                             //                {
                                             //                    secDesc1 = HomeLoan.SecDescription1;
-                                            //                    if ((HomeLoan.SecDescription2 + " " + HomeLoan.SecDescription3).Length > 25)
+                                            //                    if ((HomeLoan.SecDescription2 + " " + HomeLoan.SecDescription3).Length> 25)
                                             //                    {
                                             //                        secDesc2 = HomeLoan.SecDescription2;
                                             //                        secDesc3 = HomeLoan.SecDescription3;
@@ -2267,7 +2267,7 @@ namespace nIS
                                             //                var LoanTransactionDetailHtml = new StringBuilder(HtmlConstants.HOME_LOAN_TRANSACTION_DETAIL_DIV_HTML);
 
                                             //                var tr = new StringBuilder();
-                                            //                if (HomeLoan.LoanTransactions != null && HomeLoan.LoanTransactions.Count > 0)
+                                            //                if (HomeLoan.LoanTransactions != null && HomeLoan.LoanTransactions.Count> 0)
                                             //                {
                                             //                    HomeLoan.LoanTransactions.ForEach(trans =>
                                             //                    {
@@ -2280,7 +2280,7 @@ namespace nIS
                                             //                        res = 0.0m;
                                             //                        if (decimal.TryParse(trans.Debit, out res))
                                             //                        {
-                                            //                            tr.Append("<td class='w-12 text-right'> " + (res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
+                                            //                            tr.Append("<td class='w-12 text-right'> " + (res> 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
                                             //                        }
                                             //                        else
                                             //                        {
@@ -2290,7 +2290,7 @@ namespace nIS
                                             //                        res = 0.0m;
                                             //                        if (decimal.TryParse(trans.Credit, out res))
                                             //                        {
-                                            //                            tr.Append("<td class='w-12 text-right'> " + (res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
+                                            //                            tr.Append("<td class='w-12 text-right'> " + (res> 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
                                             //                        }
                                             //                        else
                                             //                        {
@@ -2300,7 +2300,7 @@ namespace nIS
                                             //                        res = 0.0m;
                                             //                        if (decimal.TryParse(trans.RunningBalance, out res))
                                             //                        {
-                                            //                            tr.Append("<td class='w-13 text-right'> " + (res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
+                                            //                            tr.Append("<td class='w-13 text-right'> " + (res> 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
                                             //                        }
                                             //                        else
                                             //                        {
@@ -2406,7 +2406,7 @@ namespace nIS
                                             //                counter++;
                                             //            });
 
-                                            //            TabContentHtml.Append((HomeLoans.Count > 1) ? HtmlConstants.END_DIV_TAG : string.Empty);
+                                            //            TabContentHtml.Append((HomeLoans.Count> 1) ? HtmlConstants.END_DIV_TAG : string.Empty);
                                             //            widgetHtml.Replace("{{TabContentsDiv}}", TabContentHtml.ToString());
                                             //            htmlString.Append(widgetHtml.ToString());
                                             //        }
@@ -2571,7 +2571,7 @@ namespace nIS
                                             //    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                             //    {
                                             //        var _lstAccounts = JsonConvert.DeserializeObject<List<DM_CustomerAccountSummary>>(jsonstr);
-                                            //        if (_lstAccounts.Count > 0)
+                                            //        if (_lstAccounts.Count> 0)
                                             //        {
                                             //            var accountSummaryRows = new StringBuilder();
                                             //            _lstAccounts.ForEach(acc =>
@@ -2735,7 +2735,7 @@ namespace nIS
                                             //    {
                                             //        var mcaTransaction = JsonConvert.DeserializeObject<List<DM_MCATransaction>>(jsonstr);
                                             //        StringBuilder rowsHTML = new StringBuilder();
-                                            //        if (mcaTransaction.Count > 0)
+                                            //        if (mcaTransaction.Count> 0)
                                             //        {
                                             //            var trans = mcaTransaction[0];
                                             //            rowsHTML.Append("<tr class='ht-20'>" +
@@ -2822,7 +2822,7 @@ namespace nIS
                                             //    {
                                             //        var mcaTransaction = JsonConvert.DeserializeObject<List<DM_MCATransaction>>(jsonstr);
                                             //        StringBuilder rowsHTML = new StringBuilder();
-                                            //        if (mcaTransaction.Count > 0)
+                                            //        if (mcaTransaction.Count> 0)
                                             //        {
                                             //            var trans = mcaTransaction[0];
                                             //            rowsHTML.Append("<tr class='ht-20'>" +
@@ -2924,7 +2924,7 @@ namespace nIS
                                             //    {
                                             //        var mcaTransaction = JsonConvert.DeserializeObject<List<DM_MCATransaction>>(jsonstr);
                                             //        StringBuilder rowsHTML = new StringBuilder();
-                                            //        if (mcaTransaction.Count > 0)
+                                            //        if (mcaTransaction.Count> 0)
                                             //        {
                                             //            var trans = mcaTransaction[0];
                                             //            rowsHTML.Append("<tr class='ht-20'>" +
@@ -3046,10 +3046,10 @@ namespace nIS
                                             //    StringBuilder tableHTML = new StringBuilder();
                                             //    StringBuilder tableHTML2 = new StringBuilder();
 
-                                            //    tableHTML.Append("<div class='CSTotalAmountDetailsDiv' style='height: 40px !important; text-align: center; padding: 6px !important;'><span class='fnt-14pt'> Current investment details </span ></div>");
+                                            //    tableHTML.Append("<div class='CSTotalAmountDetailsDiv' style='height: 40px !important; text-align: center; padding: 6px !important;'><span class='fnt-14pt'> Current investment details </span></div>");
 
 
-                                            //    tableHTML.Append("<table class= 'CScustomTable HomeLoanDetailDiv' border = '0' style = 'height: auto;margin-bottom:2%;' ><tbody>");
+                                            //    tableHTML.Append("<table class= 'CScustomTable HomeLoanDetailDiv' border = '0' style = 'height: auto;margin-bottom:2%;'><tbody>");
                                             //    tableHTML.Append("<tr><td colspan='2' class='w-25' style='font-weight: bold;padding-bottom: 8px !important;padding-top: 8px !important;'>Call account @ 2,30% per annum</td></tr>");
                                             //    tableHTML.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Interest instruction</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'>Capitalised</td><td class='w-25' style='padding-bottom: 8px !important'>Date Invested</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>08-10-2006</td></tr>");
                                             //    tableHTML.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Capital</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'>R89 030.44 </td><td class='w-25' style='padding-bottom: 8px !important'>Agent fee deducted</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>R59.17 </td></tr>");
@@ -3076,10 +3076,10 @@ namespace nIS
 
 
 
-                                            //    tableHTML2.Append("<div class='CSTotalAmountDetailsDiv' style='height: 40px !important; text-align: center; padding: 6px !important;'><span class='fnt-14pt'>Matured investment details</span ></div>");
+                                            //    tableHTML2.Append("<div class='CSTotalAmountDetailsDiv' style='height: 40px !important; text-align: center; padding: 6px !important;'><span class='fnt-14pt'>Matured investment details</span></div>");
 
 
-                                            //    tableHTML2.Append("<table class= 'CScustomTable HomeLoanDetailDiv' border = '0' style = 'height: auto;margin-bottom:2%;' ><tbody>");
+                                            //    tableHTML2.Append("<table class= 'CScustomTable HomeLoanDetailDiv' border = '0' style = 'height: auto;margin-bottom:2%;'><tbody>");
                                             //    tableHTML2.Append("<tr><td colspan='2' class='w-25' style='font-weight: bold;padding-bottom: 8px !important;padding-top: 8px !important;'>10 month fixed deposit @ 3,91% per annum</td></tr>");
                                             //    tableHTML2.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Interest instruction</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'> Capitalised</td><td class='w-25' style='padding-bottom: 8px !important'>Date Invested</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>03-05-2021</td></tr>");
                                             //    tableHTML2.Append("<tr><td class='w-25' style='padding-bottom: 8px !important'>Capital</td><td class='w-25 text-right' style='padding-bottom: 8px !important;padding-right: 15px;'>R861 100.49</td><td class='w-25' style='padding-bottom: 8px !important'>Agent fee deducted</td><td class='w-25 text-right pr-1' style='padding-bottom: 8px !important'>R477.73</td></tr>");
@@ -3128,7 +3128,7 @@ namespace nIS
                                             //    {
                                             //        var mcaTransaction = JsonConvert.DeserializeObject<List<DM_MCATransaction>>(jsonstr);
                                             //        StringBuilder rowsHTML = new StringBuilder();
-                                            //        if (mcaTransaction.Count > 0)
+                                            //        if (mcaTransaction.Count> 0)
                                             //        {
                                             //            var trans = mcaTransaction[0];
                                             //            rowsHTML.Append("<tr class='ht-20'>" +
@@ -3174,7 +3174,7 @@ namespace nIS
                                         }
                                         else
                                         {
-                                            if (dynaWidgets.Count > 0)
+                                            if (dynaWidgets.Count> 0)
                                             {
                                                 var dynawidget = dynaWidgets.Where(item => item.Identifier == mergedlst[i].WidgetId).ToList().FirstOrDefault();
                                                 TenantEntity entity = new TenantEntity();
@@ -3350,17 +3350,17 @@ namespace nIS
                     }
                     htmlString.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
 
-                    if (linegraphIds.Count > 0)
+                    if (linegraphIds.Count> 0)
                     {
                         var ids = string.Join(",", linegraphIds.Select(item => item).ToList());
                         htmlString.Append("<input type = 'hidden' id = 'hiddenLineChartIds' value = '" + ids + "'>");
                     }
-                    if (bargraphIds.Count > 0)
+                    if (bargraphIds.Count> 0)
                     {
                         var ids = string.Join(",", bargraphIds.Select(item => item).ToList());
                         htmlString.Append("<input type = 'hidden' id = 'hiddenBarChartIds' value = '" + ids + "'>");
                     }
-                    if (piechartIds.Count > 0)
+                    if (piechartIds.Count> 0)
                     {
                         var ids = string.Join(",", piechartIds.Select(item => item).ToList());
                         htmlString.Append("<input type = 'hidden' id = 'hiddenPieChartIds' value = '" + ids + "'>");
@@ -3451,7 +3451,7 @@ namespace nIS
                     }
                 });
 
-                if (invalidpageException.Data.Count > 0)
+                if (invalidpageException.Data.Count> 0)
                 {
                     throw invalidpageException;
                 }
@@ -3471,8 +3471,8 @@ namespace nIS
         {
             try
             {
-                int isDuplicatePage = pages.GroupBy(p => p.DisplayName).Where(g => g.Count() > 1).Count();
-                if (isDuplicatePage > 0)
+                int isDuplicatePage = pages.GroupBy(p => p.DisplayName).Where(g => g.Count()> 1).Count();
+                if (isDuplicatePage> 0)
                 {
                     throw new DuplicatePageFoundException(tenantCode);
                 }
@@ -3579,7 +3579,7 @@ namespace nIS
 
             // Create an ordinal suffix (e.g., "st", "nd", "rd", "th")
             string ordinalSuffix;
-            if (day % 100 >= 11 && day % 100 <= 13)
+            if (day % 100>= 11 && day % 100 <= 13)
             {
                 ordinalSuffix = "th";
             }
