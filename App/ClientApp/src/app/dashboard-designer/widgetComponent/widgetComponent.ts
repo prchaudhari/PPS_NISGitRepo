@@ -524,7 +524,7 @@ export class AccountInformationComponent {
                         </li>
                         <li>
                             <dd>E:</dd>
-                            <dt class="text-gray">y.vanheerden@google.com</dt>
+                            <dt class="text-gray1">y.vanheerden@google.com</dt>
                         </li>
                         <li>
                             <dd>A:</dd>
