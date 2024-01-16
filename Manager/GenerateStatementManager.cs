@@ -1088,7 +1088,8 @@ namespace nIS
             bool IsFailed = false;
             bool IsSavingOrCurrentAccountPagePresent = false;
             var statementMetadataRecords = new List<StatementMetadata>();
-
+            DateTime DateFrom = new DateTime(2023, 01, 01);
+            DateTime DateTo = new DateTime(2023, 09, 01);
             try
             {
                 var customer = statementRawData.Customer;
@@ -1100,6 +1101,7 @@ namespace nIS
                     string currency = string.Empty;
                     var accountrecords = new List<AccountMaster>();
                     var fspDetails = new List<spIAA_PaymentDetail>();
+                    var ppsDetails = new List<spIAA_Commission_Detail>();
                     var savingaccountrecords = new List<AccountMaster>();
                     var curerntaccountrecords = new List<AccountMaster>();
                     var CustomerAcccountTransactions = new List<AccountTransaction>();
@@ -1111,6 +1113,7 @@ namespace nIS
 
 
                     fspDetails = this.tenantTransactionDataRepository.Get_PPSDetails(tenantCode)?.ToList();
+                    ppsDetails = this.tenantTransactionDataRepository.Get_PPSDetails1(tenantCode)?.ToList();
                     //collecting all required transaction required for static widgets in financial tenant html statement
                     if (IsSavingOrCurrentAccountPagePresent)
                     {
@@ -1318,15 +1321,15 @@ namespace nIS
                                         case HtmlConstants.FOOTER_IMAGE_WIDGET_NAME:
                                             this.BindFooterImageWidgetData(pageContent, customer, statement, page, widget, customerMedias, fspDetails, statementRawData.BatchDetails);
                                             break;
+                                        case HtmlConstants.PPS_DETAILS1_WIDGET_NAME:
+                                            this.BindPpsDetails1WidgetData(pageContent, customer, statement, page, widget, customerMedias, ppsDetails, statementRawData.BatchDetails);
+                                            break;
                                         case HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME:
                                             this.BindAccountInformationWidgetData(pageContent, customer, page, widget);
                                             break;
                                         case HtmlConstants.IMAGE_WIDGET_NAME:
                                             IsFailed = this.BindImageWidgetData(pageContent, ErrorMessages, customer.Identifier, customerMedias, statementRawData.BatchDetails, statement, page, batchMaster, widget, tenantCode, statementRawData.OutputLocation);
-                                            break;
-                                        case HtmlConstants.PPS_DETAILS1_WIDGET_NAME:
-                                            this.BindPpsDetailsWidgetData(pageContent, customer, statement, page, widget, customerMedias, fspDetails, statementRawData.BatchDetails);
-                                            break;
+                                            break;                                       
                                         case HtmlConstants.VIDEO_WIDGET_NAME:
                                             IsFailed = this.BindVideoWidgetData(pageContent, ErrorMessages, customer.Identifier, customerMedias, statementRawData.BatchDetails, statement, page, batchMaster, widget, tenantCode, statementRawData.OutputLocation);
                                             break;
@@ -2375,7 +2378,8 @@ namespace nIS
             pageContent.Replace("{{VATRegNumber}}", fspDetails.FirstOrDefault().FSP_VAT_Number);
         }
 
-        private void BindPpsFooter1WidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<spIAA_PaymentDetail> fspDetails, IList<BatchDetail> batchDetails)
+        private void BindPpsFooter1WidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, 
+            IList<spIAA_PaymentDetail> fspDetails, IList<BatchDetail> batchDetails)
         {
             string middleText = "PPS Insurance is a registered Insurer and FSP";
             string pageText = "Page 1/2";
@@ -2405,12 +2409,14 @@ namespace nIS
         }
 
 
-        private void BindPpsDetails1WidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<spIAA_PaymentDetail> ppsDetails1, IList<BatchDetail> batchDetails)
+        private void BindPpsDetails1WidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<spIAA_Commission_Detail> ppsDetails1, IList<BatchDetail> batchDetails)
         {
+            DateTime DateFrom = new DateTime(2023, 01, 01);
+            DateTime DateTo = new DateTime(2023, 09, 01);
             pageContent.Replace("{{ref}}", ppsDetails1.FirstOrDefault().INT_EXT_REF);
-            pageContent.Replace("{{mtype}}", ppsDetails1.FirstOrDefault().FSP_REF);
-            pageContent.Replace("{{month}}", ppsDetails1.FirstOrDefault().Months_In_Force);
-            pageContent.Replace("{{date}}", ppsDetails1.FirstOrDefault().END_DATE);
+            pageContent.Replace("{{mtype}}", ppsDetails1.FirstOrDefault().MeasureType);
+            pageContent.Replace("{{month}}", DateFrom.ToString("MMMM yyyy"));         
+            pageContent.Replace("{{date}}", DateFrom.ToString() + " To " + DateTo.ToString());
         }
 
         private bool BindSummaryAtGlanceWidgetData(StringBuilder pageContent, StringBuilder ErrorMessages, IList<AccountMaster> accountrecords, Page page, PageWidget widget)

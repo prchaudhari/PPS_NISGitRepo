@@ -531,7 +531,7 @@ namespace nIS
                                                                 pageHtmlContent.Append(this.FooterImageWidgetFormatting(pageWidget, counter, statement, page, divHeight));
                                                                 break;
                                                             case HtmlConstants.PPS_DETAILS1_WIDGET_NAME:
-                                                                pageHtmlContent.Append(this.PpsDetailsWidgetFormatting(pageWidget, counter, statement, page, divHeight));
+                                                                pageHtmlContent.Append(this.PpsDetails1WidgetFormatting(pageWidget, counter, statement, page, divHeight));
                                                                 break;
                                                             case HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME:
                                                                 pageHtmlContent.Append(this.AccountInformationWidgetFormatting(pageWidget, counter, statement, page, divHeight));
@@ -1362,7 +1362,7 @@ namespace nIS
                                     break;
 
                                 case HtmlConstants.PPS_DETAILS1_WIDGET_NAME:
-                                    this.BindDummyDataToPpsDetailsWidget(pageContent, statement, page, widget, AppBaseDirectory);
+                                    this.BindDummyDataToPpsDetails1Widget(pageContent, statement, page, widget, AppBaseDirectory);
                                     break;
 
                                 case HtmlConstants.VIDEO_WIDGET_NAME:
@@ -2372,16 +2372,19 @@ namespace nIS
                                                 }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.PPS_DETAILS1_WIDGET_NAME)
                                                 {
-                                                    string ppsDetails1InfoJson = "{Reg_ID : 1,Start_Date : '2023-01-01',End_Date : '2023-01-01',Request_DateTime : 'DummyText1',ID : '124529534',Intermediary_Code : 'DummyText1',FSP_ID : 'DummyText1',Policy_Number : 'DummyText1',FSP_Party_ID : 'DummyText1',Client_Number : '124556686',FSP_REF : '2452953',Client_Name : 'Mr SCHOELER',Int_ID : 'DummyText1',Product_Type : 'DummyText1',Commission_Amount : 'DummyText1',INT_EXT_REF : '124411745',Int_Name : 'Kruger Van Heerden',Int_Type : 'DummyText1',Policy_Ref : '5596100',Member_Ref : '124556686',Member_Name : 'DummyText1',Transaction_Amount : 'DummyText1',Mem_Age : 'DummyText1',Months_In_Force : 'DummyText1',Commission_Type : 'Safe Custody Fee',Description : 'Safe Custody Service Fee',POSTED_DATE : '2023-03-03',AE_Type_ID : 'DummyText1',AE_Amount : 'DummyText1',DR_CR : 'DummyText1',NAME : 'DummyText1',Member_Surname : 'DummyText1',Jurisdiction : 'DummyText1',Sales_Office : 'DummyText1',FSP_Name : 'Miss Yvonne van Heerden',FSP_Trading_Name : 'T/A Yvonne Van Heerden Financial Planner CC',FSP_Ext_Ref : '124529534',FSP_Kind : 'DummyText1',  		FSP_VAT_Number : '2452953',Product : 'DummyText1',Prod_Group : 'Service Fee',Prod_Seq : 'DummyText1',Report_Seq : 'DummyText1',TYPE : 'DummyText1',Display_Amount : '17.55',VAT_Amount : '38001.27',Earning_Amount : '256670.66',Payment_Amount : 'DummyText1',START_DATE : 'DummyText1',END_DATE : 'DummyText1',Business_Type : 'DummyText1',Lifecycle_Description : 'DummyText1',Lifecycle_Start_Date : 'DummyText1',AE_Scheduler_ID : 'DummyText1',VAT_Amount_1 : 'DummyText1',Final_Amount : 'DummyText1'}";
+                                                    DateTime DateFrom = new DateTime(2023, 01, 01);
+                                                    DateTime DateTo = new DateTime(2023, 09, 01);
+                                                    string ppsDetails1InfoJson = "{Request_ID : 1,          AE_TYPE_ID : '20', 		INT_EXT_REF : '124529534', 		POLICY_REF : 'October', 		MEMBER_REF : 'Payment Details', 		Member_Name : 'DummyText1', 		BUS_GROUP : 'SERVICE FEES', 		PRODUCT_DESCRIPTION : 'Professional Health Provider Whole Life Professional Health', 		OID : 'DummyText1', 		MeasureType : 'Commission', 		CommissionType : '2nd Year', 		TRANSACTION_AMOUNT : 65566.20, 		ALLOCATED_AMOUNT : 65566.20, 		MEMBER_AGE : 'DummyText1', 		MONTHS_IN_FORCE : 'DummyText1', 		REQUEST_DATETIME : @DateFrom, 		REQUESTED_DATETIME : @AEPostedDate, 		AE_agmt_id : 'DummyText1', 		AE_agmt_type_id : '5596100', 		AE_Posted_Date : @AEPostedDate, 		AE_Amount : '65 566.20', 		Acc_Name : 'DummyText1', 		FSP_Name : 'Miss HW HLONGWANE', 		DUE_DATE : @AEDueDate, 		YEAR_START_DATE : @DateFrom, 		YEAR_END_DATE : @DateTo, 		Type : 'DummyText1', 		Req_Year : @DateFrom, 		FutureEndDate : @DateFrom, 			Calc1stYear : 10000, 		Calc2ndYear : 20000, 		MonthRange : 'DummyText1',		 		calcMain2ndYear : 30000}";
                                                     if (ppsDetails1InfoJson != string.Empty && validationEngine.IsValidJson(ppsDetails1InfoJson))
                                                     {
-                                                        spIAA_PaymentDetail ppsDetails1Info = JsonConvert.DeserializeObject<spIAA_PaymentDetail>(ppsDetails1InfoJson);
-                                                        var ppsDetails1HtmlWidget = HtmlConstants.PPS_DETAILS_WIDGET_HTML;
+                                                        spIAA_Commission_Detail ppsDetails1Info = JsonConvert.DeserializeObject<spIAA_Commission_Detail>(ppsDetails1InfoJson);
+                                                        var ppsDetails1HtmlWidget = HtmlConstants.PPS_DETAILS1_WIDGET_HTML;
                                                         ppsDetails1HtmlWidget = ppsDetails1HtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
 
                                                         ppsDetails1HtmlWidget = ppsDetails1HtmlWidget.Replace("{{ref}}", ppsDetails1Info.INT_EXT_REF);
-                                                        ppsDetails1HtmlWidget = ppsDetails1HtmlWidget.Replace("{{mtype}}", ppsDetails1Info.FSP_REF);
-                                                        ppsDetails1HtmlWidget = ppsDetails1HtmlWidget.Replace("{{month}}", ppsDetails1Info.Months_In_Force);
+                                                        ppsDetails1HtmlWidget = ppsDetails1HtmlWidget.Replace("{{mtype}}", ppsDetails1Info.MeasureType);
+                                                        ppsDetails1HtmlWidget = ppsDetails1HtmlWidget.Replace("{{month}}", DateFrom.ToString("MMMM yyyy"));
+                                                        ppsDetails1HtmlWidget = ppsDetails1HtmlWidget.Replace("{{paramDate}}", DateFrom.ToString() + " To " + DateTo.ToString());
                                                       
 
                                                         htmlString.Append(ppsDetails1HtmlWidget);
@@ -6875,14 +6878,16 @@ namespace nIS
 
         private void BindDummyDataToPpsDetails1Widget(StringBuilder pageContent, Statement statement, Page page, PageWidget widget, string AppBaseDirectory)
         {
-            var ppsDetails1InfoJson = "{Reg_ID : 1,Start_Date : '2023-01-01',End_Date : '2023-01-01',Request_DateTime : 'DummyText1',ID : '124529534',Intermediary_Code : 'DummyText1',FSP_ID : 'DummyText1',Policy_Number : 'DummyText1',FSP_Party_ID : 'DummyText1',Client_Number : '124556686',FSP_REF : '2452953',Client_Name : 'Mr SCHOELER',Int_ID : 'DummyText1',Product_Type : 'DummyText1',Commission_Amount : 'DummyText1',INT_EXT_REF : '124411745',Int_Name : 'Kruger Van Heerden',Int_Type : 'DummyText1',Policy_Ref : '5596100',Member_Ref : '124556686',Member_Name : 'DummyText1',Transaction_Amount : 'DummyText1',Mem_Age : 'DummyText1',Months_In_Force : 'DummyText1',Commission_Type : 'Safe Custody Fee',Description : 'Safe Custody Service Fee',POSTED_DATE : '2023-03-03',AE_Type_ID : 'DummyText1',AE_Amount : 'DummyText1',DR_CR : 'DummyText1',NAME : 'DummyText1',Member_Surname : 'DummyText1',Jurisdiction : 'DummyText1',Sales_Office : 'DummyText1',FSP_Name : 'Miss Yvonne van Heerden',FSP_Trading_Name : 'T/A Yvonne Van Heerden Financial Planner CC',FSP_Ext_Ref : '124529534',FSP_Kind : 'DummyText1',  		FSP_VAT_Number : '2452953',Product : 'DummyText1',Prod_Group : 'Service Fee',Prod_Seq : 'DummyText1',Report_Seq : 'DummyText1',TYPE : 'DummyText1',Display_Amount : '17.55',VAT_Amount : '38001.27',Earning_Amount : '256670.66',Payment_Amount : 'DummyText1',START_DATE : 'DummyText1',END_DATE : 'DummyText1',Business_Type : 'DummyText1',Lifecycle_Description : 'DummyText1',Lifecycle_Start_Date : 'DummyText1',AE_Scheduler_ID : 'DummyText1',VAT_Amount_1 : 'DummyText1',Final_Amount : 'DummyText1'}";
+            DateTime DateFrom = new DateTime(2023, 01, 01);
+            DateTime DateTo = new DateTime(2023, 09, 01);
+            var ppsDetails1InfoJson = "{Request_ID : 1,          AE_TYPE_ID : '20', 		INT_EXT_REF : '124529534', 		POLICY_REF : 'October', 		MEMBER_REF : 'Payment Details', 		Member_Name : 'DummyText1', 		BUS_GROUP : 'SERVICE FEES', 		PRODUCT_DESCRIPTION : 'Professional Health Provider Whole Life Professional Health', 		OID : 'DummyText1', 		MeasureType : 'Commission', 		CommissionType : '2nd Year', 		TRANSACTION_AMOUNT : 65566.20, 		ALLOCATED_AMOUNT : 65566.20, 		MEMBER_AGE : 'DummyText1', 		MONTHS_IN_FORCE : 'DummyText1', 		REQUEST_DATETIME : @DateFrom, 		REQUESTED_DATETIME : @AEPostedDate, 		AE_agmt_id : 'DummyText1', 		AE_agmt_type_id : '5596100', 		AE_Posted_Date : @AEPostedDate, 		AE_Amount : '65 566.20', 		Acc_Name : 'DummyText1', 		FSP_Name : 'Miss HW HLONGWANE', 		DUE_DATE : @AEDueDate, 		YEAR_START_DATE : @DateFrom, 		YEAR_END_DATE : @DateTo, 		Type : 'DummyText1', 		Req_Year : @DateFrom, 		FutureEndDate : @DateFrom, 			Calc1stYear : 10000, 		Calc2ndYear : 20000, 		MonthRange : 'DummyText1',		 		calcMain2ndYear : 30000}";
             if (ppsDetails1InfoJson != string.Empty && validationEngine.IsValidJson(ppsDetails1InfoJson))
             {
-                var ppsDetails1Info = JsonConvert.DeserializeObject<spIAA_PaymentDetail>(ppsDetails1InfoJson);
+                var ppsDetails1Info = JsonConvert.DeserializeObject<spIAA_Commission_Detail>(ppsDetails1InfoJson);
                 pageContent.Replace("{{ref}}", ppsDetails1Info.INT_EXT_REF);
-                pageContent.Replace("{{mtype}}", ppsDetails1Info.FSP_REF);
-                pageContent.Replace("{{month}}", ppsDetails1Info.Months_In_Force);
-                pageContent.Replace("{{month}}", ppsDetails1Info.END_DATE);
+                pageContent.Replace("{{mtype}}", ppsDetails1Info.MeasureType);
+                pageContent.Replace("{{month}}", DateFrom.ToString("MMMM yyyy"));                
+                pageContent.Replace("{{paramDate}}", DateFrom.ToString()+ " To "+ DateTo.ToString()) ;
 
                
             }
