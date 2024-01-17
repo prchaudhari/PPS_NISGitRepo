@@ -515,6 +515,9 @@ namespace nIS
                                         case HtmlConstants.IMAGE_WIDGET_NAME:
                                             this.BindImageWidgetData(pageContent, customer.Identifier, customerMedias, BatchDetails, statement, page, batchMaster, widget, tenantCode, outputLocation);
                                             break;
+                                        case HtmlConstants.PPS_DETAILS1_WIDGET_NAME:
+                                            this.BindPpsDetails1WidgetData(pageContent, customer, statement, page, widget, customerMedias, BatchDetails, accountrecords);
+                                            break;
                                         case HtmlConstants.VIDEO_WIDGET_NAME:
                                             this.BindVideoWidgetData(pageContent, customer.Identifier, customerMedias, BatchDetails, statement, page, batchMaster, widget, tenantCode, outputLocation);
                                             break;
@@ -1280,6 +1283,13 @@ namespace nIS
         }
 
 
+        private void BindPpsDetails1WidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<BatchDetail> batchDetails, IList<AccountMaster> accountrecords)
+        {
+            //pageContent.Replace("{{IntTotal}}", accountrecords.First().GrandTotal);
+            //pageContent.Replace("{{Vat}}", accountrecords.First().FeesPaid);
+            //pageContent.Replace("{{TotalDue}}", (Convert.ToDouble(accountrecords.First().GrandTotal) +
+            //    Convert.ToDouble(accountrecords.First().FeesPaid)).ToString());
+        }
         private void BindAccountInformationWidgetData(StringBuilder pageContent, CustomerMaster customer, Page page, PageWidget widget)
         {
             var AccDivData = new StringBuilder();
@@ -1333,7 +1343,7 @@ namespace nIS
                 pageContent.Replace("{{GrandTotalDue}}", "R" + grandTotalDueStr);
                 double ppsPayment = grandTotalDue;
                 pageContent.Replace("{{PPSPayment}}", "-R" + grandTotalDueStr);
-                String Balance = Convert.ToDouble((grandTotalDue - ppsPayment)).ToString().Replace(',', '.');
+                String Balance = Convert.ToDouble((grandTotalDue - ppsPayment)).ToString("F2").Replace(',', '.');
                 pageContent.Replace("{{Balance}}", "R" + Balance);
             }
             }

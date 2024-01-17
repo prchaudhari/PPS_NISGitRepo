@@ -1088,7 +1088,8 @@ namespace nIS
             bool IsFailed = false;
             bool IsSavingOrCurrentAccountPagePresent = false;
             var statementMetadataRecords = new List<StatementMetadata>();
-
+            DateTime DateFrom = new DateTime(2023, 01, 01);
+            DateTime DateTo = new DateTime(2023, 09, 01);
             try
             {
                 var customer = statementRawData.Customer;
@@ -1100,6 +1101,7 @@ namespace nIS
                     string currency = string.Empty;
                     var accountrecords = new List<AccountMaster>();
                     var fspDetails = new List<spIAA_PaymentDetail>();
+                    var ppsDetails = new List<spIAA_Commission_Detail>();
                     var savingaccountrecords = new List<AccountMaster>();
                     var curerntaccountrecords = new List<AccountMaster>();
                     var CustomerAcccountTransactions = new List<AccountTransaction>();
@@ -1111,6 +1113,7 @@ namespace nIS
 
 
                     fspDetails = this.tenantTransactionDataRepository.Get_PPSDetails(tenantCode)?.ToList();
+                    ppsDetails = this.tenantTransactionDataRepository.Get_PPSDetails1(tenantCode)?.ToList();
                     //collecting all required transaction required for static widgets in financial tenant html statement
                     if (IsSavingOrCurrentAccountPagePresent)
                     {
@@ -1318,12 +1321,15 @@ namespace nIS
                                         case HtmlConstants.FOOTER_IMAGE_WIDGET_NAME:
                                             this.BindFooterImageWidgetData(pageContent, customer, statement, page, widget, customerMedias, fspDetails, statementRawData.BatchDetails);
                                             break;
+                                        case HtmlConstants.PPS_DETAILS1_WIDGET_NAME:
+                                            this.BindPpsDetails1WidgetData(pageContent, customer, statement, page, widget, customerMedias, ppsDetails, statementRawData.BatchDetails);
+                                            break;
                                         case HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME:
                                             this.BindAccountInformationWidgetData(pageContent, customer, page, widget);
                                             break;
                                         case HtmlConstants.IMAGE_WIDGET_NAME:
                                             IsFailed = this.BindImageWidgetData(pageContent, ErrorMessages, customer.Identifier, customerMedias, statementRawData.BatchDetails, statement, page, batchMaster, widget, tenantCode, statementRawData.OutputLocation);
-                                            break;
+                                            break;                                       
                                         case HtmlConstants.VIDEO_WIDGET_NAME:
                                             IsFailed = this.BindVideoWidgetData(pageContent, ErrorMessages, customer.Identifier, customerMedias, statementRawData.BatchDetails, statement, page, batchMaster, widget, tenantCode, statementRawData.OutputLocation);
                                             break;
@@ -2300,7 +2306,7 @@ namespace nIS
                     pageContent.Replace("{{GrandTotalDue}}", "R" + grandTotalDueStr);
                     double ppsPayment = grandTotalDue;
                     pageContent.Replace("{{PPSPayment}}", "-R" + grandTotalDueStr);
-                    String Balance=Convert.ToDouble((grandTotalDue - ppsPayment)).ToString().Replace(',', '.');
+                    String Balance=Convert.ToDouble((grandTotalDue - ppsPayment)).ToString("F2").Replace(',', '.');
 
                     pageContent.Replace("{{Balance}}", "R" + Balance);
 
@@ -2340,7 +2346,7 @@ namespace nIS
                                     item.Client_Name + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Member_Ref + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'> " + item.Policy_Ref + "</td><td class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1'>" + (item.Description == "Commission Service Fee" ? "Premium Under Advise Fee" : item.Description)  + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.POSTED_DATE.ToString("dd-MMM-yyyy") + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Display_Amount + "</td><td class= 'text-center fsp-bdr-bottom px-1'><a href ='https://www.google.com/' target ='_blank'><img class='leftarrowlogo' src='../common/images/leftarrowlogo.png' alt='Left Arrow'></a></td></tr>");
                             TotalPostedAmount += ((item.TYPE == "Fiduciary_Data") && (item.Prod_Group != "VAT"))?  (Convert.ToDouble(item.Display_Amount)): 0.0;
                         });
-                        string TotalPostedAmountR = (TotalPostedAmount == 0) ? "0" : ("R " + TotalPostedAmount.ToString());
+                        string TotalPostedAmountR = (TotalPostedAmount == 0) ? "0.00" : ("R" + TotalPostedAmount.ToString());
                         detailedTransactionSrc.Append("<tr> <td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'><br /></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'>" + TotalPostedAmountR + "</td> <td class='text-center fsp-bdr-bottom px-1'><a href='https://www.google.com/' target = '_blank' ><img src='../common/images/leftarrowlogo.png'></a></td> </tr></table><div class='text-right w-100 pt-3'><a href='https://www.google.com/' target = '_blank'><img src='../common/images/click-print-stmt-btn.jpg'></a></div></div></div></div>");
                         TotalPostedAmount = 0;
                     });
@@ -2372,7 +2378,8 @@ namespace nIS
             pageContent.Replace("{{VATRegNumber}}", fspDetails.FirstOrDefault().FSP_VAT_Number);
         }
 
-        private void BindPpsFooter1WidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<spIAA_PaymentDetail> fspDetails, IList<BatchDetail> batchDetails)
+        private void BindPpsFooter1WidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, 
+            IList<spIAA_PaymentDetail> fspDetails, IList<BatchDetail> batchDetails)
         {
             string middleText = "PPS Insurance is a registered Insurer and FSP";
             string pageText = "Page 1/2";
@@ -2399,6 +2406,17 @@ namespace nIS
 
             AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>RM Contact Number" + "</div><label class='list-value mb-0'>" + customer.RmContactNumber + "</label></div></div>");
             pageContent.Replace("{{AccountInfoData_" + page.Identifier + "_" + widget.Identifier + "}}", AccDivData.ToString());
+        }
+
+
+        private void BindPpsDetails1WidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<spIAA_Commission_Detail> ppsDetails1, IList<BatchDetail> batchDetails)
+        {
+            DateTime DateFrom = new DateTime(2023, 01, 01);
+            DateTime DateTo = new DateTime(2023, 09, 01);
+            pageContent.Replace("{{ref}}", ppsDetails1.FirstOrDefault().INT_EXT_REF);
+            pageContent.Replace("{{mtype}}", ppsDetails1.FirstOrDefault().MeasureType);
+            pageContent.Replace("{{month}}", DateFrom.ToString("MMMM yyyy"));         
+            pageContent.Replace("{{paramDate}}", DateFrom.ToString("yyyy-MM-dd") + " To " + DateTo.ToString("yyyy-MM-dd"));
         }
 
         private bool BindSummaryAtGlanceWidgetData(StringBuilder pageContent, StringBuilder ErrorMessages, IList<AccountMaster> accountrecords, Page page, PageWidget widget)

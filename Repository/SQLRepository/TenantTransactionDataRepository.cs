@@ -514,7 +514,8 @@ namespace nIS
             {
                 throw ex;
             }
-        }
+        }      
+
 
         // pps footer1
         public IList<spIAA_PaymentDetail> Get_PPSFooter1(string tenantCode)
@@ -561,7 +562,27 @@ namespace nIS
                 throw ex;
             }
         }
+        public IList<spIAA_Commission_Detail> Get_PPSDetails1(string tenantCode)
+        {
+            //List<spIAA_PaymentDetail> spData = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
 
+            try
+            {
+                IList<spIAA_Commission_Detail> ppsDetails = new List<spIAA_Commission_Detail>();
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    ppsDetails = nISEntitiesDataContext.spIAA_Commission_Detail();
+
+
+                }
+                return ppsDetails;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         #endregion
 
         //#region Public methods for Nedbank Tenant

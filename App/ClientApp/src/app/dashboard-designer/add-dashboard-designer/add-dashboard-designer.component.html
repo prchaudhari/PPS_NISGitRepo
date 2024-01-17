@@ -33,7 +33,10 @@
                   'fa-cc fa-lg': widget.WidgetName == 'ClientContactDetails',
                   'fa-trophy fa-lg': widget.WidgetName == 'GreenbacksTotalRewardPoints',
                   'icon-imageWidget' : widget.WidgetName == 'Image',
-                  'icon-videoWidget' : widget.WidgetName == 'Video',
+                  'fa fa-address-book-o': widget.WidgetName == 'PPSDetails1' || widget.WidgetName == 'PPSDetails1' || widget.WidgetName == 'PortfolioCustomerDetails',
+                   
+                  'fa-address-book': widget.WidgetName == 'PPSDetails2',
+                   'icon-videoWidget' : widget.WidgetName == 'Video',
                   'icon-widget-single-column2 fa-lg' : widget.WidgetName == 'PPSFooter1'|| widget.WidgetName == 'FSPDetails'|| widget.WidgetName == 'PaymentSummary'|| widget.WidgetName == 'FSPHeading' || widget.WidgetName == 'FSPDetails' || widget.WidgetName == 'Summary' || widget.WidgetName == 'BreakdownOfInvestmentAccounts' || widget.WidgetName == 'WealthBreakdownOfInvestmentAccounts' || widget.WidgetName == 'PersonalLoanDetail' || widget.WidgetName == 'PersonalLoanTotalAmountDetail' || widget.WidgetName == 'HomeLoanTotalAmountDetail' || widget.WidgetName == 'AccountSummary' || widget.WidgetName == 'WealthHomeLoanTotalAmountDetail' || widget.WidgetName == 'MCAAccountSummary'|| widget.WidgetName == 'WealthMCAAccountSummary' ||  widget.WidgetName == 'CorporateSaverTableTotal' ,
                   'icon-widget-single-column2 fa-lg' : widget.WidgetName == 'PPSFooter1'|| widget.WidgetName == 'FSPDetails'|| widget.WidgetName == 'PaymentSummary'||  widget.WidgetName == 'ProductSummary' || widget.WidgetName == 'PPSHeading' || widget.WidgetName == 'PPSDetails' || widget.WidgetName == 'Summary' || widget.WidgetName == 'BreakdownOfInvestmentAccounts' || widget.WidgetName == 'WealthBreakdownOfInvestmentAccounts' || widget.WidgetName == 'PersonalLoanDetail' || widget.WidgetName == 'PersonalLoanTotalAmountDetail' || widget.WidgetName == 'HomeLoanTotalAmountDetail' || widget.WidgetName == 'AccountSummary' || widget.WidgetName == 'WealthHomeLoanTotalAmountDetail' || widget.WidgetName == 'MCAAccountSummary'|| widget.WidgetName == 'WealthMCAAccountSummary' ||  widget.WidgetName == 'CorporateSaverTableTotal' ,
                   'fa-bell-o' : widget.WidgetName == 'ReminderaAndRecommendation' || widget.WidgetName == 'SpecialMessage' || widget.WidgetName == 'PortfolioReminders',
@@ -76,16 +79,20 @@
                 [class.fa-address-book-o]="['CustomerInformation', 'CustomerDetails', 'PortfolioCustomerDetails'].includes(widget.WidgetName)"
                 [class.fa-address-card-o]="['AccountInformation', 'CustomerAddressDetails','FooterImage'].includes(widget.WidgetName)"            
                 [class.icon-videoWidget]="widget.WidgetName == 'Video'"
-                [class.icon-home-line2]="widget.WidgetName == 'Image'"               
-                [class.icon-widget-single-column2.fa-lg]="['PPSFooter1','PaymentSummary', 'FSPHeading','DetailedTransactions','FSPDetails','Summary','BreakdownOfInvestmentAccounts',
+                [class.fa-address-book-o]="['PPSDetails1', 'PPSDetails1', 'PortfolioCustomerDetails'].includes(widget.WidgetName)" 
+                [class.fa-address-book]="widget.WidgetName == 'PPSDetails2'"
+               [class.icon-home-line2]="widget.WidgetName == 'Image'"   
+                [class.icon-TransactionMixWidget]="widget.WidgetName == 'ProductSummary'"   
+                            
+                [class.icon-widget-single-column2.fa-lg]="['PPSFooter1' , 'FSPHeading','DetailedTransactions','FSPDetails','Summary','BreakdownOfInvestmentAccounts',
                 'WealthBreakdownOfInvestmentAccounts','PersonalLoanDetail','PersonalLoanTotalAmountDetail',
-                'HomeLoanTotalAmountDetail','AccountSummary','WealthHomeLoanTotalAmountDetail','ProductSummary'].includes(widget.WidgetName)"
+                'HomeLoanTotalAmountDetail','AccountSummary','WealthHomeLoanTotalAmountDetail'].includes(widget.WidgetName)"
                 [class.icon-AnalyticsWidget]="widget.WidgetName == 'Analytics'"
                 [class.icon-widget-multi-column2]="widget.WidgetName == 'SavingTransaction'"
                 [class.icon-widget-line-chart2]="widget.WidgetName == 'SavingTrend'"
                 [class.icon-rp-quality1]="widget.WidgetName == 'Top4IncomeSources'"
                 [class.icon-rp-production1]="widget.WidgetName == 'SpendingTrend'"
-                [class.icon-AvailableBalanceWidget]="['SavingAvailableBalance', 'CurrentAvailableBalance'].includes(widget.WidgetName)" 
+                [class.icon-AvailableBalanceWidget]="['SavingAvailableBalance', 'PaymentSummary', 'CurrentAvailableBalance'].includes(widget.WidgetName)" 
             
                 [class.fa-bell-o]="widget.WidgetName == 'ReminderaAndRecommendation'"
                 [class.fa-code.fa-code]="widget.WidgetName == 'StaticHtml'"
@@ -99,8 +106,11 @@
       'fa-cc fa-lg': widget.WidgetName == 'ClientContactDetails',
       'fa-trophy fa-lg': widget.WidgetName == 'GreenbacksTotalRewardPoints',
       'icon-imageWidget' : widget.WidgetName == 'Image',
+      
       'icon-videoWidget' : widget.WidgetName == 'Video',
       'icon-widget-single-column2 fa-lg' :widget.WidgetName == 'FSPDetails'|| widget.WidgetName == 'PaymentSummary'|| widget.WidgetName == 'PPSHeading' ||
+      'icon-widget-single-column2 fa-lg' :widget.WidgetName == 'PPSDetails2'|| widget.WidgetName == 'PaymentSummary'|| widget.WidgetName == 'PPSHeading' ||
+
             widget.WidgetName == 'PPSDetails' || widget.WidgetName == 'Summary' || widget.WidgetName == 'BreakdownOfInvestmentAccounts'
             || widget.WidgetName == 'WealthBreakdownOfInvestmentAccounts' || widget.WidgetName == 'PersonalLoanDetail' ||
             widget.WidgetName == 'PersonalLoanTotalAmountDetail' || widget.WidgetName == 'HomeLoanTotalAmountDetail' ||

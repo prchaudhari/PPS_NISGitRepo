@@ -10,8 +10,8 @@ import { Template } from '../../layout/template/template';
 import { TemplateWidget } from '../../layout/template/templateWidget';
 import { ConfigConstants } from '../../shared/constants/configConstants';
 import {
-  CustomerInformationComponent, PageBreakComponent, PPSFooter1Component, FSPDetailsComponent, PaymentSummaryComponent, DetailedTransactionsComponent, FSPHeadingComponent, ProductSummaryComponent,
-  AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
+  CustomerInformationComponent, PageBreakComponent, PPSFooter1Component, FSPDetailsComponent, PaymentSummaryComponent,  PPSDetailedTransactionsComponent,DetailedTransactionsComponent, FSPHeadingComponent, ProductSummaryComponent,
+  AccountInformationComponent, PPSDetails1Component,ImageComponent,  PPSDetails2Component,VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
   SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
   SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
   DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent, 
@@ -317,6 +317,9 @@ export class ViewDashboardDesignerComponent implements OnInit {
       else if (widgetName == 'DetailedTransactions') {
         gridObj.component = DetailedTransactionsComponent;
       }
+      else if (widgetName == 'PPSDetailedTransactions') {
+        gridObj.component = PPSDetailedTransactionsComponent;
+      }
       else if (widgetName == 'FSPDetails') {
         gridObj.component = FSPDetailsComponent;
       }
@@ -325,6 +328,13 @@ export class ViewDashboardDesignerComponent implements OnInit {
       }
       else if (widgetName == 'AccountInformation') {
         gridObj.component = AccountInformationComponent;
+
+      }
+      else if (widgetName == 'PPSDetails1') {
+        gridObj.component = PPSDetails1Component;
+      }
+      else if (widgetName == 'PPSDetails2') {
+        gridObj.component = PPSDetails2Component;
       }
       else if (widgetName == 'Image') {
         gridObj.component = ImageComponent;

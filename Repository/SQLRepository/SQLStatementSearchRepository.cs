@@ -397,9 +397,12 @@ namespace nIS
                     string currency = string.Empty;
                     IList<AccountMasterRecord> accountrecords = new List<AccountMasterRecord>();
                     IList<spIAA_PaymentDetail> fspDetails = new List<spIAA_PaymentDetail>();
+                    IList<spIAA_Commission_Detail> ppsDetails1 = new List<spIAA_Commission_Detail>();
                     IList<AccountMasterRecord> savingaccountrecords = new List<AccountMasterRecord>();
                     IList<AccountMasterRecord> curerntaccountrecords = new List<AccountMasterRecord>();
                     IList<CustomerMediaRecord> customerMedias = new List<CustomerMediaRecord>();
+                    DateTime DateFrom = new DateTime(2023, 01, 01);
+                    DateTime DateTo = new DateTime(2023,09,01);
                     var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
 
                     if (this.connectionString == string.Empty) 
@@ -410,6 +413,7 @@ namespace nIS
                     {
                         // fsp details
                         fspDetails = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
+                        ppsDetails1 = nISEntitiesDataContext.spIAA_Commission_Detail();
 
                         var pages = statement.Pages.Where(item => item.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || item.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE).ToList();
                         IsSavingOrCurrentAccountPagePresent = pages.Count > 0 ? true : false;
@@ -609,6 +613,15 @@ namespace nIS
                                         //string pageText = "Page 1/2";
                                         //pageContent.Replace("{{FSPFooterDetails}}", middleText);
                                         //pageContent.Replace("{{FSPPage}}", pageText);
+                                    }
+                                    else if (widget.WidgetName == HtmlConstants.PPS_DETAILS1_WIDGET_NAME)
+                                    {
+                                       
+                                        pageContent.Replace("{{ref}}", ppsDetails1.FirstOrDefault().INT_EXT_REF);
+                                        pageContent.Replace("{{mtype}}", ppsDetails1.FirstOrDefault().MeasureType);
+                                        pageContent.Replace("{{month}}", DateFrom.ToString("MMMM yyyy"));
+                                        pageContent.Replace("{{paramDate}}", DateFrom.ToString("yyyy-MM-dd") + " To " + DateTo.ToString("yyyy-MM-dd"));
+
                                     }
 
                                     else if (widget.WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME) //Account Information Widget
