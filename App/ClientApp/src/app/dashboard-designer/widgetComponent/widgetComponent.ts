@@ -485,6 +485,8 @@ export class AccountInformationComponent {
   ];
 
 }
+
+
 // Component Created for PPSDetailS1 Firstpart.
 @Component({
   selector: 'PPSDetails1',
@@ -541,6 +543,234 @@ export class PPSDetails1Component {
   widgetsGridsterItemArray: any[] = [];
 
 }
+// Component Created for PPSDetailS2 secondpart
+@Component({
+  selector: 'PPSDetails2',
+  template: `<div class="widget">
+   
+        <div class="container_area">
+            <div class="header-contact px-20">
+                <div class="col-49">
+                <div class="col-4 py-2 bdr-end-5">
+                            <h4 class="fw-bold">Miss HW HLONGWANE</h4>
+                            <div class="client-content">
+                                <p class="fw-bold">Client contact details</p>
+                                <p><span class="fw-bold">M:</span> 082 1234567</p>
+                                <p><span class="fw-bold">E:</span> <a href="">y.vanheerden@google.com</a></p>
+                            </div>
+                        </div>
+
+                        <div class="col-3 py-2 bdr-end-5">
+                            <h4 class="fw-bold">Address</h4>
+                            <div class="client-content">
+                                <p>1 John Vorster Drive<br/>Randburg<br/>Gauteng</p>
+                            </div>
+                        </div>
+
+                        <div class="col-5 py-2">
+                            <div class="client-content">
+                                <p><span class="fw-bold">Intermediary reference:</span> 124529534</p>
+                                <p><span class="fw-bold">Measure type:</span> Commission</p>
+                                <p><span class="fw-bold">Month:</span> September 2023</p>
+                                <p><span class="fw-bold">Date:</span> 2023-09-01 to 2023-01-01</p>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+  </div>`
+})
+export class PPSDetails2Component {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+
+}
+
+// Component Created for PPSDetailedTraction Widget--
+@Component({
+  selector: 'PPSDetailedTransactions',
+  template: `<div class="widget">
+   <div class="container_area" style="max-width: 800px;">
+            <div class="fsp-earnings-section">
+                <div class="payment-sum text-center">Detailed transactions</div>
+                
+                <div class="pps-earning-period pps-details-table pt-1 pb-2 d-flex justify-content-between">                  
+                    <div class="pps-monthly-table w-100">
+                            <table cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <th class="bdr-right-white text-white fw-bold">Client<br/>name</th>
+                                    <th class="bdr-right-white text-white fw-bold">Age</th>
+                                    <th class="bdr-right-white text-white fw-bold">Policy #</th>
+                                    <th class="bdr-right-white text-white fw-bold">Policy #</th>
+                                    <th class="bdr-right-white text-white fw-bold">Product</th>
+                                    <th class="bdr-right-white text-white fw-bold">Date<br/>issued</th>
+                                    <th class="bdr-right-white text-white fw-bold">Inception<br/>date</th>
+                                    <th class="bdr-right-white text-white fw-bold">Com<br/>type</th>
+                                    <th class="bdr-right-white text-white fw-bold">Quantity</th>
+                                    <th class="bdr-right-white text-white fw-bold">Posted<br/>date</th>
+                                    <th class="bdr-right-white text-white fw-bold">Earnings</th>
+                                </tr>
+
+                                <tr>
+                                    <td class="bdr-right-white">Dr L Guvha</td>
+                                    <td class="bdr-right-white">54</td>
+                                    <td class="bdr-right-white">1012890</td>
+                                    <td class="bdr-right-white">1845387</td>
+                                    <td class="bdr-right-white">Professional Health<br/>Provider Whole Life<br/>Professional Health</td>
+                                    <td class="bdr-right-white">22-Aug-<br/>2022</td>
+                                    <td class="bdr-right-white">01-Oct-2022</td>
+                                    <td class="bdr-right-white">2nd Year</td>
+                                    <td class="bdr-right-white">R3 964.19</td>
+                                    <td class="bdr-right-white">06-Sept-<br/>2023</td>
+                                    <td class="bdr-right-white">R10 822.24</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                </tr>
+
+                                <tr>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                </tr>
+
+                                <tr>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                </tr>
+
+
+                                <tr>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                </tr>
+
+                                <tr>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                </tr>
+
+                                <tr>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                </tr>
+
+                                <tr>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                </tr>
+
+                                <tr>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                    <td class="bdr-right-white" height="40"></td>
+                                </tr>
+
+                                <tr>
+                                    <td class="dark-blue-bg text-white fw-bold "></td>
+                                    <td class="dark-blue-bg text-white fw-bold "></td>
+                                    <td class="dark-blue-bg text-white fw-bold "></td>
+                                    <td class="dark-blue-bg text-white fw-bold "></td>
+                                    <td class="dark-blue-bg text-white fw-bold text-center fs-16">Sub Total</td>
+                                    <td class="dark-blue-bg text-white fw-bold "></td>
+                                    <td class="dark-blue-bg text-white fw-bold "></td>
+                                    <td class="dark-blue-bg text-white fw-bold "></td>
+                                    <td class="dark-blue-bg text-white fw-bold "></td>
+                                    <td class="pps-bg-gray" ></td>
+                                    <td class="fw-bold fs-16 pps-bg-gray" height="40">R15 133.33</td>
+                                </tr>
+                               
+                            </table>
+                    </div>
+
+                    
+                </div>
+                  
+            </div>
+
+        </div>
+
+  </div>`
+})
+
+export class PPSDetailedTransactionsComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+
+}
+
 
 
 // Component Created for Image Widget--

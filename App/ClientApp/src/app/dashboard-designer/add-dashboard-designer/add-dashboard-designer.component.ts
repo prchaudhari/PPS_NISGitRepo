@@ -12,11 +12,12 @@ import { LocalStorageService } from 'src/app/shared/services/local-storage.servi
 import { Template } from '../../layout/template/template';
 //import { TemplateWidget } from '../../layout/template/templateWidget';CorporateSaverAgentMessageComponent
 import {
-    CustomerInformationComponent, AccountInformationComponent, ProductSummaryComponent, DetailedTransactionsComponent, PaymentSummaryComponent, PPSFooter1Component,PPSDetails1Component, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent, FSPHeadingComponent, FSPDetailsComponent, FooterImageComponent, SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
+    CustomerInformationComponent, AccountInformationComponent, ProductSummaryComponent,PPSDetailedTransactionsComponent, DetailedTransactionsComponent, PaymentSummaryComponent, PPSFooter1Component,PPSDetails1Component, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent, FSPHeadingComponent, FSPDetailsComponent, FooterImageComponent, SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
   SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
   DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent,
   SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
-  CSAgentLogoComponent
+  CSAgentLogoComponent,
+  PPSDetails2Component
 } from '../widgetComponent/widgetComponent';
 import { AssetLibraryService } from '../../layout/asset-libraries/asset-library.service';
 import { AssetSearchParameter } from '../../layout/asset-libraries/asset-library';
@@ -1045,6 +1046,21 @@ export class AddDashboardDesignerComponent implements OnInit {
               y: 0,
               x: 0,
               component: DetailedTransactionsComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "PPSDetailedTransactions") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 8,
+              rows: 5,
+              y: 0,
+              x: 0,
+              component: PPSDetailedTransactionsComponent,
               value: widget.WidgetName,
               WidgetId: widget.Identifier,
               widgetItemCount: this.widgetItemCount,
@@ -2373,6 +2389,9 @@ export class AddDashboardDesignerComponent implements OnInit {
       }
       else if (widgetName == 'DetailedTransactions') {
         gridObj.component = DetailedTransactionsComponent;
+      }
+      else if (widgetName == 'PPSDetailedTransactions') {
+        gridObj.component = PPSDetailedTransactionsComponent;
       }
       else if (widgetName == 'PPSFooter1') {
         gridObj.component = PPSFooter1Component;

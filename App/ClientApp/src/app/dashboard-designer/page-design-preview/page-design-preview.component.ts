@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
 import * as $ from 'jquery';
 import { DomSanitizer } from '@angular/platform-browser';
 import {
-    SummaryAtGlanceComponent, AccountInformationComponent, FSPDetailsComponent, ProductSummaryComponent, DetailedTransactionsComponent, PaymentSummaryComponent, FSPHeadingComponent, PPSFooter1Component, FooterImageComponent,PPSDetails1Component,PPSDetails2Component,
+    SummaryAtGlanceComponent, AccountInformationComponent, FSPDetailsComponent, ProductSummaryComponent, PPSDetailedTransactionsComponent ,DetailedTransactionsComponent, PaymentSummaryComponent, FSPHeadingComponent, PPSFooter1Component, FooterImageComponent,PPSDetails1Component,PPSDetails2Component,
   SavingTrendsPreviewComponent, SpendindTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent, 
   DynamicBarChartWidgetPreviewComponent, DynamicHhtmlComponent, StaticHtmlComponent, PageBreakComponent, SegmentBasedContentComponent} from '../widgetComponent/widgetComponent';
 import { DynamicWidgetService } from '../../layout/widget-dynamic/dynamicwidget.service';
@@ -200,6 +200,7 @@ export class PageDesignPreviewComponent extends DialogComponent<PageDesignPrevie
         return AccountInformationComponent;
       } else if (widgetType == 'Form') {
         return FSPDetailsComponent;
+      
       } else if (widgetType == 'Html') {
         return DynamicHhtmlComponent;
       } else if (widgetType == 'Form') {
