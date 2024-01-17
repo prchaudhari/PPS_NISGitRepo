@@ -81,16 +81,17 @@
                 [class.fa-address-book-o]="['PPSDetails1', 'PPSDetails1', 'PortfolioCustomerDetails'].includes(widget.WidgetName)" 
                 [class.fa-address-book-o]="['PPSDetails2', 'PPSDetails2', 'PortfolioCustomerDetails'].includes(widget.WidgetName)" 
                 [class.icon-home-line2]="widget.WidgetName == 'Image'"   
+                [class.icon-TransactionMixWidget]="widget.WidgetName == 'ProductSummary'"   
                             
-                [class.icon-widget-single-column2.fa-lg]="['PPSFooter1','PaymentSummary', 'FSPHeading','DetailedTransactions','FSPDetails','Summary','BreakdownOfInvestmentAccounts',
+                [class.icon-widget-single-column2.fa-lg]="['PPSFooter1' , 'FSPHeading','DetailedTransactions','FSPDetails','Summary','BreakdownOfInvestmentAccounts',
                 'WealthBreakdownOfInvestmentAccounts','PersonalLoanDetail','PersonalLoanTotalAmountDetail',
-                'HomeLoanTotalAmountDetail','AccountSummary','WealthHomeLoanTotalAmountDetail','ProductSummary'].includes(widget.WidgetName)"
+                'HomeLoanTotalAmountDetail','AccountSummary','WealthHomeLoanTotalAmountDetail'].includes(widget.WidgetName)"
                 [class.icon-AnalyticsWidget]="widget.WidgetName == 'Analytics'"
                 [class.icon-widget-multi-column2]="widget.WidgetName == 'SavingTransaction'"
                 [class.icon-widget-line-chart2]="widget.WidgetName == 'SavingTrend'"
                 [class.icon-rp-quality1]="widget.WidgetName == 'Top4IncomeSources'"
                 [class.icon-rp-production1]="widget.WidgetName == 'SpendingTrend'"
-                [class.icon-AvailableBalanceWidget]="['SavingAvailableBalance', 'CurrentAvailableBalance'].includes(widget.WidgetName)" 
+                [class.icon-AvailableBalanceWidget]="['SavingAvailableBalance', 'PaymentSummary', 'CurrentAvailableBalance'].includes(widget.WidgetName)" 
             
                 [class.fa-bell-o]="widget.WidgetName == 'ReminderaAndRecommendation'"
                 [class.fa-code.fa-code]="widget.WidgetName == 'StaticHtml'"

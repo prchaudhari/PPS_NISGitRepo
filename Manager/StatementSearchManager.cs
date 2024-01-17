@@ -516,7 +516,7 @@ namespace nIS
                                             this.BindImageWidgetData(pageContent, customer.Identifier, customerMedias, BatchDetails, statement, page, batchMaster, widget, tenantCode, outputLocation);
                                             break;
                                         case HtmlConstants.PPS_DETAILS1_WIDGET_NAME:
-                                            this.BindPpsDetailsWidgetData(pageContent, customer, statement, page, widget, customerMedias, BatchDetails, accountrecords);
+                                            this.BindPpsDetails1WidgetData(pageContent, customer, statement, page, widget, customerMedias, BatchDetails, accountrecords);
                                             break;
                                         case HtmlConstants.VIDEO_WIDGET_NAME:
                                             this.BindVideoWidgetData(pageContent, customer.Identifier, customerMedias, BatchDetails, statement, page, batchMaster, widget, tenantCode, outputLocation);
@@ -1343,7 +1343,7 @@ namespace nIS
                 pageContent.Replace("{{GrandTotalDue}}", "R" + grandTotalDueStr);
                 double ppsPayment = grandTotalDue;
                 pageContent.Replace("{{PPSPayment}}", "-R" + grandTotalDueStr);
-                String Balance = Convert.ToDouble((grandTotalDue - ppsPayment)).ToString().Replace(',', '.');
+                String Balance = Convert.ToDouble((grandTotalDue - ppsPayment)).ToString("F2").Replace(',', '.');
                 pageContent.Replace("{{Balance}}", "R" + Balance);
             }
             }

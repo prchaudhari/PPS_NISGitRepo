@@ -106,6 +106,7 @@
     <Compile Include="Entities\EntityFieldMapRecord.cs" />
     <Compile Include="Entities\EtlBatches.cs" />
     <Compile Include="Entities\FnGetParentAndChildTenant_Result.cs" />
+    <Compile Include="Entities\spIAA_Commission_Detail.cs" />
     <Compile Include="Entities\spIAA_PaymentDetail.cs" />
     <Compile Include="Entities\FnGetStaticAndDynamicWidgets_Result.cs" />
     <Compile Include="Entities\FnUserTenant_Result.cs" />
