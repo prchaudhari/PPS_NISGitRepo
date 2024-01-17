@@ -27,6 +27,8 @@ namespace nIS
 
         public const string DETAILED_TRANSACTIONS_WIDGET_NAME = "DetailedTransactions";
 
+        public const string EARNINGS_FOR_PERIOD_WIDGET_NAME = "EarningsForPeriod";
+
         public const string PPS_HEADING_WIDGET_NAME = "FSPHeading";
         
         public const string PPS_DETAILS_WIDGET_NAME = "FSPDetails";
