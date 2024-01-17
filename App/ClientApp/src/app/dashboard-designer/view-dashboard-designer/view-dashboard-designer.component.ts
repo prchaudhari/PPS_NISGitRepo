@@ -330,6 +330,9 @@ export class ViewDashboardDesignerComponent implements OnInit {
       else if (widgetName == 'PPSDetails1') {
         gridObj.component = PPSDetails1Component;
       }
+      else if (widgetName == 'PPSDetails2') {
+        gridObj.component = PPSDetails2Component;
+      }
       else if (widgetName == 'Image') {
         gridObj.component = ImageComponent;
       }

@@ -1083,6 +1083,21 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: false
             })
           }
+          else if (widget.WidgetName == "PPSDetails2") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 10,
+              rows: 2,
+              y: 0,
+              x: 0,
+              component: PPSDetails2Component,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
           else if (widget.WidgetName == "Image") {
             return this.widgetsGridsterItemArray.push({
               cols: 4,
@@ -2370,6 +2385,9 @@ export class AddDashboardDesignerComponent implements OnInit {
       }
       else if (widgetName == 'PPSDetails1') {
         gridObj.component = PPSDetails1Component;
+      }
+      else if (widgetName == 'PPSDetails2') {
+        gridObj.component = PPSDetails2Component;
       }
       else if (widgetName == 'Image') {
         gridObj.component = ImageComponent;
