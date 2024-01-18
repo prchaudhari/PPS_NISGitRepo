@@ -342,10 +342,6 @@ export class ProductSummaryComponent {
                                 </tr>
                             </tbody>
                         </table>
-
-                        <div class="text-right w-100 pt-3">
-                            <a href="#"><img src="assets/images/click-print-stmt-btn.jpg"></a>
-                        </div>
                     </div>
 
                     <!--table 2 start here-->
@@ -392,16 +388,8 @@ export class ProductSummaryComponent {
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="text-right w-100 pt-3">
-                            <a href="#"><img src="assets/images/click-print-stmt-btn.jpg"></a>
-                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-<div class="container_area">
-            <div class="click-btn text-center w-100" style="padding-top: 50px;">
-                <a href="#"><img src="assets/images/click-print-stmt-btn.jpg"></a>
             </div>
         </div>
     </div>`
