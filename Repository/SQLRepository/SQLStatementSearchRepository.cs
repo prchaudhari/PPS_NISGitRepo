@@ -623,6 +623,15 @@ namespace nIS
                                         pageContent.Replace("{{paramDate}}", DateFrom.ToString("yyyy-MM-dd") + " To " + DateTo.ToString("yyyy-MM-dd"));
 
                                     }
+                                    else if (widget.WidgetName == HtmlConstants.PPS_DETAILS2_WIDGET_NAME)
+                                    {
+
+                                        //pageContent.Replace("{{ref}}", ppsDetails2.FirstOrDefault().INT_EXT_REF);
+                                        //pageContent.Replace("{{mtype}}", ppsDetails2.FirstOrDefault().MeasureType);
+                                        //pageContent.Replace("{{month}}", DateFrom.ToString("MMMM yyyy"));
+                                        //pageContent.Replace("{{paramDate}}", DateFrom.ToString("yyyy-MM-dd") + " To " + DateTo.ToString("yyyy-MM-dd"));
+
+                                    }
 
                                     else if (widget.WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME) //Account Information Widget
                                     {

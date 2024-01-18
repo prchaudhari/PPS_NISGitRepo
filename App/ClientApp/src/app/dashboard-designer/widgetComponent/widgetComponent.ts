@@ -58,16 +58,16 @@ export class CustomerInformationComponent {
                   <div class="fsp-payment-sum d-flex gap-1 w-100 py-4">
                         <div class="col-2"></div>
                         <div class="col-4">
-                            <div class="fw-bold mb-1">Intermediary Total – March 2023</div>
-                            <div class="fw-bold mb-1">Vat</div>
+                            <div class="font-weight-bold mb-1">Intermediary Total – March 2023</div>
+                            <div class="font-weight-bold mb-1">Vat</div>
                             <div class="pt-1 mb-1"></div>
-                            <div class="fw-bold">Total Due</div>
+                            <div class="font-weight-bold">Total Due</div>
                         </div>
                         <div class="col-3">
-                            <div class="fw-bold mb-1 text-end pe-2">R256 670.66</div>
-                            <div class="fw-bold mb-1 text-end pe-2">R38 001.27</div>
+                            <div class="font-weight-bold mb-1 text-end pe-2">R256 670.66</div>
+                            <div class="font-weight-bold mb-1 text-end pe-2">R38 001.27</div>
                             <div class="pt-1 dark-blue-bg mb-1"></div>
-                            <div class="fw-bold text-end pe-2">R291 671.93</div>
+                            <div class="font-weight-bold text-end pe-2">R291 671.93</div>
                             <div class="text-end pe-2 fst-italic">Posted – 3rd March</div>
                         </div>
                         <div class="col-3"></div>
@@ -93,7 +93,7 @@ export class PaymentSummaryComponent {
                     <div class="fsp-logo"><img src="assets/images/logo3.jpg" alt=""></div>
                     <div class="fsp-logo-text">
                         <h1 class="intermediary_title">Financial Service Provider (FSP) Statement</h1>
-                        <h6 class="fw-bold fsp_inter_subheading">Miss Yvonne van Heerden T/A Yvonne Van Heerden Financial Planner CC</h6>
+                        <h6 class="font-weight-bold fsp_inter_subheading">Miss Yvonne van Heerden T/A Yvonne Van Heerden Financial Planner CC</h6>
                     </div>
                 </div>
             </div>
@@ -547,21 +547,23 @@ export class PPSDetails1Component {
 @Component({
   selector: 'PPSDetails2',
   template: `<div class="widget">
-   
-        <div class="container_area">
-            <div class="header-contact px-20">
-                <div class="col-49">
-                <div class="col-4 py-2 bdr-end-5">
-                            <h4 class="fw-bold">Miss HW HLONGWANE</h4>
+
+ <div class="container_area text-left">
+            <div class="fsp-earnings-section pt-2">
+                <div class="dark-blue-bg payment-sum text-white text-center">PPS production statement</div>
+                <div class="px-20 pps-production-stat">
+                    <div class="row py-2">
+                        <div class="col-4 py-2 bdr-end-5">
+                            <h4 class="font-weight-bold">Miss HW HLONGWANE</h4>
                             <div class="client-content">
-                                <p class="fw-bold">Client contact details</p>
-                                <p><span class="fw-bold">M:</span> 082 1234567</p>
-                                <p><span class="fw-bold">E:</span> <a href="">y.vanheerden@google.com</a></p>
+                                <p class="font-weight-bold">Client contact details</p>
+                                <p><span class="font-weight-bold">M:</span> 082 1234567</p>
+                                <p><span class="font-weight-bold">E:</span> <a href="">y.vanheerden@google.com</a></p>
                             </div>
                         </div>
 
                         <div class="col-3 py-2 bdr-end-5">
-                            <h4 class="fw-bold">Address</h4>
+                            <h4 class="font-weight-bold">Address</h4>
                             <div class="client-content">
                                 <p>1 John Vorster Drive<br/>Randburg<br/>Gauteng</p>
                             </div>
@@ -569,15 +571,18 @@ export class PPSDetails1Component {
 
                         <div class="col-5 py-2">
                             <div class="client-content">
-                                <p><span class="fw-bold">Intermediary reference:</span> 124529534</p>
-                                <p><span class="fw-bold">Measure type:</span> Commission</p>
-                                <p><span class="fw-bold">Month:</span> September 2023</p>
-                                <p><span class="fw-bold">Date:</span> 2023-09-01 to 2023-01-01</p>
+                                <p><span class="font-weight-bold">Intermediary reference:</span> 124529534</p>
+                                <p><span class="font-weight-bold">Measure type:</span> Commission</p>
+                                <p><span class="font-weight-bold">Month:</span> September 2023</p>
+                                <p><span class="font-weight-bold">Date:</span> 2023-09-01 to 2023-01-01</p>
                             </div>
                         </div>
+                    </div>
                 </div>
+                <div class="dark-blue-bg py-1"></div>
             </div>
         </div>
+       
   </div>`
 })
 export class PPSDetails2Component {
@@ -598,17 +603,17 @@ export class PPSDetails2Component {
                     <div class="pps-monthly-table w-100">
                             <table cellpadding="0" cellspacing="0" width="100%">
                                 <tr>
-                                    <th class="bdr-right-white text-white fw-bold">Client<br/>name</th>
-                                    <th class="bdr-right-white text-white fw-bold">Age</th>
-                                    <th class="bdr-right-white text-white fw-bold">Policy #</th>
-                                    <th class="bdr-right-white text-white fw-bold">Policy #</th>
-                                    <th class="bdr-right-white text-white fw-bold">Product</th>
-                                    <th class="bdr-right-white text-white fw-bold">Date<br/>issued</th>
-                                    <th class="bdr-right-white text-white fw-bold">Inception<br/>date</th>
-                                    <th class="bdr-right-white text-white fw-bold">Com<br/>type</th>
-                                    <th class="bdr-right-white text-white fw-bold">Quantity</th>
-                                    <th class="bdr-right-white text-white fw-bold">Posted<br/>date</th>
-                                    <th class="bdr-right-white text-white fw-bold">Earnings</th>
+                                    <th class="bdr-right-white text-white font-weight-bold">Client<br/>name</th>
+                                    <th class="bdr-right-white text-white font-weight-bold">Age</th>
+                                    <th class="bdr-right-white text-white font-weight-bold">Policy #</th>
+                                    <th class="bdr-right-white text-white font-weight-bold">Policy #</th>
+                                    <th class="bdr-right-white text-white font-weight-bold">Product</th>
+                                    <th class="bdr-right-white text-white font-weight-bold">Date<br/>issued</th>
+                                    <th class="bdr-right-white text-white font-weight-bold">Inception<br/>date</th>
+                                    <th class="bdr-right-white text-white font-weight-bold">Com<br/>type</th>
+                                    <th class="bdr-right-white text-white font-weight-bold">Quantity</th>
+                                    <th class="bdr-right-white text-white font-weight-bold">Posted<br/>date</th>
+                                    <th class="bdr-right-white text-white font-weight-bold">Earnings</th>
                                 </tr>
 
                                 <tr>
@@ -739,17 +744,17 @@ export class PPSDetails2Component {
                                 </tr>
 
                                 <tr>
-                                    <td class="dark-blue-bg text-white fw-bold "></td>
-                                    <td class="dark-blue-bg text-white fw-bold "></td>
-                                    <td class="dark-blue-bg text-white fw-bold "></td>
-                                    <td class="dark-blue-bg text-white fw-bold "></td>
-                                    <td class="dark-blue-bg text-white fw-bold text-center fs-16">Sub Total</td>
-                                    <td class="dark-blue-bg text-white fw-bold "></td>
-                                    <td class="dark-blue-bg text-white fw-bold "></td>
-                                    <td class="dark-blue-bg text-white fw-bold "></td>
-                                    <td class="dark-blue-bg text-white fw-bold "></td>
+                                    <td class="dark-blue-bg text-white font-weight-bold "></td>
+                                    <td class="dark-blue-bg text-white font-weight-bold "></td>
+                                    <td class="dark-blue-bg text-white font-weight-bold "></td>
+                                    <td class="dark-blue-bg text-white font-weight-bold "></td>
+                                    <td class="dark-blue-bg text-white font-weight-bold text-center fs-16">Sub Total</td>
+                                    <td class="dark-blue-bg text-white font-weight-bold "></td>
+                                    <td class="dark-blue-bg text-white font-weight-bold "></td>
+                                    <td class="dark-blue-bg text-white font-weight-bold "></td>
+                                    <td class="dark-blue-bg text-white font-weight-bold "></td>
                                     <td class="pps-bg-gray" ></td>
-                                    <td class="fw-bold fs-16 pps-bg-gray" height="40">R15 133.33</td>
+                                    <td class="font-weight-bold fs-16 pps-bg-gray" height="40">R15 133.33</td>
                                 </tr>
                                
                             </table>
