@@ -448,53 +448,53 @@ namespace nIS
         #region pps
 
         // payment summary
-        public IList<spIAA_PaymentDetail> Get_PaymentSummary( string tenantCode)
-        {
-            //List<spIAA_PaymentDetail> spData = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
+        //public IList<spIAA_PaymentDetail> Get_PaymentSummary( string tenantCode)
+        //{
+        //    //List<spIAA_PaymentDetail> spData = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
             
-            try
-            {
-                IList<spIAA_PaymentDetail> paymentSummary = new List<spIAA_PaymentDetail>();
-                this.SetAndValidateConnectionString(tenantCode);
-                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                {
-                    paymentSummary = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
+        //    try
+        //    {
+        //        IList<spIAA_PaymentDetail> paymentSummary = new List<spIAA_PaymentDetail>();
+        //        this.SetAndValidateConnectionString(tenantCode);
+        //        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+        //        {
+        //            paymentSummary = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
                     
                    
-                }
-                return paymentSummary;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //        }
+        //        return paymentSummary;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
         // pps heading
-        public IList<spIAA_PaymentDetail> Get_PPSHeading(string tenantCode)
-        {
-            //List<spIAA_PaymentDetail> spData = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
+        //public IList<spIAA_PaymentDetail> Get_PPSHeading(string tenantCode)
+        //{
+        //    //List<spIAA_PaymentDetail> spData = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
 
-            try
-            {
-                IList<spIAA_PaymentDetail> ppsHeading = new List<spIAA_PaymentDetail>();
-                this.SetAndValidateConnectionString(tenantCode);
-                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                {
-                    ppsHeading = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
+        //    try
+        //    {
+        //        IList<spIAA_PaymentDetail> ppsHeading = new List<spIAA_PaymentDetail>();
+        //        this.SetAndValidateConnectionString(tenantCode);
+        //        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+        //        {
+        //            ppsHeading = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
 
 
-                }
-                return ppsHeading;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //        }
+        //        return ppsHeading;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
         // pps details
-        public IList<spIAA_PaymentDetail> Get_PPSDetails(string tenantCode)
+        public IList<spIAA_PaymentDetail> Get_FSPDetails(string tenantCode)
         {
             //List<spIAA_PaymentDetail> spData = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
 
@@ -514,25 +514,23 @@ namespace nIS
             {
                 throw ex;
             }
-        }      
+        }
 
-
-        // pps footer1
-        public IList<spIAA_PaymentDetail> Get_PPSFooter1(string tenantCode)
+        public IList<spIAA_Commission_Detail> Get_PPSDetails(string tenantCode)
         {
             //List<spIAA_PaymentDetail> spData = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
 
             try
             {
-                IList<spIAA_PaymentDetail> ppsFooter1 = new List<spIAA_PaymentDetail>();
+                IList<spIAA_Commission_Detail> ppsDetails1 = new List<spIAA_Commission_Detail>();
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    ppsFooter1 = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
+                    ppsDetails1 = nISEntitiesDataContext.spIAA_Commission_Detail();
 
 
                 }
-                return ppsFooter1;
+                return ppsDetails1;
             }
             catch (Exception ex)
             {
@@ -540,50 +538,75 @@ namespace nIS
             }
         }
 
-        // footer image
-        public IList<spIAA_PaymentDetail> Get_FooterImage(string tenantCode)
-        {
-            //List<spIAA_PaymentDetail> spData = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
+        //public IList<spIAA_Commission_Detail> Get_PPSDetails2(string tenantCode)
+        //{
+        //    //List<spIAA_PaymentDetail> spData = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
 
-            try
-            {
-                IList<spIAA_PaymentDetail> footerImage = new List<spIAA_PaymentDetail>();
-                this.SetAndValidateConnectionString(tenantCode);
-                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                {
-                    footerImage = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
-
-
-                }
-                return footerImage;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        public IList<spIAA_Commission_Detail> Get_PPSDetails1(string tenantCode)
-        {
-            //List<spIAA_PaymentDetail> spData = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
-
-            try
-            {
-                IList<spIAA_Commission_Detail> ppsDetails = new List<spIAA_Commission_Detail>();
-                this.SetAndValidateConnectionString(tenantCode);
-                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                {
-                    ppsDetails = nISEntitiesDataContext.spIAA_Commission_Detail();
+        //    try
+        //    {
+        //        IList<spIAA_Commission_Detail> ppsDetails2 = new List<spIAA_Commission_Detail>();
+        //        this.SetAndValidateConnectionString(tenantCode);
+        //        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+        //        {
+        //            ppsDetails2 = nISEntitiesDataContext.spIAA_Commission_Detail();
 
 
-                }
-                return ppsDetails;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        #endregion
+        //        }
+        //        return ppsDetails2;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
+
+
+        //// pps footer1
+        //public IList<spIAA_PaymentDetail> Get_PPSFooter1(string tenantCode)
+        //{
+        //    //List<spIAA_PaymentDetail> spData = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
+
+        //    try
+        //    {
+        //        IList<spIAA_PaymentDetail> ppsFooter1 = new List<spIAA_PaymentDetail>();
+        //        this.SetAndValidateConnectionString(tenantCode);
+        //        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+        //        {
+        //            ppsFooter1 = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
+
+
+        //        }
+        //        return ppsFooter1;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
+
+        //// footer image
+        //public IList<spIAA_PaymentDetail> Get_FooterImage(string tenantCode)
+        //{
+        //    //List<spIAA_PaymentDetail> spData = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
+
+        //    try
+        //    {
+        //        IList<spIAA_PaymentDetail> footerImage = new List<spIAA_PaymentDetail>();
+        //        this.SetAndValidateConnectionString(tenantCode);
+        //        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+        //        {
+        //            footerImage = nISEntitiesDataContext.spIAA_PaymentDetail_fspstatement();
+
+
+        //        }
+        //        return footerImage;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
+        //#endregion
 
         //#region Public methods for Nedbank Tenant
 
@@ -2747,9 +2770,9 @@ namespace nIS
             }
             return queryString;
         }
-
         #endregion
 
 
     }
 }
+#endregion

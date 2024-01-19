@@ -342,10 +342,6 @@ export class ProductSummaryComponent {
                                 </tr>
                             </tbody>
                         </table>
-
-                        <div class="text-right w-100 pt-3">
-                            <a href="#"><img src="assets/images/click-print-stmt-btn.jpg"></a>
-                        </div>
                     </div>
 
                     <!--table 2 start here-->
@@ -392,16 +388,8 @@ export class ProductSummaryComponent {
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="text-right w-100 pt-3">
-                            <a href="#"><img src="assets/images/click-print-stmt-btn.jpg"></a>
-                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-<div class="container_area">
-            <div class="click-btn text-center w-100" style="padding-top: 50px;">
-                <a href="#"><img src="assets/images/click-print-stmt-btn.jpg"></a>
             </div>
         </div>
     </div>`
@@ -547,11 +535,13 @@ export class PPSDetails1Component {
 @Component({
   selector: 'PPSDetails2',
   template: `<div class="widget">
-   
-        <div class="container_area">
-            <div class="header-contact px-20">
-                <div class="col-49">
-                <div class="col-4 py-2 bdr-end-5">
+
+ <div class="container_area text-left">
+            <div class="fsp-earnings-section pt-2">
+                <div class="dark-blue-bg payment-sum text-white text-center">PPS production statement</div>
+                <div class="px-20 pps-production-stat">
+                    <div class="row py-2">
+                        <div class="col-4 py-2 bdr-end-5">
                             <h4 class="font-weight-bold">Miss HW HLONGWANE</h4>
                             <div class="client-content">
                                 <p class="font-weight-bold">Client contact details</p>
@@ -575,9 +565,12 @@ export class PPSDetails1Component {
                                 <p><span class="font-weight-bold">Date:</span> 2023-09-01 to 2023-01-01</p>
                             </div>
                         </div>
+                    </div>
                 </div>
+                <div class="dark-blue-bg py-1"></div>
             </div>
         </div>
+       
   </div>`
 })
 export class PPSDetails2Component {

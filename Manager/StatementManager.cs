@@ -533,6 +533,9 @@ namespace nIS
                                                             case HtmlConstants.PPS_DETAILS1_WIDGET_NAME:
                                                                 pageHtmlContent.Append(this.PpsDetails1WidgetFormatting(pageWidget, counter, statement, page, divHeight));
                                                                 break;
+                                                            case HtmlConstants.PPS_DETAILS2_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.PpsDetails2WidgetFormatting(pageWidget, counter, statement, page, divHeight));
+                                                                break;
                                                             case HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME:
                                                                 pageHtmlContent.Append(this.AccountInformationWidgetFormatting(pageWidget, counter, statement, page, divHeight));
                                                                 break;
@@ -1364,6 +1367,9 @@ namespace nIS
                                 case HtmlConstants.PPS_DETAILS1_WIDGET_NAME:
                                     this.BindDummyDataToPpsDetails1Widget(pageContent, statement, page, widget, AppBaseDirectory);
                                     break;
+                                case HtmlConstants.PPS_DETAILS2_WIDGET_NAME:
+                                    this.BindDummyDataToPpsDetails2Widget(pageContent, statement, page, widget, AppBaseDirectory);
+                                    break;
 
                                 case HtmlConstants.VIDEO_WIDGET_NAME:
                                     this.BindDummyDataToVideoWidget(pageContent, statement, page, widget, SampleFiles, AppBaseDirectory, tenantCode);
@@ -2111,7 +2117,7 @@ namespace nIS
                             {
                                 pageHeaderHtml = pageHeaderHtml.Replace("{{BackgroundImage}}", string.Empty);
                             }
-                            htmlString.Append(pageHeaderHtml.Replace("{{DivId}}", tabClassName).Replace("{{ExtraClass}}", extraclass));
+                            //htmlString.Append(pageHeaderHtml.Replace("{{DivId}}", tabClassName).Replace("{{ExtraClass}}", extraclass));
 
                             htmlString.Append(HtmlConstants.PAGE_TAB_CONTENT_HEADER);
                             if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
@@ -2362,7 +2368,7 @@ namespace nIS
                                                                 TotalPostedAmount += ((item.TYPE == "Fiduciary_Data") && (item.Prod_Group != "VAT"))?  (Convert.ToDouble(item.Display_Amount)): 0.0;
                                                             });
                                                             string TotalPostedAmountR = (TotalPostedAmount == 0) ? "0.00" : ("R" + TotalPostedAmount.ToString());
-                                                            detailedTransactionSrc.Append("<tr> <td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'><br /></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'>" + TotalPostedAmountR + "</td> <td class='text-center fsp-bdr-bottom px-1'><a href='https://www.google.com/' target = '_blank' ><img src='assets/images/leftarrowlogo.png'></a></td> </tr></table><div class='text-right w-100 pt-3'><a href='https://www.google.com/' target = '_blank'><img src='assets/images/click-print-stmt-btn.jpg'></a></div></div></div></div>");
+                                                            detailedTransactionSrc.Append("<tr> <td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'><br /></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'>" + TotalPostedAmountR + "</td> <td class='text-center fsp-bdr-bottom px-1'><a href='https://www.google.com/' target = '_blank' ><img src='assets/images/leftarrowlogo.png'></a></td> </tr></table><div class='text-right w-100 pt-3'><a href='https://www.google.com/' target = '_blank'></a></div></div></div></div>");
                                                             
                                                             TotalPostedAmount = 0;
                                                         });
@@ -2374,7 +2380,7 @@ namespace nIS
                                                 {
                                                     DateTime DateFrom = new DateTime(2023, 01, 01);
                                                     DateTime DateTo = new DateTime(2023, 09, 01);
-                                                    string ppsDetails1InfoJson = "{'Request_ID':1,'AE_TYPE_ID':'20','INT_EXT_REF':'124529534','POLICY_REF':'October','MEMBER_REF':'Payment Details',    'Member_Name':'DummyText1','BUS_GROUP':'SERVICE FEES','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Professional Health',    'OID':'DummyText1','MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':65566.20,    'ALLOCATED_AMOUNT':65566.20,'MEMBER_AGE':'DummyText1','MONTHS_IN_FORCE':'DummyText1','REQUEST_DATETIME':'2023-01-01',    'REQUESTED_DATETIME':'2023-09-01','AE_agmt_id':'DummyText1','AE_agmt_type_id':'5596100','AE_Posted_Date':'2023-09-01','AE_Amount':'65566.20','Acc_Name':'DummyText1','FSP_Name':'Miss HW HLONGWANE','DUE_DATE':'2023-09-01','YEAR_START_DATE':'2023-01-01','YEAR_END_DATE':'2023-09-01','Type':'DummyText1',    'Req_Year':'2023-01-01','FutureEndDate':'2023-01-01','Calc1stYear':10000,'Calc2ndYear':20000,'MonthRange':'DummyText1',    'calcMain2ndYear':30000 }";
+                                                    string ppsDetails1InfoJson = "{'Request_ID':1,'AE_TYPE_ID':'20','INT_EXT_REF':'124529534','POLICY_REF':'October','MEMBER_REF':'Payment Details',    'Member_Name':'DummyText1','BUS_GROUP':'SERVICE FEES','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Professional Health','OID':'DummyText1','MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':65566.20,    'ALLOCATED_AMOUNT':65566.20,'MEMBER_AGE':'DummyText1','MONTHS_IN_FORCE':'DummyText1','REQUEST_DATETIME':'2023-01-01','REQUESTED_DATETIME':'2023-09-01','AE_agmt_id':'DummyText1','AE_agmt_type_id':'5596100','AE_Posted_Date':'2023-09-01','AE_Amount':'65566.20','Acc_Name':'DummyText1','FSP_Name':'Miss HW HLONGWANE','DUE_DATE':'2023-09-01','YEAR_START_DATE':'2023-01-01','YEAR_END_DATE':'2023-09-01','Type':'DummyText1',    'Req_Year':'2023-01-01','FutureEndDate':'2023-01-01','Calc1stYear':10000,'Calc2ndYear':20000,'MonthRange':'DummyText1','calcMain2ndYear':30000 }";
                                                     if (ppsDetails1InfoJson != string.Empty && validationEngine.IsValidJson(ppsDetails1InfoJson))
                                                     {
                                                         spIAA_Commission_Detail ppsDetails1Info = JsonConvert.DeserializeObject<spIAA_Commission_Detail>(ppsDetails1InfoJson);
@@ -2388,6 +2394,26 @@ namespace nIS
 
 
                                                         htmlString.Append(ppsDetails1HtmlWidget);
+                                                    }
+                                                }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.PPS_DETAILS2_WIDGET_NAME)
+                                                {
+                                                    DateTime DateFrom = new DateTime(2023, 01, 01);
+                                                    DateTime DateTo = new DateTime(2023, 09, 01);
+                                                    string ppsDetails2InfoJson = "{'Request_ID':1,'AE_TYPE_ID':'20','INT_EXT_REF':'124529534','POLICY_REF':'October','MEMBER_REF':'Payment Details',    'Member_Name':'DummyText1','BUS_GROUP':'SERVICE FEES','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Professional Health','OID':'DummyText1','MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':65566.20,'ALLOCATED_AMOUNT':65566.20,'MEMBER_AGE':'DummyText1','MONTHS_IN_FORCE':'DummyText1','REQUEST_DATETIME':'2023-01-01','REQUESTED_DATETIME':'2023-09-01','AE_agmt_id':'DummyText1','AE_agmt_type_id':'5596100','AE_Posted_Date':'2023-09-01','AE_Amount':'65566.20','Acc_Name':'DummyText1','FSP_Name':'Miss HW HLONGWANE','DUE_DATE':'2023-09-01','YEAR_START_DATE':'2023-01-01','YEAR_END_DATE':'2023-09-01','Type':'DummyText1',    'Req_Year':'2023-01-01','FutureEndDate':'2023-01-01','Calc1stYear':10000,'Calc2ndYear':20000,'MonthRange':'DummyText1','calcMain2ndYear':30000 }";
+                                                    if (ppsDetails2InfoJson != string.Empty && validationEngine.IsValidJson(ppsDetails2InfoJson))
+                                                    {
+                                                        spIAA_Commission_Detail ppsDetails2Info = JsonConvert.DeserializeObject<spIAA_Commission_Detail>(ppsDetails2InfoJson);
+                                                        var ppsDetails2HtmlWidget = HtmlConstants.PPS_DETAILS2_WIDGET_HTML;
+                                                        ppsDetails2HtmlWidget = ppsDetails2HtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
+
+                                                        //ppsDetails2HtmlWidget = ppsDetails2HtmlWidget.Replace("{{ref}}", ppsDetails2Info.INT_EXT_REF);
+                                                        //ppsDetails2HtmlWidget = ppsDetails2HtmlWidget.Replace("{{mtype}}", ppsDetails2Info.MeasureType);
+                                                        //ppsDetails2HtmlWidget = ppsDetails2HtmlWidget.Replace("{{month}}", DateFrom.ToString("MMMM yyyy"));
+                                                        //ppsDetails2HtmlWidget = ppsDetails2HtmlWidget.Replace("{{paramDate}}", DateFrom.ToString("yyyy-MM-dd") + " To " + DateTo.ToString("yyyy-MM-dd"));
+
+
+                                                        htmlString.Append(ppsDetails2HtmlWidget);
                                                     }
                                                 }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME)
@@ -2859,8 +2885,8 @@ namespace nIS
 
                 navbarHtml = navbarHtml.Replace("{{NavItemList}}", navItemList.ToString());
                 tempHtml.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
-                finalHtml = navbarHtml + tempHtml.ToString();
-
+                finalHtml = tempHtml.ToString();
+                //finalHtml = navbarHtml + tempHtml.ToString();
                 return finalHtml;
             }
             catch (Exception ex)
@@ -5898,6 +5924,14 @@ namespace nIS
             widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
             return widgetHTML;
         }
+        private string PpsDetails2WidgetFormatting(PageWidget pageWidget, int counter, Statement statement, Page page, string divHeight)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var widgetHTML = HtmlConstants.PPS_DETAILS2_WIDGET_HTML_FOR_STMT;
+            widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
+            widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+            return widgetHTML;
+        }
 
         private string SummaryAtGlanceWidgetFormatting(PageWidget pageWidget, int counter, Page page, string divHeight)
         {
@@ -6798,7 +6832,7 @@ namespace nIS
                         TotalPostedAmount += ((item.TYPE == "Fiduciary_Data") && (item.Prod_Group != "VAT"))?  (Convert.ToDouble(item.Display_Amount)): 0.0;
                     });
 
-                    detailedTransactionSrc.Append("<tr> <td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'><br /></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'>R" + TotalPostedAmount + "</td> <td class='text-center fsp-bdr-bottom px-1'><a href='https://www.google.com/' target = '_blank' ><img src='assets/images/leftarrowlogo.png'></a></td> </tr></table><div class='text-right w-100 pt-3'><a href='https://www.google.com/' target = '_blank'><img src='assets/images/click-print-stmt-btn.jpg'></a></div></div></div></div>");
+                    detailedTransactionSrc.Append("<tr> <td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'><br /></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'>R" + TotalPostedAmount + "</td> <td class='text-center fsp-bdr-bottom px-1'><a href='https://www.google.com/' target = '_blank' ><img src='assets/images/leftarrowlogo.png'></a></td> </tr></table><div class='text-right w-100 pt-3'><a href='https://www.google.com/' target = '_blank'></a></div></div></div></div>");
 
                 });
                 pageContent.Replace("{{detailedTransaction}}", detailedTransactionSrc.ToString());
@@ -6880,7 +6914,7 @@ namespace nIS
         {
             DateTime DateFrom = new DateTime(2023, 01, 01);
             DateTime DateTo = new DateTime(2023, 09, 01);
-            var ppsDetails1InfoJson = "{Request_ID : 1,          AE_TYPE_ID : '20', 		INT_EXT_REF : '124529534', 		POLICY_REF : 'October', 		MEMBER_REF : 'Payment Details', 		Member_Name : 'DummyText1', 		BUS_GROUP : 'SERVICE FEES', 		PRODUCT_DESCRIPTION : 'Professional Health Provider Whole Life Professional Health', 		OID : 'DummyText1', 		MeasureType : 'Commission', 		CommissionType : '2nd Year', 		TRANSACTION_AMOUNT : 65566.20, 		ALLOCATED_AMOUNT : 65566.20, 		MEMBER_AGE : 'DummyText1', 		MONTHS_IN_FORCE : 'DummyText1', 		REQUEST_DATETIME : @DateFrom, 		REQUESTED_DATETIME : @AEPostedDate, 		AE_agmt_id : 'DummyText1', 		AE_agmt_type_id : '5596100', 		AE_Posted_Date : @AEPostedDate, 		AE_Amount : '65 566.20', 		Acc_Name : 'DummyText1', 		FSP_Name : 'Miss HW HLONGWANE', 		DUE_DATE : @AEDueDate, 		YEAR_START_DATE : @DateFrom, 		YEAR_END_DATE : @DateTo, 		Type : 'DummyText1', 		Req_Year : @DateFrom, 		FutureEndDate : @DateFrom, 			Calc1stYear : 10000, 		Calc2ndYear : 20000, 		MonthRange : 'DummyText1',		 		calcMain2ndYear : 30000}";
+            var ppsDetails1InfoJson = "{Request_ID : 1,AE_TYPE_ID : '20',INT_EXT_REF : '124529534',POLICY_REF : 'October',MEMBER_REF : 'Payment Details',Member_Name : 'DummyText1',BUS_GROUP : 'SERVICE FEES',PRODUCT_DESCRIPTION : 'Professional Health Provider Whole Life Professional Health',OID : 'DummyText1',MeasureType : 'Commission',CommissionType : '2nd Year',TRANSACTION_AMOUNT : 65566.20,ALLOCATED_AMOUNT : 65566.20,MEMBER_AGE : 'DummyText1',MONTHS_IN_FORCE : 'DummyText1',REQUEST_DATETIME : @DateFrom,REQUESTED_DATETIME : @AEPostedDate,AE_agmt_id : 'DummyText1',AE_agmt_type_id : '5596100',AE_Posted_Date : @AEPostedDate,AE_Amount : '65 566.20',Acc_Name : 'DummyText1',FSP_Name : 'Miss HW HLONGWANE',DUE_DATE : @AEDueDate,YEAR_START_DATE : @DateFrom,YEAR_END_DATE : @DateTo,Type : 'DummyText1',Req_Year : @DateFrom,FutureEndDate : @DateFrom,Calc1stYear : 10000,Calc2ndYear : 20000,MonthRange : 'DummyText1',calcMain2ndYear : 30000}";
             if (ppsDetails1InfoJson != string.Empty && validationEngine.IsValidJson(ppsDetails1InfoJson))
             {
                 var ppsDetails1Info = JsonConvert.DeserializeObject<spIAA_Commission_Detail>(ppsDetails1InfoJson);
@@ -6890,6 +6924,22 @@ namespace nIS
                 pageContent.Replace("{{paramDate}}", DateFrom.ToString()+ " To "+ DateTo.ToString()) ;
 
                
+            }
+        }
+        private void BindDummyDataToPpsDetails2Widget(StringBuilder pageContent, Statement statement, Page page, PageWidget widget, string AppBaseDirectory)
+        {
+            DateTime DateFrom = new DateTime(2023, 01, 01);
+            DateTime DateTo = new DateTime(2023, 09, 01);
+            var ppsDetails2InfoJson = "{Request_ID : 1,AE_TYPE_ID : '20',INT_EXT_REF : '124529534',POLICY_REF : 'October',MEMBER_REF : 'Payment Details',Member_Name : 'DummyText1',BUS_GROUP : 'SERVICE FEES',PRODUCT_DESCRIPTION : 'Professional Health Provider Whole Life Professional Health',OID : 'DummyText1',MeasureType : 'Commission',CommissionType : '2nd Year',TRANSACTION_AMOUNT : 65566.20,ALLOCATED_AMOUNT : 65566.20,MEMBER_AGE : 'DummyText1',MONTHS_IN_FORCE : 'DummyText1',REQUEST_DATETIME : @DateFrom,REQUESTED_DATETIME : @AEPostedDate,AE_agmt_id : 'DummyText1',AE_agmt_type_id : '5596100',AE_Posted_Date : @AEPostedDate,AE_Amount : '65 566.20',Acc_Name : 'DummyText1',FSP_Name : 'Miss HW HLONGWANE',DUE_DATE : @AEDueDate,YEAR_START_DATE : @DateFrom,YEAR_END_DATE : @DateTo,Type : 'DummyText1',Req_Year : @DateFrom,FutureEndDate : @DateFrom,Calc1stYear : 10000,Calc2ndYear : 20000,MonthRange : 'DummyText1',calcMain2ndYear : 30000}";
+            if (ppsDetails2InfoJson != string.Empty && validationEngine.IsValidJson(ppsDetails2InfoJson))
+            {
+                var ppsDetails2Info = JsonConvert.DeserializeObject<spIAA_Commission_Detail>(ppsDetails2InfoJson);
+                //pageContent.Replace("{{ref}}", ppsDetails2Info.INT_EXT_REF);
+                //pageContent.Replace("{{mtype}}", ppsDetails2Info.MeasureType);
+                //pageContent.Replace("{{month}}", DateFrom.ToString("MMMM yyyy"));
+                //pageContent.Replace("{{paramDate}}", DateFrom.ToString() + " To " + DateTo.ToString());
+
+
             }
         }
 
