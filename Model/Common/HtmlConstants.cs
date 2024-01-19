@@ -19,6 +19,10 @@ namespace nIS
 
         public const string SAVING_ACCOUNT_PAGE = "Saving Account"; 
 
+        public const string FSP_PAGE = "FSP"; 
+        public const string PPS_PAGE = "PPS"; 
+
+
         public const string CUSTOMER_INFORMATION_WIDGET_NAME = "CustomerInformation";
 
         public const string PAYMENT_SUMMARY_WIDGET_NAME = "PaymentSummary";

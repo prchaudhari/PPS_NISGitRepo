@@ -1087,6 +1087,9 @@ namespace nIS
             var ErrorMessages = new StringBuilder();
             bool IsFailed = false;
             bool IsSavingOrCurrentAccountPagePresent = false;
+            bool IsFSPPagePresent = false;
+            bool IsPPSPagePresent = false;
+
             var statementMetadataRecords = new List<StatementMetadata>();
             DateTime DateFrom = new DateTime(2023, 01, 01);
             DateTime DateTo = new DateTime(2023, 09, 01);
@@ -1110,10 +1113,13 @@ namespace nIS
 
                     var pages = statement.Pages.Where(item => item.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || item.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE).ToList();
                     IsSavingOrCurrentAccountPagePresent = pages.Count > 0 ? true : false;
+                    var fsp = statement.Pages.Where(item => item.PageTypeName == HtmlConstants.FSP_PAGE).ToList();
+                    IsFSPPagePresent = pages.Count > 0 ? true : false;
+                    var pps = statement.Pages.Where(item => item.PageTypeName == HtmlConstants.PPS_PAGE).ToList();
+                    IsPPSPagePresent = pages.Count > 0 ? true : false;
 
-
-                    fspDetails = this.tenantTransactionDataRepository.Get_PPSDetails(tenantCode)?.ToList();
-                    ppsDetails = this.tenantTransactionDataRepository.Get_PPSDetails1(tenantCode)?.ToList();
+                    //fspDetails = this.tenantTransactionDataRepository.Get_PPSDetails(tenantCode)?.ToList();
+                    //ppsDetails = this.tenantTransactionDataRepository.Get_PPSDetails1(tenantCode)?.ToList();
                     //collecting all required transaction required for static widgets in financial tenant html statement
                     if (IsSavingOrCurrentAccountPagePresent)
                     {
@@ -1143,6 +1149,14 @@ namespace nIS
 
                         //get customer saving and spending trend details data
                         CustomerSavingTrends = this.tenantTransactionDataRepository.Get_SavingTrend(customerAccountSearchParameter, tenantCode)?.ToList();
+                    }
+                    else if(IsFSPPagePresent)
+                    {
+                        fspDetails = this.tenantTransactionDataRepository.Get_PPSDetails(tenantCode)?.ToList();
+                    }
+                    else if(IsPPSPagePresent)
+                    {
+                        ppsDetails = this.tenantTransactionDataRepository.Get_PPSDetails1(tenantCode)?.ToList();
                     }
 
                     //collecting all media information which is required in html statement for some widgets like image, video and static customer information widgets
