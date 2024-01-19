@@ -15,7 +15,7 @@ import {
   SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
   SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
   DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent, 
-  SpecialMessageComponent, PersonalLoanInsuranceMessageComponent
+  SpecialMessageComponent, PersonalLoanInsuranceMessageComponent, PPSEarningForPeriodComponent
 } from '../widgetComponent/widgetComponent';
 import { FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -325,6 +325,9 @@ export class ViewDashboardDesignerComponent implements OnInit {
       }
       else if (widgetName == 'PPSFooter1') {
         gridObj.component = PPSFooter1Component;
+      }
+      else if (widgetName == 'PPSEarningForPeriod') {
+        gridObj.component = PPSEarningForPeriodComponent;
       }
       else if (widgetName == 'AccountInformation') {
         gridObj.component = AccountInformationComponent;
