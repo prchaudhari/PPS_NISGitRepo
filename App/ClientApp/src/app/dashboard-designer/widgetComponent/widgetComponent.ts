@@ -592,23 +592,23 @@ export class PPSDetails2Component {
   template: `<div class="widget">
    <div class="container_area" style="max-width: 800px;">
             <div class="fsp-earnings-section">
-                <div class="payment-sum text-center">Detailed transactions</div>
+                <div class="dark-blue-bg payment-sum text-white text-center">Detailed transactions</div>
                 
                 <div class="pps-earning-period pps-details-table pt-1 pb-2 d-flex justify-content-between">                  
                     <div class="pps-monthly-table w-100">
                             <table cellpadding="0" cellspacing="0" width="100%">
                                 <tr>
-                                    <th class="bdr-right-white text-white fw-bold">Client<br/>name</th>
-                                    <th class="bdr-right-white text-white fw-bold">Age</th>
-                                    <th class="bdr-right-white text-white fw-bold">Policy #</th>
-                                    <th class="bdr-right-white text-white fw-bold">Policy #</th>
-                                    <th class="bdr-right-white text-white fw-bold">Product</th>
-                                    <th class="bdr-right-white text-white fw-bold">Date<br/>issued</th>
-                                    <th class="bdr-right-white text-white fw-bold">Inception<br/>date</th>
-                                    <th class="bdr-right-white text-white fw-bold">Com<br/>type</th>
-                                    <th class="bdr-right-white text-white fw-bold">Quantity</th>
-                                    <th class="bdr-right-white text-white fw-bold">Posted<br/>date</th>
-                                    <th class="bdr-right-white text-white fw-bold">Earnings</th>
+                                    <th class="bdr-right-white sky-blue-bg text-white fw-bold">Client<br/>name</th>
+                                    <th class="bdr-right-white sky-blue-bg text-white fw-bold">Age</th>
+                                    <th class="bdr-right-white sky-blue-bg text-white fw-bold">Policy #</th>
+                                    <th class="bdr-right-white sky-blue-bg text-white fw-bold">Policy #</th>
+                                    <th class="bdr-right-white sky-blue-bg text-white fw-bold">Product</th>
+                                    <th class="bdr-right-white sky-blue-bg text-white fw-bold">Date<br/>issued</th>
+                                    <th class="bdr-right-white sky-blue-bg text-white fw-bold">Inception<br/>date</th>
+                                    <th class="bdr-right-white sky-blue-bg text-white fw-bold">Com<br/>type</th>
+                                    <th class="bdr-right-white sky-blue-bg text-white fw-bold">Quantity</th>
+                                    <th class="bdr-right-white sky-blue-bg text-white fw-bold">Posted<br/>date</th>
+                                    <th class="bdr-right-white sky-blue-bg text-white fw-bold">Earnings</th>
                                 </tr>
 
                                 <tr>
@@ -743,13 +743,13 @@ export class PPSDetails2Component {
                                     <td class="dark-blue-bg text-white fw-bold "></td>
                                     <td class="dark-blue-bg text-white fw-bold "></td>
                                     <td class="dark-blue-bg text-white fw-bold "></td>
-                                    <td class="dark-blue-bg text-white fw-bold text-center fs-16">Sub Total</td>
                                     <td class="dark-blue-bg text-white fw-bold "></td>
                                     <td class="dark-blue-bg text-white fw-bold "></td>
                                     <td class="dark-blue-bg text-white fw-bold "></td>
                                     <td class="dark-blue-bg text-white fw-bold "></td>
-                                    <td class="pps-bg-gray" ></td>
-                                    <td class="fw-bold fs-16 pps-bg-gray" height="40">R15 133.33</td>
+                                    <td class="dark-blue-bg text-white fw-bold fs-16">Sub Total</td>
+                                    <td class="" ></td>
+                                    <td class="fw-bold fs-16" height="40">R15 133.33</td>
                                 </tr>
                                
                             </table>
@@ -761,6 +761,7 @@ export class PPSDetails2Component {
             </div>
 
         </div>
+ 
 
   </div>`
 })

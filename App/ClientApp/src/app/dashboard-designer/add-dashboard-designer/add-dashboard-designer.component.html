@@ -36,6 +36,7 @@
                   'fa fa-address-book-o': widget.WidgetName == 'PPSDetails1' || widget.WidgetName == 'PPSDetails1' || widget.WidgetName == 'PortfolioCustomerDetails',
                    
                   'fa-address-book': widget.WidgetName == 'PPSDetails2',
+                  'fa-address-book': widget.WidgetName == 'PPSDetailedTransactions',
                    'icon-videoWidget' : widget.WidgetName == 'Video',
                   'icon-widget-single-column2 fa-lg' : widget.WidgetName == 'PPSFooter1'|| widget.WidgetName == 'FSPDetails'|| widget.WidgetName == 'PaymentSummary'|| widget.WidgetName == 'FSPHeading' || widget.WidgetName == 'FSPDetails' || widget.WidgetName == 'Summary' || widget.WidgetName == 'BreakdownOfInvestmentAccounts' || widget.WidgetName == 'WealthBreakdownOfInvestmentAccounts' || widget.WidgetName == 'PersonalLoanDetail' || widget.WidgetName == 'PersonalLoanTotalAmountDetail' || widget.WidgetName == 'HomeLoanTotalAmountDetail' || widget.WidgetName == 'AccountSummary' || widget.WidgetName == 'WealthHomeLoanTotalAmountDetail' || widget.WidgetName == 'MCAAccountSummary'|| widget.WidgetName == 'WealthMCAAccountSummary' ||  widget.WidgetName == 'CorporateSaverTableTotal' ,
                   'icon-widget-single-column2 fa-lg' : widget.WidgetName == 'PPSFooter1'|| widget.WidgetName == 'FSPDetails'|| widget.WidgetName == 'PaymentSummary'||  widget.WidgetName == 'ProductSummary' || widget.WidgetName == 'PPSHeading' || widget.WidgetName == 'PPSDetails' || widget.WidgetName == 'Summary' || widget.WidgetName == 'BreakdownOfInvestmentAccounts' || widget.WidgetName == 'WealthBreakdownOfInvestmentAccounts' || widget.WidgetName == 'PersonalLoanDetail' || widget.WidgetName == 'PersonalLoanTotalAmountDetail' || widget.WidgetName == 'HomeLoanTotalAmountDetail' || widget.WidgetName == 'AccountSummary' || widget.WidgetName == 'WealthHomeLoanTotalAmountDetail' || widget.WidgetName == 'MCAAccountSummary'|| widget.WidgetName == 'WealthMCAAccountSummary' ||  widget.WidgetName == 'CorporateSaverTableTotal' ,
@@ -81,6 +82,7 @@
                 [class.icon-videoWidget]="widget.WidgetName == 'Video'"
                 [class.fa-address-book-o]="['PPSDetails1', 'PPSDetails1', 'PortfolioCustomerDetails'].includes(widget.WidgetName)" 
                 [class.fa-address-book]="widget.WidgetName == 'PPSDetails2'"
+                [class.fa-address-book]="widget.WidgetName == 'PPSDetailedTransactions'"
                [class.icon-home-line2]="widget.WidgetName == 'Image'"   
                 [class.icon-TransactionMixWidget]="widget.WidgetName == 'ProductSummary'"   
                             

@@ -271,6 +271,7 @@ namespace nIS
 
         public const string IMAGE_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'><div class='card-body {{ImgAlignmentClass}}'><img src='{{ImageSource}}' class='{{NewImageClass}}' style='height:{{ImgHeight}};max-width:100%;'/></div></div>";
 
+      
         public const string PPS_DETAILS1_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'> <div class='container_area'> <div class='header-contact px-20'> <div class='col-49 text-left'> <ul> <li> <dd>Reference:</dd> <dt class='text-gray'>{{ref}}</dt> </li> <li> <dd>Measure type:</dd> <dt class='text-gray'>{{mtype}}</dt> </li> <li> <dd>Month:</dd> <dt class='text-gray'>{{month}}</dt> </li> <li> <dd>Date:</dd> <dt class='text-gray'>{{paramDate}}</dt> </li> </ul> </div>  <div class='col-49 text-left'> <ul> <li> <dd>Contact details:</dd> <dt></dt> </li> <li> <dd>M:</dd> <dt class='text-gray'>0821234567</dt> </li> <li> <dd>E:</dd> <dt class='text-gray1'>y.vanheerden @google.com</dt> </li> <li> <dd>A:</dd> <dt class='text-gray'>1 John Vorster Drive,<br/>Randburg, Gauteng</dt> </li> </ul> </div> </div> </div> </div>";
 
         public const string VIDEO_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'> <div class='card-body text-center'><video class='video-widget w-100 float-left {{NewVideoClass}}' controls><source src='{{VideoSource}}' type='video/mp4'></video></div></div>";
