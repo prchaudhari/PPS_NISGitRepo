@@ -9,7 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import {
     SummaryAtGlanceComponent, AccountInformationComponent, FSPDetailsComponent, ProductSummaryComponent, PPSDetailedTransactionsComponent ,DetailedTransactionsComponent, PaymentSummaryComponent, FSPHeadingComponent, PPSFooter1Component, FooterImageComponent,PPSDetails1Component,PPSDetails2Component,
   SavingTrendsPreviewComponent, SpendindTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent, 
-  DynamicBarChartWidgetPreviewComponent, DynamicHhtmlComponent, StaticHtmlComponent, PageBreakComponent, SegmentBasedContentComponent} from '../widgetComponent/widgetComponent';
+  DynamicBarChartWidgetPreviewComponent, DynamicHhtmlComponent, StaticHtmlComponent, PageBreakComponent, SegmentBasedContentComponent, PPSEarningForPeriodComponent} from '../widgetComponent/widgetComponent';
 import { DynamicWidgetService } from '../../layout/widget-dynamic/dynamicwidget.service';
 import { AppSettings } from '../../appsettings';
 

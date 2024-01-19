@@ -4,10 +4,15 @@ namespace PuppeteerSharpProject
 {
     class Program
     {
+       
+
+
+ 
+
         static async Task Main(string[] args)
         {
  
-                   //var html = File.ReadAllText("./invoice.html");
+                 //  var html = File.ReadAllText("./invoice.html");
               //  var htmlPath = "./invoice2/7/Statement_7_19_12_01_2024_20_20_55.html";
                   //   var pdfOptions = new PuppeteerSharp.PdfOptions();
 
@@ -37,6 +42,7 @@ namespace PuppeteerSharpProject
             pdfOptions.FooterTemplate = footerContent; 
             pdfOptions.PreferCSSPageSize = true;
             pdfOptions.Format = PuppeteerSharp.Media.PaperFormat.A4;
+             
 
 
 
@@ -60,7 +66,7 @@ namespace PuppeteerSharpProject
 
         var browser = await PuppeteerSharp.Puppeteer.LaunchAsync(new LaunchOptions
                      {
-                      Headless = true,
+                      Headless = false,
                       ExecutablePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
                 });
 
@@ -68,27 +74,73 @@ namespace PuppeteerSharpProject
                                                          // await page.SetContentAsync(html);
             
             
+            //      //Add script tags to the page
+            // await page.AddScriptTagAsync(new AddTagOptions { Url = "C:\\UserFiles\\common\\js\\jquery.min.js" });
+            // await page.AddScriptTagAsync(new AddTagOptions { Url = "C:\\UserFiles\\common\\js\\popper.min.js" });
+            // await page.AddScriptTagAsync(new AddTagOptions { Url = "C:\\UserFiles\\common\\js\\bootstrap.min.js" });
+            // await page.AddScriptTagAsync(new AddTagOptions { Url = "C:\\UserFiles\\common\\js\\highcharts.js" });
+            // await page.AddScriptTagAsync(new AddTagOptions { Url = "C:\\UserFiles\\common\\js\\jquery.min.js" });
+            // await page.AddScriptTagAsync(new AddTagOptions { Url = "C:\\UserFiles\\common\\js\\series-label.js" });
+            // await page.AddScriptTagAsync(new AddTagOptions { Url = "C:\\UserFiles\\common\\js\\exporting.js" });
+            // await page.AddScriptTagAsync(new AddTagOptions { Url = "C:\\UserFiles\\common\\js\\export-data.js" });
+            // await page.AddScriptTagAsync(new AddTagOptions { Url = "C:\\UserFiles\\common\\js\\accessibility.js" });
+            // await page.AddScriptTagAsync(new AddTagOptions { Url = "C:\\UserFiles\\common\\js\\script.js" });
+            // // Generate PDF from the page with specified options
+            // // Add style tags to the page
+            // await page.AddStyleTagAsync(new AddTagOptions { Url = "C:\\UserFiles\\common\\css\\bootstrap.min.css" });
+            // await page.AddStyleTagAsync(new AddTagOptions { Url = "C:\\UserFiles\\common\\css\\font-awesome.min.css" });
+            // await page.AddStyleTagAsync(new AddTagOptions { Url = "C:\\UserFiles\\common\\css\\site.css" });
+            // await page.AddStyleTagAsync(new AddTagOptions { Url = "C:\\UserFiles\\common\\css\\ltr.css" });
+
             
+            
+
+
+
+
             
              await page.GoToAsync("E:\\nis_pps\\phase3\\PuppeteerSharpProject\\bin\\Debug\\net8.0\\invoice2\\7\\Statement_7_19_12_01_2024_20_20_55.html");
+        
+            // Add style tags to the page
+        //     await page.AddStyleTagAsync("./common/css/bootstrap.min.css" );
+        //     await page.AddStyleTagAsync("./common/css/font-awesome.min.css" );
+        //     await page.AddStyleTagAsync("./common/css/site.css" );
+        //     await page.AddStyleTagAsync("./common/css/ltr.css" );
+        // await page.AddScriptTagAsync("./common/js/jquery.min.js" );
+        //     await page.AddScriptTagAsync("./common/js/popper.min.js" );
+        //     await page.AddScriptTagAsync("./common/js/bootstrap.min.js" );
+        //     await page.AddScriptTagAsync("./common/js/highcharts.js" );
+        //     await page.AddScriptTagAsync("./common/js/jquery.min.js" );
+        //     await page.AddScriptTagAsync("./common/js/series-label.js" );
+        //     await page.AddScriptTagAsync("./common/js/exporting.js" );
+        //     await page.AddScriptTagAsync("./common/js/export-data.js" );
+        //     await page.AddScriptTagAsync("./common/js/accessibility.js" );
+        //     await page.AddScriptTagAsync("./common/js/script.js" );
+            // Generate PDF from the page with specified options
+
+
          
-            //Add script tags to the page
-            await page.AddScriptTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\js\\jquery.min.js" });
-            await page.AddScriptTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\js\\popper.min.js" });
-            await page.AddScriptTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\js\\bootstrap.min.js" });
-            await page.AddScriptTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\js\\highcharts.js" });
-            await page.AddScriptTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\js\\jquery.min.js" });
-            await page.AddScriptTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\js\\series-label.js" });
-            await page.AddScriptTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\js\\exporting.js" });
-            await page.AddScriptTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\js\\export-data.js" });
-            await page.AddScriptTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\js\\accessibility.js" });
-            await page.AddScriptTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\js\\script.js" });
+ 
+
+
+                 //      //Add script tags to the page
+            await page.AddScriptTagAsync(new AddTagOptions { Path = "E:\\nis_pps\\phase3\\PuppeteerSharpProject\\bin\\Debug\\net8.0\\common\\js\\jquery.min.js" });
+            await page.AddScriptTagAsync(new AddTagOptions { Path = "E:\\nis_pps\\phase3\\PuppeteerSharpProject\\bin\\Debug\\net8.0\\common\\js\\popper.min.js" });
+            await page.AddScriptTagAsync(new AddTagOptions { Path = "E:\\nis_pps\\phase3\\PuppeteerSharpProject\\bin\\Debug\\net8.0\\common\\js\\bootstrap.min.js" });
+            await page.AddScriptTagAsync(new AddTagOptions {Path = "E:\\nis_pps\\phase3\\PuppeteerSharpProject\\bin\\Debug\\net8.0\\common\\js\\highcharts.js" });
+            await page.AddScriptTagAsync(new AddTagOptions {Path = "E:\\nis_pps\\phase3\\PuppeteerSharpProject\\bin\\Debug\\net8.0\\common\\js\\series-label.js" });
+            await page.AddScriptTagAsync(new AddTagOptions {Path = "E:\\nis_pps\\phase3\\PuppeteerSharpProject\\bin\\Debug\\net8.0\\common\\js\\exporting.js" });
+            await page.AddScriptTagAsync(new AddTagOptions {Path = "E:\\nis_pps\\phase3\\PuppeteerSharpProject\\bin\\Debug\\net8.0\\common\\js\\export-data.js" });
+            await page.AddScriptTagAsync(new AddTagOptions {Path = "E:\\nis_pps\\phase3\\PuppeteerSharpProject\\bin\\Debug\\net8.0\\common\\js\\accessibility.js" });
+            await page.AddScriptTagAsync(new AddTagOptions {Path = "E:\\nis_pps\\phase3\\PuppeteerSharpProject\\bin\\Debug\\net8.0\\common\\js\\script.js" });
             // Generate PDF from the page with specified options
             // Add style tags to the page
-            await page.AddStyleTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\css\\bootstrap.min.css" });
-            await page.AddStyleTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\css\\font-awesome.min.css" });
-            await page.AddStyleTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\css\\site.css" });
-            await page.AddStyleTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\css\\ltr.css" });
+            await page.AddStyleTagAsync(new AddTagOptions {Path = "E:\\nis_pps\\phase3\\PuppeteerSharpProject\\bin\\Debug\\net8.0\\common\\css\\bootstrap.min.css" });
+            await page.AddStyleTagAsync(new AddTagOptions {Path = "E:\\nis_pps\\phase3\\PuppeteerSharpProject\\bin\\Debug\\net8.0\\common\\css\\font-awesome.min.css" });
+            await page.AddStyleTagAsync(new AddTagOptions {Path = "E:\\nis_pps\\phase3\\PuppeteerSharpProject\\bin\\Debug\\net8.0\\common\\css\\site.css" });
+            await page.AddStyleTagAsync(new AddTagOptions {Path = "E:\\nis_pps\\phase3\\PuppeteerSharpProject\\bin\\Debug\\net8.0\\common\\css\\ltr.css" });
+           // Generate PDF from the page with specified options
+         
          await page.PdfAsync("invoice2.pdf", pdfOptions);
 
 //                   using var browserFetcher = new BrowserFetcher();
