@@ -1152,11 +1152,11 @@ namespace nIS
                     }
                     else if(IsFSPPagePresent)
                     {
-                        fspDetails = this.tenantTransactionDataRepository.Get_PPSDetails(tenantCode)?.ToList();
+                        fspDetails = this.tenantTransactionDataRepository.Get_FSPDetails(tenantCode)?.ToList();
                     }
                     else if(IsPPSPagePresent)
                     {
-                        ppsDetails = this.tenantTransactionDataRepository.Get_PPSDetails1(tenantCode)?.ToList();
+                        ppsDetails = this.tenantTransactionDataRepository.Get_PPSDetails(tenantCode)?.ToList();
                     }
 
                     //collecting all media information which is required in html statement for some widgets like image, video and static customer information widgets
