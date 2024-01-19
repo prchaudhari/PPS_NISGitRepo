@@ -17,7 +17,7 @@ import {
   DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent,
   SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
   CSAgentLogoComponent,
-  PPSDetails2Component
+  PPSDetails2Component, PPSEarningForPeriodComponent
 } from '../widgetComponent/widgetComponent';
 import { AssetLibraryService } from '../../layout/asset-libraries/asset-library.service';
 import { AssetSearchParameter } from '../../layout/asset-libraries/asset-library';
@@ -1057,10 +1057,25 @@ export class AddDashboardDesignerComponent implements OnInit {
           else if (widget.WidgetName == "PPSDetailedTransactions") {
             return this.widgetsGridsterItemArray.push({
               cols: 8,
-              rows: 5,
+              rows: 10,
               y: 0,
               x: 0,
               component: PPSDetailedTransactionsComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "PPSEarningForPeriod") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 8,
+              rows: 5,
+              y: 0,
+              x: 0,
+              component: PPSEarningForPeriodComponent,
               value: widget.WidgetName,
               WidgetId: widget.Identifier,
               widgetItemCount: this.widgetItemCount,
@@ -2398,6 +2413,9 @@ export class AddDashboardDesignerComponent implements OnInit {
       }
       else if (widgetName == 'FooterImage') {
         gridObj.component = FooterImageComponent;
+      }
+      else if (widgetName == 'PPSEarningForPeriod') {
+        gridObj.component = PPSEarningForPeriodComponent;
       }
       else if (widgetName == 'AccountInformation') {
         gridObj.component = AccountInformationComponent;

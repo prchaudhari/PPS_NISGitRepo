@@ -3065,3 +3065,67 @@
     width: 100%;
 }
 /*pps product summary end*/
+
+/*pps details2*/
+
+.pps_area_title {
+    background: #092c4d;
+    text-align: center;
+    padding: 8px;
+    color: #fff;
+    margin-top: 8px;
+    font-size: 17px;
+}
+
+.client_title {
+    font-size: 16px;
+}
+
+.miss_title {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.pps_production b {
+    color: black;
+}
+
+.pps_production {
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 0px;
+    align-items: center;
+}
+
+.col.col_bor {
+    border-right: 6px solid#092c4d;
+    margin-right: 20px;
+}
+
+.intermediary_box .title_inr {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.intermediary_box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+/* pps details2*/
+.dark-blue-bg {
+    background-color: #091E35 !important;
+}
+
+.pps-production-stat p {
+    font-size: 0.8rem;
+    margin-bottom: 0;
+}
+
+.pps-production-stat h4 {
+    font-size: 0.9rem;
+}
+
+.bdr-end-5 {
+    border-right: 5px solid #091E35;
+}

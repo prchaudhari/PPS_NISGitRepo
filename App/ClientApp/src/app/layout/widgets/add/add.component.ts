@@ -96,7 +96,7 @@ export class AddComponent implements OnInit {
           this.widgetList[i].WidgetIcon = "fa fa-address-book-o";
         }
         else if (this.widgetList[i].WidgetName == "PPSDetailedTransactions") {
-          this.widgetList[i].ImageSource = "assets/images/PPSDetailedTransactions.png";
+          this.widgetList[i].ImageSource = "assets/images/details3.PNG";
           this.widgetList[i].WidgetIcon = "fa fa-address-book-o";
         }
         else if (this.widgetList[i].WidgetName == "FSPHeading") {
@@ -117,6 +117,10 @@ export class AddComponent implements OnInit {
         }
         else if (this.widgetList[i].WidgetName == "FooterImage") {
           this.widgetList[i].ImageSource = "assets/images/footerImage.png";
+          this.widgetList[i].WidgetIcon = "fa fa-address-book-o";
+        }
+        else if (this.widgetList[i].WidgetName == "PPSEarningForPeriod") {
+          this.widgetList[i].ImageSource = "assets/images/PPSEarningForPeriod.png";
           this.widgetList[i].WidgetIcon = "fa fa-address-book-o";
         }
         else if (this.widgetList[i].WidgetName == "AccountInformation") {

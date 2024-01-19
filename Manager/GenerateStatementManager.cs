@@ -1338,6 +1338,9 @@ namespace nIS
                                         case HtmlConstants.PPS_DETAILS1_WIDGET_NAME:
                                             this.BindPpsDetails1WidgetData(pageContent, customer, statement, page, widget, customerMedias, ppsDetails, statementRawData.BatchDetails);
                                             break;
+                                        case HtmlConstants.PPS_DETAILS2_WIDGET_NAME:
+                                            this.BindPpsDetails2WidgetData(pageContent, customer, statement, page, widget, customerMedias, ppsDetails, statementRawData.BatchDetails);
+                                            break;
                                         case HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME:
                                             this.BindAccountInformationWidgetData(pageContent, customer, page, widget);
                                             break;
@@ -1502,7 +1505,7 @@ namespace nIS
 
                     var finalHtml = new StringBuilder();
                     finalHtml.Append(HtmlConstants.HTML_HEADER);
-                    finalHtml.Append(navbarHtml);
+                    //finalHtml.Append(navbarHtml);
                     finalHtml.Append(htmlbody.ToString());
                     finalHtml.Append(HtmlConstants.HTML_FOOTER);
                     scriptHtmlRenderer.Append(HtmlConstants.TENANT_LOGO_SCRIPT);
@@ -2361,7 +2364,7 @@ namespace nIS
                             TotalPostedAmount += ((item.TYPE == "Fiduciary_Data") && (item.Prod_Group != "VAT"))?  (Convert.ToDouble(item.Display_Amount)): 0.0;
                         });
                         string TotalPostedAmountR = (TotalPostedAmount == 0) ? "0.00" : ("R" + TotalPostedAmount.ToString());
-                        detailedTransactionSrc.Append("<tr> <td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'><br /></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'>" + TotalPostedAmountR + "</td> <td class='text-center fsp-bdr-bottom px-1'><a href='https://www.google.com/' target = '_blank' ><img src='../common/images/leftarrowlogo.png'></a></td> </tr></table><div class='text-right w-100 pt-3'><a href='https://www.google.com/' target = '_blank'><img src='../common/images/click-print-stmt-btn.jpg'></a></div></div></div></div>");
+                        detailedTransactionSrc.Append("<tr> <td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'><br /></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'>" + TotalPostedAmountR + "</td> <td class='text-center fsp-bdr-bottom px-1'><a href='https://www.google.com/' target = '_blank' ><img src='../common/images/leftarrowlogo.png'></a></td> </tr></table><div class='text-right w-100 pt-3'><a href='https://www.google.com/' target = '_blank'></a></div></div></div></div>");
                         TotalPostedAmount = 0;
                     });
                     pageContent.Replace("{{detailedTransaction}}", detailedTransactionSrc.ToString());
@@ -2423,14 +2426,23 @@ namespace nIS
         }
 
 
-        private void BindPpsDetails1WidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<spIAA_Commission_Detail> ppsDetails1, IList<BatchDetail> batchDetails)
+        private void BindPpsDetails1WidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<spIAA_Commission_Detail> ppsDetails, IList<BatchDetail> batchDetails)
         {
             DateTime DateFrom = new DateTime(2023, 01, 01);
             DateTime DateTo = new DateTime(2023, 09, 01);
-            pageContent.Replace("{{ref}}", ppsDetails1.FirstOrDefault().INT_EXT_REF);
-            pageContent.Replace("{{mtype}}", ppsDetails1.FirstOrDefault().MeasureType);
+            pageContent.Replace("{{ref}}", ppsDetails.FirstOrDefault().INT_EXT_REF);
+            pageContent.Replace("{{mtype}}", ppsDetails.FirstOrDefault().MeasureType);
             pageContent.Replace("{{month}}", DateFrom.ToString("MMMM yyyy"));         
             pageContent.Replace("{{paramDate}}", DateFrom.ToString("yyyy-MM-dd") + " To " + DateTo.ToString("yyyy-MM-dd"));
+        }
+        private void BindPpsDetails2WidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<spIAA_Commission_Detail> ppsDetails, IList<BatchDetail> batchDetails)
+        {
+            //DateTime DateFrom = new DateTime(2023, 01, 01);
+            //DateTime DateTo = new DateTime(2023, 09, 01);
+            //pageContent.Replace("{{ref}}", ppsDetails.FirstOrDefault().INT_EXT_REF);
+            //pageContent.Replace("{{mtype}}", ppsDetails.FirstOrDefault().MeasureType);
+            //pageContent.Replace("{{month}}", DateFrom.ToString("MMMM yyyy"));
+            //pageContent.Replace("{{paramDate}}", DateFrom.ToString("yyyy-MM-dd") + " To " + DateTo.ToString("yyyy-MM-dd"));
         }
 
         private bool BindSummaryAtGlanceWidgetData(StringBuilder pageContent, StringBuilder ErrorMessages, IList<AccountMaster> accountrecords, Page page, PageWidget widget)

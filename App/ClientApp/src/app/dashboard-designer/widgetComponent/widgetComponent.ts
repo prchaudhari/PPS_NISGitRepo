@@ -58,17 +58,17 @@ export class CustomerInformationComponent {
                   <div class="fsp-payment-sum d-flex gap-1 w-100 py-4">
                         <div class="col-2"></div>
                         <div class="col-4">
-                            <div class="fw-bold mb-1">Intermediary Total – March 2023</div>
-                            <div class="fw-bold mb-1">Vat</div>
+                            <div class="font-weight-bold mb-1">Intermediary Total – March 2023</div>
+                            <div class="font-weight-bold mb-1">Vat</div>
                             <div class="pt-1 mb-1"></div>
-                            <div class="fw-bold">Total Due</div>
+                            <div class="font-weight-bold">Total Due</div>
                         </div>
                         <div class="col-3">
-                            <div class="fw-bold mb-1 text-end pe-2">R256 670.66</div>
-                            <div class="fw-bold mb-1 text-end pe-2">R38 001.27</div>
+                            <div class="font-weight-bold mb-1 text-right pe-2">R256 670.66</div>
+                            <div class="font-weight-bold mb-1 text-right pe-2">R38 001.27</div>
                             <div class="pt-1 dark-blue-bg mb-1"></div>
-                            <div class="fw-bold text-end pe-2">R291 671.93</div>
-                            <div class="text-end pe-2 fst-italic">Posted – 3rd March</div>
+                            <div class="font-weight-bold text-right pe-2">R291 671.93</div>
+                            <div class="text-right pe-2 fst-italic">Posted – 3rd March</div>
                         </div>
                         <div class="col-3"></div>
                   </div>
@@ -93,7 +93,7 @@ export class PaymentSummaryComponent {
                     <div class="fsp-logo"><img src="assets/images/logo3.jpg" alt=""></div>
                     <div class="fsp-logo-text">
                         <h1 class="intermediary_title">Financial Service Provider (FSP) Statement</h1>
-                        <h6 class="fw-bold fsp_inter_subheading">Miss Yvonne van Heerden T/A Yvonne Van Heerden Financial Planner CC</h6>
+                        <h6 class="font-weight-bold fsp_inter_subheading">Miss Yvonne van Heerden T/A Yvonne Van Heerden Financial Planner CC</h6>
                     </div>
                 </div>
             </div>
@@ -342,10 +342,6 @@ export class ProductSummaryComponent {
                                 </tr>
                             </tbody>
                         </table>
-
-                        <div class="text-right w-100 pt-3">
-                            <a href="#"><img src="assets/images/click-print-stmt-btn.jpg"></a>
-                        </div>
                     </div>
 
                     <!--table 2 start here-->
@@ -392,16 +388,8 @@ export class ProductSummaryComponent {
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="text-right w-100 pt-3">
-                            <a href="#"><img src="assets/images/click-print-stmt-btn.jpg"></a>
-                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-<div class="container_area">
-            <div class="click-btn text-center w-100" style="padding-top: 50px;">
-                <a href="#"><img src="assets/images/click-print-stmt-btn.jpg"></a>
             </div>
         </div>
     </div>`
@@ -547,21 +535,23 @@ export class PPSDetails1Component {
 @Component({
   selector: 'PPSDetails2',
   template: `<div class="widget">
-   
-        <div class="container_area">
-            <div class="header-contact px-20">
-                <div class="col-49">
-                <div class="col-4 py-2 bdr-end-5">
-                            <h4 class="fw-bold">Miss HW HLONGWANE</h4>
+
+ <div class="container_area text-left">
+            <div class="fsp-earnings-section pt-2">
+                <div class="dark-blue-bg payment-sum text-white text-center">PPS production statement</div>
+                <div class="px-20 pps-production-stat">
+                    <div class="row py-2">
+                        <div class="col-4 py-2 bdr-end-5">
+                            <h4 class="font-weight-bold">Miss HW HLONGWANE</h4>
                             <div class="client-content">
-                                <p class="fw-bold">Client contact details</p>
-                                <p><span class="fw-bold">M:</span> 082 1234567</p>
-                                <p><span class="fw-bold">E:</span> <a href="">y.vanheerden@google.com</a></p>
+                                <p class="font-weight-bold">Client contact details</p>
+                                <p><span class="font-weight-bold">M:</span> 082 1234567</p>
+                                <p><span class="font-weight-bold">E:</span> <a href="">y.vanheerden@google.com</a></p>
                             </div>
                         </div>
 
                         <div class="col-3 py-2 bdr-end-5">
-                            <h4 class="fw-bold">Address</h4>
+                            <h4 class="font-weight-bold">Address</h4>
                             <div class="client-content">
                                 <p>1 John Vorster Drive<br/>Randburg<br/>Gauteng</p>
                             </div>
@@ -569,15 +559,18 @@ export class PPSDetails1Component {
 
                         <div class="col-5 py-2">
                             <div class="client-content">
-                                <p><span class="fw-bold">Intermediary reference:</span> 124529534</p>
-                                <p><span class="fw-bold">Measure type:</span> Commission</p>
-                                <p><span class="fw-bold">Month:</span> September 2023</p>
-                                <p><span class="fw-bold">Date:</span> 2023-09-01 to 2023-01-01</p>
+                                <p><span class="font-weight-bold">Intermediary reference:</span> 124529534</p>
+                                <p><span class="font-weight-bold">Measure type:</span> Commission</p>
+                                <p><span class="font-weight-bold">Month:</span> September 2023</p>
+                                <p><span class="font-weight-bold">Date:</span> 2023-09-01 to 2023-01-01</p>
                             </div>
                         </div>
+                    </div>
                 </div>
+                <div class="dark-blue-bg py-1"></div>
             </div>
         </div>
+       
   </div>`
 })
 export class PPSDetails2Component {
@@ -592,23 +585,23 @@ export class PPSDetails2Component {
   template: `<div class="widget">
    <div class="container_area" style="max-width: 800px;">
             <div class="fsp-earnings-section">
-                <div class="payment-sum text-center">Detailed transactions</div>
+                <div class="dark-blue-bg payment-sum text-white text-center">Detailed transactions</div>
                 
                 <div class="pps-earning-period pps-details-table pt-1 pb-2 d-flex justify-content-between">                  
                     <div class="pps-monthly-table w-100">
                             <table cellpadding="0" cellspacing="0" width="100%">
                                 <tr>
-                                    <th class="bdr-right-white text-white fw-bold">Client<br/>name</th>
-                                    <th class="bdr-right-white text-white fw-bold">Age</th>
-                                    <th class="bdr-right-white text-white fw-bold">Policy #</th>
-                                    <th class="bdr-right-white text-white fw-bold">Policy #</th>
-                                    <th class="bdr-right-white text-white fw-bold">Product</th>
-                                    <th class="bdr-right-white text-white fw-bold">Date<br/>issued</th>
-                                    <th class="bdr-right-white text-white fw-bold">Inception<br/>date</th>
-                                    <th class="bdr-right-white text-white fw-bold">Com<br/>type</th>
-                                    <th class="bdr-right-white text-white fw-bold">Quantity</th>
-                                    <th class="bdr-right-white text-white fw-bold">Posted<br/>date</th>
-                                    <th class="bdr-right-white text-white fw-bold">Earnings</th>
+                                    <th class="bdr-right-white text-white font-weight-bold">Client<br/>name</th>
+                                    <th class="bdr-right-white text-white font-weight-bold">Age</th>
+                                    <th class="bdr-right-white text-white font-weight-bold">Policy #</th>
+                                    <th class="bdr-right-white text-white font-weight-bold">Policy #</th>
+                                    <th class="bdr-right-white text-white font-weight-bold">Product</th>
+                                    <th class="bdr-right-white text-white font-weight-bold">Date<br/>issued</th>
+                                    <th class="bdr-right-white text-white font-weight-bold">Inception<br/>date</th>
+                                    <th class="bdr-right-white text-white font-weight-bold">Com<br/>type</th>
+                                    <th class="bdr-right-white text-white font-weight-bold">Quantity</th>
+                                    <th class="bdr-right-white text-white font-weight-bold">Posted<br/>date</th>
+                                    <th class="bdr-right-white text-white font-weight-bold">Earnings</th>
                                 </tr>
 
                                 <tr>
@@ -739,17 +732,17 @@ export class PPSDetails2Component {
                                 </tr>
 
                                 <tr>
-                                    <td class="dark-blue-bg text-white fw-bold "></td>
-                                    <td class="dark-blue-bg text-white fw-bold "></td>
-                                    <td class="dark-blue-bg text-white fw-bold "></td>
-                                    <td class="dark-blue-bg text-white fw-bold "></td>
-                                    <td class="dark-blue-bg text-white fw-bold text-center fs-16">Sub Total</td>
-                                    <td class="dark-blue-bg text-white fw-bold "></td>
-                                    <td class="dark-blue-bg text-white fw-bold "></td>
-                                    <td class="dark-blue-bg text-white fw-bold "></td>
-                                    <td class="dark-blue-bg text-white fw-bold "></td>
+                                    <td class="dark-blue-bg text-white font-weight-bold "></td>
+                                    <td class="dark-blue-bg text-white font-weight-bold "></td>
+                                    <td class="dark-blue-bg text-white font-weight-bold "></td>
+                                    <td class="dark-blue-bg text-white font-weight-bold "></td>
+                                    <td class="dark-blue-bg text-white font-weight-bold text-center fs-16">Sub Total</td>
+                                    <td class="dark-blue-bg text-white font-weight-bold "></td>
+                                    <td class="dark-blue-bg text-white font-weight-bold "></td>
+                                    <td class="dark-blue-bg text-white font-weight-bold "></td>
+                                    <td class="dark-blue-bg text-white font-weight-bold "></td>
                                     <td class="pps-bg-gray" ></td>
-                                    <td class="fw-bold fs-16 pps-bg-gray" height="40">R15 133.33</td>
+                                    <td class="font-weight-bold fs-16 pps-bg-gray" height="40">R15 133.33</td>
                                 </tr>
                                
                             </table>
@@ -761,6 +754,7 @@ export class PPSDetails2Component {
             </div>
 
         </div>
+ 
 
   </div>`
 })
@@ -771,6 +765,270 @@ export class PPSDetailedTransactionsComponent {
 
 }
 
+/**
+ * Component representing the Summary at Glance Widget for Earnings for Period.
+ */
+@Component({
+  selector: 'PPSEarningForPeriod',
+  template: `
+    <!-- Widget Container -->
+    <div class="widget">
+      <!-- Middle Section -->
+      <div class="middle-section">
+        <div class="earnings-section">
+          <!-- Earnings for Period Heading -->
+          <h2 class="pps-earning-for-period-heading dark-blue-bg text-white">Earnings For Period</h2>
+
+          <!-- Monthly Production Summary Section -->
+          <div class="earnings-section-monthly d-flex">
+            <!-- Two Columns Layout -->
+            <div class="d-flex gap-1 w-100">
+              <!-- Monthly Production Summary T1 -->
+              <div class="col-6">
+                <!-- Heading for Monthly Production Summary T1 -->
+                <h4 class="monthly-production-summary skyblue-bg-title text-white text-center">Monthly Production Summary</h4>
+                <div class="monthly-table">
+                  <!-- Table for Monthly Production Summary T1 -->
+                  <table width="100%" cellpadding="0" cellspacing="0">
+                    <!-- Table Headers -->
+                  <thead>
+                    <tr>
+                      <th class="text-white font-weight-bold">Month</th>
+                      <th class="text-right">Premium<br/>Under Advice</th>
+                      <th class="text-right">Premium<br/>Under Advice</th>
+                    </tr>
+                  </thead>
+                    <!-- Table Body - Display Monthly Production Summary T1 -->
+                    <tbody>
+                      <tr *ngFor="let item of monthlyProductionSummaryT1List">
+                        <td>{{ item.Month }}</td>
+                        <td class="text-right">R{{ item.Premium_Under_Advice_Td1.toFixed(2) }}</td>
+                        <td class="text-right">R{{ item.Premium_Under_Advice_Td2.toFixed(2) }}</td>
+                      </tr>
+                      <!-- Total row for Monthly Production Summary T1 -->
+                      <tr>
+                        <td class="dark-blue-bg text-white font-weight-bold">Total</td>
+                        <td class="text-right font-weight-bold">R{{premiumUnderAdviceTd1Sum}}</td>
+                        <td class="text-right font-weight-bold">R{{premiumUnderAdviceTd2Sum}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Monthly Production Summary T2 -->
+              <div class="col-6">
+                <!-- Heading for Monthly Production Summary T2 -->
+                <h4 class="monthly-production-summary skyblue-bg-title text-white text-center">Monthly Production Summary</h4>
+                <div class="monthly-table">
+                  <!-- Table for Monthly Production Summary T2 -->
+                  <table width="100%" cellpadding="0" cellspacing="0">
+                    <!-- Table Headers -->
+                  <thead>
+                    <tr>
+                      <th class="text-white font-weight-bold">Month</th>
+                      <th class="text-right">Fiduciary Fees</th>
+                      <th class="text-right">Fiduciary Fees</th>
+                    </tr>
+                  </thead>
+                    <!-- Table Body - Display Monthly Production Summary T2 -->
+                    <tbody>
+                      <tr *ngFor="let item of monthlyProductionSummaryT2List">
+                        <td>{{ item.Month }}</td>
+                        <td class="text-right">R{{ item.Fiduciary_Fees_Td1.toFixed(2) }}</td>
+                        <td class="text-right">R{{ item.Fiduciary_Fees_Td2.toFixed(2) }}</td>
+                      </tr>
+                      <!-- Total row for Monthly Production Summary T2 -->
+                      <tr>
+                        <td class="dark-blue-bg text-white font-weight-bold">Total</td>
+                        <td class="text-right font-weight-bold">R{{fiduciaryFeesTd1Sum}}</td>
+                        <td class="text-right font-weight-bold">R{{fiduciaryFeesTd2Sum}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Total Earning Section -->
+          <div class="total-earning mb-4">
+            <div class="row">
+              <div class="col-3 text-right"></div>
+              <div class="col-3 text-right">
+                <div class="dark-blue-bg text-white text-right font-weight-bold pe-3 py-1">Total Earnings</div>
+              </div>
+              <div class="col-3 text-left">
+                <div class="total-price-title py-1 font-weight-bold text-center">R{{ totalEarnings }}</div>
+              </div>
+              <div class="col-3 text-right"></div>
+            </div>
+          </div>
+
+          <!-- FSP Account Postings Summary Section -->
+          <div class="earnings-section-monthly d-flex mb-2">
+            <div class="d-flex gap-1 w-100">
+              <!-- FSP Account Postings Summary -->
+              <div class="col-6">
+                <!-- Heading for FSP Account Postings Summary -->
+                <h4  class="monthly-production-summary skyblue-bg-title text-white text-center">FSP Account Postings Summary</h4>
+                <div class="monthly-table">
+                  <!-- Table for FSP Account Postings Summary -->
+                  <table width="100%" cellpadding="0" cellspacing="0">
+                    <!-- Table Headers -->
+                    <thead>
+                      <tr>
+                        <th class="text-white font-weight-bold">Posted Date</th>
+                        <th class="text-right">Posted 1st Year</th>
+                        <th class="text-right">Posted 2nd Year</th>
+                        <th class="text-right">Posted Amount</th>
+                      </tr>
+                    </thead>
+                    <!-- Table Body - Display FSP Account Postings Summary -->
+                    <tbody>
+                      <tr *ngFor="let item of FSPAccountPostingsSummaryList; ">
+                        <td>{{ item.Posted_Date }}</td>
+                        <td class="text-right">R{{ item.Posted_First_Year.toFixed(2)}}</td>
+                        <td class="text-right">R{{ item.Posted_Second_Year.toFixed(2) }}</td>
+                        <td class="text-right">R{{item.Posted_First_Year+ item.Posted_Second_Year}}</td>
+                      </tr>
+                      <!-- Total row for FSP Account Postings Summary -->
+                      <tr>
+                        <td class="dark-blue-bg text-white font-weight-bold">Total</td>
+                       <td class="text-right font-weight-bold">R{{ firstYearSum }}</td>
+                       <td class="text-right font-weight-bold">R{{ secondYearSum }}</td>
+                       <td class="text-right font-weight-bold">R{{ totalSum }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Future Dated Production Section -->
+              <div class="col-6">
+                <!-- Heading for Future Dated Production -->
+                <h4 class="monthly-production-summary skyblue-bg-title text-white text-center">Future Dated Production</h4>
+                <div class="monthly-table">
+                  <!-- Table for Future Dated Production -->
+                  <table width="100%" cellpadding="0" cellspacing="0">
+                    <!-- Table Headers -->
+                    <thead>
+                      <tr>
+                        <th class="text-white font-weight-bold">Due Date</th>
+                        <th class="text-right">Product Description</th>
+                        <th class="text-right">Allocated Amount</th>
+                      </tr>
+                    </thead>
+                    <!-- Table Body - Display Future Dated Production -->
+                    <tbody>
+                      <tr *ngFor="let item of FutureDatedProductionList;">
+                        <td>{{ item.Due_Date }}</td>
+                        <td> {{ item.Product_Description.trim() == 'Commission Service Fee' ? 'Premium Under Advise Fee' : item.Product_Description }} </td>
+                        <td class="text-right">R{{ item.Allocated_Amount.toFixed(2) }}</td>
+                      </tr>
+                      <!-- Total row for Future Dated Production -->
+                      <tr>
+                        <td class="dark-blue-bg text-white font-weight-bold text-right" colspan="2">Total Earnings</td>
+                        <td  class="font-weight-bold text-right">R{{ allocatedAmountSum }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`
+})
+
+export class PPSEarningForPeriodComponent {
+  // Input property to receive data from parent component
+  @Input() widgetsGridsterItemArray: any[] = [];
+
+  // Monthly Production Summary T1 Data
+  public monthlyProductionSummaryT1List: any[] = [
+    { Month: "1 Sep-30 Sep", Premium_Under_Advice_Td1: 41940.06, Premium_Under_Advice_Td2: 13980.03	 },
+    { Month: "1 Nov-30 Nov", Premium_Under_Advice_Td1: 12258.45, Premium_Under_Advice_Td2: 4086.16 },
+    { Month: "1 Aug-31 Aug", Premium_Under_Advice_Td1: 3802.87, Premium_Under_Advice_Td2: 1267.62 },
+    { Month: "1 Jul-31 Jul", Premium_Under_Advice_Td1: 4525.03, Premium_Under_Advice_Td2: 1508.35 }
+  ];
+
+  // Monthly Production Summary T2 Data
+  public monthlyProductionSummaryT2List: any[] = [
+    { Month: "1 Sep-30 Sep", Fiduciary_Fees_Td1: 41940.06, Fiduciary_Fees_Td2: 13980.03	 },
+    { Month: "1 Nov-30 Nov", Fiduciary_Fees_Td1: 12258.45, Fiduciary_Fees_Td2: 4086.16 },
+    { Month: "1 Aug-31 Aug", Fiduciary_Fees_Td1: 3802.87, Fiduciary_Fees_Td2: 1267.62 },
+    { Month: "1 Jul-31 Jul", Fiduciary_Fees_Td1: 4525.03, Fiduciary_Fees_Td2: 1508.35 }
+  ];
+
+  // FSP Account Postings Summary Data
+  public FSPAccountPostingsSummaryList: any[] = [
+    { Posted_Date: "10-Dec-2023", Posted_First_Year: -84343.70, Posted_Second_Year: -28114.52 },
+    { Posted_Date: "07-Oct-2022", Posted_First_Year: 95952.63, Posted_Second_Year: 0.00 },
+    { Posted_Date: "09-Oct-2023", Posted_First_Year: 0.00, Posted_Second_Year: 31984.20 },
+    { Posted_Date: "12-Nov-2022", Posted_First_Year: 8865.64, Posted_Second_Year: 0.00 },
+    { Posted_Date: "06-Nov-2023", Posted_First_Year: 0.00, Posted_Second_Year: 11266.57	 },
+    { Posted_Date: "15-Nov-2022", Posted_First_Year: 12884.95, Posted_Second_Year: 0.00 },
+    { Posted_Date: "09-Nov-2022", Posted_First_Year: 12049.16	, Posted_Second_Year: 0.00 },
+    { Posted_Date: "17-Aug-2022", Posted_First_Year: 6905.91, Posted_Second_Year: 0.00 },
+    { Posted_Date: "07-Aug-2023", Posted_First_Year: 0.00, Posted_Second_Year: 5705.91 },
+    { Posted_Date: "08-Aug-2022", Posted_First_Year: 10211.82, Posted_Second_Year: 0.00 }
+  ];
+
+  // Future Dated Production Data
+  public FutureDatedProductionList: any[] = [
+    { Due_Date: "1 Sep-30 Sep", Product_Description: "Commission Service Fee", Allocated_Amount: 13980.03 },
+    { Due_Date: "1 Nov-30 Nov", Product_Description: "Safe Custody Service Fee VAT", Allocated_Amount: 4086.16 },
+    { Due_Date: "1 Aug-31 Aug", Product_Description: "Commission Service Fee", Allocated_Amount: 1267.62 },
+    { Due_Date: "1 Jul-31 Jul	", Product_Description: "Commission Service Fee", Allocated_Amount: 1508.35 }
+  ];
+
+  // Calculate sums for different properties
+  // Calculate sum for 'Premium_Under_Advice_Td1' property in 'monthlyProductionSummaryT1List'
+  premiumUnderAdviceTd1Sum: number = this.calculateSum('Premium_Under_Advice_Td1', 'monthlyProductionSummaryT1List');
+
+  // Calculate sum for 'Premium_Under_Advice_Td2' property in 'monthlyProductionSummaryT1List'
+  premiumUnderAdviceTd2Sum: number = this.calculateSum('Premium_Under_Advice_Td2', 'monthlyProductionSummaryT1List');
+
+  // Calculate sum for 'Fiduciary_Fees_Td1' property in 'monthlyProductionSummaryT2List'
+  fiduciaryFeesTd1Sum: number = this.calculateSum('Fiduciary_Fees_Td1', 'monthlyProductionSummaryT2List');
+
+  // Calculate sum for 'Fiduciary_Fees_Td2' property in 'monthlyProductionSummaryT2List'
+  fiduciaryFeesTd2Sum: number = this.calculateSum('Fiduciary_Fees_Td2', 'monthlyProductionSummaryT2List');
+
+  // Calculate sum for 'Posted_First_Year' property in 'FSPAccountPostingsSummaryList'
+  firstYearSum: number = this.calculateSum('Posted_First_Year', 'FSPAccountPostingsSummaryList');
+
+  // Calculate sum for 'Posted_Second_Year' property in 'FSPAccountPostingsSummaryList'
+  secondYearSum: number = this.calculateSum('Posted_Second_Year', 'FSPAccountPostingsSummaryList');
+
+  // Calculate sum for 'Allocated_Amount' property in 'FutureDatedProductionList'
+  allocatedAmountSum: number = this.calculateSum('Allocated_Amount', 'FutureDatedProductionList');
+
+  /**
+ * Total earnings calculation by summing up premiumUnderAdviceTd1Sum,
+ * premiumUnderAdviceTd2Sum, fiduciaryFeesTd1Sum, and fiduciaryFeesTd2Sum.
+ * This represents the combined earnings from different sources.
+ */
+  totalEarnings: number = parseFloat((this.premiumUnderAdviceTd1Sum + this.premiumUnderAdviceTd2Sum + this.fiduciaryFeesTd1Sum + this.fiduciaryFeesTd2Sum).toFixed(2));
+
+  // Calculate total sum combining 'firstYearSum' and 'secondYearSum'
+  totalSum: number = this.firstYearSum + this.secondYearSum;
+
+
+
+  /**
+  * Private method to calculate the sum of a specified property in a given list.
+  * @param property The property to calculate the sum for.
+  * @param listName The name of the list containing items with the specified property.
+  * @returns The sum of the specified property in the given list.
+  */
+  private calculateSum(property: string, listName: string): number {
+    // Using the reduce function to iterate through the list and calculate the sum.
+    return parseFloat(this[listName].reduce((sum, item) => sum + parseFloat(item[property]), 0).toFixed(2));
+  }
+}
 
 
 // Component Created for Image Widget--
