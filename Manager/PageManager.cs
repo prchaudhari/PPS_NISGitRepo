@@ -15,6 +15,7 @@ namespace nIS
     using System.Text;
     using System.Text.RegularExpressions;
     using Unity;
+
     #endregion
 
     public class PageManager
@@ -669,7 +670,97 @@ namespace nIS
                                                     htmlString.Append(ppsDetails2HtmlWidget);
                                                 }
                                             }
+                                         
+                                            else if (mergedlst[i].WidgetName == HtmlConstants.EARNINGS_FOR_PERIOD_WIDGET_NAME)
+                                            {
 
+                                                string commisionDetailListJson = "[{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1172.08,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-09-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'REQUEST_DATETIME__1':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1302220959,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'1st Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1172.08,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-09-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'REQUEST_DATETIME__1':'2022-09-23 00:00:00.000','AE_Amount':1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1338674952,'AE_TYPE_ID':541901,'INT_EXT_REF':124565256,'POLICY_REF':3820110,'MEMBER_REF':10436136,'Member_Name':'Mnr JG Rossouw','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health','OID':541991,'MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':928.89,'ALLOCATED_AMOUNT':9474.68,'MEMBER_AGE':43,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-10-28 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'REQUEST_DATETIME__1':'2022-10-28 00:00:00.000','AE_Amount':-9474.68,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2022-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1338675128,'AE_TYPE_ID':541901,'INT_EXT_REF':124565256,'POLICY_REF':3820110,'MEMBER_REF':10436136,'Member_Name':'Mnr JG Rossouw','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health','OID':541991,'MeasureType':'Commission','CommissionType':'1st Year','TRANSACTION_AMOUNT':928.89,'ALLOCATED_AMOUNT':6072.47,'MEMBER_AGE':43,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-10-28 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'REQUEST_DATETIME__1':'2022-09-28 00:00:00.000','AE_Amount':6072.47,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2022-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'}]";
+                                                double TotalPostedAmount = 0;
+                                                if (commisionDetailListJson != string.Empty && validationEngine.IsValidJson(commisionDetailListJson))
+                                                {
+                                                    IList<spIAA_Commission_Detail> commisionDetail = JsonConvert.DeserializeObject<List<spIAA_Commission_Detail>>(commisionDetailListJson);
+                                                    StringBuilder commisionDetailSrc = new StringBuilder();
+                                                    string commisionDetailString = HtmlConstants.EARNINGS_FOR_PERIOD_WIDGET_HTML;
+
+                                                    var records = commisionDetail.GroupBy(gpcommisionitem => new { gpcommisionitem.REQUEST_DATETIME.Month, gpcommisionitem.CommissionType })
+                                                        .Select(group => new
+                                                    {
+                                                        GroupKey = group.Key,
+                                                        sumAllocatedAmount = group.Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT)),
+                                                        countCommissionType = group.Count()
+                                                        }).ToList();
+                                                    var gpCommisionType = commisionDetail.GroupBy(gpcommisionitem => new { gpcommisionitem.CommissionType })
+                                                 .Select(group => new
+                                                 {
+                                                     GroupKey = group.Key,
+                                                     gpCommisionTypeCount= group.Count()
+
+                                                 }).ToList();
+                                                    long tableheaderIndex = 1;
+
+
+                                                    gpCommisionType.ForEach(gpCommisionTypeitem => {
+                                                       
+                                                        if (tableheaderIndex == 1)
+                                                        {
+                                                            commisionDetailSrc.Append("<!-- Monthly Production Summary Section --><div class='earnings-section-monthly d-flex'><!-- Two Columns Layout --><div class='d-flex gap-1 w-100'><!-- Monthly Production Summary T1 --><div class='col-6'><!-- Heading for Monthly Production Summary T1 --><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>Monthly Production Summary</h4><div class='monthly-table'><!-- Table for Monthly Production Summary T1 --><table width='100%' cellpadding='0' cellspacing='0'><!-- Table Headers --><thead><tr><th class='text-white font-weight-bold'>Month</th>");
+                                                        }
+                                                        if (gpCommisionType.Count() == tableheaderIndex)
+                                                        {
+                                                            commisionDetailSrc.Append("<th class='text-right'>Premium<br/>Under Advice</th></tr></thead>");
+                                                        }
+                                                        else {
+                                                            commisionDetailSrc.Append("<th class='text-right'>Premium<br/>Under Advice</th>");
+                                                        }
+
+                                                        tableheaderIndex++;
+                                                    });
+
+                                                 
+                                                    gpCommisionType.ForEach(gpCommisionTypeitem => {
+                                                      
+                                                        long tableIndex = 1;
+                                                        long headerIndex = 1;
+                                                        var CommissionTypeRecord = records?.OrderBy(item => item.GroupKey.CommissionType).ToList();
+
+                                                        CommissionTypeRecord.ForEach((item) =>
+                                                            {
+                                                                    if (CommissionTypeRecord.Count() == headerIndex)
+                                                                    {
+                                                                    commisionDetailSrc.Append("<tr><td class='text-right'>" + GetMonthRange(item.GroupKey.Month) + "</td>");
+                                                                    commisionDetailSrc.Append("<td class='text-right'>" + item.sumAllocatedAmount + "</td></tr></table></div></div></div></div>");
+                                                                    }
+                                                                    else {
+                                                                 //if( (headerIndex == 1)) { 
+                                                                   commisionDetailSrc.Append("<tr><td class='text-right'>" + GetMonthRange(item.GroupKey.Month) + "</td>");
+                                                                   //
+                                                                    commisionDetailSrc.Append("<td class='text-right'>" + item.sumAllocatedAmount + "</td>");
+
+                                                                    
+                                                                }
+                                                                headerIndex++;
+                                                            });
+
+                                                        tableIndex++;
+                                                        });
+
+
+                                                    //commisionDetailSrc.Append("<!-- Total row for Monthly Production Summary T1 --><tr><td class='dark-blue-bg text-white font-weight-bold'>Total</td><td class='text-right font-weight-bold'>R{{premiumUnderAdviceTd1Sum}}</td><td class='text-right font-weight-bold'>R{{premiumUnderAdviceTd2Sum}}</td></tr></tbody></table></div></div><!-- Monthly Production Summary T2 --><div class='col-6'><!-- Heading for Monthly Production Summary T2 --><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>Monthly Production Summary</h4><div class='monthly-table'><!-- Table for Monthly Production Summary T2 --><table width='100%' cellpadding='0' cellspacing='0'><!-- Table Headers --><thead><tr><th class='text-white font-weight-bold'>Month</th><th class='text-right'>Fiduciary Fees</th><th class='text-right'>Fiduciary Fees</th></tr></thead><!-- Table Body - Display Monthly Production Summary T2 --><tbody><tr *ngFor='let item of monthlyProductionSummaryT2List'><td>{{ item.Month }}</td><td class='text-right'>R{{ item.Fiduciary_Fees_Td1.toFixed(2) }}</td><td class='text-right'>R{{ item.Fiduciary_Fees_Td2.toFixed(2) }}</td></tr><!-- Total row for Monthly Production Summary T2 --><tr><td class='dark-blue-bg text-white font-weight-bold'>Total</td><td class='text-right font-weight-bold'>R{{fiduciaryFeesTd1Sum}}</td><td class='text-right font-weight-bold'>R{{fiduciaryFeesTd2Sum}}</td></tr></tbody></table></div></div> ");
+                                                    //commisionDetailString = commisionDetailString.Replace("{{QueryBtnImgLink}}", "https://www.google.com/");
+                                                    //commisionDetailString = commisionDetailString.Replace("{{QueryBtn}}", "assets/images/IfQueryBtn.jpg");
+
+
+
+                                                    //commisionDetailSrc.Append("<!-- Monthly Production Summary Section --><div class='earnings-section-monthly d-flex'><!-- Two Columns Layout --><div class='d-flex gap-1 w-100'><!-- Monthly Production Summary T1 --><div class='col-6'><!-- Heading for Monthly Production Summary T1 --><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>Monthly Production Summary</h4><div class='monthly-table'><!-- Table for Monthly Production Summary T1 --><table width='100%' cellpadding='0' cellspacing='0'><!-- Table Headers --><thead><tr><th class='text-white font-weight-bold'>Month</th><th class='text-right'>Premium<br/>Under Advice</th><th class='text-right'>Premium<br/>Under Advice</th></tr></thead><!-- Table Body - Display Monthly Production Summary T1 --><tbody><tr *ngFor='let item of monthlyProductionSummaryT1List'><td>{{ item.Month }}</td><td class='text-right'>R{{ item.Premium_Under_Advice_Td1.toFixed(2) }}</td><td class='text-right'>R{{ item.Premium_Under_Advice_Td2.toFixed(2) }}</td></tr><!-- Total row for Monthly Production Summary T1 --><tr><td class='dark-blue-bg text-white font-weight-bold'>Total</td><td class='text-right font-weight-bold'>R{{premiumUnderAdviceTd1Sum}}</td><td class='text-right font-weight-bold'>R{{premiumUnderAdviceTd2Sum}}</td></tr></tbody></table></div></div><!-- Monthly Production Summary T2 --><div class='col-6'><!-- Heading for Monthly Production Summary T2 --><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>Monthly Production Summary</h4><div class='monthly-table'><!-- Table for Monthly Production Summary T2 --><table width='100%' cellpadding='0' cellspacing='0'><!-- Table Headers --><thead><tr><th class='text-white font-weight-bold'>Month</th><th class='text-right'>Fiduciary Fees</th><th class='text-right'>Fiduciary Fees</th></tr></thead><!-- Table Body - Display Monthly Production Summary T2 --><tbody><tr *ngFor='let item of monthlyProductionSummaryT2List'><td>{{ item.Month }}</td><td class='text-right'>R{{ item.Fiduciary_Fees_Td1.toFixed(2) }}</td><td class='text-right'>R{{ item.Fiduciary_Fees_Td2.toFixed(2) }}</td></tr><!-- Total row for Monthly Production Summary T2 --><tr><td class='dark-blue-bg text-white font-weight-bold'>Total</td><td class='text-right font-weight-bold'>R{{fiduciaryFeesTd1Sum}}</td><td class='text-right font-weight-bold'>R{{fiduciaryFeesTd2Sum}}</td></tr></tbody></table></div></div> ");
+                                                    //commisionDetailString = commisionDetailString.Replace("{{QueryBtnImgLink}}", "https://www.google.com/");
+                                                    //commisionDetailString = commisionDetailString.Replace("{{QueryBtn}}", "assets/images/IfQueryBtn.jpg");
+                                                    commisionDetailString.Replace("{{WidgetDivHeight}}", divHeight);
+
+                                                    commisionDetailString = commisionDetailString.Replace("{{monthlyProductionSummary}}", commisionDetailSrc.ToString());
+                                                   
+                                                    htmlString.Append(commisionDetailString);
+                                                }
+                                            }
                                             else if (mergedlst[i].WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME)
                                             {
                                                 string accountInfoJson = "{'StatementDate':'1-APR-2020','StatementPeriod':'Annual Statement','CustomerID':'ID2-8989-5656','RmName':'James Wiilims','RmContactNumber':'+4487867833'}";
@@ -3649,6 +3740,44 @@ namespace nIS
             string formattedDate = $"{day}<sup>{ordinalSuffix}</sup> {date:MMMM}";
 
             return formattedDate;
+        }
+
+        public static string GetMonthRange(int month)
+        {
+            switch (month)
+            {
+                case 1: return "1 Jan - 31 Jan";
+                case 2: return "1 Feb - 28 Feb";
+                case 3: return "1 Mar - 31 Mar";
+                case 4: return "1 Apr - 30 Apr";
+                case 5: return "1 May - 31 May";
+                case 6: return "1 Jun - 30 Jun";
+                case 7: return "1 Jul - 31 Jul";
+                case 8: return "1 Aug - 31 Aug";
+                case 9: return "1 Sep - 30 Sep";
+                case 10: return "1 Oct - 31 Oct";
+                case 11: return "1 Nov - 30 Nov";
+                case 12: return "1 Dec - 31 Dec";
+                default: return "Invalid Month";
+            }
+        }
+
+        static void Main()
+        {
+            string dateString = "2022-09-23 00:00:00.000";
+
+            // Parse the date string
+            if (DateTime.TryParseExact(dateString, "yyyy-MM-dd HH:mm:ss.fff", null, System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
+            {
+                // Get the month from the parsed date
+                int month = parsedDate.Month;
+
+                Console.WriteLine("Month: " + month);
+            }
+            else
+            {
+                Console.WriteLine("Invalid date format");
+            }
         }
         #endregion
     }

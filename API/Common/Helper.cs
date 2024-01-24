@@ -47,6 +47,7 @@ namespace nIS
             return tenantCode;
         }
 
+        
         /// <summary>
         /// This method use to get time zone 
         /// </summary>
@@ -94,5 +95,7 @@ namespace nIS
 
             return offSet;
         }
+      
     }
+
 }
