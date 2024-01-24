@@ -75,8 +75,8 @@ namespace nIS
         /// The crypto manager
         /// </summary>
         private readonly ICryptoManager cryptoManager;
-
         private IProductRepository productRepository = null;
+        private IPPSRepository ppsRepository = null;
 
         #endregion
 
@@ -97,6 +97,7 @@ namespace nIS
             this.dynamicWidgetRepository = this.unityContainer.Resolve<IDynamicWidgetRepository>();
             this.cryptoManager = this.unityContainer.Resolve<ICryptoManager>();
             this.productRepository = this.unityContainer.Resolve<IProductRepository>();
+            this.ppsRepository = this.unityContainer.Resolve<IPPSRepository>();
         }
 
         #endregion

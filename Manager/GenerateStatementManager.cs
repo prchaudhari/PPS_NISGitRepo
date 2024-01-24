@@ -91,6 +91,8 @@ namespace nIS
         /// </summary>
         private IArchivalProcessRepository archivalProcessRepository = null;
 
+        private IPPSRepository ppsRepository = null;
+
         /// <summary>
         /// The crypto manager
         /// </summary>
@@ -124,6 +126,8 @@ namespace nIS
                 //this.customerRepository = this.unityContainer.Resolve<ICustomerRepository>();
                 //this.mcaDataRepository = this.unityContainer.Resolve<IMCARepository>();
                 //this.corporateSaverDataRepository = this.unityContainer.Resolve<ICorporateSaverRepository>();
+                this.ppsRepository = this.unityContainer.Resolve<IPPSRepository>();
+
             }
             catch (Exception ex)
             {
@@ -1093,6 +1097,7 @@ namespace nIS
             var statementMetadataRecords = new List<StatementMetadata>();
             DateTime DateFrom = new DateTime(2023, 01, 01);
             DateTime DateTo = new DateTime(2023, 09, 01);
+
             try
             {
                 var customer = statementRawData.Customer;
@@ -1152,10 +1157,12 @@ namespace nIS
                     }
                     else if(IsFSPPagePresent)
                     {
+                        //fspDetails = ppsRepository.spIAA_PaymentDetail_fspstatement(tenantCode);
                         fspDetails = this.tenantTransactionDataRepository.Get_FSPDetails(tenantCode)?.ToList();
                     }
                     else if(IsPPSPagePresent)
                     {
+                        //var ppsDetails = ppsRepository.spIAA_Commission_Detail_ppsStatement(tenantCode);
                         ppsDetails = this.tenantTransactionDataRepository.Get_PPSDetails(tenantCode)?.ToList();
                     }
 

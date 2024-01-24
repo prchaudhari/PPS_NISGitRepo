@@ -54,7 +54,7 @@ namespace nIS
         /// The utility object
         /// </summary>
         private IUtility utility = null;
-
+        private IPPSRepository ppsRepository = null;
         //IInvestmentRepository investmentRepository = null;
 
         // ICustomerRepository customerRepository = null;
@@ -81,6 +81,7 @@ namespace nIS
                 this.dynamicWidgetManager = new DynamicWidgetManager(unityContainer);
                 this.validationEngine = new ValidationEngine();
                 this.utility = new Utility();
+                this.ppsRepository = this.unityContainer.Resolve<IPPSRepository>();
             }
             catch (Exception ex)
             {
@@ -311,6 +312,8 @@ namespace nIS
             IList<string> bargraphIds = new List<string>();
             IList<string> piechartIds = new List<string>();
 
+            //var re = ppsRepository.spIAA_PaymentDetail_fspstatement(tenantCode);
+           // var re = ppsRepository.spIAA_Commission_Detail_ppsStatement(tenantCode);
             try
             {
                 var tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();

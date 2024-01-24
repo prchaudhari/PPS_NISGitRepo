@@ -54,7 +54,7 @@ namespace GenerateStatementRenderEngine
             unityContainer.RegisterType<IDynamicWidgetRepository, SQLDynamicWidgetRepository>();
             unityContainer.RegisterType<ITenantTransactionDataRepository, TenantTransactionDataRepository>();
             unityContainer.RegisterType<IArchivalProcessRepository, SQLArchivalProcessRepository>();
-
+            unityContainer.RegisterType<IProductRepository, SQLProductRepository>();
             return unityContainer;
         }
     }

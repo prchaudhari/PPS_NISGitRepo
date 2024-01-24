@@ -57,6 +57,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
@@ -90,6 +91,7 @@
     <Compile Include="AssetSetting.cs" />
     <Compile Include="City.cs" />
     <Compile Include="Client.cs" />
+    <Compile Include="CommonVariable\CommonVariable.cs" />
     <Compile Include="Common\AssetLibraryConstant.cs" />
     <Compile Include="Common\BaseEntity.cs" />
     <Compile Include="Common\BaseSearchEntity.cs" />
