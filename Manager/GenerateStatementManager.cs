@@ -1323,6 +1323,9 @@ namespace nIS
                                         case HtmlConstants.DETAILED_TRANSACTIONS_WIDGET_NAME:
                                             IsFailed = this.BindDetailedTransactionsWidgetData(pageContent, ErrorMessages, fspDetails, page, widget);
                                             break;
+                                        case HtmlConstants.PPS_DETAILED_TRANSACTIONS_WIDGET_NAME:
+                                            IsFailed = this.BindPpsDetailedTransactionsWidgetData(pageContent, ErrorMessages, ppsDetails, page, widget);
+                                            break;
                                         case HtmlConstants.PPS_HEADING_WIDGET_NAME:
                                             this.BindPpsHeadingWidgetData(pageContent, customer, statement, page, widget, customerMedias, fspDetails, statementRawData.BatchDetails);
                                             break;
@@ -2372,6 +2375,46 @@ namespace nIS
                 else
                 {
                     ErrorMessages.Append("<li>Product master data is not available related to Product Summary widget..!!</li>");
+                    IsFailed = true;
+                }
+                return IsFailed;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+        private bool BindPpsDetailedTransactionsWidgetData(StringBuilder pageContent, StringBuilder ErrorMessages, IList<spIAA_Commission_Detail> transaction, Page page, PageWidget widget)
+        {
+            var IsFailed = false;
+            double TotalPostedAmount = 0;
+            try
+            {
+                if (transaction != null && transaction.Count > 0)
+                {
+                    StringBuilder detailedTransactionSrc = new StringBuilder();
+                    var records = transaction.GroupBy(gptransactionitem => gptransactionitem.BUS_GROUP).ToList();
+                    records?.ForEach(transactionitem =>
+                    {
+                        detailedTransactionSrc.Append("<tr>" + transactionitem.FirstOrDefault().BUS_GROUP + "</tr>");
+                        var memberRecords = transactionitem.GroupBy(gpmembertransactionitem => gpmembertransactionitem.BUS_GROUP).ToList();
+                        transaction.Where(witem => witem.INT_EXT_REF == transactionitem.FirstOrDefault().INT_EXT_REF).ToList().ForEach(item =>
+                        {
+                            detailedTransactionSrc.Append(" <tr><td class='bdr-right-white'>" + item.Member_Name + "</td><td class='bdr-right-white'>" + item.MEMBER_AGE + "</td><td class='bdr-right-white'>" + item.POLICY_REF + "</td><td class='bdr-right-white'>" + item.PRODUCT_DESCRIPTION + "</td><td class='bdr-right-white'>" + item.REQUEST_DATETIME + "</td><td class='bdr-right-white'>" + item.REQUESTED_DATETIME.ToString("dd-MMM-yyyy") + "</td><td class='bdr-right-white'>" + item.CommissionType + "</td><td class='bdr-right-white'>" + item.TRANSACTION_AMOUNT + "</td><td class='bdr-right-white'>" + item.AE_Posted_Date.ToString("dd-MMM-yyyy") + "</td><td class='bdr-right-white'>" + item.ALLOCATED_AMOUNT + "</td></tr>");
+
+                            TotalPostedAmount = (Convert.ToDouble(item.ALLOCATED_AMOUNT));
+                        });
+                        string TotalPostedAmountR = (TotalPostedAmount == 0) ? "0.00" : ("R" + TotalPostedAmount.ToString());
+                        detailedTransactionSrc.Append("<tr><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold fs-16'>Sub Total</td><td class='' ></td><td class='fw-bold fs-16' height='40'>" + TotalPostedAmountR + "</td></tr></table></div>");
+                        TotalPostedAmount = 0;
+                    });
+                    pageContent.Replace("{{ppsDetailedTransactions}}", detailedTransactionSrc.ToString());
+                }
+                else
+                {
+                    ErrorMessages.Append("<li>Product master data is not available related to Detailed Transaction widget..!!</li>");
                     IsFailed = true;
                 }
                 return IsFailed;

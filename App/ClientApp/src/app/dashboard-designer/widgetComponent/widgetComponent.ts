@@ -583,7 +583,7 @@ export class PPSDetails2Component {
 @Component({
   selector: 'PPSDetailedTransactions',
   template: `<div class="widget">
-   <div class="container_area" style="max-width: 800px;">
+   <div class="container_area">
             <div class="fsp-earnings-section">
                 <div class="dark-blue-bg payment-sum text-white text-center">Detailed transactions</div>
                 
