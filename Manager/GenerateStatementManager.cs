@@ -91,6 +91,8 @@ namespace nIS
         /// </summary>
         private IArchivalProcessRepository archivalProcessRepository = null;
 
+        private IPPSRepository ppsRepository = null;
+
         /// <summary>
         /// The crypto manager
         /// </summary>
@@ -124,6 +126,8 @@ namespace nIS
                 //this.customerRepository = this.unityContainer.Resolve<ICustomerRepository>();
                 //this.mcaDataRepository = this.unityContainer.Resolve<IMCARepository>();
                 //this.corporateSaverDataRepository = this.unityContainer.Resolve<ICorporateSaverRepository>();
+                this.ppsRepository = this.unityContainer.Resolve<IPPSRepository>();
+
             }
             catch (Exception ex)
             {
@@ -1093,6 +1097,7 @@ namespace nIS
             var statementMetadataRecords = new List<StatementMetadata>();
             DateTime DateFrom = new DateTime(2023, 01, 01);
             DateTime DateTo = new DateTime(2023, 09, 01);
+
             try
             {
                 var customer = statementRawData.Customer;
@@ -1152,10 +1157,12 @@ namespace nIS
                     }
                     else if(IsFSPPagePresent)
                     {
+                        //fspDetails = ppsRepository.spIAA_PaymentDetail_fspstatement(tenantCode);
                         fspDetails = this.tenantTransactionDataRepository.Get_FSPDetails(tenantCode)?.ToList();
                     }
                     else if(IsPPSPagePresent)
                     {
+                        //var ppsDetails = ppsRepository.spIAA_Commission_Detail_ppsStatement(tenantCode);
                         ppsDetails = this.tenantTransactionDataRepository.Get_PPSDetails(tenantCode)?.ToList();
                     }
 
@@ -1343,6 +1350,9 @@ namespace nIS
                                             break;
                                         case HtmlConstants.PPS_DETAILS2_WIDGET_NAME:
                                             this.BindPpsDetails2WidgetData(pageContent, customer, statement, page, widget, customerMedias, ppsDetails, statementRawData.BatchDetails);
+                                            break;
+                                        case HtmlConstants.EARNINGS_FOR_PERIOD_WIDGET_NAME:
+                                            IsFailed = this.BindDetailedTransactionsWidgetData(pageContent, ErrorMessages, fspDetails, page, widget);
                                             break;
                                         case HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME:
                                             this.BindAccountInformationWidgetData(pageContent, customer, page, widget);
@@ -2488,6 +2498,46 @@ namespace nIS
             //pageContent.Replace("{{paramDate}}", DateFrom.ToString("yyyy-MM-dd") + " To " + DateTo.ToString("yyyy-MM-dd"));
         }
 
+        private bool BindEarningsForPeriodWidgetData(StringBuilder pageContent, StringBuilder ErrorMessages, IList<spIAA_PaymentDetail> transaction, Page page, PageWidget widget)
+        {
+            var IsFailed = false;
+            double TotalPostedAmount = 0;
+            try
+            {
+                if (transaction != null && transaction.Count > 0)
+                {
+                    StringBuilder detailedTransactionSrc = new StringBuilder();
+                    var records = transaction.GroupBy(gptransactionitem => gptransactionitem.INT_EXT_REF).ToList();
+                    records?.ForEach(transactionitem =>
+                    {
+                        detailedTransactionSrc.Append("<div class='px-50'><div class='prouct-table-block'><div class='text-left fsp-transaction-title font-weight-bold mb-3'>Intermediary:  " + transactionitem.FirstOrDefault().INT_EXT_REF + " " + transactionitem.FirstOrDefault().Int_Name + "</div><table width='100%' cellpadding='0' cellspacing='0'> <tr><th class='font-weight-bold text-white'>Client name</th> <th class='font-weight-bold text-white text-center pe-0 bdr-r-0'>Member<br /> number</th> <th class='font-weight-bold text-white text-center'>Will<br/> number</th> <th class='font-weight-bold text-white text-center'>Fiduciary fees</th> <th class='font-weight-bold text-white text-center'>Commission<br /> type</th> <th class='font-weight-bold text-white text-center'>Posted date</th> <th class='font-weight-bold text-white text-center'>Posted amount</th> <th class='font-weight-bold text-white'>Query</th> </tr> ");
+                        pageContent.Replace("{{QueryBtnImgLink}}", "https://www.google.com/");
+                        pageContent.Replace("{{QueryBtn}}", "../common/images/IfQueryBtn.jpg");
+                        transaction.Where(witem => witem.INT_EXT_REF == transactionitem.FirstOrDefault().INT_EXT_REF).ToList().ForEach(item =>
+                        {
+                            detailedTransactionSrc.Append("<tr><td align = 'center' valign = 'center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" +
+                                    item.Client_Name + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Member_Ref + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'> " + item.Policy_Ref + "</td><td class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1'>" + (item.Description == "Commission Service Fee" ? "Premium Under Advise Fee" : item.Description) + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.POSTED_DATE.ToString("dd-MMM-yyyy") + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Display_Amount + "</td><td class= 'text-center fsp-bdr-bottom px-1'><a href ='https://www.google.com/' target ='_blank'><img class='leftarrowlogo' src='../common/images/leftarrowlogo.png' alt='Left Arrow'></a></td></tr>");
+                            TotalPostedAmount += ((item.TYPE == "Fiduciary_Data") && (item.Prod_Group != "VAT")) ? (Convert.ToDouble(item.Display_Amount)) : 0.0;
+                        });
+                        string TotalPostedAmountR = (TotalPostedAmount == 0) ? "0.00" : ("R" + TotalPostedAmount.ToString());
+                        detailedTransactionSrc.Append("<tr> <td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'><br /></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'>" + TotalPostedAmountR + "</td> <td class='text-center fsp-bdr-bottom px-1'><a href='https://www.google.com/' target = '_blank' ><img src='../common/images/leftarrowlogo.png'></a></td> </tr></table><div class='text-right w-100 pt-3'><a href='https://www.google.com/' target = '_blank'></a></div></div></div></div>");
+                        TotalPostedAmount = 0;
+                    });
+                    pageContent.Replace("{{detailedTransaction}}", detailedTransactionSrc.ToString());
+                }
+                else
+                {
+                    ErrorMessages.Append("<li>Product master data is not available related to Product Summary widget..!!</li>");
+                    IsFailed = true;
+                }
+                return IsFailed;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
         private bool BindSummaryAtGlanceWidgetData(StringBuilder pageContent, StringBuilder ErrorMessages, IList<AccountMaster> accountrecords, Page page, PageWidget widget)
         {
             var IsFailed = false;
