@@ -55,7 +55,7 @@ namespace nIS
         /// The utility object
         /// </summary>
         private IUtility utility = null;
-
+        private IPPSRepository ppsRepository = null;
         //IInvestmentRepository investmentRepository = null;
 
         // ICustomerRepository customerRepository = null;
@@ -82,6 +82,7 @@ namespace nIS
                 this.dynamicWidgetManager = new DynamicWidgetManager(unityContainer);
                 this.validationEngine = new ValidationEngine();
                 this.utility = new Utility();
+                this.ppsRepository = this.unityContainer.Resolve<IPPSRepository>();
             }
             catch (Exception ex)
             {
@@ -185,7 +186,7 @@ namespace nIS
                     invalidSearchParameterException.Data.Add("InvalidPagingParameter", exception.Data);
                 }
 
-                if (invalidSearchParameterException.Data.Count> 0)
+                if (invalidSearchParameterException.Data.Count > 0)
                 {
                     throw invalidSearchParameterException;
                 }
@@ -223,7 +224,7 @@ namespace nIS
                     invalidSearchParameterException.Data.Add("InvalidPagingParameter", exception.Data);
                 }
 
-                if (invalidSearchParameterException.Data.Count> 0)
+                if (invalidSearchParameterException.Data.Count > 0)
                 {
                     throw invalidSearchParameterException;
                 }
@@ -312,6 +313,8 @@ namespace nIS
             IList<string> bargraphIds = new List<string>();
             IList<string> piechartIds = new List<string>();
 
+            //var re = ppsRepository.spIAA_PaymentDetail_fspstatement(tenantCode);
+           // var re = ppsRepository.spIAA_Commission_Detail_ppsStatement(tenantCode);
             try
             {
                 var tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
@@ -361,7 +364,7 @@ namespace nIS
                     var isBackgroundImage = false;
                     var MarketingMessageCounter = 0;
                     htmlString.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
-                    for (int y = 0; y <pages.Count; y++)
+                    for (int y = 0; y < pages.Count; y++)
                     {
                         var page = pages[y];
                         string tabClassName = Regex.Replace(page.DisplayName, @"\s+", "-");
@@ -386,7 +389,7 @@ namespace nIS
                         htmlString.Append(pageHeaderHtml.Replace("{{DivId}}", tabClassName).Replace("{{ExtraClass}}", extraclass));
                         int tempRowWidth = 0;
                         int max = 0;
-                        if (page.PageWidgets.Count> 0)
+                        if (page.PageWidgets.Count > 0)
                         {
                             var completelst = new List<PageWidget>(page.PageWidgets);
                             var dynamicwidgetids = string.Join(", ", completelst.Where(item => item.IsDynamicWidget).ToList().Select(item => item.WidgetId));
@@ -413,14 +416,14 @@ namespace nIS
                             while (completelst.Count != 0)
                             {
                                 var lst = completelst.Where(it => it.Yposition == currentYPosition).ToList();
-                                if (lst.Count> 0)
+                                if (lst.Count > 0)
                                 {
                                     max = max + lst.Max(it => it.Height);
-                                    var _lst = completelst.Where(it => it.Yposition <max && it.Yposition != currentYPosition).ToList();
+                                    var _lst = completelst.Where(it => it.Yposition < max && it.Yposition != currentYPosition).ToList();
                                     var mergedlst = lst.Concat(_lst).OrderBy(it => it.Xposition).ToList();
                                     currentYPosition = max;
 
-                                    for (int i = 0; i <mergedlst.Count; i++)
+                                    for (int i = 0; i < mergedlst.Count; i++)
                                     {
                                         if (tempRowWidth == 0)
                                         {
@@ -433,7 +436,7 @@ namespace nIS
 
                                         // If current col-lg class length is greater than 12, 
                                         //then end parent row class div and then start new row class div
-                                        if (tempRowWidth> 12)
+                                        if (tempRowWidth > 12)
                                         {
                                             tempRowWidth = divLength;
                                             htmlString.Append("</div>");
@@ -495,7 +498,7 @@ namespace nIS
                                                     paymentHtmlWidget = paymentHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
                                                     paymentHtmlWidget = paymentHtmlWidget.Replace("{{IntTotal}}", paymentInfo.Earning_Amount);
                                                     paymentHtmlWidget = paymentHtmlWidget.Replace("{{Vat}}", paymentInfo.VAT_Amount);
-                                                    paymentHtmlWidget = paymentHtmlWidget.Replace("{{TotalDue}}",(Convert.ToDouble( paymentInfo.Earning_Amount) +Convert.ToDouble( paymentInfo.VAT_Amount)).ToString());
+                                                    paymentHtmlWidget = paymentHtmlWidget.Replace("{{TotalDue}}", (Convert.ToDouble(paymentInfo.Earning_Amount) + Convert.ToDouble(paymentInfo.VAT_Amount)).ToString());
                                                     // Format the date to month-year format                                                   
                                                     paymentHtmlWidget = paymentHtmlWidget.Replace("{{IntTotalDate}}", paymentInfo.POSTED_DATE.ToString("MMMM yyyy"));
                                                     // Format the date with a custom format
@@ -535,7 +538,7 @@ namespace nIS
                                             }
                                             else if (mergedlst[i].WidgetName == HtmlConstants.PPS_FOOTER1_WIDGET_NAME)
                                             {
-                                                string ppsFooter1InfoJson = "{Reg_ID : 1,Start_Date : '2023-01-01',End_Date : '2023-01-01',Request_DateTime : 'DummyText1',ID : '124529534',Intermediary_Code : 'DummyText1',FSP_ID : 'DummyText1',Policy_Number : 'DummyText1',FSP_Party_ID : 'DummyText1',Client_Number : '124556686',FSP_REF : '2452953',Client_Name : 'Mr SCHOELER',Int_ID : 'DummyText1',Product_Type : 'DummyText1',Commission_Amount : 'DummyText1',INT_EXT_REF : '124411745',Int_Name : 'Kruger Van Heerden',Int_Type : 'DummyText1',Policy_Ref : '5596100',Member_Ref : '124556686',Member_Name : 'DummyText1',Transaction_Amount : 'DummyText1',Mem_Age : 'DummyText1',Months_In_Force : 'DummyText1',Commission_Type : 'Safe Custody Fee',Description : 'Safe Custody Service Fee',POSTED_DATE : '2023-03-03',AE_Type_ID : 'DummyText1',AE_Amount : 'DummyText1',DR_CR : 'DummyText1',NAME : 'DummyText1',Member_Surname : 'DummyText1',Jurisdiction : 'DummyText1',Sales_Office : 'DummyText1',FSP_Name : 'Miss Yvonne van Heerden',FSP_Trading_Name : 'T/A Yvonne Van Heerden Financial Planner CC',FSP_Ext_Ref : '124529534',FSP_Kind : 'DummyText1',  		FSP_VAT_Number : '2452953',Product : 'DummyText1',Prod_Group : 'Service Fee',Prod_Seq : 'DummyText1',Report_Seq : 'DummyText1',TYPE : 'DummyText1',Display_Amount : '17.55',VAT_Amount : '38001.27',Earning_Amount : '256670.66',Payment_Amount : 'DummyText1',START_DATE : 'DummyText1',END_DATE : 'DummyText1',Business_Type : 'DummyText1',Lifecycle_Description : 'DummyText1',Lifecycle_Start_Date : 'DummyText1',AE_Scheduler_ID : 'DummyText1',VAT_Amount_1 : 'DummyText1',Final_Amount : 'DummyText1'}";
+                                                string ppsFooter1InfoJson = "{Reg_ID : 1,Start_Date : '2023-01-01',End_Date : '2023-01-01',Request_DateTime : 'DummyText1',ID : '124529534',Intermediary_Code : 'DummyText1',FSP_ID : 'DummyText1',Policy_Number : 'DummyText1',FSP_Party_ID : 'DummyText1',Client_Number : '124556686',FSP_REF : '2452953',Client_Name : 'Mr SCHOELER',Int_ID : 'DummyText1',Product_Type : 'DummyText1',Commission_Amount : 'DummyText1',INT_EXT_REF : '124411745',Int_Name : 'Kruger Van Heerden',Int_Type : 'DummyText1',Policy_Ref : '5596100',Member_Ref : '124556686',Member_Name : 'DummyText1',Transaction_Amount : 'DummyText1',Mem_Age : 'DummyText1',Months_In_Force : 'DummyText1',Commission_Type : 'Safe Custody Fee',Description : 'Safe Custody Service Fee',POSTED_DATE : '2023-03-03',AE_Type_ID : 'DummyText1',AE_Amount : 'DummyText1',DR_CR : 'DummyText1',NAME : 'DummyText1',Member_Surname : 'DummyText1',Jurisdiction : 'DummyText1',Sales_Office : 'DummyText1',FSP_Name : 'Miss Yvonne van Heerden',FSP_Trading_Name : 'T/A Yvonne Van Heerden Financial Planner CC',FSP_Ext_Ref : '124529534',FSP_Kind : 'DummyText1',FSP_VAT_Number : '2452953',Product : 'DummyText1',Prod_Group : 'Service Fee',Prod_Seq : 'DummyText1',Report_Seq : 'DummyText1',TYPE : 'DummyText1',Display_Amount : '17.55',VAT_Amount : '38001.27',Earning_Amount : '256670.66',Payment_Amount : 'DummyText1',START_DATE : 'DummyText1',END_DATE : 'DummyText1',Business_Type : 'DummyText1',Lifecycle_Description : 'DummyText1',Lifecycle_Start_Date : 'DummyText1',AE_Scheduler_ID : 'DummyText1',VAT_Amount_1 : 'DummyText1',Final_Amount : 'DummyText1'}";
                                                 if (ppsFooter1InfoJson != string.Empty && validationEngine.IsValidJson(ppsFooter1InfoJson))
                                                 {
                                                     string middleText = "PPS Insurance is a registered Insurer and FSP";
@@ -545,7 +548,7 @@ namespace nIS
                                                     ppsFooter1HtmlWidget = ppsFooter1HtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
                                                     ppsFooter1HtmlWidget = ppsFooter1HtmlWidget.Replace("{{FSPFooterDetails}}", middleText);
                                                     ppsFooter1HtmlWidget = ppsFooter1HtmlWidget.Replace("{{FSPPage}}", pageText);
-                                                   
+
                                                     htmlString.Append(ppsFooter1HtmlWidget);
                                                 }
                                             }
@@ -564,17 +567,17 @@ namespace nIS
                                                         index++;
                                                     });
                                                     string productSumstring = HtmlConstants.PRODUCT_SUMMARY_WIDGET_HTML.Replace("{{ProductSummary}}", productSummarySrc.ToString());
-                                                    string productInfoJson = "{Earning_Amount : '256670.66',VAT_Amount : '38001.27'}";                                      
-                                                        spIAA_PaymentDetail productInfo = JsonConvert.DeserializeObject<spIAA_PaymentDetail>(productInfoJson);
-                                                        productSumstring = productSumstring.Replace("{{WidgetDivHeight}}", divHeight);
-                                                        productSumstring = productSumstring.Replace("{{QueryBtn}}", "assets/images/IfQueryBtn.jpg");
-                                                        productSumstring = productSumstring.Replace("{{TotalDue}}", "R" + productInfo.Earning_Amount.ToString());
-                                                        productSumstring = productSumstring.Replace("{{VATDue}}", "R" + productInfo.VAT_Amount.ToString());
-                                                       double grandTotalDue = (Convert.ToDouble(productInfo.Earning_Amount) + Convert.ToDouble(productInfo.VAT_Amount));
-                                                       productSumstring = productSumstring.Replace("{{GrandTotalDue}}", "R" + grandTotalDue.ToString());
-                                                       double ppsPayment = grandTotalDue;
-                                                       productSumstring = productSumstring.Replace("{{PPSPayment}}", "-R" + (grandTotalDue).ToString());
-                                                       productSumstring = productSumstring.Replace("{{Balance}}", "R"+ Convert.ToDouble((grandTotalDue - ppsPayment)).ToString("F2"));
+                                                    string productInfoJson = "{Earning_Amount : '256670.66',VAT_Amount : '38001.27'}";
+                                                    spIAA_PaymentDetail productInfo = JsonConvert.DeserializeObject<spIAA_PaymentDetail>(productInfoJson);
+                                                    productSumstring = productSumstring.Replace("{{WidgetDivHeight}}", divHeight);
+                                                    productSumstring = productSumstring.Replace("{{QueryBtn}}", "assets/images/IfQueryBtn.jpg");
+                                                    productSumstring = productSumstring.Replace("{{TotalDue}}", "R" + productInfo.Earning_Amount.ToString());
+                                                    productSumstring = productSumstring.Replace("{{VATDue}}", "R" + productInfo.VAT_Amount.ToString());
+                                                    double grandTotalDue = (Convert.ToDouble(productInfo.Earning_Amount) + Convert.ToDouble(productInfo.VAT_Amount));
+                                                    productSumstring = productSumstring.Replace("{{GrandTotalDue}}", "R" + grandTotalDue.ToString());
+                                                    double ppsPayment = grandTotalDue;
+                                                    productSumstring = productSumstring.Replace("{{PPSPayment}}", "-R" + (grandTotalDue).ToString());
+                                                    productSumstring = productSumstring.Replace("{{Balance}}", "R" + Convert.ToDouble((grandTotalDue - ppsPayment)).ToString("F2"));
                                                     htmlString.Append(productSumstring);
                                                 }
                                             }
@@ -607,23 +610,64 @@ namespace nIS
                                                     var records = transaction.GroupBy(gptransactionitem => gptransactionitem.INT_EXT_REF).ToList();
                                                     records?.ForEach(transactionitem =>
                                                     {
-                                                        detailedTransactionSrc.Append("<div class='px-50'><div class='prouct-table-block'><div class='text-left fsp-transaction-title font-weight-bold mb-3'>Intermediary:  " + transactionitem.FirstOrDefault().INT_EXT_REF+ " "+ transactionitem.FirstOrDefault().Int_Name + "</div><table width='100%' cellpadding='0' cellspacing='0'> <tr><th class='font-weight-bold text-white'>Client name</th> <th class='font-weight-bold text-white text-center pe-0 bdr-r-0'>Member<br /> number</th> <th class='font-weight-bold text-white text-center'>Will<br/> number</th> <th class='font-weight-bold text-white text-center'>Fiduciary fees</th> <th class='font-weight-bold text-white text-center'>Commission<br /> type</th> <th class='font-weight-bold text-white text-center'>Posted date</th> <th class='font-weight-bold text-white text-center'>Posted amount</th> <th class='font-weight-bold text-white'>Query</th> </tr> ");
+                                                        detailedTransactionSrc.Append("<div class='px-50'><div class='prouct-table-block'><div class='text-left fsp-transaction-title font-weight-bold mb-3'>Intermediary:  " + transactionitem.FirstOrDefault().INT_EXT_REF + " " + transactionitem.FirstOrDefault().Int_Name + "</div><table width='100%' cellpadding='0' cellspacing='0'> <tr><th class='font-weight-bold text-white'>Client name</th> <th class='font-weight-bold text-white text-center pe-0 bdr-r-0'>Member<br /> number</th> <th class='font-weight-bold text-white text-center'>Will<br/> number</th> <th class='font-weight-bold text-white text-center'>Fiduciary fees</th> <th class='font-weight-bold text-white text-center'>Commission<br /> type</th> <th class='font-weight-bold text-white text-center'>Posted date</th> <th class='font-weight-bold text-white text-center'>Posted amount</th> <th class='font-weight-bold text-white'>Query</th> </tr> ");
                                                         detailedTransactionString = detailedTransactionString.Replace("{{QueryBtnImgLink}}", "https://www.google.com/");
                                                         detailedTransactionString = detailedTransactionString.Replace("{{QueryBtn}}", "assets/images/IfQueryBtn.jpg");
-                                             
+
 
                                                         transaction.Where(witem => witem.INT_EXT_REF == transactionitem.FirstOrDefault().INT_EXT_REF).ToList().ForEach(item =>
                                                     {
-                                                        detailedTransactionSrc.Append("<tr><td align = 'center' valign = 'center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" +
-                                                                item.Client_Name + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Member_Ref + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'> " + item.Policy_Ref + "</td><td class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1'>" + (item.Description == "Commission Service Fee" ? "Premium Under Advise Fee" : item.Description)  + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.POSTED_DATE.ToString("dd-MMM-yyyy") + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'> R" + item.Display_Amount + "</td><td class= 'text-center fsp-bdr-bottom px-1'><a href ='https://www.google.com/' target ='_blank'><img class='leftarrowlogo' src='assets/images/leftarrowlogo.png' alt='Left Arrow'></a></td></tr>");
-                                                        TotalPostedAmount += ((item.TYPE == "Fiduciary_Data") && (item.Prod_Group != "VAT"))?  (Convert.ToDouble(item.Display_Amount)): 0.0;
+                                                        detailedTransactionSrc.Append("<tr><td align = 'center' valign = 'center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" + item.Client_Name + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Member_Ref + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'> " + item.Policy_Ref + "</td><td class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1'>" + (item.Description == "Commission Service Fee" ? "Premium Under Advise Fee" : item.Description) + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.POSTED_DATE.ToString("dd-MMM-yyyy") + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'> R" + item.Display_Amount + "</td><td class= 'text-center fsp-bdr-bottom px-1'><a href ='https://www.google.com/' target ='_blank'><img class='leftarrowlogo' src='assets/images/leftarrowlogo.png' alt='Left Arrow'></a></td></tr>");
+                                                        TotalPostedAmount += ((item.TYPE == "Fiduciary_Data") && (item.Prod_Group != "VAT")) ? (Convert.ToDouble(item.Display_Amount)) : 0.0;
                                                     });
                                                         string TotalPostedAmountR = (TotalPostedAmount == 0) ? "0.00" : ("R" + TotalPostedAmount.ToString());
-                                                        detailedTransactionSrc.Append("<tr> <td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'><br /></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'>"+ TotalPostedAmountR + "</td> <td class='text-center fsp-bdr-bottom px-1'><a href='https://www.google.com/' target = '_blank' ><img src='assets/images/leftarrowlogo.png'></a></td> </tr></table><div class='text-right w-100 pt-3'><a href='https://www.google.com/' target = '_blank'></a></div></div></div></div>");
+                                                        detailedTransactionSrc.Append("<tr> <td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'><br /></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'>" + TotalPostedAmountR + "</td> <td class='text-center fsp-bdr-bottom px-1'><a href='https://www.google.com/' target = '_blank' ><img src='assets/images/leftarrowlogo.png'></a></td> </tr></table><div class='text-right w-100 pt-3'><a href='https://www.google.com/' target = '_blank'></a></div></div></div></div>");
                                                         TotalPostedAmount = 0;
 
                                                     });
                                                     detailedTransactionString = detailedTransactionString.Replace("{{detailedTransaction}}", detailedTransactionSrc.ToString());
+                                                    htmlString.Append(detailedTransactionString);
+                                                }
+                                            }
+                                            else if (mergedlst[i].WidgetName == HtmlConstants.PPS_DETAILED_TRANSACTIONS_WIDGET_NAME)
+                                            {
+                                                string transactionListJson = "[{'INT_EXT_REF':'124565256 ','POLICY_REF':'3830102','MEMBER_REF':'10024365','Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Professional Health',  'REQUESTED_DATETIME':'01-11-2022  00:00:00', 'REQUEST_DATETIME':'2022-09-23','TRANSACTION_AMOUNT':2265.4 ,'ALLOCATED_AMOUNT':-23107.08 ,'MEMBER_AGE':'45 ','MeasureType':'Commission','CommissionType':'2nd Year','FSP_Name':'Miss HW HLONGWANE'},     {'INT_EXT_REF':'124565256 ','POLICY_REF':'3830102','MEMBER_REF':'10024365','Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CatchAll Exercised ',  'REQUESTED_DATETIME':'01-11-2022  00:00:00', 'REQUEST_DATETIME':'2022-09-23','TRANSACTION_AMOUNT':84.97 ,'ALLOCATED_AMOUNT':-866.69 ,'MEMBER_AGE':'45 ',  'MeasureType':'Commission','CommissionType':'2nd Year','FSP_Name':'Miss HW HLONGWANE'},     {'INT_EXT_REF':'124565256 ','POLICY_REF':'3830102','MEMBER_REF':'10024365','Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Professional Health',  'REQUESTED_DATETIME':'01-11-2022  00:00:00', 'REQUEST_DATETIME':'2022-09-23','TRANSACTION_AMOUNT':2265.4,'ALLOCATED_AMOUNT':10968.98,'MEMBER_AGE':'45 ',  'MeasureType':'Commission','CommissionType':'2nd Year','FSP_Name':'Miss HW HLONGWANE'},     {'INT_EXT_REF':'124565256 ','POLICY_REF':'3820110 ','MEMBER_REF':'10436136 ','Member_Name':'Mnr JG Rossouw ','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Professional Health',  'REQUESTED_DATETIME':'01-11-2022 00:00 ', 'REQUEST_DATETIME':'2022-09-28','TRANSACTION_AMOUNT':928.89 ,'ALLOCATED_AMOUNT':-9474.68 ,'MEMBER_AGE':'43',  'MeasureType':'Commission','CommissionType':'1nd Year','FSP_Name':'Miss HW HLONGWANE'},     {'INT_EXT_REF':'124565256 ','POLICY_REF':'3820110 ','MEMBER_REF':'10436136 ','Member_Name':'Mnr JG Rossouw ','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Professional Health',  'REQUESTED_DATETIME':'01-11-2022 00:00 ', 'REQUEST_DATETIME':'2022-09-28','TRANSACTION_AMOUNT':928.89 ,'ALLOCATED_AMOUNT':6072.47 ,'MEMBER_AGE':'43',  'MeasureType':'Commission','CommissionType':'2nd Year','FSP_Name':'Miss HW HLONGWANE'}]  ";
+
+                                                if (transactionListJson != string.Empty && validationEngine.IsValidJson(transactionListJson))
+                                                {
+                                                    IList<spIAA_Commission_Detail> ppsDetails = JsonConvert.DeserializeObject<List<spIAA_Commission_Detail>>(transactionListJson);
+                                                    StringBuilder detailedTransactionSrc = new StringBuilder();
+                                                    string detailedTransactionString = HtmlConstants.PPS_DETAILED_TRANSACTIONS_WIDGET_HTML;
+                                                    detailedTransactionSrc.Append("<div class='pps-monthly-table w-100'><table cellpadding='0' cellspacing='0' width='100%'><tr><th class='bdr-right-white text-white font-weight-bold'>Client<br/>name</th><th class='bdr-right-white text-white font-weight-bold'>Age</th><th class='bdr-right-white text-white font-weight-bold'>Policy #</th><th class='bdr-right-white text-white font-weight-bold'>Policy #</th><th class='bdr-right-white text-white font-weight-bold'>Product</th><th class='bdr-right-white text-white font-weight-bold'>Date<br/>issued</th><th class='bdr-right-white text-white font-weight-bold'>Inception<br/>date</th><th class='bdr-right-white text-white font-weight-bold'>Com<br/>type</th><th class='bdr-right-white text-white font-weight-bold'>Quantity</th><th class='bdr-right-white text-white font-weight-bold'>Posted<br/>date</th><th class='bdr-right-white text-white font-weight-bold'>Earnings</th></tr>");
+                                                    var records = ppsDetails.GroupBy(gptransactionitem => gptransactionitem.BUS_GROUP).ToList();
+                                                    records?.ForEach(transactionitem =>
+                                                    {
+                                                                 detailedTransactionSrc.Append(" <tr> <td colspan = '11' class='text-left font-weight-bold'> PPS INSURANCE </td> </tr> ");
+                                                        var busGroupdata = ppsDetails.Where(witem => witem.BUS_GROUP == transactionitem.FirstOrDefault().BUS_GROUP).ToList();
+
+                                                        var memberGroupRecords = busGroupdata.GroupBy(gpmembertransactionitem => gpmembertransactionitem.MEMBER_REF).ToList();
+
+                                                        memberGroupRecords.ForEach(memberitem =>
+                                                        {
+                                                            double TotalPostedAmount = 0;
+                                                            var memberRecords = busGroupdata.Where(witem => witem.MEMBER_REF == memberitem.FirstOrDefault().MEMBER_REF).ToList();
+                                                            memberRecords.ForEach(memberitemrecord =>
+                                                            {
+                                                                TotalPostedAmount += (Convert.ToDouble(memberitemrecord.ALLOCATED_AMOUNT));
+                                                                detailedTransactionSrc.Append("<tr><td class='bdr-right-white text-left'>" + memberitemrecord.Member_Name + "</td><td class='bdr-right-white text-left'>" + memberitemrecord.MEMBER_AGE + "</td>" + "<td class='bdr-right-white text-left'>" + memberitemrecord.POLICY_REF + "</td>" +  
+                                      "<td class='bdr-right-white text-left'>" + memberitemrecord.POLICY_REF + "</td><td class='bdr-right-white text-left'>" + memberitemrecord.PRODUCT_DESCRIPTION + "</td><td class='bdr-right-white text-left'>" + memberitemrecord.REQUEST_DATETIME + "</td><td class='bdr-right-white text-left'>" + memberitemrecord.REQUESTED_DATETIME.ToString("dd-MMM-yyyy") + "</td><td class='bdr-right-white text-left'>" + memberitemrecord.CommissionType + "</td><td class='bdr-right-white text-left'>" + ((Convert.ToDouble(memberitemrecord.TRANSACTION_AMOUNT)) < 0 ? "-R" +
+                                      (Convert.ToDouble(memberitemrecord.TRANSACTION_AMOUNT) * -1).ToString() : "R" + Convert.ToDouble(memberitemrecord.TRANSACTION_AMOUNT)).ToString() + "</td><td class='bdr-right-white text-right'>" + memberitemrecord.AE_Posted_Date.ToString("dd-MMM-yyyy") + "</td>" +
+                                                                    "<td class='bdr-right-white text-right'>" + ((Convert.ToDouble(memberitemrecord.ALLOCATED_AMOUNT)) < 0? "-R" + 
+                                      (Convert.ToDouble(memberitemrecord.ALLOCATED_AMOUNT)*-1).ToString() : "R" + Convert.ToDouble(memberitemrecord.ALLOCATED_AMOUNT)).ToString() + "</td></tr>");
+                                                            });
+                                                            string TotalPostedAmountR = (TotalPostedAmount == 0) ? "0.00" : (TotalPostedAmount.ToString());
+                                                            detailedTransactionSrc.Append(" <tr><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold text-right fs-16'>Sub Total</td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td colspan='2' class='font-weight-bold text-right fs-16 pps-bg-gray' height='40'>" + ((Convert.ToDouble(TotalPostedAmountR)) < 0 ? "-R" +
+                                      (Convert.ToDouble(TotalPostedAmountR) * -1).ToString() : "R" + Convert.ToDouble(TotalPostedAmountR)).ToString() + "</td></tr>");
+                                                        });
+                                                       
+                                                    });
+                                                    detailedTransactionSrc.Append("</table></div>");
+                                                    detailedTransactionString = detailedTransactionString.Replace("{{ppsDetailedTransactions}}", detailedTransactionSrc.ToString());
                                                     htmlString.Append(detailedTransactionString);
                                                 }
                                             }
@@ -1110,7 +1154,7 @@ namespace nIS
                                                 if (mergedlst[i].WidgetSetting != string.Empty && validationEngine.IsValidJson(mergedlst[i].WidgetSetting))
                                                 {
                                                     dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
-                                                    if (widgetSetting.html.ToString().Length> 0)
+                                                    if (widgetSetting.html.ToString().Length > 0)
                                                     {
                                                         html = widgetSetting.html;
                                                     }
@@ -1133,7 +1177,7 @@ namespace nIS
                                                 {
                                                     //dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
                                                     dynamic widgetSetting = JArray.Parse(mergedlst[i].WidgetSetting);
-                                                    if (widgetSetting[0].Html.ToString().Length> 0)
+                                                    if (widgetSetting[0].Html.ToString().Length > 0)
                                                     {
                                                         html = widgetSetting[0].Html; //TODO: ***Deepak: Remove hard coded line
                                                     }
@@ -1148,7 +1192,7 @@ namespace nIS
                                                 if (accountBalanceDataJson != string.Empty && validationEngine.IsValidJson(accountBalanceDataJson))
                                                 {
                                                     IList<AccountSummary> lstAccountSummary = JsonConvert.DeserializeObject<List<AccountSummary>>(accountBalanceDataJson);
-                                                    if (lstAccountSummary.Count> 0)
+                                                    if (lstAccountSummary.Count > 0)
                                                     {
                                                         StringBuilder accSummary = new StringBuilder();
                                                         lstAccountSummary.ToList().ForEach(acc =>
@@ -1251,7 +1295,7 @@ namespace nIS
                                                     incomeSources.ToList().ForEach(item =>
                                                     {
                                                         var tdstring = string.Empty;
-                                                        if (Int32.Parse(item.CurrentSpend)> Int32.Parse(item.AverageSpend))
+                                                        if (Int32.Parse(item.CurrentSpend) > Int32.Parse(item.AverageSpend))
                                                         {
                                                             tdstring = "<span class='fa fa-sort-desc fa-2x text-danger' aria-hidden='true'></span><span class='ml-2'>" + item.AverageSpend + "</span>";
                                                         }
@@ -1853,19 +1897,19 @@ namespace nIS
                                                 //}
                                                 //else
                                                 //{
-                                                    string jsonstr = HtmlConstants.SPECIAL_MESSAGES_WIDGET_PREVIEW_JSON_STRING;
-                                                    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                                string jsonstr = HtmlConstants.SPECIAL_MESSAGES_WIDGET_PREVIEW_JSON_STRING;
+                                                if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                                {
+                                                    var SpecialMessage = JsonConvert.DeserializeObject<SpecialMessage>(jsonstr);
+                                                    if (SpecialMessage != null)
                                                     {
-                                                        var SpecialMessage = JsonConvert.DeserializeObject<SpecialMessage>(jsonstr);
-                                                        if (SpecialMessage != null)
-                                                        {
-                                                            var specialMsgTxtData = (!string.IsNullOrEmpty(SpecialMessage.Header) ? "<div class='SpecialMessageHeader'> " + SpecialMessage.Header + " </div>" : string.Empty) + (!string.IsNullOrEmpty(SpecialMessage.Message1) ? "<p> " + SpecialMessage.Message1 + " </p>" : string.Empty) + (!string.IsNullOrEmpty(SpecialMessage.Message2) ? "<p> " + SpecialMessage.Message2 + " </p>" : string.Empty);
+                                                        var specialMsgTxtData = (!string.IsNullOrEmpty(SpecialMessage.Header) ? "<div class='SpecialMessageHeader'> " + SpecialMessage.Header + " </div>" : string.Empty) + (!string.IsNullOrEmpty(SpecialMessage.Message1) ? "<p> " + SpecialMessage.Message1 + " </p>" : string.Empty) + (!string.IsNullOrEmpty(SpecialMessage.Message2) ? "<p> " + SpecialMessage.Message2 + " </p>" : string.Empty);
 
-                                                            widgetHtml.Replace("{{SpecialMessageTextData}}", specialMsgTxtData);
-                                                            htmlString.Append(widgetHtml.ToString());
-                                                        }
+                                                        widgetHtml.Replace("{{SpecialMessageTextData}}", specialMsgTxtData);
+                                                        htmlString.Append(widgetHtml.ToString());
                                                     }
-                                               // }
+                                                }
+                                                // }
                                             }
                                             //else if (mergedlst[i].WidgetName == HtmlConstants.PERSONAL_LOAN_INSURANCE_MESSAGE_WIDGET_NAME)
                                             //{
@@ -3543,7 +3587,7 @@ namespace nIS
                                         }
                                         else
                                         {
-                                            if (dynaWidgets.Count> 0)
+                                            if (dynaWidgets.Count > 0)
                                             {
                                                 var dynawidget = dynaWidgets.Where(item => item.Identifier == mergedlst[i].WidgetId).ToList().FirstOrDefault();
                                                 TenantEntity entity = new TenantEntity();
@@ -3719,17 +3763,17 @@ namespace nIS
                     }
                     htmlString.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
 
-                    if (linegraphIds.Count> 0)
+                    if (linegraphIds.Count > 0)
                     {
                         var ids = string.Join(",", linegraphIds.Select(item => item).ToList());
                         htmlString.Append("<input type = 'hidden' id = 'hiddenLineChartIds' value = '" + ids + "'>");
                     }
-                    if (bargraphIds.Count> 0)
+                    if (bargraphIds.Count > 0)
                     {
                         var ids = string.Join(",", bargraphIds.Select(item => item).ToList());
                         htmlString.Append("<input type = 'hidden' id = 'hiddenBarChartIds' value = '" + ids + "'>");
                     }
-                    if (piechartIds.Count> 0)
+                    if (piechartIds.Count > 0)
                     {
                         var ids = string.Join(",", piechartIds.Select(item => item).ToList());
                         htmlString.Append("<input type = 'hidden' id = 'hiddenPieChartIds' value = '" + ids + "'>");
@@ -3820,7 +3864,7 @@ namespace nIS
                     }
                 });
 
-                if (invalidpageException.Data.Count> 0)
+                if (invalidpageException.Data.Count > 0)
                 {
                     throw invalidpageException;
                 }
@@ -3840,8 +3884,8 @@ namespace nIS
         {
             try
             {
-                int isDuplicatePage = pages.GroupBy(p => p.DisplayName).Where(g => g.Count()> 1).Count();
-                if (isDuplicatePage> 0)
+                int isDuplicatePage = pages.GroupBy(p => p.DisplayName).Where(g => g.Count() > 1).Count();
+                if (isDuplicatePage > 0)
                 {
                     throw new DuplicatePageFoundException(tenantCode);
                 }
@@ -3948,7 +3992,7 @@ namespace nIS
 
             // Create an ordinal suffix (e.g., "st", "nd", "rd", "th")
             string ordinalSuffix;
-            if (day % 100>= 11 && day % 100 <= 13)
+            if (day % 100 >= 11 && day % 100 <= 13)
             {
                 ordinalSuffix = "th";
             }

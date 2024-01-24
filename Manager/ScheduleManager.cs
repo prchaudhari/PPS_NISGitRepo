@@ -85,6 +85,7 @@ namespace nIS
         /// </summary>
         private SystemActivityHistoryManager systemActivityHistoryManager = null;
       
+        private IPPSRepository ppsRepository = null;
         private IProductRepository productRepository = null;
         #endregion
 

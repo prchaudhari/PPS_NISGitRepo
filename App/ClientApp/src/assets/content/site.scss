@@ -2845,3 +2845,60 @@
 .bdr-end-5 {
   border-right: 5px solid #091E35;
 }
+
+// pps detailed transaction
+
+.pps-earning-period table tr th {
+  background-color: #091E35;
+}
+
+.pps-earning-period table tr td {
+  background-color: #E9EBF5;
+}
+
+.pps-earning-period table tr:nth-child(odd) td {
+  background-color: #CFD5EA;
+}
+
+.pps-details-table table tr td {
+  font-size: 0.7rem;
+}
+
+.pps-monthly-table table tr th {
+  background-color: #8F897E;
+  font-size: 0.75rem;
+  font-weight: normal;
+  padding: 8px 5px;
+  line-height: 1;
+  color: #fff;
+  vertical-align: top;
+  height: 40px;
+}
+
+.pps-monthly-table table tr td {
+  font-size: 0.75rem;
+  font-weight: normal;
+  padding: 8px 5px;
+  line-height: 1;
+  background-color: #F7F7F7;
+}
+
+.pps-monthly-table table tr:nth-child(odd) td {
+  background-color: #CECCC8;
+}
+
+.bdr-right-white {
+  border-right: 1px solid #F1F0EF;
+}
+
+.sky-blue-bg {
+  background-color: #69C5D1 !important;
+}
+
+.fs-16 {
+  font-size: 0.95rem;
+}
+.pps-monthly-table pps-inc {
+  float: left;
+  font-weight: bold;
+}

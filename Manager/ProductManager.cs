@@ -5,6 +5,7 @@
 
 namespace nIS
 {
+    using nIS.Models;
     #region References
 
     using System;
@@ -39,7 +40,7 @@ namespace nIS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -55,7 +56,7 @@ namespace nIS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -68,22 +69,22 @@ namespace nIS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
 
-        public IList<ProductPageTypeMappingViewModel> GetProductPageTypeMappingByProductId(int productId, string tenantCode)
-        {
-            try
-            {
-                var result = this.productRepository.Get_ProductPageTypeMappingByProductId(productId, tenantCode);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //public IList<ProductPageTypeMappingViewModel> GetProductPageTypeMappingByProductId(int productId, string tenantCode)
+        //{
+        //    try
+        //    {
+        //        var result = this.productRepository.Get_ProductPageTypeMappingByProductId(productId, tenantCode);
+        //        return result;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw;
+        //    }
+        //}
         #endregion
     }
 }

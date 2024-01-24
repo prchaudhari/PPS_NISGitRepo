@@ -51,6 +51,8 @@ namespace nIS
 
         public const string PPS_DETAILS2_WIDGET_NAME = "PPSDetails2";
 
+        public const string PPS_DETAILED_TRANSACTIONS_WIDGET_NAME = "PPSDetailedTransactions";
+
         public const string VIDEO_WIDGET_NAME = "Video";
 
         public const string STATIC_HTML_WIDGET_NAME = "StaticHtml";
@@ -266,7 +268,9 @@ namespace nIS
 
         public const string DETAILED_TRANSACTIONS_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'><div class='container_area' ><div class='dark-blue-bg payment-sum text-white text-center'>Detailed Transactions</div><div class='fsp-product-summery'><div class='text-center py-3'><a href='{{QueryBtnImgLink}}' target = '_blank' ><img src='{{QueryBtn}}'></a>{{detailedTransaction}}</div></div><div class='container_area'><div class='click-btn text-center w-100' style='padding-top: 50px;'><a href = '#' target = '_blank' ></a></div></div></div></div></div>";
 
-        public const string PPS_DETAILS_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'><div class='container_area'><div class='header-contact px-20 text-left'><div class='col-49'><ul><li><dd>FSP:</dd><dt class='text-gray'>{{FSPNumber}}</dt></li><li><dd>FSP Agreement #:</dd><dt class='text-gray'>{{FSPAgreeNumber}}</dt></li><li><dd>Vat Reg #:</dd><dt class='text-gray'>{{VATRegNumber}}</dt></li><li><dd>Month:</dd><dt class='text-gray'>September 2023</dt></li></ul></div><div class='col-49'><ul><li><dd>Contact details:</dd><dt></dt></li><li><dd>Mobile</dd><dt class='text-gray'>0821234567</dt></li><li><dd>Email</dd><dt class='text-gray1'>y.vanheerden@google.com</dt></li><li><dd>Address</dd><dt class='text-gray'>1 John Vorster Drive,<br/>Randburg, Gauteng</dt></li></ul></div></div></div></div>";
+        public const string PPS_DETAILED_TRANSACTIONS_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'><div class='container_area'><div class='fsp-earnings-section'><div class='dark-blue-bg payment-sum text-white text-center'>PPS Detailed Transactions</div><div class='pps-earning-period pps-details-table pt-1 pb-2 d-flex justify-content-between'>{{ppsDetailedTransactions}}</div></div></div></div>";
+
+        public const string PPS_DETAILS_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'> <div class='container_area'><div class='header-contact px-20 text-left'><div class='col-49'><ul><li><dd>FSP:</dd><dt class='text-gray'>{{FSPNumber}}</dt></li><li><dd>FSP Agreement #:</dd><dt class='text-gray'>{{FSPAgreeNumber}}</dt></li><li><dd>Vat Reg #:</dd><dt class='text-gray'>{{VATRegNumber}}</dt></li><li><dd>Month:</dd><dt class='text-gray'>September 2023</dt></li></ul></div><div class='col-49'><ul><li><dd>Contact details:</dd><dt></dt></li><li><dd>Mobile</dd><dt class='text-gray'>0821234567</dt></li><li><dd>Email</dd><dt class='text-gray1'>y.vanheerden@google.com</dt></li><li><dd>Address</dd><dt class='text-gray'>1 John Vorster Drive,<br/>Randburg, Gauteng</dt></li></ul></div></div></div></div>";
 
         public const string PPS_FOOTER1_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'><div class='widget-area'><div class='container_area'><div class='fsp-footer-section dark-blue-bg py-1 px-2'><ul class='fsp-social-icons'><li><a href='#'><img src='assets/images/fb_foot.png'></a></li><li><a href='#'><img src='assets/images/insta_foot.png'></a></li><li><a href='#'><img src='assets/images/twitter_foot.png'></a></li><li><a href='#'><img src='assets/images/in_foot.png'></a></li><li><a href='#'><img src='assets/images/you_foot.png'></a></li><li><a href='#'><img src='assets/images/ticktok_foot.png'></a></li></ul><div class='fsp-copyright mb-0'>{{FSPFooterDetails}}</div><div></div><div></div><div></div><div class='fsp-page mb-0'>{{FSPPage}}</div></div></div></div></div>";
 
@@ -476,6 +480,8 @@ namespace nIS
 
 
         public const string DETAILED_TRANSACTIONS_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}}'><div class='card border-0' style='height:{{WidgetDivHeight}}'><div class='container_area' ><div class='dark-blue-bg payment-sum text-white text-center'>Detailed Transactions</div><div class='fsp-product-summery'><div class='text-center py-3'><a href='{{QueryBtnImgLink}}' target = '_blank' ><img src='{{QueryBtn}}'></a>{{detailedTransaction}}</div></div><div class='container_area'><div class='click-btn text-center w-100' style='padding-top: 50px;'><a href = '#' target = '_blank' ></a></div></div></div></div></div></div";
+
+        public const string PPS_DETAILED_TRANSACTIONS_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}}'><div class='card border-0' style='height:{{WidgetDivHeight}}'> <div class='container_area'><div class='fsp-earnings-section'><div class='dark-blue-bg payment-sum text-white text-center'>PPS Detailed Transactions</div><div class='pps-earning-period pps-details-table pt-1 pb-2 d-flex justify-content-between'>{{ppsDetailedTransactions}}</ div ></ div ></ div ></div";
 
 
         public const string PPS_HEADING_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}}'><div class='container_area'><div class='header-section px-20'><div class='fsp-header-logo'><div class='fsp-logo'><img src = '../common/images/logo3.jpg' alt=''></div><div class='fsp-logo-text'><h1 class='intermediary_title'>Financial Service Provider(FSP) Statement</h1><h6 class='font-weight-bold fsp_inter_subheading'>{{FSPName}} T/A {{FSPTradingName}}</h6></div></div></div></div></div>";
