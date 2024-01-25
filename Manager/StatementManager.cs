@@ -527,6 +527,9 @@ namespace nIS
                                                             case HtmlConstants.DETAILED_TRANSACTIONS_WIDGET_NAME:
                                                                 pageHtmlContent.Append(this.DetailedTransactionWidgetFormatting(pageWidget, counter, statement, page, divHeight));
                                                                 break;
+                                                            case HtmlConstants.PPS_DETAILED_TRANSACTIONS_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.PpsDetailedTransactionWidgetFormatting(pageWidget, counter, statement, page, divHeight));
+                                                                break;
                                                             case HtmlConstants.FOOTER_IMAGE_WIDGET_NAME:
                                                                 pageHtmlContent.Append(this.FooterImageWidgetFormatting(pageWidget, counter, statement, page, divHeight));
                                                                 break;
@@ -2373,6 +2376,48 @@ namespace nIS
                                                             TotalPostedAmount = 0;
                                                         });
                                                         detailedTransactionString = detailedTransactionString.Replace("{{detailedTransaction}}", detailedTransactionSrc.ToString());
+                                                        htmlString.Append(detailedTransactionString);
+                                                    }
+                                                }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.PPS_DETAILED_TRANSACTIONS_WIDGET_NAME)
+                                                {
+                                                    string transactionListJson = "[{'INT_EXT_REF':'124565256 ','POLICY_REF':'3830102','MEMBER_REF':'10024365','Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Professional Health',  'REQUESTED_DATETIME':'01-11-2022  00:00:00', 'REQUEST_DATETIME':'2022-09-23','TRANSACTION_AMOUNT':2265.4 ,'ALLOCATED_AMOUNT':-23107.08 ,'MEMBER_AGE':'45 ','MeasureType':'Commission','CommissionType':'2nd Year','FSP_Name':'Miss HW HLONGWANE'},     {'INT_EXT_REF':'124565256 ','POLICY_REF':'3830102','MEMBER_REF':'10024365','Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CatchAll Exercised ',  'REQUESTED_DATETIME':'01-11-2022  00:00:00', 'REQUEST_DATETIME':'2022-09-23','TRANSACTION_AMOUNT':84.97 ,'ALLOCATED_AMOUNT':-866.69 ,'MEMBER_AGE':'45 ',  'MeasureType':'Commission','CommissionType':'2nd Year','FSP_Name':'Miss HW HLONGWANE'},     {'INT_EXT_REF':'124565256 ','POLICY_REF':'3830102','MEMBER_REF':'10024365','Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Professional Health',  'REQUESTED_DATETIME':'01-11-2022  00:00:00', 'REQUEST_DATETIME':'2022-09-23','TRANSACTION_AMOUNT':2265.4,'ALLOCATED_AMOUNT':10968.98,'MEMBER_AGE':'45 ',  'MeasureType':'Commission','CommissionType':'2nd Year','FSP_Name':'Miss HW HLONGWANE'},     {'INT_EXT_REF':'124565256 ','POLICY_REF':'3820110 ','MEMBER_REF':'10436136 ','Member_Name':'Mnr JG Rossouw ','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Professional Health',  'REQUESTED_DATETIME':'01-11-2022 00:00 ', 'REQUEST_DATETIME':'2022-09-28','TRANSACTION_AMOUNT':928.89 ,'ALLOCATED_AMOUNT':-9474.68 ,'MEMBER_AGE':'43',  'MeasureType':'Commission','CommissionType':'1nd Year','FSP_Name':'Miss HW HLONGWANE'},     {'INT_EXT_REF':'124565256 ','POLICY_REF':'3820110 ','MEMBER_REF':'10436136 ','Member_Name':'Mnr JG Rossouw ','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Professional Health',  'REQUESTED_DATETIME':'01-11-2022 00:00 ', 'REQUEST_DATETIME':'2022-09-28','TRANSACTION_AMOUNT':928.89 ,'ALLOCATED_AMOUNT':6072.47 ,'MEMBER_AGE':'43',  'MeasureType':'Commission','CommissionType':'2nd Year','FSP_Name':'Miss HW HLONGWANE'}]  ";
+
+                                                    if (transactionListJson != string.Empty && validationEngine.IsValidJson(transactionListJson))
+                                                    {
+                                                        IList<spIAA_Commission_Detail> ppsDetails = JsonConvert.DeserializeObject<List<spIAA_Commission_Detail>>(transactionListJson);
+                                                        StringBuilder detailedTransactionSrc = new StringBuilder();
+                                                        string detailedTransactionString = HtmlConstants.PPS_DETAILED_TRANSACTIONS_WIDGET_HTML;
+                                                        detailedTransactionSrc.Append("<div class='pps-monthly-table w-100'><table cellpadding='0' cellspacing='0' width='100%'><tr><th class='bdr-right-white text-white font-weight-bold'>Client<br/>name</th><th class='bdr-right-white text-white font-weight-bold'>Age</th><th class='bdr-right-white text-white font-weight-bold'>Policy #</th><th class='bdr-right-white text-white font-weight-bold'>Policy #</th><th class='bdr-right-white text-white font-weight-bold'>Product</th><th class='bdr-right-white text-white font-weight-bold'>Date<br/>issued</th><th class='bdr-right-white text-white font-weight-bold'>Inception<br/>date</th><th class='bdr-right-white text-white font-weight-bold'>Com<br/>type</th><th class='bdr-right-white text-white font-weight-bold'>Quantity</th><th class='bdr-right-white text-white font-weight-bold'>Posted<br/>date</th><th class='bdr-right-white text-white font-weight-bold'>Earnings</th></tr>");
+                                                        var records = ppsDetails.GroupBy(gptransactionitem => gptransactionitem.BUS_GROUP).ToList();
+                                                        records?.ForEach(transactionitem =>
+                                                        {
+                                                            detailedTransactionSrc.Append(" <tr> <td colspan = '11' class='text-left font-weight-bold'> PPS INSURANCE </td> </tr> ");
+                                                            var busGroupdata = ppsDetails.Where(witem => witem.BUS_GROUP == transactionitem.FirstOrDefault().BUS_GROUP).ToList();
+
+                                                            var memberGroupRecords = busGroupdata.GroupBy(gpmembertransactionitem => gpmembertransactionitem.MEMBER_REF).ToList();
+
+                                                            memberGroupRecords.ForEach(memberitem =>
+                                                            {
+                                                                double TotalPostedAmount = 0;
+                                                                var memberRecords = busGroupdata.Where(witem => witem.MEMBER_REF == memberitem.FirstOrDefault().MEMBER_REF).ToList();
+                                                                memberRecords.ForEach(memberitemrecord =>
+                                                                {
+                                                                    TotalPostedAmount += (Convert.ToDouble(memberitemrecord.ALLOCATED_AMOUNT));
+                                                                    detailedTransactionSrc.Append("<tr><td class='bdr-right-white text-left'>" + memberitemrecord.Member_Name + "</td><td class='bdr-right-white text-left'>" + memberitemrecord.MEMBER_AGE + "</td>" + "<td class='bdr-right-white text-left'>" + memberitemrecord.POLICY_REF + "</td>" +
+                                          "<td class='bdr-right-white text-left'>" + memberitemrecord.POLICY_REF + "</td><td class='bdr-right-white text-left'>" + memberitemrecord.PRODUCT_DESCRIPTION + "</td><td class='bdr-right-white text-left'>" + memberitemrecord.REQUEST_DATETIME + "</td><td class='bdr-right-white text-left'>" + memberitemrecord.REQUESTED_DATETIME.ToString("dd-MMM-yyyy") + "</td><td class='bdr-right-white text-left'>" + memberitemrecord.CommissionType + "</td><td class='bdr-right-white text-left'>" + ((Convert.ToDouble(memberitemrecord.TRANSACTION_AMOUNT)) < 0 ? "-R" +
+                                          (Convert.ToDouble(memberitemrecord.TRANSACTION_AMOUNT) * -1).ToString() : "R" + Convert.ToDouble(memberitemrecord.TRANSACTION_AMOUNT)).ToString() + "</td><td class='bdr-right-white text-right'>" + memberitemrecord.AE_Posted_Date.ToString("dd-MMM-yyyy") + "</td>" +
+                                                                        "<td class='bdr-right-white text-right'>" + ((Convert.ToDouble(memberitemrecord.ALLOCATED_AMOUNT)) < 0 ? "-R" +
+                                          (Convert.ToDouble(memberitemrecord.ALLOCATED_AMOUNT) * -1).ToString() : "R" + Convert.ToDouble(memberitemrecord.ALLOCATED_AMOUNT)).ToString() + "</td></tr>");
+                                                                });
+                                                                string TotalPostedAmountR = (TotalPostedAmount == 0) ? "0.00" : (TotalPostedAmount.ToString());
+                                                                detailedTransactionSrc.Append(" <tr><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold text-right fs-16'>Sub Total</td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td colspan='2' class='font-weight-bold text-right fs-16 pps-bg-gray' height='40'>" + ((Convert.ToDouble(TotalPostedAmountR)) < 0 ? "-R" +
+                                          (Convert.ToDouble(TotalPostedAmountR) * -1).ToString() : "R" + Convert.ToDouble(TotalPostedAmountR)).ToString() + "</td></tr>");
+                                                            });
+
+                                                        });
+                                                        detailedTransactionSrc.Append("</table></div>");
+                                                        detailedTransactionString = detailedTransactionString.Replace("{{ppsDetailedTransactions}}", detailedTransactionSrc.ToString());
                                                         htmlString.Append(detailedTransactionString);
                                                     }
                                                 }
@@ -5889,6 +5934,14 @@ namespace nIS
             widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
             return widgetHTML;
         }
+        private string PpsDetailedTransactionWidgetFormatting(PageWidget pageWidget, int counter, Statement statement, Page page, string divHeight)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var widgetHTML = HtmlConstants.PPS_DETAILED_TRANSACTIONS_WIDGET_HTML_FOR_STMT;
+            widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
+            widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+            return widgetHTML;
+        }
 
         private string AccountInformationWidgetFormatting(PageWidget pageWidget, int counter, Statement statement, Page page, string divHeight)
         {
@@ -6839,6 +6892,35 @@ namespace nIS
                
             }
         }
+
+        private void BindDummyDataToPpsDetailedTransactionsWidget(StringBuilder pageContent, Statement statement, Page page, PageWidget widget, string AppBaseDirectory)
+        {
+                                                string transactionListJson = "[{'INT_EXT_REF':'124565256 ','POLICY_REF':'3830102','MEMBER_REF':'10024365','Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Professional Health',  'REQUESTED_DATETIME':'01-11-2022  00:00:00', 'REQUEST_DATETIME':'23-09-2022  00:00:00','TRANSACTION_AMOUNT':2265.4 ,'ALLOCATED_AMOUNT':-23107.08 ,'MEMBER_AGE':'45 ','MeasureType':'Commission','CommissionType':'2nd Year','FSP_Name':'Miss HW HLONGWANE'},     {'INT_EXT_REF':'124565256 ','POLICY_REF':'3830102','MEMBER_REF':'10024365','Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CatchAll Exercised ',  'REQUESTED_DATETIME':'01-11-2022  00:00:00', 'REQUEST_DATETIME':'23-09-2022  00:00:00','TRANSACTION_AMOUNT':84.97 ,'ALLOCATED_AMOUNT':-866.69 ,'MEMBER_AGE':'45 ',  'MeasureType':'Commission','CommissionType':'2nd Year','FSP_Name':'Miss HW HLONGWANE'},     {'INT_EXT_REF':'124565256 ','POLICY_REF':'3830102','MEMBER_REF':'10024365','Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Professional Health',  'REQUESTED_DATETIME':'01-11-2022  00:00:00', 'REQUEST_DATETIME':'23-09-2022  00:00:00','TRANSACTION_AMOUNT':2265.4,'ALLOCATED_AMOUNT':10968.98,'MEMBER_AGE':'45 ',  'MeasureType':'Commission','CommissionType':'2nd Year','FSP_Name':'Miss HW HLONGWANE'},     {'INT_EXT_REF':'124565256 ','POLICY_REF':'3820110 ','MEMBER_REF':'10436136 ','Member_Name':'Mnr JG Rossouw ','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Professional Health',  'REQUESTED_DATETIME':'01-11-2022 00:00 ', 'REQUEST_DATETIME':'28-09-2022 00:00 ','TRANSACTION_AMOUNT':928.89 ,'ALLOCATED_AMOUNT':-9474.68 ,'MEMBER_AGE':'43',  'MeasureType':'Commission','CommissionType':'1nd Year','FSP_Name':'Miss HW HLONGWANE'},     {'INT_EXT_REF':'124565256 ','POLICY_REF':'3820110 ','MEMBER_REF':'10436136 ','Member_Name':'Mnr JG Rossouw ','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Professional Health',  'REQUESTED_DATETIME':'01-11-2022 00:00 ', 'REQUEST_DATETIME':'28-09-2022 00:00 ','TRANSACTION_AMOUNT':928.89 ,'ALLOCATED_AMOUNT':6072.47 ,'MEMBER_AGE':'43',  'MeasureType':'Commission','CommissionType':'2nd Year','FSP_Name':'Miss HW HLONGWANE'}]  ";
+                                                double TotalPostedAmount = 0;
+                                                if (transactionListJson != string.Empty && validationEngine.IsValidJson(transactionListJson))
+                                                {
+                                                    IList<spIAA_Commission_Detail> transaction = JsonConvert.DeserializeObject<List<spIAA_Commission_Detail>>(transactionListJson);
+                                                    StringBuilder detailedTransactionSrc = new StringBuilder();
+                                                    string detailedTransactionString = HtmlConstants.PPS_DETAILED_TRANSACTIONS_WIDGET_HTML;
+                                                    detailedTransactionSrc.Append("<div class='pps-monthly-table w-100'><table cellpadding='0' cellspacing='0' width='100%'><tr><th class='bdr-right-white text-white font-weight-bold'>Client<br/>name</th><th class='bdr-right-white text-white font-weight-bold'>Age</th><th class='bdr-right-white text-white font-weight-bold'>Policy #</th><th class='bdr-right-white text-white font-weight-bold'>Policy #</th><th class='bdr-right-white text-white font-weight-bold'>Product</th><th class='bdr-right-white text-white font-weight-bold'>Date<br/>issued</th><th class='bdr-right-white text-white font-weight-bold'>Inception<br/>date</th><th class='bdr-right-white text-white font-weight-bold'>Com<br/>type</th><th class='bdr-right-white text-white font-weight-bold'>Quantity</th><th class='bdr-right-white text-white font-weight-bold'>Posted<br/>date</th><th class='bdr-right-white text-white font-weight-bold'>Earnings</th></tr>");
+                                                    var records = transaction.GroupBy(gptransactionitem => gptransactionitem.BUS_GROUP).ToList();
+                                                    records?.ForEach(transactionitem =>
+                                                    {
+                                                        detailedTransactionSrc.Append("<tr>"+ transactionitem.FirstOrDefault().BUS_GROUP +"</tr>");
+                                                        var memberRecords = transactionitem.GroupBy(gpmembertransactionitem => gpmembertransactionitem.BUS_GROUP).ToList();
+                                                        transaction.Where(witem => witem.INT_EXT_REF == transactionitem.FirstOrDefault().INT_EXT_REF).ToList().ForEach(item =>
+                                                        {
+                                                            detailedTransactionSrc.Append(" <tr><td class='bdr-right-white'>" + item.Member_Name + "</td><td class='bdr-right-white'>" + item.MEMBER_AGE + "</td><td class='bdr-right-white'>" + item.POLICY_REF + "</td><td class='bdr-right-white'>" + item.PRODUCT_DESCRIPTION + "</td><td class='bdr-right-white'>" + item.REQUEST_DATETIME + "</td><td class='bdr-right-white'>" + item.REQUESTED_DATETIME.ToString("dd-MMM-yyyy") + "</td><td class='bdr-right-white'>" + item.CommissionType + "</td><td class='bdr-right-white'>" + item.TRANSACTION_AMOUNT + "</td><td class='bdr-right-white'>" + item.AE_Posted_Date.ToString("dd-MMM-yyyy") + "</td><td class='bdr-right-white'>" + item.ALLOCATED_AMOUNT + "</td></tr>");
+                                                            TotalPostedAmount = (Convert.ToDouble(item.ALLOCATED_AMOUNT));
+                                                        });
+                                                        string TotalPostedAmountR = (TotalPostedAmount == 0) ? "0.00" : ("R" + TotalPostedAmount.ToString());
+                                                        detailedTransactionSrc.Append("<tr><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold fs-16'>Sub Total</td><td class='' ></td><td class='fw-bold fs-16' height='40'>" + TotalPostedAmountR + "</td></tr></table></div>");
+                                                        TotalPostedAmount = 0;
+
+                                                    });
+                pageContent.Replace("{{ppsDetailedTransactions}}", detailedTransactionSrc.ToString());
+                                                }
+                                            }
 
 
         private void BindDummyDataToPaymentSummaryWidget(StringBuilder pageContent, Statement statement, Page page, PageWidget widget, string AppBaseDirectory)
