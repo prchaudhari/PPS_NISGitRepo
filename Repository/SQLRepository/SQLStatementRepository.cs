@@ -1393,7 +1393,7 @@ namespace nIS
                                     pageContent.Replace("{{QueryBtn}}", ".. / common / images / IfQueryBtn.jpg");
                                     pageContent.Replace("{{ProductSummary}}", productSummarySrc.ToString());
                                     pageContent.Replace("{{TotalDue}}", aeAmountColSumR);
-                                    pageContent.Replace("{{VATDue}}", CommonUtility.concatRWithDouble(productInfo.VAT_Amount.ToString()); 
+                                    pageContent.Replace("{{VATDue}}", CommonUtility.concatRWithDouble(productInfo.VAT_Amount.ToString())); 
 
                                     // Calculate grand total due
                                     double grandTotalDue = (Convert.ToDouble(aeAmountColSum) + Convert.ToDouble(productInfo.VAT_Amount));
@@ -2102,7 +2102,7 @@ namespace nIS
                                         pageContent.Replace("{{QueryBtn}}", ".. / common / images / IfQueryBtn.jpg");
                                         pageContent.Replace("{{ProductSummary}}", productSummarySrc.ToString());
                                         pageContent.Replace("{{TotalDue}}", aeAmountColSumR);
-                                        pageContent.Replace("{{VATDue}}", CommonUtility.concatRWithDouble(productInfo.VAT_Amount.ToString()); 
+                                        pageContent.Replace("{{VATDue}}", CommonUtility.concatRWithDouble(productInfo.VAT_Amount.ToString())); 
 
                                         // Calculate grand total due
                                         double grandTotalDue = (Convert.ToDouble(aeAmountColSum) + Convert.ToDouble(productInfo.VAT_Amount));
@@ -2846,7 +2846,7 @@ namespace nIS
                                             pageContent.Replace("{{QueryBtn}}", ".. / common / images / IfQueryBtn.jpg");
                                             pageContent.Replace("{{ProductSummary}}", productSummarySrc.ToString());
                                             pageContent.Replace("{{TotalDue}}", aeAmountColSumR);
-                                            pageContent.Replace("{{VATDue}}", CommonUtility.concatRWithDouble(productInfo.VAT_Amount.ToString()); 
+                                            pageContent.Replace("{{VATDue}}", CommonUtility.concatRWithDouble(productInfo.VAT_Amount.ToString())); 
 
                                             // Calculate grand total due
                                             double grandTotalDue = (Convert.ToDouble(aeAmountColSum) + Convert.ToDouble(productInfo.VAT_Amount));
