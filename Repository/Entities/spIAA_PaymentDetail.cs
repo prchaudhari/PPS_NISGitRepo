@@ -6,8 +6,8 @@ namespace nIS
     public partial class spIAA_PaymentDetail
     {
         public int Reg_ID { get; set; }
-        public DateTime Start_Date { get; set; }
-        public DateTime End_Date { get; set; }
+        public DateTime? Start_Date { get; set; }
+        public DateTime? End_Date { get; set; }
         public string Request_DateTime { get; set; }
         public string ID { get; set; }
         public string Intermediary_Code { get; set; }
@@ -53,8 +53,6 @@ namespace nIS
         public string VAT_Amount { get; set; }
         public string Earning_Amount { get; set; }
         public string Payment_Amount { get; set; }
-        public string START_DATE { get; set; }
-        public string END_DATE { get; set; }
         public string Business_Type { get; set; }
         public string Lifecycle_Description { get; set; }
         public string Lifecycle_Start_Date { get; set; }
