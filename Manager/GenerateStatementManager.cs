@@ -1158,11 +1158,11 @@ namespace nIS
                     }
                     else if (IsFSPPagePresent)
                     {
-                        if(Dummysp)
+                        if (Dummysp)
                             fspDetails = this.tenantTransactionDataRepository.Get_FSPDetails(tenantCode)?.ToList();
                         else
                             fspDetails = ppsRepository.spIAA_PaymentDetail_fspstatement(tenantCode);
-                       
+
                     }
                     else if (IsPPSPagePresent)
                     {
@@ -2333,6 +2333,7 @@ namespace nIS
                     long index = 1;
                     var aeAmountColSum = 0.00;
                     var aeAmountColSumR = "";
+                    var vat = 0.00;
 
                     // Iterating through Due Date groups
                     gpCommissionTypeRecords.ForEach(gpCommissionTypeItem =>
@@ -2343,11 +2344,26 @@ namespace nIS
                             // Calculate sums for CR and DR amounts
                             var aeAmountCRSum = productSummary
                                 .Where(witem => ((witem.Commission_Type == gpCommissionTypeItem.Key.Commission_Type) &&
-                                                 (witem.DR_CR == "CR"))).Sum(item => Convert.ToDouble(item.AE_Amount));
+                                                 (witem.DR_CR == "CR") && (witem.Prod_Group == gpPrdocutDescriptionItem.Key.Prod_Group))).Sum(item => Convert.ToDouble(item.AE_Amount));
 
                             var aeAmountDRSum = productSummary
                                 .Where(witem => ((witem.Commission_Type == gpCommissionTypeItem.Key.Commission_Type) &&
-                                                 (witem.DR_CR == "DR"))).Sum(item => Convert.ToDouble(item.AE_Amount));
+                                                 (witem.DR_CR == "DR") && (witem.Prod_Group == gpPrdocutDescriptionItem.Key.Prod_Group))).Sum(item => Convert.ToDouble(item.AE_Amount));
+
+                            string aeAmountString = productSummary
+                            .Where(witem => witem.Commission_Type == "VAT" && witem.DR_CR == "CR")
+                            .FirstOrDefault().AE_Amount;
+
+                            if (double.TryParse(aeAmountString, out double parsedValue))
+                            {
+                                vat = parsedValue;
+                            }
+                            else
+                            {
+                                // Handle the case where the conversion fails
+                                // You may throw an exception, log an error, or assign a default value
+                                vat = 0.0; // Default value, choose based on your requirements
+                            }
 
                             // Calculate total AE Amount
                             var aeAmountSum = aeAmountCRSum - aeAmountDRSum;
@@ -2360,23 +2376,27 @@ namespace nIS
                             aeAmountColSum += aeAmountSum;
                             productSummarySrc.Append("</tr>");
                             index++;
+
+
+
                         });
                         aeAmountColSumR = (aeAmountColSum == 0) ? "0.00" : ("R" + aeAmountColSum.ToString());
                     });
 
                     // Generate the HTML string for the product summary widget
-                    string productInfoJson = "{VAT_Amount : '38001.27'}";
-                    spIAA_PaymentDetail productInfo = JsonConvert.DeserializeObject<spIAA_PaymentDetail>(productInfoJson);
+
+                    //string productInfoJson = "{VAT_Amount : '38001.27'}";
+                    //spIAA_PaymentDetail productInfo = JsonConvert.DeserializeObject<spIAA_PaymentDetail>(productInfoJson);
 
                     // Replace placeholders in the HTML string with actual values
-                    pageContent.Replace("{{QueryBtn}}", ".. / common / images / IfQueryBtn.jpg");
+                    pageContent.Replace("{{QueryBtn}}", ".. /common/images/IfQueryBtn.jpg");
                     pageContent.Replace("{{ProductSummary}}", productSummarySrc.ToString());
                     pageContent.Replace("{{TotalDue}}", aeAmountColSumR);
-                    pageContent.Replace("{{VATDue}}", CommonUtility.concatRWithDouble(productInfo.VAT_Amount.ToString())); 
+                    pageContent.Replace("{{VATDue}}", CommonUtility.concatRWithDouble(vat.ToString()));
 
                     // Calculate grand total due
                     double grandTotalDue = (Convert.ToDouble(aeAmountColSum) + Convert.ToDouble(productInfo.VAT_Amount));
-                   var grandTotalDueR = CommonUtility.concatRWithDouble(grandTotalDue.ToString());
+                    var grandTotalDueR = CommonUtility.concatRWithDouble(grandTotalDue.ToString());
                     pageContent.Replace("{{GrandTotalDue}}", grandTotalDueR);
 
                     // Calculate PPS payment and update the HTML string
@@ -2560,46 +2580,46 @@ namespace nIS
         }
 
         //private bool BindEarningsForPeriodWidgetData(StringBuilder pageContent, StringBuilder ErrorMessages, IList<spIAA_Commission_Detail> transaction, Page page, PageWidget widget)
-       // {
-            //var IsFailed = false;
-            //double TotalPostedAmount = 0;
-            //try
-            //{
-            //    if (transaction != null && transaction.Count > 0)
-            //    {
-            //        StringBuilder detailedTransactionSrc = new StringBuilder();
-            //        var records = transaction.GroupBy(gptransactionitem => gptransactionitem.INT_EXT_REF).ToList();
-            //        records?.ForEach(transactionitem =>
-            //        {
-            //            detailedTransactionSrc.Append("<div class='px-50'><div class='prouct-table-block'><div class='text-left fsp-transaction-title font-weight-bold mb-3'>Intermediary:  " + transactionitem.FirstOrDefault().INT_EXT_REF + " " + transactionitem.FirstOrDefault().Int_Name + "</div><table width='100%' cellpadding='0' cellspacing='0'> <tr><th class='font-weight-bold text-white'>Client name</th> <th class='font-weight-bold text-white text-center pe-0 bdr-r-0'>Member<br /> number</th> <th class='font-weight-bold text-white text-center'>Will<br/> number</th> <th class='font-weight-bold text-white text-center'>Fiduciary fees</th> <th class='font-weight-bold text-white text-center'>Commission<br /> type</th> <th class='font-weight-bold text-white text-center'>Posted date</th> <th class='font-weight-bold text-white text-center'>Posted amount</th> <th class='font-weight-bold text-white'>Query</th> </tr> ");
-            //            pageContent.Replace("{{QueryBtnImgLink}}", "https://www.google.com/");
-            //            pageContent.Replace("{{QueryBtn}}", "../common/images/IfQueryBtn.jpg");
-            //            transaction.Where(witem => witem.INT_EXT_REF == transactionitem.FirstOrDefault().INT_EXT_REF).ToList().ForEach(item =>
-            //            {
-            //                detailedTransactionSrc.Append("<tr><td align = 'center' valign = 'center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" +
-            //                        item.Client_Name + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Member_Ref + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'> " + item.Policy_Ref + "</td><td class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1'>" + (item.Description == "Commission Service Fee" ? "Premium Under Advise Fee" : item.Description) + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.POSTED_DATE.ToString("dd-MMM-yyyy") + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Display_Amount + "</td><td class= 'text-center fsp-bdr-bottom px-1'><a href ='https://www.google.com/' target ='_blank'><img class='leftarrowlogo' src='../common/images/leftarrowlogo.png' alt='Left Arrow'></a></td></tr>");
-            //                TotalPostedAmount += ((item.TYPE == "Fiduciary_Data") && (item.Prod_Group != "VAT")) ? (Convert.ToDouble(item.Display_Amount)) : 0.0;
-            //            });
-            //            string TotalPostedAmountR = (TotalPostedAmount == 0) ? "0.00" : ("R" + TotalPostedAmount.ToString());
-            //            detailedTransactionSrc.Append("<tr> <td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'><br /></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'>" + TotalPostedAmountR + "</td> <td class='text-center fsp-bdr-bottom px-1'><a href='https://www.google.com/' target = '_blank' ><img src='../common/images/leftarrowlogo.png'></a></td> </tr></table><div class='text-right w-100 pt-3'><a href='https://www.google.com/' target = '_blank'></a></div></div></div></div>");
-            //            TotalPostedAmount = 0;
-            //        });
-            //        pageContent.Replace("{{detailedTransaction}}", detailedTransactionSrc.ToString());
-            //    }
-     //   }
-            //    else
-            //    {
-            //        ErrorMessages.Append("<li>Product master data is not available related to Product Summary widget..!!</li>");
-           //         IsFailed = true;
-           //     }
-          //      return IsFailed;
-          //  }
+        // {
+        //var IsFailed = false;
+        //double TotalPostedAmount = 0;
+        //try
+        //{
+        //    if (transaction != null && transaction.Count > 0)
+        //    {
+        //        StringBuilder detailedTransactionSrc = new StringBuilder();
+        //        var records = transaction.GroupBy(gptransactionitem => gptransactionitem.INT_EXT_REF).ToList();
+        //        records?.ForEach(transactionitem =>
+        //        {
+        //            detailedTransactionSrc.Append("<div class='px-50'><div class='prouct-table-block'><div class='text-left fsp-transaction-title font-weight-bold mb-3'>Intermediary:  " + transactionitem.FirstOrDefault().INT_EXT_REF + " " + transactionitem.FirstOrDefault().Int_Name + "</div><table width='100%' cellpadding='0' cellspacing='0'> <tr><th class='font-weight-bold text-white'>Client name</th> <th class='font-weight-bold text-white text-center pe-0 bdr-r-0'>Member<br /> number</th> <th class='font-weight-bold text-white text-center'>Will<br/> number</th> <th class='font-weight-bold text-white text-center'>Fiduciary fees</th> <th class='font-weight-bold text-white text-center'>Commission<br /> type</th> <th class='font-weight-bold text-white text-center'>Posted date</th> <th class='font-weight-bold text-white text-center'>Posted amount</th> <th class='font-weight-bold text-white'>Query</th> </tr> ");
+        //            pageContent.Replace("{{QueryBtnImgLink}}", "https://www.google.com/");
+        //            pageContent.Replace("{{QueryBtn}}", "../common/images/IfQueryBtn.jpg");
+        //            transaction.Where(witem => witem.INT_EXT_REF == transactionitem.FirstOrDefault().INT_EXT_REF).ToList().ForEach(item =>
+        //            {
+        //                detailedTransactionSrc.Append("<tr><td align = 'center' valign = 'center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" +
+        //                        item.Client_Name + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Member_Ref + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'> " + item.Policy_Ref + "</td><td class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1'>" + (item.Description == "Commission Service Fee" ? "Premium Under Advise Fee" : item.Description) + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.POSTED_DATE.ToString("dd-MMM-yyyy") + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Display_Amount + "</td><td class= 'text-center fsp-bdr-bottom px-1'><a href ='https://www.google.com/' target ='_blank'><img class='leftarrowlogo' src='../common/images/leftarrowlogo.png' alt='Left Arrow'></a></td></tr>");
+        //                TotalPostedAmount += ((item.TYPE == "Fiduciary_Data") && (item.Prod_Group != "VAT")) ? (Convert.ToDouble(item.Display_Amount)) : 0.0;
+        //            });
+        //            string TotalPostedAmountR = (TotalPostedAmount == 0) ? "0.00" : ("R" + TotalPostedAmount.ToString());
+        //            detailedTransactionSrc.Append("<tr> <td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'><br /></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'>" + TotalPostedAmountR + "</td> <td class='text-center fsp-bdr-bottom px-1'><a href='https://www.google.com/' target = '_blank' ><img src='../common/images/leftarrowlogo.png'></a></td> </tr></table><div class='text-right w-100 pt-3'><a href='https://www.google.com/' target = '_blank'></a></div></div></div></div>");
+        //            TotalPostedAmount = 0;
+        //        });
+        //        pageContent.Replace("{{detailedTransaction}}", detailedTransactionSrc.ToString());
+        //    }
+        //   }
+        //    else
+        //    {
+        //        ErrorMessages.Append("<li>Product master data is not available related to Product Summary widget..!!</li>");
+        //         IsFailed = true;
+        //     }
+        //      return IsFailed;
+        //  }
         //    catch (Exception ex)
         //    {
-            //    throw ex;
-           // }
-          //  IsFailed = true;
-       // }
+        //    throw ex;
+        // }
+        //  IsFailed = true;
+        // }
         private bool BindSummaryAtGlanceWidgetData(StringBuilder pageContent, StringBuilder ErrorMessages, IList<AccountMaster> accountrecords, Page page, PageWidget widget)
         {
             var IsFailed = false;
