@@ -81,43 +81,43 @@ export class AddComponent implements OnInit {
         }
         else if (this.widgetList[i].WidgetName == "FSPDetails") {
           this.widgetList[i].ImageSource = "assets/images/FSPDetails.png";
-          this.widgetList[i].WidgetIcon = "fa fa-address-book";
+          this.widgetList[i].WidgetIcon = "icon-rp-production1";
         }
         else if (this.widgetList[i].WidgetName == "PaymentSummary") {
           this.widgetList[i].ImageSource = "assets/images/PaymentSummary.png";
-          this.widgetList[i].WidgetIcon = "fa fa-address-book-o";
+          this.widgetList[i].WidgetIcon = "icon-machine-dashboard2";
         }
         else if (this.widgetList[i].WidgetName == "ProductSummary") {
           this.widgetList[i].ImageSource = "assets/images/ProductSummary.png";
-          this.widgetList[i].WidgetIcon = "fa fa-address-book-o";
+          this.widgetList[i].WidgetIcon = "icon-organizationunit-line2";
         }
         else if (this.widgetList[i].WidgetName == "DetailedTransactions") {
           this.widgetList[i].ImageSource = "assets/images/DetailedTransactions.png";
-          this.widgetList[i].WidgetIcon = "fa fa-address-book-o";
+          this.widgetList[i].WidgetIcon = "icon-allowance2";
         }
         else if (this.widgetList[i].WidgetName == "PPSDetailedTransactions") {
           this.widgetList[i].ImageSource = "assets/images/details3.PNG";
-          this.widgetList[i].WidgetIcon = "fa fa-address-book-o";
+          this.widgetList[i].WidgetIcon = "icon-statemenrDefinitions";
         }
         else if (this.widgetList[i].WidgetName == "FSPHeading") {
           this.widgetList[i].ImageSource = "assets/images/PPSHeading.png";
-          this.widgetList[i].WidgetIcon = "fa fa-address-book-o";
+          this.widgetList[i].WidgetIcon = "icon-widget-process-control2";
         }
         else if (this.widgetList[i].WidgetName == "PPSFooter1") {
           this.widgetList[i].ImageSource = "assets/images/footer1.PNG";
-          this.widgetList[i].WidgetIcon = "fa fa-address-book-o";
+          this.widgetList[i].WidgetIcon = "icon-operations2";
         }
         else if (this.widgetList[i].WidgetName == "PPSDetails1") {
           this.widgetList[i].ImageSource = "assets/images/Details1.PNG";
-          this.widgetList[i].WidgetIcon = "fa fa-address-book-o";
+          this.widgetList[i].WidgetIcon = "icon-TransactionMixWidget";
         }
         else if (this.widgetList[i].WidgetName == "PPSDetails2") {
           this.widgetList[i].ImageSource = "assets/images/Details2.PNG";
-          this.widgetList[i].WidgetIcon = "fa fa-address-book-o";
+          this.widgetList[i].WidgetIcon = "icon-view2";
         }
         else if (this.widgetList[i].WidgetName == "FooterImage") {
           this.widgetList[i].ImageSource = "assets/images/footerImage.png";
-          this.widgetList[i].WidgetIcon = "fa fa-address-book-o";
+          this.widgetList[i].WidgetIcon = "icon-org-profile1";
         }
         else if (this.widgetList[i].WidgetName == "PPSEarningForPeriod") {
           this.widgetList[i].ImageSource = "assets/images/PPSEarningForPeriod.png";
