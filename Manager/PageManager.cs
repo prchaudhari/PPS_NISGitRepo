@@ -312,9 +312,9 @@ namespace nIS
             IList<string> linegraphIds = new List<string>();
             IList<string> bargraphIds = new List<string>();
             IList<string> piechartIds = new List<string>();
-
+                   
             //var re = ppsRepository.spIAA_PaymentDetail_fspstatement(tenantCode);
-           // var re = ppsRepository.spIAA_Commission_Detail_ppsStatement(tenantCode);
+            // var re = ppsRepository.spIAA_Commission_Detail_ppsStatement(tenantCode);
             try
             {
                 var tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();

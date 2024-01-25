@@ -1122,7 +1122,7 @@ namespace nIS
                     IsFSPPagePresent = pages.Count > 0 ? true : false;
                     var pps = statement.Pages.Where(item => item.PageTypeName == HtmlConstants.PPS_PAGE).ToList();
                     IsPPSPagePresent = pages.Count > 0 ? true : false;
-
+                    bool Dummysp = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["DummySP"]);
                     //fspDetails = this.tenantTransactionDataRepository.Get_PPSDetails(tenantCode)?.ToList();
                     //ppsDetails = this.tenantTransactionDataRepository.Get_PPSDetails1(tenantCode)?.ToList();
                     //collecting all required transaction required for static widgets in financial tenant html statement
@@ -1157,13 +1157,19 @@ namespace nIS
                     }
                     else if(IsFSPPagePresent)
                     {
-                        //fspDetails = ppsRepository.spIAA_PaymentDetail_fspstatement(tenantCode);
-                        fspDetails = this.tenantTransactionDataRepository.Get_FSPDetails(tenantCode)?.ToList();
+                        if(Dummysp)
+                            fspDetails = this.tenantTransactionDataRepository.Get_FSPDetails(tenantCode)?.ToList();
+                        else
+                            fspDetails = ppsRepository.spIAA_PaymentDetail_fspstatement(tenantCode);
+                       
                     }
                     else if(IsPPSPagePresent)
                     {
                         //var ppsDetails = ppsRepository.spIAA_Commission_Detail_ppsStatement(tenantCode);
-                        ppsDetails = this.tenantTransactionDataRepository.Get_PPSDetails(tenantCode)?.ToList();
+                        if (Dummysp)
+                            ppsDetails = this.tenantTransactionDataRepository.Get_PPSDetails(tenantCode)?.ToList();
+                        else
+                            ppsDetails = ppsRepository.spIAA_Commission_Detail_ppsStatement(tenantCode);
                     }
 
                     //collecting all media information which is required in html statement for some widgets like image, video and static customer information widgets
