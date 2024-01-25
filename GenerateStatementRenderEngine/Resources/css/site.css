@@ -3186,3 +3186,9 @@
     float: left;
     font-weight: bold;
 }
+.ewidth {
+    width: 10%;
+}
+.tright{
+    float:right;
+}
