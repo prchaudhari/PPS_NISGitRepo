@@ -26,7 +26,7 @@ namespace nIS
                 // Check if the parsed double value is negative
                 if (valueDbl < 0)
                 {
-                    result = "-R" + (-valueDbl).ToString();
+                    result = "-R" + (-valueDbl).ToString("F2");
                 }
                 // Check if the parsed double value is zero
                 else if (valueDbl == 0)
@@ -36,7 +36,7 @@ namespace nIS
                 // If the parsed double value is positive
                 else
                 {
-                    result = "R" + valueDbl.ToString();
+                    result = "R" + valueDbl.ToString("F2");
                 }
 
                 // Return the result

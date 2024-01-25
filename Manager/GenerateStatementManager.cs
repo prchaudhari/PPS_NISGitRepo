@@ -2334,6 +2334,8 @@ namespace nIS
                     var aeAmountColSum = 0.00;
                     var aeAmountColSumR = "";
                     var vat = 0.00;
+                    var aeAmountSum = 0.00;
+                    var aeAmountSumR = "";
 
                     // Iterating through Due Date groups
                     gpCommissionTypeRecords.ForEach(gpCommissionTypeItem =>
@@ -2366,19 +2368,17 @@ namespace nIS
                             }
 
                             // Calculate total AE Amount
-                            var aeAmountSum = aeAmountCRSum - aeAmountDRSum;
-                            var aeAmountSumR = CommonUtility.concatRWithDouble(aeAmountSum.ToString());
+                             aeAmountSum = (aeAmountCRSum - aeAmountDRSum);
+                             aeAmountSumR = CommonUtility.concatRWithDouble(aeAmountSum.ToString());
+                            if (aeAmountSum != 0) {
+                                // Append the table row to productSummarySrc
+                                productSummarySrc.Append("<tr><td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" + index + "</td><td class='fsp-bdr-right text-left fsp-bdr-bottom px-1'>" + gpCommissionTypeItem.Key.Commission_Type + "</td>" + "<td class='fsp-bdr-right text-left fsp-bdr-bottom px-1'> " + (gpPrdocutDescriptionItem.Key.Prod_Group == "Service Fee" ? "Premium Under Advise Fee" : gpPrdocutDescriptionItem.Key.Prod_Group) + "</td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1'>" + aeAmountSumR + "</td><td class='text-center fsp-bdr-bottom px-1'><a  href ='https://www.google.com/' target='_blank'><img class='leftarrowlogo' src ='../common/images/leftarrowlogo.png' alt = 'Left Arrow'></a></td></tr>");
 
-                            // Append the table row to productSummarySrc
-                            productSummarySrc.Append("<tr><td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" + index + "</td><td class='fsp-bdr-right text-left fsp-bdr-bottom px-1'>" + gpCommissionTypeItem.Key.Commission_Type + "</td>" + "<td class='fsp-bdr-right text-left fsp-bdr-bottom px-1'> " + (gpPrdocutDescriptionItem.Key.Prod_Group == "Service Fee" ? "Premium Under Advise Fee" : gpPrdocutDescriptionItem.Key.Prod_Group) + "</td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1'>" + aeAmountSumR + "</td><td class='text-center fsp-bdr-bottom px-1'><a  href ='https://www.google.com/' target='_blank'><img class='leftarrowlogo' src ='assets/images/leftarrowlogo.png' alt = 'Left Arrow'></a></td></tr>");
-
-                            // Update column sum and increment index
-                            aeAmountColSum += aeAmountSum;
-                            productSummarySrc.Append("</tr>");
-                            index++;
-
-
-
+                                // Update column sum and increment index
+                                aeAmountColSum += aeAmountSum;
+                                productSummarySrc.Append("</tr>");
+                                index++;
+                            }
                         });
                         aeAmountColSumR = (aeAmountColSum == 0) ? "0.00" : ("R" + aeAmountColSum.ToString());
                     });
@@ -2389,19 +2389,19 @@ namespace nIS
                     //spIAA_PaymentDetail productInfo = JsonConvert.DeserializeObject<spIAA_PaymentDetail>(productInfoJson);
 
                     // Replace placeholders in the HTML string with actual values
-                    pageContent.Replace("{{QueryBtn}}", ".. /common/images/IfQueryBtn.jpg");
+                    pageContent.Replace("{{QueryBtn}}", "../common/images/IfQueryBtn.jpg");
                     pageContent.Replace("{{ProductSummary}}", productSummarySrc.ToString());
                     pageContent.Replace("{{TotalDue}}", aeAmountColSumR);
                     pageContent.Replace("{{VATDue}}", CommonUtility.concatRWithDouble(vat.ToString()));
 
                     // Calculate grand total due
-                    double grandTotalDue = (Convert.ToDouble(aeAmountColSum) + Convert.ToDouble(productInfo.VAT_Amount));
-                    var grandTotalDueR = CommonUtility.concatRWithDouble(grandTotalDue.ToString());
+                    double grandTotalDue = (Convert.ToDouble(aeAmountColSum) + Convert.ToDouble(vat));
+                    var grandTotalDueR = CommonUtility.concatRWithDouble(grandTotalDue.ToString("F2"));
                     pageContent.Replace("{{GrandTotalDue}}", grandTotalDueR);
 
                     // Calculate PPS payment and update the HTML string
                     double ppsPayment = grandTotalDue;
-                    var ppsPaymentR = (ppsPayment == 0) ? "0.00" : ("-R" + ppsPayment.ToString());
+                    var ppsPaymentR = (ppsPayment == 0) ? "0.00" : ("-R" + ppsPayment.ToString("F2"));
                     pageContent.Replace("{{PPSPayment}}", ppsPaymentR);
 
                     // Calculate and update the balance in the HTML string
