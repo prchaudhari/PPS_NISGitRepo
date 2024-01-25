@@ -1123,7 +1123,7 @@ namespace nIS
                     IsFSPPagePresent = fsp.Count > 0 ? true : false;
                     var pps = statement.Pages.Where(item => item.PageTypeName == HtmlConstants.PPS_PAGE).ToList();
                     IsPPSPagePresent = pps.Count > 0 ? true : false;
-
+                    bool Dummysp = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["DummySP"]);
                     //fspDetails = this.tenantTransactionDataRepository.Get_PPSDetails(tenantCode)?.ToList();
                     //ppsDetails = this.tenantTransactionDataRepository.Get_PPSDetails1(tenantCode)?.ToList();
                     //collecting all required transaction required for static widgets in financial tenant html statement
@@ -1158,13 +1158,19 @@ namespace nIS
                     }
                     else if (IsFSPPagePresent)
                     {
-                        //fspDetails = ppsRepository.spIAA_PaymentDetail_fspstatement(tenantCode);
-                        fspDetails = this.tenantTransactionDataRepository.Get_FSPDetails(tenantCode)?.ToList();
+                        if(Dummysp)
+                            fspDetails = this.tenantTransactionDataRepository.Get_FSPDetails(tenantCode)?.ToList();
+                        else
+                            fspDetails = ppsRepository.spIAA_PaymentDetail_fspstatement(tenantCode);
+                       
                     }
                     else if (IsPPSPagePresent)
                     {
                         //var ppsDetails = ppsRepository.spIAA_Commission_Detail_ppsStatement(tenantCode);
-                        ppsDetails = this.tenantTransactionDataRepository.Get_PPSDetails(tenantCode)?.ToList();
+                        if (Dummysp)
+                            ppsDetails = this.tenantTransactionDataRepository.Get_PPSDetails(tenantCode)?.ToList();
+                        else
+                            ppsDetails = ppsRepository.spIAA_Commission_Detail_ppsStatement(tenantCode);
                     }
 
                     //collecting all media information which is required in html statement for some widgets like image, video and static customer information widgets
@@ -2446,7 +2452,7 @@ namespace nIS
                 if (transaction != null && transaction.Count > 0)
                 {
                     StringBuilder detailedTransactionSrc = new StringBuilder();
-                    detailedTransactionSrc.Append("<div class='pps-monthly-table w-100'><table cellpadding='0' cellspacing='0' width='100%'><tr><th class='bdr-right-white text-white font-weight-bold'>Client<br/>name</th><th class='bdr-right-white text-white font-weight-bold'>Age</th><th class='bdr-right-white text-white font-weight-bold'>Policy #</th><th class='bdr-right-white text-white font-weight-bold'>Policy #</th><th class='bdr-right-white text-white font-weight-bold'>Product</th><th class='bdr-right-white text-white font-weight-bold'>Date<br/>issued</th><th class='bdr-right-white text-white font-weight-bold'>Inception<br/>date</th><th class='bdr-right-white text-white font-weight-bold'>Com<br/>type</th><th class='bdr-right-white text-white font-weight-bold'>Quantity</th><th class='bdr-right-white text-white font-weight-bold'>Posted<br/>date</th><th class='bdr-right-white text-white font-weight-bold'>Earnings</th></tr>");
+                    detailedTransactionSrc.Append("<div class='pps-monthly-table w-100'><table cellpadding='0' cellspacing='0' width='100%'><tr><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Client<br/>name</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Age</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Policy #</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Policy #</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Product</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Date<br/>issued</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Inception<br/>date</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Com<br/>type</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Quantity</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Posted<br/>date</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Earnings</th></tr>");
                     var records = transaction.GroupBy(gptransactionitem => gptransactionitem.BUS_GROUP).ToList();
                     records?.ForEach(transactionitem =>
                     {
@@ -2465,11 +2471,11 @@ namespace nIS
                                 detailedTransactionSrc.Append("<tr><td class='bdr-right-white text-left'>" + memberitemrecord.Member_Name + "</td><td class='bdr-right-white text-left'>" + memberitemrecord.MEMBER_AGE + "</td>" + "<td class='bdr-right-white text-left'>" + memberitemrecord.POLICY_REF + "</td>" +
       "<td class='bdr-right-white text-left'>" + memberitemrecord.POLICY_REF + "</td><td class='bdr-right-white text-left'>" + memberitemrecord.PRODUCT_DESCRIPTION + "</td><td class='bdr-right-white text-left'>" + memberitemrecord.REQUEST_DATETIME + "</td><td class='bdr-right-white text-left'>" + memberitemrecord.REQUESTED_DATETIME.ToString("dd-MMM-yyyy") + "</td><td class='bdr-right-white text-left'>" + memberitemrecord.CommissionType + "</td><td class='bdr-right-white text-left'>" + ((Convert.ToDouble(memberitemrecord.TRANSACTION_AMOUNT)) < 0 ? "-R" +
       (Convert.ToDouble(memberitemrecord.TRANSACTION_AMOUNT) * -1).ToString() : "R" + Convert.ToDouble(memberitemrecord.TRANSACTION_AMOUNT)).ToString() + "</td><td class='bdr-right-white text-right'>" + memberitemrecord.AE_Posted_Date.ToString("dd-MMM-yyyy") + "</td>" +
-                                    "<td class='bdr-right-white text-right'>" + ((Convert.ToDouble(memberitemrecord.ALLOCATED_AMOUNT)) < 0 ? "-R" +
+                                    "<td class='bdr-right-white ewidth text-right'>" + ((Convert.ToDouble(memberitemrecord.ALLOCATED_AMOUNT)) < 0 ? "-R" +
       (Convert.ToDouble(memberitemrecord.ALLOCATED_AMOUNT) * -1).ToString() : "R" + Convert.ToDouble(memberitemrecord.ALLOCATED_AMOUNT)).ToString() + "</td></tr>");
                             });
                             string TotalPostedAmountR = (TotalPostedAmount == 0) ? "0.00" : (TotalPostedAmount.ToString());
-                            detailedTransactionSrc.Append(" <tr><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold text-right fs-16'>Sub Total</td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td colspan='2' class='font-weight-bold text-right fs-16 pps-bg-gray' height='40'>" + ((Convert.ToDouble(TotalPostedAmountR)) < 0 ? "-R" +
+                            detailedTransactionSrc.Append(" <tr><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold tright fs-16'>Sub Total</td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td colspan='2' class='font-weight-bold text-right fs-16 pps-bg-gray' height='40'>" + ((Convert.ToDouble(TotalPostedAmountR)) < 0 ? "-R" +
       (Convert.ToDouble(TotalPostedAmountR) * -1).ToString() : "R" + Convert.ToDouble(TotalPostedAmountR)).ToString() + "</td></tr>");
                         });
 

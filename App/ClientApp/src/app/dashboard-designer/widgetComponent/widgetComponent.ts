@@ -558,12 +558,29 @@ export class PPSDetails1Component {
                         </div>
 
                         <div class="col-5 py-2">
-                            <div class="client-content">
-                                <p><span class="font-weight-bold">Intermediary reference:</span> 124529534</p>
-                                <p><span class="font-weight-bold">Measure type:</span> Commission</p>
-                                <p><span class="font-weight-bold">Month:</span> September 2023</p>
-                                <p><span class="font-weight-bold">Date:</span> 2023-09-01 to 2023-01-01</p>
-                            </div>
+                        <div class="client-content">
+                 <table>
+                    <tr>
+                        <td class="font-weight-bold">Intermediary Reference:</td>
+                        <td>124529534</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Measure Type:</td>
+                        <td> Commission</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Month:</td>
+			                  <td>September 2023</td>
+                    </tr>
+                    <tr>
+                        <td class= "font-weight-bold" colspan="2">
+                        <b>Date From:</b>
+                        2023-09-01 to 2023-01-01
+                        </td>
+                    </tr>
+         
+            </table>
+            </div>
                         </div>
                     </div>
                 </div>
@@ -591,17 +608,17 @@ export class PPSDetails2Component {
                     <div class="pps-monthly-table w-100">
                             <table cellpadding="0" cellspacing="0" width="100%">
                                 <tr>
-                                    <th class="bdr-right-white text-white font-weight-bold">Client<br/>name</th>
-                                    <th class="bdr-right-white text-white font-weight-bold">Age</th>
-                                    <th class="bdr-right-white text-white font-weight-bold">Policy #</th>
-                                    <th class="bdr-right-white text-white font-weight-bold">Policy #</th>
-                                    <th class="bdr-right-white text-white font-weight-bold">Product</th>
-                                    <th class="bdr-right-white text-white font-weight-bold">Date<br/>issued</th>
-                                    <th class="bdr-right-white text-white font-weight-bold">Inception<br/>date</th>
-                                    <th class="bdr-right-white text-white font-weight-bold">Com<br/>type</th>
-                                    <th class="bdr-right-white text-white font-weight-bold">Quantity</th>
-                                    <th class="bdr-right-white text-white font-weight-bold">Posted<br/>date</th>
-                                    <th class="bdr-right-white text-white font-weight-bold">Earnings</th>
+                                    <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Client<br/>name</th>
+                                    <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Age</th>
+                                    <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Policy #</th>
+                                    <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Policy #</th>
+                                    <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Product</th>
+                                    <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Date<br/>issued</th>
+                                    <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Inception<br/>date</th>
+                                    <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Com<br/>type</th>
+                                    <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Quantity</th>
+                                    <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Posted<br/>date</th>
+                                    <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Earnings</th>
                                 </tr>
 
                                 <tr>
@@ -615,7 +632,7 @@ export class PPSDetails2Component {
                                     <td class="bdr-right-white">2nd Year</td>
                                     <td class="bdr-right-white">R3 964.19</td>
                                     <td class="bdr-right-white">06-Sept-<br/>2023</td>
-                                    <td class="bdr-right-white">R10 822.24</td>
+                                    <td class="bdr-right-white ewidth">R10 822.24</td>
                                 </tr>
 
                                 <tr>
@@ -736,7 +753,7 @@ export class PPSDetails2Component {
                                     <td class="dark-blue-bg text-white font-weight-bold "></td>
                                     <td class="dark-blue-bg text-white font-weight-bold "></td>
                                     <td class="dark-blue-bg text-white font-weight-bold "></td>
-                                    <td class="dark-blue-bg text-white font-weight-bold text-center fs-16">Sub Total</td>
+                                    <td class="dark-blue-bg text-white font-weight-bold text-right fs-16">Sub Total</td>
                                     <td class="dark-blue-bg text-white font-weight-bold "></td>
                                     <td class="dark-blue-bg text-white font-weight-bold "></td>
                                     <td class="dark-blue-bg text-white font-weight-bold "></td>

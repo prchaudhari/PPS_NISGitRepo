@@ -3417,6 +3417,9 @@ a {
 .bdr-right-white {
     border-right: 1px solid #F1F0EF;
 }
+.ewidth{
+    width:10%;
+}
 .sky-blue-bg {
     background-color: #69C5D1 !important;
 }
@@ -3426,4 +3429,7 @@ a {
 .pps-monthly-table pps-inc {
     float: left;
     font-weight: bold;
+}
+.tright {
+    float: right;
 }

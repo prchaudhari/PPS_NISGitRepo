@@ -22,7 +22,7 @@ namespace nIS
 
         ProductViewModel Get_ProductById(int id, string tenantCode);
 
-        //IList<ProductPageTypeMappingViewModel> Get_ProductPageTypeMappingByProductId(int productId, string tenantCode);
+        IList<ProductPageTypeMappingViewModel> Get_ProductPageTypeMappingByProductId(int productId, string tenantCode);
 
         #endregion
     }
