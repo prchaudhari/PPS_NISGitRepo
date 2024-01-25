@@ -73,18 +73,18 @@ namespace nIS
             }
         }
 
-        //public IList<ProductPageTypeMappingViewModel> GetProductPageTypeMappingByProductId(int productId, string tenantCode)
-        //{
-        //    try
-        //    {
-        //        var result = this.productRepository.Get_ProductPageTypeMappingByProductId(productId, tenantCode);
-        //        return result;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw;
-        //    }
-        //}
+        public IList<ProductPageTypeMappingViewModel> GetProductPageTypeMappingByProductId(int productId, string tenantCode)
+        {
+            try
+            {
+                var result = this.productRepository.Get_ProductPageTypeMappingByProductId(productId, tenantCode);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
         #endregion
     }
 }

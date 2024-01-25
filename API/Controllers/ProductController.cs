@@ -76,16 +76,16 @@ namespace nIS
         [HttpPost]
         public IList<ProductPageTypeMappingViewModel> GetProductPageTypeMappingByProductId(int productId)
         {
-            //try
-            //{
-            //    string tenantCode = Helper.CheckTenantCode(Request.Headers);
-            //    var result = this.productManager.GetProductPageTypeMappingByProductId(productId, tenantCode);
-            //    return result;
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw ex;
-            //}
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                var result = this.productManager.GetProductPageTypeMappingByProductId(productId, tenantCode);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             return null;
         }
         #endregion
