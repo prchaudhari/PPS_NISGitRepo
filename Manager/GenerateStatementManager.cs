@@ -1359,7 +1359,7 @@ namespace nIS
                                             this.BindPpsDetails2WidgetData(pageContent, customer, statement, page, widget, customerMedias, ppsDetails, statementRawData.BatchDetails);
                                             break;
                                         case HtmlConstants.EARNINGS_FOR_PERIOD_WIDGET_NAME:
-                                            //IsFailed = this.BindEarningsForPeriodWidgetData(pageContent, ErrorMessages, ppsDetails, page, widget);
+                                            this.BindEarningForPeriodWidgetData(pageContent, ErrorMessages, ppsDetails, page, widget);
                                             break;
                                         case HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME:
                                             this.BindAccountInformationWidgetData(pageContent, customer, page, widget);
@@ -2336,6 +2336,8 @@ namespace nIS
                     var vat = 0.00;
                     var aeAmountSum = 0.00;
                     var aeAmountSumR = "";
+                    double aeAmountCRSum = 0.00;
+                    double aeAmountDRSum = 0.00;
 
                     // Iterating through Due Date groups
                     gpCommissionTypeRecords.ForEach(gpCommissionTypeItem =>
@@ -2344,11 +2346,11 @@ namespace nIS
                         prdocutDescriptionRecords.ForEach(gpPrdocutDescriptionItem =>
                         {
                             // Calculate sums for CR and DR amounts
-                            var aeAmountCRSum = productSummary
+                            aeAmountCRSum = productSummary
                                 .Where(witem => ((witem.Commission_Type == gpCommissionTypeItem.Key.Commission_Type) &&
                                                  (witem.DR_CR == "CR") && (witem.Prod_Group == gpPrdocutDescriptionItem.Key.Prod_Group))).Sum(item => Convert.ToDouble(item.AE_Amount));
 
-                            var aeAmountDRSum = productSummary
+                             aeAmountDRSum = productSummary
                                 .Where(witem => ((witem.Commission_Type == gpCommissionTypeItem.Key.Commission_Type) &&
                                                  (witem.DR_CR == "DR") && (witem.Prod_Group == gpPrdocutDescriptionItem.Key.Prod_Group))).Sum(item => Convert.ToDouble(item.AE_Amount));
 
@@ -2544,6 +2546,328 @@ namespace nIS
             //pageContent.Replace("{{FSPFooterDetails}}", middleText);
             //pageContent.Replace("{{FSPPage}}", pageText);
         }
+
+        private  void BindEarningForPeriodWidgetData(StringBuilder pageContent, StringBuilder ErrorMessages, IList<spIAA_Commission_Detail> commisionDetail, Page page, PageWidget widget)
+        {
+           
+                double totalMonthlyEarnings = 0;
+                // Initialize a StringBuilder to store HTML content
+                StringBuilder commisionDetailSrc = new StringBuilder();
+                string commisionDetailString = HtmlConstants.EARNINGS_FOR_PERIOD_WIDGET_HTML;
+
+                // List to store monthly total amounts for each commission type
+                List<List<double>> monthlyTotalList = new List<List<double>>();
+
+                // Group commission details by month and type to get counts
+                var records = commisionDetail.GroupBy(gpcommisionitem => new { gpcommisionitem.REQUEST_DATETIME.Month, gpcommisionitem.Type })
+                    .Select(group => new
+                    {
+                        GroupKey = group.Key,
+                        CountCommissionType = group.Count()
+                    }).ToList();
+
+                // Group commission details by CommissionType to get a list of commission types
+                var gpCommisionType = commisionDetail.OrderBy(item => item.CommissionType).GroupBy(gpcommisionitem => new { gpcommisionitem.CommissionType })
+                    .Select(group => new
+                    {
+                        GroupKey = group.Key
+                    }).ToList();
+
+                // HTML generation for Monthly Production Summary Section
+                commisionDetailSrc.Append("<!-- Monthly Production Summary Section --><div class='earnings-section-monthly d-flex'><!-- Two Columns Layout --><div class='d-flex gap-1 w-100'><!-- Monthly Production Summary T1 --><div class='col-6'><!-- Heading for Monthly Production Summary T1 --><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>Monthly Production Summary</h4><div class='monthly-table'><!-- Table for Monthly Production Summary T1 --><table width='100%' cellpadding='0' cellspacing='0'><!-- Table Headers --><thead><tr><th class='text-white font-weight-bold text-left'>Month</th>");
+
+                // HTML generation for table headers based on CommissionType
+                gpCommisionType.ForEach(gpCommisionTypeitem =>
+                {
+                    commisionDetailSrc.Append("<th style='height:50px' class='text-left'> Premium Under Advice(" + gpCommisionTypeitem.GroupKey.CommissionType + ")</th>");
+                });
+                commisionDetailSrc.Append("</tr></thead>");
+
+                // Iterate through grouped records to populate table rows
+                records.ForEach(gpMonthRangeItem =>
+                {
+                    commisionDetailSrc.Append("<tr><td class='text-left'>" + CommonUtility.GetMonthRange(gpMonthRangeItem.GroupKey.Month) + "</td>");
+                    List<double> innermonthlyTotalListSum = new List<double>();
+
+                    // Iterate through CommissionType groups to populate cells
+                    gpCommisionType.ForEach(gpCommisionTypeitem =>
+            {
+                var premiumUnderAdviceTd1Sum = commisionDetail
+                    .Where(witem => ((witem.REQUEST_DATETIME.Month == gpMonthRangeItem.GroupKey.Month) &&
+                                     (witem.CommissionType == gpCommisionTypeitem.GroupKey.CommissionType) &&
+                                     (witem.Type == "Policy_Data")))
+                    .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
+
+                var premiumUnderAdviceTd1SumR = (premiumUnderAdviceTd1Sum == 0) ? "0.00" : ("R" + premiumUnderAdviceTd1Sum.ToString());
+                commisionDetailSrc.Append("<td class='text-right'>" + premiumUnderAdviceTd1SumR + "</td>");
+                innermonthlyTotalListSum.Add(premiumUnderAdviceTd1Sum);
+            });
+
+                    // Add monthly total to the list
+                    monthlyTotalList.Add(innermonthlyTotalListSum);
+                    commisionDetailSrc.Append("</tr>");
+                });
+
+                // Calculate column sums for monthly totals
+                int numColumns = monthlyTotalList[0].Count;
+                List<double> premiumColumnSums = new List<double>(Enumerable.Repeat(0.00, numColumns));
+
+                foreach (var row in monthlyTotalList)
+                {
+                    for (int j = 0; j < numColumns; j++)
+                    {
+                        premiumColumnSums[j] += row[j];
+                    }
+                }
+
+                // Add total row to the table
+                commisionDetailSrc.Append("<tr><td class='dark-blue-bg text-white font-weight-bold'>Total</td>");
+
+                for (int k = 0; k < premiumColumnSums.Count; k++)
+                {
+                    totalMonthlyEarnings += premiumColumnSums[k];
+                    commisionDetailSrc.Append("<td class='text-right font-weight-bold'>R" + premiumColumnSums[k] + "</ td>");
+                }
+
+                commisionDetailSrc.Append("</tr></table></div></div>");
+
+
+                // Fees Section: Monthly Fiduciary Fees Summary
+                List<List<double>> monthlyFessTotalList = new List<List<double>>();
+
+                // HTML generation for Monthly Fiduciary Fees Summary Section
+                commisionDetailSrc.Append("<!-- Monthly Production Summary T2 --><div class='col-6'><!-- Heading for Monthly Production Summary T2 --><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>Monthly Production Summary</h4><div class='monthly-table'><!-- Table for Monthly Production Summary T1 --><table width='100%' cellpadding='0' cellspacing='0'><!-- Table Headers --><thead><tr><th class='text-white font-weight-bold text-left'>Month</th>");
+
+                // Generate table headers for each CommissionType in the group
+                gpCommisionType.ForEach(gpCommisionTypeitem =>
+                {
+                    commisionDetailSrc.Append("<th style='height:50px' class='text-left'> Fiduciary Fees(" + gpCommisionTypeitem.GroupKey.CommissionType + ")</th>");
+                });
+
+                commisionDetailSrc.Append("</tr></thead>");
+
+                // Iterate through grouped records to populate table rows for Fiduciary Fees
+                records.ForEach(gpFeesMonthRangeItem =>
+                {
+                    commisionDetailSrc.Append("<tr><td class='text-left'>" + CommonUtility.GetMonthRange(gpFeesMonthRangeItem.GroupKey.Month) + "</td>");
+                    List<double> innerFeesMonthlyTotalListSum = new List<double>();
+
+                    // Iterate through CommissionType groups to populate cells with Fiduciary Fees
+                    gpCommisionType.ForEach(gpCommisionTypeitem =>
+            {
+                var premiumUnderAdviceTd1Sum = commisionDetail
+                    .Where(witem => ((witem.REQUEST_DATETIME.Month == gpFeesMonthRangeItem.GroupKey.Month) &&
+                                     (witem.CommissionType == gpCommisionTypeitem.GroupKey.CommissionType) &&
+                                     (witem.Type == "Fiduciary_Data")))
+                    .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
+
+                var premiumUnderAdviceTd1SumR = (premiumUnderAdviceTd1Sum == 0) ? "0.00" : ("R" + premiumUnderAdviceTd1Sum.ToString());
+                commisionDetailSrc.Append("<td class='text-right'>" + premiumUnderAdviceTd1SumR + "</td>");
+                innerFeesMonthlyTotalListSum.Add(premiumUnderAdviceTd1Sum);
+            });
+
+                    // Add monthly total to the list for Fiduciary Fees
+                    monthlyFessTotalList.Add(innerFeesMonthlyTotalListSum);
+                    commisionDetailSrc.Append("</tr>");
+                });
+
+                // Calculate column sums for Fiduciary Fees monthly totals
+                int numFeesColumns = monthlyFessTotalList[0].Count;
+                List<double> FeesColumnSums = new List<double>(Enumerable.Repeat(0.00, numFeesColumns));
+
+                foreach (var row in monthlyFessTotalList)
+                {
+                    for (int j = 0; j < numFeesColumns; j++)
+                    {
+                        FeesColumnSums[j] += row[j];
+                    }
+                }
+
+                // Add total row for Fiduciary Fees to the table
+                commisionDetailSrc.Append("<tr><td class='dark-blue-bg text-white font-weight-bold'>Total</td>");
+
+                for (int k = 0; k < FeesColumnSums.Count; k++)
+                {
+                    totalMonthlyEarnings += FeesColumnSums[k];
+                    commisionDetailSrc.Append("<td class='text-right font-weight-bold'>R" + FeesColumnSums[k] + "</ td>");
+                }
+
+                // Add total monthly earnings to the widget
+                var totalMonthlyEarningsR = (totalMonthlyEarnings == 0) ? "0.00" : ("R" + totalMonthlyEarnings.ToString());
+                commisionDetailSrc.Append("</tr></table></div></div>");
+                commisionDetailSrc.Append("</div></div><!-- Total Earning Section --><div class='total-earning mb-4'><div class='row'><div class='col-3 text-right'></div><div class='col-3 text-right'><div class='dark-blue-bg text-white text-right font-weight-bold pe-3 py-1'>Total Earnings</div></div><div class='col-3 text-left'><div class='total-price-title py-1 font-weight-bold text-center'>" + totalMonthlyEarningsR + "</div></div>");
+
+                // Fees Section: Monthly Fiduciary Fees Summary - End
+
+                // FSP Account Postings Summary start
+
+                // Grouping records by FSP Name
+                var fspNameRecords = commisionDetail.GroupBy(gpcommisionitem => new { gpcommisionitem.FSP_Name })
+                    .Select(group => new
+                    {
+                        GroupKey = group.Key,
+                    }).ToList();
+
+                // Iterating through FSP Name groups
+                fspNameRecords.ForEach(gpfspNameItem =>
+                {
+                    // Initializing variables for monthly totals
+                    List<List<double>> monthlyAEPostedTotalList = new List<List<double>>();
+                    double totalAEPostedMonthlyEarnings = 0;
+
+                    // Grouping records by AE_Posted_Date
+                    var aePostedRecords = commisionDetail
+                .Where(witem => witem.FSP_Name == gpfspNameItem.GroupKey.FSP_Name)
+                .GroupBy(gpcommisionitem => new { gpcommisionitem.AE_Posted_Date.Date })
+                .Select(group => new
+                {
+                    GroupKey = group.Key,
+                }).ToList();
+
+                    // Appending HTML for the earnings section
+                    commisionDetailSrc.Append("<!--FSPAccountPostingsSummarySection--><div class='earnings-section-monthly d-flex mb-2'><div class='d-flex gap-1 w-100'><!--FSP Account Postings Summary--><div class='col-6'><!--Headingfor FSP Account PostingsSummary--><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>FSP Account Postings Summary</h4><div class='monthly-table'><!--Table forFSPAccountPostingsSummary--><table width='100%' cellpadding='0' cellspacing='0'><!--TableHeaders--><thead><tr><th style='height:50px' class='text-white font-weight-bold'>PostedDate</th>");
+
+                    // Appending HTML for Commission Type headers
+                    gpCommisionType.ForEach(gpCommisionTypeitem =>
+            {
+                commisionDetailSrc.Append("<th style='height:50px' class='text-left'> Posted (" + gpCommisionTypeitem.GroupKey.CommissionType + ")</th>");
+            });
+
+                    // Appending HTML for Posted Amount header
+                    commisionDetailSrc.Append("<th style='height:50px' class='text-white font-weight-bold'>Posted Amount</th></tr></thead>");
+
+                    // Appending HTML for Financial Service Provider row
+                    commisionDetailSrc.Append("<tr><th class='text-left text-white font-weight-bold' colspan=" + (2 + gpCommisionType.Count) + ">Financial Service Provider: " + gpfspNameItem.GroupKey.FSP_Name + "</th><tr>");
+
+                    // Iterating through AE_Posted_Date groups
+                    aePostedRecords.ForEach(gpMonthRangeItem =>
+            {
+                // Appending HTML for Date and Commission Type columns
+                commisionDetailSrc.Append("<tr><td class='text-left'>" + DateTime.Parse(gpMonthRangeItem.GroupKey.Date.ToString()).ToString("dd-MMM-yyyy") + "</td>");
+                List<double> innermonthlyAEPostedTotalListSum = new List<double>();
+
+                // Iterating through Commission Types
+                gpCommisionType.ForEach(gpCommisionTypeitem =>
+        {
+                    // Calculating and appending HTML for Posted Amount
+                    var premiumUnderAdviceTd1Sum = commisionDetail
+                .Where(witem => witem.AE_Posted_Date.Date == gpMonthRangeItem.GroupKey.Date && witem.CommissionType == gpCommisionTypeitem.GroupKey.CommissionType)
+                .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
+
+            var premiumUnderAdviceTd1SumR = (premiumUnderAdviceTd1Sum == 0) ? "0.00" : ("R" + premiumUnderAdviceTd1Sum.ToString());
+            commisionDetailSrc.Append("<td class='text-right'>" + premiumUnderAdviceTd1SumR + "</td>");
+            innermonthlyAEPostedTotalListSum.Add(premiumUnderAdviceTd1Sum);
+        });
+
+                // Calculating and appending HTML for Total Posted Amount
+                var postedAmountTdSum = commisionDetail
+            .Where(witem => witem.AE_Posted_Date.Date == gpMonthRangeItem.GroupKey.Date)
+            .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
+
+                var postedAmountTdSumR = (postedAmountTdSum == 0) ? "0.00" : ("R" + postedAmountTdSum.ToString());
+                commisionDetailSrc.Append("<td class='text-right'>R" + postedAmountTdSumR + "</td>");
+
+                // Adding inner list to monthly total list and closing row
+                monthlyAEPostedTotalList.Add(innermonthlyAEPostedTotalListSum);
+                commisionDetailSrc.Append("</tr>");
+            });
+
+                    // Calculating and appending HTML for Total row
+                    int numaePostedColumns = monthlyAEPostedTotalList[0].Count;
+                    List<double> aePostedColumnSums = new List<double>(Enumerable.Repeat(0.00, numColumns));
+
+                    foreach (var row in monthlyAEPostedTotalList)
+                    {
+                        for (int j = 0; j < numColumns; j++)
+                        {
+                            aePostedColumnSums[j] += row[j];
+                        }
+                    }
+
+                    commisionDetailSrc.Append("<tr><td class='dark-blue-bg text-white font-weight-bold'>Total</td>");
+
+                    for (int k = 0; k < aePostedColumnSums.Count; k++)
+                    {
+                        totalAEPostedMonthlyEarnings += aePostedColumnSums[k];
+                        commisionDetailSrc.Append("<td class='text-right font-weight-bold'>R" + aePostedColumnSums[k] + "</ td>");
+                    }
+
+                    // Appending HTML for Total Posted Amount and closing the table
+                    var totalAEPostedMonthlyEarningsR = (totalAEPostedMonthlyEarnings == 0) ? "0.00" : ("R" + totalAEPostedMonthlyEarnings.ToString());
+                    commisionDetailSrc.Append("<td class='text-right font-weight-bold'>R" + totalAEPostedMonthlyEarningsR + "</ td>");
+                    commisionDetailSrc.Append("</tr></table></div></div>");
+
+                    // Closing FSP Account Postings Summary section
+                });
+
+                // FSP Account Postings Summary end
+
+                // Future Date Production start
+
+                // Grouping records by Due Date
+                var dueDateRecords = commisionDetail.GroupBy(gpDueDateitem => new { gpDueDateitem.DUE_DATE.Date })
+                    .Select(group => new
+                    {
+                        GroupKey = group.Key,
+                    }).ToList();
+
+                // Grouping records by Product Description
+                var prdocutDescriptionRecords = commisionDetail.GroupBy(gpDueDateitem => new { gpDueDateitem.PRODUCT_DESCRIPTION })
+                    .Select(group => new
+                    {
+                        GroupKey = group.Key,
+                    }).ToList();
+
+                // Initializing variables for monthly totals
+                List<List<double>> monthlyDueDateTotalList = new List<List<double>>();
+
+                // Appending HTML for the Future Dated Production section
+                commisionDetailSrc.Append("<!-- Future Dated Production Section --><div class='col-6'><!-- Heading for Future Dated Production --><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>Future Dated Production</h4><div class='monthly-table'><!-- Table for Future Dated Production --><table width='100%' cellpadding='0' cellspacing='0'><!-- Table Headers --><thead><tr><th class='text-left text-white font-weight-bold'>Due Date</th><th class='height:50px;text-left'>Fiduciary fees</th><th class='text-left'>Allocated Amount</th></tr></thead>");
+
+                // Initializing variables for column sums
+                double FutureColumnSums = 0.00;
+                double sumOfAllocatedAmount = 0.00;
+                double sumOfDueDateAllocatedAmount = 0.00;
+
+                // Iterating through Due Date groups
+                dueDateRecords.ForEach(gpDueDateItem =>
+                {
+                    // Iterating through Product Description groups
+                    prdocutDescriptionRecords.ForEach(prdocutDescription =>
+            {
+                // Appending HTML for Date, Product Description, and Allocated Amount columns
+                commisionDetailSrc.Append("<tr><td class='text-left'>" + DateTime.Parse(gpDueDateItem.GroupKey.Date.ToString()).ToString("dd-MMM-yyyy") + "</td>");
+                sumOfAllocatedAmount = commisionDetail
+                    .Where(witem => witem.PRODUCT_DESCRIPTION == prdocutDescription.GroupKey.PRODUCT_DESCRIPTION && witem.DUE_DATE == gpDueDateItem.GroupKey.Date)
+                    .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
+
+                commisionDetailSrc.Append("<td class='text-left'>" + (prdocutDescription.GroupKey.PRODUCT_DESCRIPTION == "Commission Service Fee" ? "Premium Under Advise Fee" : prdocutDescription.GroupKey.PRODUCT_DESCRIPTION) + "</td>");
+                var sumOfAllocatedAmountR = (sumOfAllocatedAmount == 0) ? "0.00" : ("R" + sumOfAllocatedAmount.ToString());
+                commisionDetailSrc.Append("<td class='text-right'>" + sumOfAllocatedAmountR + "</td>");
+                FutureColumnSums += sumOfAllocatedAmount;
+                commisionDetailSrc.Append("</tr>");
+            });
+
+                    // Appending HTML for SubTotal row
+                    var sumOfDueDateAllocatedAmountR = (sumOfDueDateAllocatedAmount == 0) ? "0.00" : ("R" + sumOfDueDateAllocatedAmount.ToString());
+                    commisionDetailSrc.Append("<tr><td class='text-right' colspan='2'>SubTotal<td class='text-right'>" + sumOfDueDateAllocatedAmountR + "</td></tr>");
+                });
+
+                // Appending HTML for Total Earnings row and closing the table
+                commisionDetailSrc.Append("<td class='dark-blue-bg text-white font-weight-bold text-right' colspan='2'>Total Earnings</td><td class='text-right font-weight-bold'>R" + FutureColumnSums + "</td>");
+                commisionDetailSrc.Append("</tr></table></div></div>");
+                commisionDetailSrc.Append("</div></div>");
+                // Future Date Production end
+                // Replacing placeholder in the commisionDetailString with the specified divHeight value
+
+                // Replacing placeholder in the commisionDetailString with the generated commissionDetailSrc content
+                pageContent.Replace("{{ppsEarningForPeriod}}", commisionDetailSrc.ToString());
+                // Appending the modified commisionDetailString to the htmlString
+           
+
+        }
+
+
         private void BindAccountInformationWidgetData(StringBuilder pageContent, CustomerMaster customer, Page page, PageWidget widget)
         {
             StringBuilder AccDivData = new StringBuilder();
