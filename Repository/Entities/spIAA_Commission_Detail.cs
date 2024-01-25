@@ -5,7 +5,7 @@ namespace nIS
     
     public partial class spIAA_Commission_Detail
     {
-        public int Request_ID { get; set; }
+        public string Request_ID { get; set; }
         public string AE_TYPE_ID { get; set; }
         public string INT_EXT_REF { get; set; }
         public string POLICY_REF { get; set; }

@@ -91,6 +91,8 @@ namespace nIS
         /// </summary>
         private IArchivalProcessRepository archivalProcessRepository = null;
 
+        private IPPSRepository ppsRepository = null;
+
         /// <summary>
         /// The crypto manager
         /// </summary>
@@ -124,6 +126,8 @@ namespace nIS
                 //this.customerRepository = this.unityContainer.Resolve<ICustomerRepository>();
                 //this.mcaDataRepository = this.unityContainer.Resolve<IMCARepository>();
                 //this.corporateSaverDataRepository = this.unityContainer.Resolve<ICorporateSaverRepository>();
+                this.ppsRepository = this.unityContainer.Resolve<IPPSRepository>();
+
             }
             catch (Exception ex)
             {
@@ -1093,6 +1097,7 @@ namespace nIS
             var statementMetadataRecords = new List<StatementMetadata>();
             DateTime DateFrom = new DateTime(2023, 01, 01);
             DateTime DateTo = new DateTime(2023, 09, 01);
+
             try
             {
                 var customer = statementRawData.Customer;
@@ -1114,10 +1119,10 @@ namespace nIS
                     var pages = statement.Pages.Where(item => item.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || item.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE).ToList();
                     IsSavingOrCurrentAccountPagePresent = pages.Count > 0 ? true : false;
                     var fsp = statement.Pages.Where(item => item.PageTypeName == HtmlConstants.FSP_PAGE).ToList();
-                    IsFSPPagePresent = pages.Count > 0 ? true : false;
+                    IsFSPPagePresent = fsp.Count > 0 ? true : false;
                     var pps = statement.Pages.Where(item => item.PageTypeName == HtmlConstants.PPS_PAGE).ToList();
-                    IsPPSPagePresent = pages.Count > 0 ? true : false;
-
+                    IsPPSPagePresent = pps.Count > 0 ? true : false;
+                    bool Dummysp = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["DummySP"]);
                     //fspDetails = this.tenantTransactionDataRepository.Get_PPSDetails(tenantCode)?.ToList();
                     //ppsDetails = this.tenantTransactionDataRepository.Get_PPSDetails1(tenantCode)?.ToList();
                     //collecting all required transaction required for static widgets in financial tenant html statement
@@ -1152,11 +1157,19 @@ namespace nIS
                     }
                     else if(IsFSPPagePresent)
                     {
-                        fspDetails = this.tenantTransactionDataRepository.Get_FSPDetails(tenantCode)?.ToList();
+                        if(Dummysp)
+                            fspDetails = this.tenantTransactionDataRepository.Get_FSPDetails(tenantCode)?.ToList();
+                        else
+                            fspDetails = ppsRepository.spIAA_PaymentDetail_fspstatement(tenantCode);
+                       
                     }
                     else if(IsPPSPagePresent)
                     {
-                        ppsDetails = this.tenantTransactionDataRepository.Get_PPSDetails(tenantCode)?.ToList();
+                        //var ppsDetails = ppsRepository.spIAA_Commission_Detail_ppsStatement(tenantCode);
+                        if (Dummysp)
+                            ppsDetails = this.tenantTransactionDataRepository.Get_PPSDetails(tenantCode)?.ToList();
+                        else
+                            ppsDetails = ppsRepository.spIAA_Commission_Detail_ppsStatement(tenantCode);
                     }
 
                     //collecting all media information which is required in html statement for some widgets like image, video and static customer information widgets
@@ -1322,6 +1335,9 @@ namespace nIS
                                             break;
                                         case HtmlConstants.DETAILED_TRANSACTIONS_WIDGET_NAME:
                                             IsFailed = this.BindDetailedTransactionsWidgetData(pageContent, ErrorMessages, fspDetails, page, widget);
+                                            break;
+                                        case HtmlConstants.PPS_DETAILED_TRANSACTIONS_WIDGET_NAME:
+                                            IsFailed = this.BindPpsDetailedTransactionsWidgetData(pageContent, ErrorMessages, ppsDetails, page, widget);
                                             break;
                                         case HtmlConstants.PPS_HEADING_WIDGET_NAME:
                                             this.BindPpsHeadingWidgetData(pageContent, customer, statement, page, widget, customerMedias, fspDetails, statementRawData.BatchDetails);
@@ -2375,6 +2391,59 @@ namespace nIS
                 else
                 {
                     ErrorMessages.Append("<li>Product master data is not available related to Product Summary widget..!!</li>");
+                    IsFailed = true;
+                }
+                return IsFailed;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+        private bool BindPpsDetailedTransactionsWidgetData(StringBuilder pageContent, StringBuilder ErrorMessages, IList<spIAA_Commission_Detail> transaction, Page page, PageWidget widget)
+        {
+            var IsFailed = false;
+            try
+            {
+                if (transaction != null && transaction.Count > 0)
+                {
+                    StringBuilder detailedTransactionSrc = new StringBuilder();
+                    detailedTransactionSrc.Append("<div class='pps-monthly-table w-100'><table cellpadding='0' cellspacing='0' width='100%'><tr><th class='bdr-right-white text-white font-weight-bold'>Client<br/>name</th><th class='bdr-right-white text-white font-weight-bold'>Age</th><th class='bdr-right-white text-white font-weight-bold'>Policy #</th><th class='bdr-right-white text-white font-weight-bold'>Policy #</th><th class='bdr-right-white text-white font-weight-bold'>Product</th><th class='bdr-right-white text-white font-weight-bold'>Date<br/>issued</th><th class='bdr-right-white text-white font-weight-bold'>Inception<br/>date</th><th class='bdr-right-white text-white font-weight-bold'>Com<br/>type</th><th class='bdr-right-white text-white font-weight-bold'>Quantity</th><th class='bdr-right-white text-white font-weight-bold'>Posted<br/>date</th><th class='bdr-right-white text-white font-weight-bold'>Earnings</th></tr>");
+                    var records = transaction.GroupBy(gptransactionitem => gptransactionitem.BUS_GROUP).ToList();
+                    records?.ForEach(transactionitem =>
+                    {
+                        detailedTransactionSrc.Append(" <tr> <td colspan = '11' class='text-left font-weight-bold'> PPS INSURANCE </td> </tr> ");
+                        var busGroupdata = transaction.Where(witem => witem.BUS_GROUP == transactionitem.FirstOrDefault().BUS_GROUP).ToList();
+
+                        var memberGroupRecords = busGroupdata.GroupBy(gpmembertransactionitem => gpmembertransactionitem.MEMBER_REF).ToList();
+
+                        memberGroupRecords.ForEach(memberitem =>
+                        {
+                            double TotalPostedAmount = 0;
+                            var memberRecords = busGroupdata.Where(witem => witem.MEMBER_REF == memberitem.FirstOrDefault().MEMBER_REF).ToList();
+                            memberRecords.ForEach(memberitemrecord =>
+                            {
+                                TotalPostedAmount += (Convert.ToDouble(memberitemrecord.ALLOCATED_AMOUNT));
+                                detailedTransactionSrc.Append("<tr><td class='bdr-right-white text-left'>" + memberitemrecord.Member_Name + "</td><td class='bdr-right-white text-left'>" + memberitemrecord.MEMBER_AGE + "</td>" + "<td class='bdr-right-white text-left'>" + memberitemrecord.POLICY_REF + "</td>" +
+      "<td class='bdr-right-white text-left'>" + memberitemrecord.POLICY_REF + "</td><td class='bdr-right-white text-left'>" + memberitemrecord.PRODUCT_DESCRIPTION + "</td><td class='bdr-right-white text-left'>" + memberitemrecord.REQUEST_DATETIME + "</td><td class='bdr-right-white text-left'>" + memberitemrecord.REQUESTED_DATETIME.ToString("dd-MMM-yyyy") + "</td><td class='bdr-right-white text-left'>" + memberitemrecord.CommissionType + "</td><td class='bdr-right-white text-left'>" + ((Convert.ToDouble(memberitemrecord.TRANSACTION_AMOUNT)) < 0 ? "-R" +
+      (Convert.ToDouble(memberitemrecord.TRANSACTION_AMOUNT) * -1).ToString() : "R" + Convert.ToDouble(memberitemrecord.TRANSACTION_AMOUNT)).ToString() + "</td><td class='bdr-right-white text-right'>" + memberitemrecord.AE_Posted_Date.ToString("dd-MMM-yyyy") + "</td>" +
+                                    "<td class='bdr-right-white text-right'>" + ((Convert.ToDouble(memberitemrecord.ALLOCATED_AMOUNT)) < 0 ? "-R" +
+      (Convert.ToDouble(memberitemrecord.ALLOCATED_AMOUNT) * -1).ToString() : "R" + Convert.ToDouble(memberitemrecord.ALLOCATED_AMOUNT)).ToString() + "</td></tr>");
+                            });
+                            string TotalPostedAmountR = (TotalPostedAmount == 0) ? "0.00" : (TotalPostedAmount.ToString());
+                            detailedTransactionSrc.Append(" <tr><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold text-right fs-16'>Sub Total</td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td colspan='2' class='font-weight-bold text-right fs-16 pps-bg-gray' height='40'>" + ((Convert.ToDouble(TotalPostedAmountR)) < 0 ? "-R" +
+      (Convert.ToDouble(TotalPostedAmountR) * -1).ToString() : "R" + Convert.ToDouble(TotalPostedAmountR)).ToString() + "</td></tr>");
+                        });
+
+                    });
+                    detailedTransactionSrc.Append("</table></div>");
+                    pageContent.Replace("{{ppsDetailedTransactions}}", detailedTransactionSrc.ToString());
+                }
+                else
+                {
+                    ErrorMessages.Append("<li>Product master data is not available related to PPS Detailed Transaction widget..!!</li>");
                     IsFailed = true;
                 }
                 return IsFailed;

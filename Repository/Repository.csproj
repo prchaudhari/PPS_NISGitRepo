@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.0.143\lib\net461\Dapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -213,10 +216,12 @@
     <Compile Include="IRepository\IWidgetRepository.cs" />
     <Compile Include="IRepository\IRoleRepository.cs" />
     <Compile Include="IRepository\IUserRepository.cs" />
+    <Compile Include="IRepository\PPS\IFSPRepository.cs" />
     <Compile Include="IRepository\PPS\IProductRepository.cs" />
     <Compile Include="Mappings\ScheduleLogDetailRecord.cs" />
     <Compile Include="Mappings\View_PageRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SQLRepository\PPS\SQLFSPRepository.cs" />
     <Compile Include="SQLRepository\PPS\SQLProductRepository.cs" />
     <Compile Include="SQLRepository\SQLAnalyticsDataRepository.cs" />
     <Compile Include="SQLRepository\SQLArchivalProcessRepository.cs" />

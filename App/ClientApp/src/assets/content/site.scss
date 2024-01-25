@@ -2846,259 +2846,59 @@
   border-right: 5px solid #091E35;
 }
 
-// body {
-//   margin: 0;
-//   padding: 0;
-//   font-family: 'Calibary', Calibary-bold;
-// }
+// pps detailed transaction
 
-// header {
+.pps-earning-period table tr th {
+  background-color: #091E35;
+}
 
- 
-//   padding: 10px;
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-// }
+.pps-earning-period table tr td {
+  background-color: #E9EBF5;
+}
 
-// .social-icons {
-//   display: flex;
-//   gap: 10px;
-// }
-// .vl {
-//   border-left: 6px solid #344253;
-  
-// }
+.pps-earning-period table tr:nth-child(odd) td {
+  background-color: #CFD5EA;
+}
 
-// .social-icons a img {
-//   width: 30px; /* Adjust the size of your social icons */
-//   height: 30px;
-  
-// }
+.pps-details-table table tr td {
+  font-size: 0.7rem;
+}
 
-// .logo img {
-//   width: 100px; /* Adjust the size of your logo */
-//   height: auto;
-// }
+.pps-monthly-table table tr th {
+  background-color: #8F897E;
+  font-size: 0.75rem;
+  font-weight: normal;
+  padding: 8px 5px;
+  line-height: 1;
+  color: #fff;
+  vertical-align: top;
+  height: 40px;
+}
 
-// .heading-container {
-//   background-color: #344253; /* Set black background color for the heading */
-//   padding: 5px;
-//   text-align: center;
-// }
+.pps-monthly-table table tr td {
+  font-size: 0.75rem;
+  font-weight: normal;
+  padding: 8px 5px;
+  line-height: 1;
+  background-color: #F7F7F7;
+}
 
+.pps-monthly-table table tr:nth-child(odd) td {
+  background-color: #CECCC8;
+}
 
-// .info-section {
-//   display: flex;
-//   justify-content: space-around;
-//   padding: 20px;
+.bdr-right-white {
+  border-right: 1px solid #F1F0EF;
+}
 
-  
-// }
+.sky-blue-bg {
+  background-color: #69C5D1 !important;
+}
 
-// .subsection {
-//   text-align:left;
-// }
-
-// p.subsection{
-//   font-family: calibri;
-//   font-size: 9pt;
-// }
-
-
-
-// .blue-border-section {
-//   border-top: 2px solid blue;
-//   border-bottom: 2px solid blue;
-//   display: flex;
-  
-// }
-
-// .table-container {
-//   flex: 1;
-// }
-
-// .white-border {
-//   border-left: 2px solid white;
-//   border-right: 2px solid white;
-// }
-
-// .blue-table {
-//   width: 100%;
-//   border-collapse: collapse;
-  
-// }
-
-// .blue-table th, .blue-table td {
-//   border: 8px solid blue;
-//   padding: 8px;
-//   text-align: center;
-// }
-
-
-
-
-// .button-container {
-//   display: flex;
-//   justify-content: center;
-//   margin-top: 4px; 
-// }
-
-// .center-button {
-//   text-align: center;
-//   background-color: #344253;
-//   color: white;
-//   width: 200px;
-//   margin: 0 10px; 
-// }
-
-
-// .blue-border-section {
-//   border: 2px solid rgb(246, 246, 247);
-//   padding: 0px;
-
-// }
-
-
-
-
-// .blue-heading {
-//   text-align: center;
-//   background-color: #344253;
-//   padding: 10px;
-//   margin: 20px 0;
-//   border: 2px solid blue;
-//   color: blue;
-// }
-
-
-
-// .blue-table {
-//   margin: 20px 0;
-//   border-collapse: collapse;
-  
-// }
-
-// .blue-row {
-  
-//   background-color: #344253;
-//   color: white;
-// text-align: left;
- 
-  
-
-  
-// }
-
-// .blue-row1 {
-  
- 
-//   font-weight: bold;
-
-  
-// }
-// .red{
-//  font-weight: bold;
-
-// }
-// .blue-table th, .blue-table td {
-//   border: 1px solid #ddd;
-//   padding: 8px;
-//   text-align: center;
-// }
-
-
-// .blue-button {
-//   text-align: center;
-//   margin: 20px 0;
-// }
-
-// .blue-button button {
-//   background-color: #344253;
-//   color: white;
-//   padding: 15px 30px;
-//   font-size: 16px;
-//   border: none;
-//   border-radius: 5px;
-//   cursor: pointer;
-// }
-
-
-
-
-// .footer {
-//   border-top: 2px solid blue;
-//   display: flex;
-//   justify-content: space-between;
-//   padding: 20px 0;
-// }
-
-// .footer-section {
-//   text-align: center;
-// }
-
-// .footer-section img {
-//   width: 100px; 
-// }
-
-
-// .name{
-//   font-weight: bold;
-//   font-family:Calibri;
-//   font-size:12pt;
-//   text-align: left;
-// }
-// .address{
-
-//   font-size: 12pt;
-//   font-family:calibri;
-//   font-weight: bold;
-//   text-align: right;
-//   text-align: left;
-// }
-// .ref{
-// font-size: 12pt;
-// font-family: calibri;
-// font-weight: bold;
-// text-align: left;
-// }
-// p.bold1{
-//   font-family: calibri;
-//   font-size: 11pt;
-//   text-align: left;
-
-// }
-// .bold2{
-//   font-family: calibri;
-//   font-size: 11pt;
-//   text-align: left;
-// }
-// .client{
-//   font-weight: bold;
-  
-  
-// }
-// .mobile{
-//   font-family: calibri;
-//   font-size:11pt;
-
-//}
-// .type{
-//   font-weight: bold;
-// }
-// .month{
-// font-weight: bold;
-// }
-// .date1{
-// font-weight: bold;
-// }
-
-
-
-
-
-
-
-
-
-
+.fs-16 {
+  font-size: 0.95rem;
+}
+.pps-monthly-table pps-inc {
+  float: left;
+  font-weight: bold;
+}

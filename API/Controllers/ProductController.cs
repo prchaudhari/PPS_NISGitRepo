@@ -86,6 +86,7 @@ namespace nIS
             {
                 throw ex;
             }
+            return null;
         }
         #endregion
 

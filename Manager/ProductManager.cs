@@ -5,6 +5,7 @@
 
 namespace nIS
 {
+    using nIS.Models;
     #region References
 
     using System;
@@ -39,7 +40,7 @@ namespace nIS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -55,7 +56,7 @@ namespace nIS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -68,7 +69,7 @@ namespace nIS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -81,7 +82,7 @@ namespace nIS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         #endregion

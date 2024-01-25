@@ -5,7 +5,6 @@
 
 namespace nIS
 {
-    using nIS.Models;
     #region References
 
     using System.Collections.Generic;
@@ -14,15 +13,14 @@ namespace nIS
     /// <summary>
     /// This interface represents reference to access accet library repository.
     /// </summary>
-    public interface IProductRepository
+    public interface IPPSRepository
     {
-        #region Corporate Saver Data
+        #region FSP
 
-        IList<ProductViewModel> Get_Products(string tenantCode);
+        List<spIAA_PaymentDetail> spIAA_PaymentDetail_fspstatement(string tenantCode);
 
-        ProductViewModel Get_ProductById(int id, string tenantCode);
+        List<spIAA_Commission_Detail> spIAA_Commission_Detail_ppsStatement(string tenantCode);
 
-        IList<ProductPageTypeMappingViewModel> Get_ProductPageTypeMappingByProductId(int productId, string tenantCode);
 
         #endregion
     }
