@@ -27,19 +27,19 @@
       <li class="side-bar-li" title={{widget.DisplayName}} *ngFor="let widget of widgetsArray">
         <a (click)="selectWidget(widget.Identifier, widget.WidgetName)">
           <!--<span class="nav-icon fa" [ngClass]="{
-                  'fa-address-book': widget.WidgetName == 'FSPDetails',
+                  'icon-rp-production1': widget.WidgetName == 'FSPDetails',
                   'fa-address-book-o': widget.WidgetName == 'CustomerInformation' || widget.WidgetName == 'CustomerDetails' || widget.WidgetName == 'PortfolioCustomerDetails',
                   'fa-address-card-o' : widget.WidgetName == 'AccountInformation' || widget.WidgetName == 'CustomerAddressDetails',
                   'fa-cc fa-lg': widget.WidgetName == 'ClientContactDetails',
                   'fa-trophy fa-lg': widget.WidgetName == 'GreenbacksTotalRewardPoints',
                   'icon-imageWidget' : widget.WidgetName == 'Image',
-                  'fa fa-address-book-o': widget.WidgetName == 'PPSDetails1' || widget.WidgetName == 'PPSDetails1' || widget.WidgetName == 'PortfolioCustomerDetails',
+                  'icon-TransactionMixWidget': widget.WidgetName == 'PPSDetails1' || widget.WidgetName == 'PPSDetails1' || widget.WidgetName == 'PortfolioCustomerDetails',
                    
-                  'fa-address-book': widget.WidgetName == 'PPSDetails2',
-                  'fa-address-book': widget.WidgetName == 'PPSDetailedTransactions',
+                  'icon-view2': widget.WidgetName == 'PPSDetails2',
+                  'icon-statemenrDefinitions': widget.WidgetName == 'PPSDetailedTransactions',
                    'icon-videoWidget' : widget.WidgetName == 'Video',
-                  'icon-widget-single-column2 fa-lg' : widget.WidgetName == 'PPSFooter1'|| widget.WidgetName == 'FSPDetails'|| widget.WidgetName == 'PaymentSummary'|| widget.WidgetName == 'FSPHeading' || widget.WidgetName == 'FSPDetails' || widget.WidgetName == 'Summary' || widget.WidgetName == 'BreakdownOfInvestmentAccounts' || widget.WidgetName == 'WealthBreakdownOfInvestmentAccounts' || widget.WidgetName == 'PersonalLoanDetail' || widget.WidgetName == 'PersonalLoanTotalAmountDetail' || widget.WidgetName == 'HomeLoanTotalAmountDetail' || widget.WidgetName == 'AccountSummary' || widget.WidgetName == 'WealthHomeLoanTotalAmountDetail' || widget.WidgetName == 'MCAAccountSummary'|| widget.WidgetName == 'WealthMCAAccountSummary' ||  widget.WidgetName == 'CorporateSaverTableTotal' ,
-                  'icon-widget-single-column2 fa-lg' : widget.WidgetName == 'PPSFooter1'|| widget.WidgetName == 'FSPDetails'|| widget.WidgetName == 'PaymentSummary'||  widget.WidgetName == 'ProductSummary' || widget.WidgetName == 'PPSHeading' || widget.WidgetName == 'PPSDetails' || widget.WidgetName == 'Summary' || widget.WidgetName == 'BreakdownOfInvestmentAccounts' || widget.WidgetName == 'WealthBreakdownOfInvestmentAccounts' || widget.WidgetName == 'PersonalLoanDetail' || widget.WidgetName == 'PersonalLoanTotalAmountDetail' || widget.WidgetName == 'HomeLoanTotalAmountDetail' || widget.WidgetName == 'AccountSummary' || widget.WidgetName == 'WealthHomeLoanTotalAmountDetail' || widget.WidgetName == 'MCAAccountSummary'|| widget.WidgetName == 'WealthMCAAccountSummary' ||  widget.WidgetName == 'CorporateSaverTableTotal' ,
+                  '.icon-rp-production1' : widget.WidgetName == 'PPSFooter1'|| widget.WidgetName == 'FSPDetails'|| widget.WidgetName == 'PaymentSummary'|| widget.WidgetName == 'FSPHeading' || widget.WidgetName == 'FSPDetails' || widget.WidgetName == 'Summary' || widget.WidgetName == 'BreakdownOfInvestmentAccounts' || widget.WidgetName == 'WealthBreakdownOfInvestmentAccounts' || widget.WidgetName == 'PersonalLoanDetail' || widget.WidgetName == 'PersonalLoanTotalAmountDetail' || widget.WidgetName == 'HomeLoanTotalAmountDetail' || widget.WidgetName == 'AccountSummary' || widget.WidgetName == 'WealthHomeLoanTotalAmountDetail' || widget.WidgetName == 'MCAAccountSummary'|| widget.WidgetName == 'WealthMCAAccountSummary' ||  widget.WidgetName == 'CorporateSaverTableTotal' ,
+                  '.icon-operations2' : widget.WidgetName == 'PPSFooter1'|| widget.WidgetName == 'FSPDetails'|| widget.WidgetName == 'PaymentSummary'||  widget.WidgetName == 'ProductSummary' || widget.WidgetName == 'PPSHeading' || widget.WidgetName == 'PPSDetails' || widget.WidgetName == 'Summary' || widget.WidgetName == 'BreakdownOfInvestmentAccounts' || widget.WidgetName == 'WealthBreakdownOfInvestmentAccounts' || widget.WidgetName == 'PersonalLoanDetail' || widget.WidgetName == 'PersonalLoanTotalAmountDetail' || widget.WidgetName == 'HomeLoanTotalAmountDetail' || widget.WidgetName == 'AccountSummary' || widget.WidgetName == 'WealthHomeLoanTotalAmountDetail' || widget.WidgetName == 'MCAAccountSummary'|| widget.WidgetName == 'WealthMCAAccountSummary' ||  widget.WidgetName == 'CorporateSaverTableTotal' ,
                   'fa-bell-o' : widget.WidgetName == 'ReminderaAndRecommendation' || widget.WidgetName == 'SpecialMessage' || widget.WidgetName == 'PortfolioReminders',
                   'icon-rp-loss1 fa-lg' : widget.WidgetName == 'InvestmentPortfolioRisk',
                   'icon-AnalyticsWidget' : widget.WidgetName == 'Analytics',
@@ -76,23 +76,24 @@
               }">
           </span><span class="nav-title text-truncate" title="{{ widget.DisplayName }}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100px"> {{widget.DisplayName}} </span>-->
           <span class="nav-icon fa"
-                [class.fa-address-book]="widget.WidgetName == 'FSPDetails'"
+                [class.icon-rp-production1]="widget.WidgetName == 'FSPDetails'"
                 [class.fa-address-book-o]="['CustomerInformation', 'CustomerDetails', 'PortfolioCustomerDetails'].includes(widget.WidgetName)"
-                [class.fa-address-card-o]="['AccountInformation', 'CustomerAddressDetails','FooterImage'].includes(widget.WidgetName)"            
+                [class.icon-org-profile1]="['AccountInformation', 'CustomerAddressDetails','FooterImage'].includes(widget.WidgetName)"            
                 [class.icon-videoWidget]="widget.WidgetName == 'Video'"
-                [class.fa-address-book-o]="['PPSDetails1', 'PPSDetails1', 'PortfolioCustomerDetails'].includes(widget.WidgetName)" 
-                [class.fa-address-book]="widget.WidgetName == 'PPSDetailedTransactions'"
+                [class.icon-TransactionMixWidget]="['PPSDetails1', 'PPSDetails1', 'PortfolioCustomerDetails'].includes(widget.WidgetName)" 
+                [class.icon-statemenrDefinitions]="widget.WidgetName == 'PPSDetailedTransactions'"
                [class.icon-home-line2]="widget.WidgetName == 'Image'"   
-                [class.icon-TransactionMixWidget]="widget.WidgetName == 'ProductSummary'"             
-                [class.icon-widget-single-column2.fa-lg]="['PPSFooter1' , 'FSPHeading','DetailedTransactions','PPSEarningForPeriod','FSPDetails','Summary','BreakdownOfInvestmentAccounts',
+                [class.icon-organizationunit-line2]="widget.WidgetName == 'ProductSummary'"
+                [class.icon-widget-process-control2]="widget.WidgetName == 'FSPHeading'"              
+                [class.icon-operations2]="['PPSFooter1' , 'FSPHeading','DetailedTransactions','PPSEarningForPeriod','FSPDetails','Summary','BreakdownOfInvestmentAccounts',
                 'WealthBreakdownOfInvestmentAccounts','PersonalLoanDetail','PersonalLoanTotalAmountDetail',
                 'HomeLoanTotalAmountDetail','AccountSummary','WealthHomeLoanTotalAmountDetail'].includes(widget.WidgetName)"
-                [class.icon-AnalyticsWidget]="['Analytics', 'PPSDetails2'].includes(widget.WidgetName)"
+                [class.icon-view2]="['PPSDetails2'].includes(widget.WidgetName)"
                 [class.icon-widget-multi-column2]="widget.WidgetName == 'SavingTransaction'"
                 [class.icon-widget-line-chart2]="widget.WidgetName == 'SavingTrend'"
                 [class.icon-rp-quality1]="widget.WidgetName == 'Top4IncomeSources'"
                 [class.icon-rp-production1]="widget.WidgetName == 'SpendingTrend'"
-                [class.icon-AvailableBalanceWidget]="['SavingAvailableBalance', 'PaymentSummary', 'CurrentAvailableBalance'].includes(widget.WidgetName)" 
+                [class.icon-machine-dashboard2]="['SavingAvailableBalance', 'PaymentSummary', 'CurrentAvailableBalance'].includes(widget.WidgetName)" 
             
                 [class.fa-bell-o]="widget.WidgetName == 'ReminderaAndRecommendation'"
                 [class.fa-code.fa-code]="widget.WidgetName == 'StaticHtml'"
@@ -100,7 +101,7 @@
           </span>
         
           <!--<span class="nav-icon fa" [ngClass]="{
-      'fa-address-book': widget.WidgetName == 'FSPDetails',
+      'icon-rp-production1': widget.WidgetName == 'FSPDetails',
       'fa fa-address-book-o': widget.WidgetName == 'CustomerInformation' || widget.WidgetName == 'CustomerDetails' || widget.WidgetName == 'PortfolioCustomerDetails',
       'fa-address-card-o' : widget.WidgetName == 'AccountInformation' || widget.WidgetName == 'CustomerAddressDetails',
       'fa-cc fa-lg': widget.WidgetName == 'ClientContactDetails',
@@ -108,8 +109,8 @@
       'icon-imageWidget' : widget.WidgetName == 'Image',
       
       'icon-videoWidget' : widget.WidgetName == 'Video',
-      'icon-widget-single-column2 fa-lg' :widget.WidgetName == 'FSPDetails'|| widget.WidgetName == 'PaymentSummary'|| widget.WidgetName == 'PPSHeading' ||
-      'icon-widget-single-column2 fa-lg' :widget.WidgetName == 'PPSDetails2'|| widget.WidgetName == 'PaymentSummary'|| widget.WidgetName == 'PPSHeading' ||
+      'icon-rp-production1' :widget.WidgetName == 'FSPDetails'|| widget.WidgetName == 'PaymentSummary'|| widget.WidgetName == 'PPSHeading' ||
+      'icon-view2' :widget.WidgetName == 'PPSDetails2'|| widget.WidgetName == 'PaymentSummary'|| widget.WidgetName == 'PPSHeading' ||
 
             widget.WidgetName == 'PPSDetails' || widget.WidgetName == 'Summary' || widget.WidgetName == 'BreakdownOfInvestmentAccounts'
             || widget.WidgetName == 'WealthBreakdownOfInvestmentAccounts' || widget.WidgetName == 'PersonalLoanDetail' ||

@@ -558,12 +558,29 @@ export class PPSDetails1Component {
                         </div>
 
                         <div class="col-5 py-2">
-                            <div class="client-content">
-                                <p><span class="font-weight-bold">Intermediary reference:</span> 124529534</p>
-                                <p><span class="font-weight-bold">Measure type:</span> Commission</p>
-                                <p><span class="font-weight-bold">Month:</span> September 2023</p>
-                                <p><span class="font-weight-bold">Date:</span> 2023-09-01 to 2023-01-01</p>
-                            </div>
+                        <div class="client-content">
+                 <table>
+                    <tr>
+                        <td class="font-weight-bold">Intermediary Reference:</td>
+                        <td>124529534</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Measure Type:</td>
+                        <td> Commission</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Month:</td>
+			                  <td>September 2023</td>
+                    </tr>
+                    <tr>
+                        <td class= "font-weight-bold" colspan="2">
+                        <b>Date From:</b>
+                        2023-09-01 to 2023-01-01
+                        </td>
+                    </tr>
+         
+            </table>
+            </div>
                         </div>
                     </div>
                 </div>
