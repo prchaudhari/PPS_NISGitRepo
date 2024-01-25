@@ -3433,3 +3433,83 @@ a {
 .tright {
     float: right;
 }
+//PPS css
+.skyblue-bg-title {
+    background-color: #69C5D1 !important;
+}
+
+.monthly-table {
+    margin-bottom: 10px;
+}
+
+    .monthly-table table {
+        border-bottom: 2px solid #CECCC8;
+    }
+
+        .monthly-table table th {
+            font-weight: bold;
+            color: #fff;
+            padding: 5px 12px;
+            background-color: #8F897E;
+            font-size: 0.75rem;
+            border-right: 1px solid #fff;
+            line-height: 1;
+        }
+
+        .monthly-table table td {
+            background-color: #F7F7F7;
+            font-weight: 300;
+            padding: 8px 12px;
+            font-size: 0.75rem;
+            border-right: 1px solid #fff;
+            line-height: 1;
+        }
+
+        .monthly-table table tr:nth-child(even), .monthly-table table tr:nth-child(even) td {
+            background-color: #CECCC8;
+        }
+
+.total-price-title {
+    border: 1px solid #091E35;
+}
+
+.monthly-table-full table th, .monthly-table-full table td {
+    padding: 8px 5px;
+}
+
+
+.bottom-image-car {
+    border-top: 5px solid #091E35;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+
+.copyright {
+    font-size: 0.75rem;
+    color: #fff;
+}
+
+.social-icons {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+.monthly-production-summary {
+    font-size: 1rem;
+    font-weight: bold !important;
+    padding: 5px 0;
+}
+.skyblue-bg-title {
+    background-color: #69C5D1 !important;
+}
+.pps-earning-for-period-heading {
+    font-size: 1.25rem;
+    font-weight: bold !important;
+    padding: 5px 10px;
+    text-align: center;
+    width: 100%;
+    font-family: 'Calibri','Helvetica Neue', Arial,sans-serif;
+}

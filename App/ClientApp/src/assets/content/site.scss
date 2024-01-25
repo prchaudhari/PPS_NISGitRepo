@@ -2906,3 +2906,53 @@
   width: 10%;
 }
 
+//PPS css
+.skyblue-bg-title {
+  background-color: #69C5D1 !important;
+}
+
+.monthly-table {
+  margin-bottom: 10px;
+}
+
+.monthly-table table {
+  border-bottom: 2px solid #CECCC8;
+}
+
+.monthly-table table th {
+  font-weight: bold;
+  color: #fff;
+  padding: 5px 12px;
+  background-color: #8F897E;
+  font-size: 0.75rem;
+  border-right: 1px solid #fff;
+  line-height: 1;
+}
+
+.monthly-table table td {
+  background-color: #F7F7F7;
+  font-weight: 300;
+  padding: 8px 12px;
+  font-size: 0.75rem;
+  border-right: 1px solid #fff;
+  line-height: 1;
+}
+
+.monthly-table table tr:nth-child(even), .monthly-table table tr:nth-child(even) td {
+  background-color: #CECCC8;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
