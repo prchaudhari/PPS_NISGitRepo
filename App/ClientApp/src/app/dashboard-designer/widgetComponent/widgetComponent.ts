@@ -232,35 +232,35 @@ export class PPSFooter1Component {
                                     <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"></td>
                                     <td class="fsp-bdr-bottom ps-1 text-right">Total</td>
                                     <td class="fsp-bdr-right fsp-bdr-bottom ps-1 text-left">Due</td>
-                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">R256 670,66</td>
+                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">R256 670.66</td>
                                     <td class="text-center fsp-bdr-bottom px-1"></td>
                                 </tr>
                                 <tr>
                                     <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"></td>
                                     <td class="fsp-bdr-bottom ps-1 text-right">VAT</td>
                                     <td class="fsp-bdr-right fsp-bdr-bottom ps-1 text-left">Due</td>
-                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">R38 001,27</td>
+                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">R38 001.27</td>
                                     <td class="text-center fsp-bdr-bottom px-1"></td>
                                 </tr>
                                 <tr>
                                     <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"></td>
                                     <td class="fsp-bdr-bottom ps-1 text-right">Grand</td>
                                     <td class="fsp-bdr-right fsp-bdr-bottom ps-1 text-left">Total Due</td>
-                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">R294 671,93</td>
+                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">R294 671.93</td>
                                     <td class="text-center fsp-bdr-bottom px-1"></td>
                                 </tr>
                                 <tr>
                                     <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"></td>
                                     <td class="fsp-bdr-bottom ps-1 text-right">PPS</td>
                                     <td class="fsp-bdr-right fsp-bdr-bottom ps-1 text-left">Payment</td>
-                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">-R294 671,93</td>
+                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">-R294 671.93</td>
                                     <td class="text-center fsp-bdr-bottom px-1"></td>
                                 </tr>
                                 <tr>
                                     <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"></td>
                                     <td class="fsp-bdr-bottom ps-1 text-right font-weight-bold">Balance</td>
                                     <td class="fsp-bdr-right fsp-bdr-bottom ps-1 text-left"></td>
-                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1 font-weight-bold">R0,00</td>
+                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1 font-weight-bold">R0.00</td>
                                     <td class="text-center fsp-bdr-bottom px-1"></td>
                                 </tr>
                       </tbody>
@@ -277,10 +277,10 @@ export class ProductSummaryComponent {
   widgetsGridsterItemArray: any[] = [];
 
   public actionPSList: any[] = [
-    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Safe Custody Fee', Display_Amount: '52,65', Query_Link: "https://facebook.com" },
-    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Service Fee', Display_Amount: '52,66', Query_Link: "https://facebook.com" },
-    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Safe Custody Fee', Display_Amount: '52,67', Query_Link: "https://facebook.com" },
-    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Service Fee', Display_Amount: '52,68', Query_Link: "https://facebook.com" }
+    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Safe Custody Fee', Display_Amount: '52.65', Query_Link: "https://facebook.com" },
+    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Service Fee', Display_Amount: '52.66', Query_Link: "https://facebook.com" },
+    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Safe Custody Fee', Display_Amount: '52.67', Query_Link: "https://facebook.com" },
+    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Service Fee', Display_Amount: '52.68', Query_Link: "https://facebook.com" }
   ]
 
 

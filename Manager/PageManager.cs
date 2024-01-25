@@ -554,33 +554,87 @@ namespace nIS
                                             }
                                             else if (mergedlst[i].WidgetName == HtmlConstants.PRODUCT_SUMMARY_WIDGET_NAME)
                                             {
-                                                string productSummaryListJson = "[{ 'Commission_Type': 'Safe Custody Fee', 'Prod_Group':'Safe Custody Fee', 'Display_Amount': '52.65','QueryLink': 'https://facebook.com'},{ 'Commission_Type': 'Safe Custody Fee', 'Prod_Group':'Service Fee', 'Display_Amount': '52.66', 'QueryLink': 'https://facebook.com' }, { 'Commission_Type': 'Safe Custody Fee', 'Prod_Group':'Safe Custody Fee', 'Display_Amount': '52.67', 'QueryLink': 'https://facebook.com' }, { 'Commission_Type': 'Safe Custody Fee', 'Prod_Group':'Service Fee', 'Display_Amount': '52.68', 'QueryLink': 'https://facebook.com' } ]";
+                                                // JSON representation of product summary list
+                                                string productSummaryListJson = "[{ 'Commission_Type': 'Safe Custody Fee', 'Prod_Group': 'Safe Custody Fee', 'AE_Amount': '52.65', 'QueryLink': 'https://www.google.com/', 'DR_CR': 'DR'}, { 'Commission_Type': 'Safe Custody Fee', 'Prod_Group': 'Service Fee', 'AE_Amount': '52.66', 'QueryLink': 'https://www.google.com/', 'DR_CR': 'DR'}, { 'Commission_Type': 'Safe Custody Fee', 'Prod_Group': 'Safe Custody Fee', 'AE_Amount': '152.67', 'QueryLink': 'https://www.google.com/', 'DR_CR': 'DR'}, { 'Commission_Type': 'Safe Custody Fee', 'Prod_Group': 'Service Fee', 'AE_Amount': '52.68', 'QueryLink': 'https://www.google.com/', 'DR_CR': 'CR'}]";
 
+                                                // Check if productSummaryListJson is not empty and is valid JSON
                                                 if (productSummaryListJson != string.Empty && validationEngine.IsValidJson(productSummaryListJson))
                                                 {
+                                                    // Deserialize JSON to a list of payment details
                                                     IList<spIAA_PaymentDetail> productSummary = JsonConvert.DeserializeObject<List<spIAA_PaymentDetail>>(productSummaryListJson);
                                                     StringBuilder productSummarySrc = new StringBuilder();
+
+                                                    // Grouping records by Due Date
+                                                    var gpCommissionTypeRecords = productSummary.GroupBy(gpCommissionTypeItem => new { gpCommissionTypeItem.Commission_Type }).ToList();
+
+                                                    // Grouping records by Product Description
+                                                    var prdocutDescriptionRecords = productSummary.GroupBy(gpPrdocutDescriptionItem => new { gpPrdocutDescriptionItem.Prod_Group }).ToList();
+
+                                                    // Initializing variables for column sums
                                                     long index = 1;
-                                                    productSummary.ToList().ForEach(item =>
+                                                    var aeAmountColSum = 0.00;
+                                                    var aeAmountColSumR = "";
+
+                                                    // Iterating through Due Date groups
+                                                    gpCommissionTypeRecords.ForEach(gpCommissionTypeItem =>
                                                     {
-                                                        productSummarySrc.Append("<tr><td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" + index + "</td><td class='fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td>" + "<td class='fsp-bdr-right fsp-bdr-bottom px-1'> " + (item.Prod_Group == "Service Fee" ? "Premium Under Advise Fee" : item.Prod_Group) + "</td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1'>R" + item.Display_Amount + "</td><td class='text-center fsp-bdr-bottom px-1'><a  href ='https://facebook.com' target='_blank'><img class='leftarrowlogo' src ='assets/images/leftarrowlogo.png' alt = 'Left Arrow'></a></td></tr>");
-                                                        index++;
+                                                        // Iterating through Product Description groups
+                                                        prdocutDescriptionRecords.ForEach(gpPrdocutDescriptionItem =>
+                                                        {
+                                                            // Calculate sums for CR and DR amounts
+                                                            var aeAmountCRSum = productSummary
+                                                                .Where(witem => ((witem.Commission_Type == gpCommissionTypeItem.Key.Commission_Type) &&
+                                                                                 (witem.DR_CR == "CR"))).Sum(item => Convert.ToDouble(item.AE_Amount));
+
+                                                            var aeAmountDRSum = productSummary
+                                                                .Where(witem => ((witem.Commission_Type == gpCommissionTypeItem.Key.Commission_Type) &&
+                                                                                 (witem.DR_CR == "DR"))).Sum(item => Convert.ToDouble(item.AE_Amount));
+
+                                                            // Calculate total AE Amount
+                                                            var aeAmountSum = aeAmountCRSum - aeAmountDRSum;
+                                                            var aeAmountSumR = CommonUtility.concatRWithDouble(aeAmountSum.ToString());
+
+                                                            // Append the table row to productSummarySrc
+                                                            productSummarySrc.Append("<tr><td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" + index + "</td><td class='fsp-bdr-right fsp-bdr-bottom px-1'>" + gpCommissionTypeItem.Key.Commission_Type + "</td>" + "<td class='fsp-bdr-right fsp-bdr-bottom px-1'> " + (gpPrdocutDescriptionItem.Key.Prod_Group == "Service Fee" ? "Premium Under Advise Fee" : gpPrdocutDescriptionItem.Key.Prod_Group) + "</td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1'>" + aeAmountSumR + "</td><td class='text-center fsp-bdr-bottom px-1'><a  href ='https://www.google.com/' target='_blank'><img class='leftarrowlogo' src ='assets/images/leftarrowlogo.png' alt = 'Left Arrow'></a></td></tr>");
+
+                                                            // Update column sum and increment index
+                                                            aeAmountColSum += aeAmountSum;
+                                                            productSummarySrc.Append("</tr>");
+                                                            index++;
+                                                        });
+                                                        aeAmountColSumR = CommonUtility.concatRWithDouble(aeAmountColSum.ToString());
                                                     });
+
+                                                    // Generate the HTML string for the product summary widget
                                                     string productSumstring = HtmlConstants.PRODUCT_SUMMARY_WIDGET_HTML.Replace("{{ProductSummary}}", productSummarySrc.ToString());
-                                                    string productInfoJson = "{Earning_Amount : '256670.66',VAT_Amount : '38001.27'}";
+                                                    string productInfoJson = "{VAT_Amount : '38001.27'}";
                                                     spIAA_PaymentDetail productInfo = JsonConvert.DeserializeObject<spIAA_PaymentDetail>(productInfoJson);
+
+                                                    // Replace placeholders in the HTML string with actual values
                                                     productSumstring = productSumstring.Replace("{{WidgetDivHeight}}", divHeight);
                                                     productSumstring = productSumstring.Replace("{{QueryBtn}}", "assets/images/IfQueryBtn.jpg");
-                                                    productSumstring = productSumstring.Replace("{{TotalDue}}", "R" + productInfo.Earning_Amount.ToString());
-                                                    productSumstring = productSumstring.Replace("{{VATDue}}", "R" + productInfo.VAT_Amount.ToString());
-                                                    double grandTotalDue = (Convert.ToDouble(productInfo.Earning_Amount) + Convert.ToDouble(productInfo.VAT_Amount));
-                                                    productSumstring = productSumstring.Replace("{{GrandTotalDue}}", "R" + grandTotalDue.ToString());
+                                                    productSumstring = productSumstring.Replace("{{TotalDue}}", aeAmountColSumR);
+                                                    productSumstring = productSumstring.Replace("{{VATDue}}", CommonUtility.concatRWithDouble(productInfo.VAT_Amount.ToString()));
+
+                                                    // Calculate grand total due
+                                                    double grandTotalDue = (Convert.ToDouble(aeAmountColSum) + Convert.ToDouble(productInfo.VAT_Amount));
+                                                    var grandTotalDueR = CommonUtility.concatRWithDouble(grandTotalDue.ToString());
+                                                    productSumstring = productSumstring.Replace("{{GrandTotalDue}}", grandTotalDueR);
+
+                                                    // Calculate PPS payment and update the HTML string
                                                     double ppsPayment = grandTotalDue;
-                                                    productSumstring = productSumstring.Replace("{{PPSPayment}}", "-R" + (grandTotalDue).ToString());
-                                                    productSumstring = productSumstring.Replace("{{Balance}}", "R" + Convert.ToDouble((grandTotalDue - ppsPayment)).ToString("F2"));
+                                                    var ppsPaymentR = (ppsPayment == 0) ? "0.00" : ("-R" + ppsPayment.ToString());
+                                                    productSumstring = productSumstring.Replace("{{PPSPayment}}", ppsPaymentR);
+
+                                                    var balance = Convert.ToDouble((grandTotalDue - ppsPayment)).ToString("F2");
+                                                    // Calculate and update the balance in the HTML string
+                                                    productSumstring = productSumstring.Replace("{{Balance}}", CommonUtility.concatRWithDouble(balance));
+
+                                                    // Append the modified product summary widget HTML to the main HTML string
                                                     htmlString.Append(productSumstring);
                                                 }
                                             }
+
 
                                             else if (mergedlst[i].WidgetName == HtmlConstants.FOOTER_IMAGE_WIDGET_NAME)
                                             {
@@ -600,7 +654,7 @@ namespace nIS
                                             }
                                             else if (mergedlst[i].WidgetName == HtmlConstants.DETAILED_TRANSACTIONS_WIDGET_NAME)
                                             {
-                                                string transactionListJson = "[{'INT_EXT_REF':'2164250','Int_Name':'Mr SCHOELER','Client_Name':'Kruger Van Heerden','Member_Ref':124556686,'Policy_Ref':5596100,'Description':'Safe Custody Service Fee','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'17.55','Query_Link':'https://facebook.com','TYPE':'Fiduciary_Data','Prod_Group':'Safe Custody Fee'},{'INT_EXT_REF':'2164250','Int_Name':'Yvonne Van Heerden','Client_Name':'Mr SCHOELER','Member_Ref':124556686,'Policy_Ref':'5596100','Description':'Safe Custody Service Fee VAT','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'2.63','Query_Link':'https://facebook.com','TYPE':'Fiduciary_Data','Prod_Group':'Safe Custody Fee'},{'INT_EXT_REF':'124411745','Int_Name':'Kruger Van Heerden','Client_Name':'DR N J Olivier','Member_Ref':'1217181','Policy_Ref':'5524069','Description':'Safe Custody Service Fee','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'17.55','Query_Link':'https://facebook.com','TYPE':'Fiduciary_Data','Prod_Group':'Safe Custody Fee'},{'INT_EXT_REF':'124411745','Int_Name':'Kruger Van Heerden','Client_Name':'DR N J Olivier','Member_Ref':'124556686','Policy_Ref':'5596100','Description':'Safe Custody Service Fee VAT','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'2.63','Query_Link':'https://facebook.com','TYPE':'Fiduciary_Data','Prod_Group':'VAT'}]";
+                                                string transactionListJson = "[{'INT_EXT_REF':'2164250','Int_Name':'Mr SCHOELER','Client_Name':'Kruger Van Heerden','Member_Ref':124556686,'Policy_Ref':5596100,'Description':'Safe Custody Service Fee','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'17.55','Query_Link':'https://www.google.com/','TYPE':'Fiduciary_Data','Prod_Group':'Safe Custody Fee'},{'INT_EXT_REF':'2164250','Int_Name':'Yvonne Van Heerden','Client_Name':'Mr SCHOELER','Member_Ref':124556686,'Policy_Ref':'5596100','Description':'Safe Custody Service Fee VAT','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'2.63','Query_Link':'https://www.google.com/','TYPE':'Fiduciary_Data','Prod_Group':'Safe Custody Fee'},{'INT_EXT_REF':'124411745','Int_Name':'Kruger Van Heerden','Client_Name':'DR N J Olivier','Member_Ref':'1217181','Policy_Ref':'5524069','Description':'Safe Custody Service Fee','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'17.55','Query_Link':'https://www.google.com/','TYPE':'Fiduciary_Data','Prod_Group':'Safe Custody Fee'},{'INT_EXT_REF':'124411745','Int_Name':'Kruger Van Heerden','Client_Name':'DR N J Olivier','Member_Ref':'124556686','Policy_Ref':'5596100','Description':'Safe Custody Service Fee VAT','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'2.63','Query_Link':'https://www.google.com/','TYPE':'Fiduciary_Data','Prod_Group':'VAT'}]";
                                                 double TotalPostedAmount = 0;
                                                 if (transactionListJson != string.Empty && validationEngine.IsValidJson(transactionListJson))
                                                 {
@@ -759,7 +813,7 @@ namespace nIS
                                                     // Iterate through grouped records to populate table rows
                                                     records.ForEach(gpMonthRangeItem =>
                                                     {
-                                                        commisionDetailSrc.Append("<tr><td class='text-left'>" + GetMonthRange(gpMonthRangeItem.GroupKey.Month) + "</td>");
+                                                        commisionDetailSrc.Append("<tr><td class='text-left'>" + CommonUtility.GetMonthRange(gpMonthRangeItem.GroupKey.Month) + "</td>");
                                                         List<double> innermonthlyTotalListSum = new List<double>();
 
                                                         // Iterate through CommissionType groups to populate cells
@@ -822,7 +876,7 @@ namespace nIS
                                                     // Iterate through grouped records to populate table rows for Fiduciary Fees
                                                     records.ForEach(gpFeesMonthRangeItem =>
                                                     {
-                                                        commisionDetailSrc.Append("<tr><td class='text-left'>" + GetMonthRange(gpFeesMonthRangeItem.GroupKey.Month) + "</td>");
+                                                        commisionDetailSrc.Append("<tr><td class='text-left'>" + CommonUtility.GetMonthRange(gpFeesMonthRangeItem.GroupKey.Month) + "</td>");
                                                         List<double> innerFeesMonthlyTotalListSum = new List<double>();
 
                                                         // Iterate through CommissionType groups to populate cells with Fiduciary Fees
@@ -4021,25 +4075,6 @@ namespace nIS
             return formattedDate;
         }
 
-        public static string GetMonthRange(int month)
-        {
-            switch (month)
-            {
-                case 1: return "1 Jan - 31 Jan";
-                case 2: return "1 Feb - 28 Feb";
-                case 3: return "1 Mar - 31 Mar";
-                case 4: return "1 Apr - 30 Apr";
-                case 5: return "1 May - 31 May";
-                case 6: return "1 Jun - 30 Jun";
-                case 7: return "1 Jul - 31 Jul";
-                case 8: return "1 Aug - 31 Aug";
-                case 9: return "1 Sep - 30 Sep";
-                case 10: return "1 Oct - 31 Oct";
-                case 11: return "1 Nov - 30 Nov";
-                case 12: return "1 Dec - 31 Dec";
-                default: return "Invalid Month";
-            }
-        }
 
         static void Main()
         {
@@ -4058,6 +4093,7 @@ namespace nIS
                 Console.WriteLine("Invalid date format");
             }
         }
+
         #endregion
     }
 }

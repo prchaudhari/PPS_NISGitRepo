@@ -97,6 +97,7 @@
     <Compile Include="Common\BaseSearchEntity.cs" />
     <Compile Include="Common\CityConstant.cs" />
     <Compile Include="Common\ClientConstants.cs" />
+    <Compile Include="Common\CommonUtility.cs" />
     <Compile Include="Common\DynamicWidgetConstant.cs" />
     <Compile Include="Common\CountryConstant.cs" />
     <Compile Include="Common\HtmlConstants.cs" />

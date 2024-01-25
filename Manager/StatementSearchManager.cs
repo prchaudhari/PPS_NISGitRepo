@@ -1331,32 +1331,76 @@ namespace nIS
 
         private void BindProductSummaryWidgetData(StringBuilder pageContent, IList<spIAA_PaymentDetail> productSummary, Page page, PageWidget widget)
             {
-                if (productSummary != null && productSummary.Count > 0)
+            if (productSummary != null && productSummary.Count > 0)
+            {
+                StringBuilder productSummarySrc = new StringBuilder();
+                // Grouping records by Due Date
+                var gpCommissionTypeRecords = productSummary.GroupBy(gpCommissionTypeItem => new { gpCommissionTypeItem.Commission_Type }).ToList();
+
+                // Grouping records by Product Description
+                var prdocutDescriptionRecords = productSummary.GroupBy(gpPrdocutDescriptionItem => new { gpPrdocutDescriptionItem.Prod_Group }).ToList();
+
+                // Initializing variables for column sums
+                long index = 1;
+                var aeAmountColSum = 0.00;
+                var aeAmountColSumR = "";
+
+                // Iterating through Due Date groups
+                gpCommissionTypeRecords.ForEach(gpCommissionTypeItem =>
                 {
-                    StringBuilder productSummarySrc = new StringBuilder();
-                    long index = 1;
-                    productSummary.ToList().ForEach(item =>
+                    // Iterating through Product Description groups
+                    prdocutDescriptionRecords.ForEach(gpPrdocutDescriptionItem =>
                     {
-                        productSummarySrc.Append("<tr><td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" + index + "</td><td class='fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td>" + "<td class='fsp-bdr-right fsp-bdr-bottom px-1'> " + (item.Prod_Group == "Service Fee" ? "Premium Under Advise Fee" : item.Prod_Group) + "</td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1'>R" + item.Display_Amount.ToString().Replace(',', '.') + "</td><td class='text-center fsp-bdr-bottom px-1'><a  href ='https://facebook.com' target='_blank'><img class='leftarrowlogo' src ='assets/images/leftarrowlogo.png' alt = 'Left Arrow'></a></td></tr>");
+                        // Calculate sums for CR and DR amounts
+                        var aeAmountCRSum = productSummary
+                            .Where(witem => ((witem.Commission_Type == gpCommissionTypeItem.Key.Commission_Type) &&
+                                             (witem.DR_CR == "CR"))).Sum(item => Convert.ToDouble(item.AE_Amount));
+
+                        var aeAmountDRSum = productSummary
+                            .Where(witem => ((witem.Commission_Type == gpCommissionTypeItem.Key.Commission_Type) &&
+                                             (witem.DR_CR == "DR"))).Sum(item => Convert.ToDouble(item.AE_Amount));
+
+                        // Calculate total AE Amount
+                        var aeAmountSum = aeAmountCRSum - aeAmountDRSum;
+                        var aeAmountSumR = CommonUtility.concatRWithDouble(aeAmountSum.ToString());
+
+                        // Append the table row to productSummarySrc
+                        productSummarySrc.Append("<tr><td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" + index + "</td><td class='fsp-bdr-right fsp-bdr-bottom px-1'>" + gpCommissionTypeItem.Key.Commission_Type + "</td>" + "<td class='fsp-bdr-right fsp-bdr-bottom px-1'> " + (gpPrdocutDescriptionItem.Key.Prod_Group == "Service Fee" ? "Premium Under Advise Fee" : gpPrdocutDescriptionItem.Key.Prod_Group) + "</td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1'>" + aeAmountSumR + "</td><td class='text-center fsp-bdr-bottom px-1'><a  href ='https://www.google.com/' target='_blank'><img class='leftarrowlogo' src ='assets/images/leftarrowlogo.png' alt = 'Left Arrow'></a></td></tr>");
+
+                        // Update column sum and increment index
+                        aeAmountColSum += aeAmountSum;
+                        productSummarySrc.Append("</tr>");
                         index++;
                     });
+                    aeAmountColSumR = (aeAmountColSum == 0) ? "0.00" : ("R" + aeAmountColSum.ToString());
+                });
+
+                // Generate the HTML string for the product summary widget
+                string productInfoJson = "{VAT_Amount : '38001.27'}";
+                spIAA_PaymentDetail productInfo = JsonConvert.DeserializeObject<spIAA_PaymentDetail>(productInfoJson);
+
+                // Replace placeholders in the HTML string with actual values
+                pageContent.Replace("{{QueryBtn}}", ".. / common / images / IfQueryBtn.jpg");
                 pageContent.Replace("{{ProductSummary}}", productSummarySrc.ToString());
-                pageContent.Replace("{{QueryBtn}}", "assets/images/IfQueryBtn.jpg");
-                String totalDue = productSummary.FirstOrDefault().Earning_Amount;
-                totalDue = totalDue.Replace('.', ',');
-                pageContent.Replace("{{TotalDue}}", "R" + totalDue);
-                String vatAmount = productSummary.FirstOrDefault().VAT_Amount;
-                vatAmount = vatAmount.Replace('.', ',');
-                pageContent.Replace("{{VATDue}}", "R" + vatAmount);
-                double grandTotalDue = (Convert.ToDouble(productSummary.FirstOrDefault().Earning_Amount) + Convert.ToDouble(productSummary.FirstOrDefault().VAT_Amount));
-                String grandTotalDueStr = grandTotalDue.ToString().Replace(',', '.');
-                pageContent.Replace("{{GrandTotalDue}}", "R" + grandTotalDueStr);
+                pageContent.Replace("{{TotalDue}}", aeAmountColSumR);
+                pageContent.Replace("{{VATDue}}", CommonUtility.concatRWithDouble(productInfo.VAT_Amount.ToString()); 
+
+                // Calculate grand total due
+                double grandTotalDue = (Convert.ToDouble(aeAmountColSum) + Convert.ToDouble(productInfo.VAT_Amount));
+               var grandTotalDueR = CommonUtility.concatRWithDouble(grandTotalDue.ToString());
+                pageContent.Replace("{{GrandTotalDue}}", grandTotalDueR);
+
+                // Calculate PPS payment and update the HTML string
                 double ppsPayment = grandTotalDue;
-                pageContent.Replace("{{PPSPayment}}", "-R" + grandTotalDueStr);
-                String Balance = Convert.ToDouble((grandTotalDue - ppsPayment)).ToString("F2").Replace(',', '.');
-                pageContent.Replace("{{Balance}}", "R" + Balance);
+                var ppsPaymentR = (ppsPayment == 0) ? "0.00" : ("-R" + ppsPayment.ToString());
+                pageContent.Replace("{{PPSPayment}}", ppsPaymentR);
+
+                // Calculate and update the balance in the HTML string
+                var balance = Convert.ToDouble((grandTotalDue - ppsPayment)).ToString("F2");
+                // Calculate and update the balance in the HTML string
+                pageContent.Replace("{{Balance}}", CommonUtility.concatRWithDouble(balance));
             }
-            }
+          }
 
         private void BindCurrentAvailBalanceWidgetData(StringBuilder pageContent, CustomerMaster customer, BatchMaster batchMaster, long accountId, IList<AccountMaster> accountrecords, Page page, PageWidget widget, string currency)
         {
