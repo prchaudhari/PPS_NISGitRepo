@@ -1550,8 +1550,7 @@
             // Launch Puppeteer with specific options
             var browser = await Puppeteer.LaunchAsync(new LaunchOptions
             {
-                Headless = true,
-                ExecutablePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+                Headless = true
             });
 
             // Create a new page
@@ -1583,22 +1582,22 @@
 
 
             //Add script tags to the page
-            await page.AddScriptTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\js\\jquery.min.js" });
-            await page.AddScriptTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\js\\popper.min.js" });
-            await page.AddScriptTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\js\\bootstrap.min.js" });
-            await page.AddScriptTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\js\\highcharts.js" });
-            await page.AddScriptTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\js\\jquery.min.js" });
-            await page.AddScriptTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\js\\series-label.js" });
-            await page.AddScriptTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\js\\exporting.js" });
-            await page.AddScriptTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\js\\export-data.js" });
-            await page.AddScriptTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\js\\accessibility.js" });
-            await page.AddScriptTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\js\\script.js" });
+            await page.AddScriptTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"\common\js\jquery.min.js" });
+            await page.AddScriptTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"\common\js\popper.min.js" });
+            await page.AddScriptTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"\common\js\bootstrap.min.js" });
+            await page.AddScriptTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"\common\js\highcharts.js" });
+            await page.AddScriptTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"\common\js\jquery.min.js" });
+            await page.AddScriptTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"\common\js\series-label.js" });
+            await page.AddScriptTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"\common\js\exporting.js" });
+            await page.AddScriptTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"\common\js\export-data.js" });
+            await page.AddScriptTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"\common\js\accessibility.js" });
+            await page.AddScriptTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"\common\js\script.js" });
             // Generate PDF from the page with specified options
             // Add style tags to the page
-            await page.AddStyleTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\css\\bootstrap.min.css" });
-            await page.AddStyleTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\css\\font-awesome.min.css" });
-            await page.AddStyleTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\css\\site.css" });
-            await page.AddStyleTagAsync(new AddTagOptions { Path = "C:\\UserFiles\\common\\css\\ltr.css" });
+            await page.AddStyleTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"\common\css\bootstrap.min.css" });
+            await page.AddStyleTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"common\css\font-awesome.min.css" });
+            await page.AddStyleTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"common\css\site.css" });
+            await page.AddStyleTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"common\css\ltr.css" });
             await page.PdfAsync(outPdfPath, pdfOptions);
 
 
