@@ -1487,10 +1487,8 @@
             footerContent = footerContent.Replace("{{logoImgYouPath}}", logoImgYouPathBase64);
             footerContent = footerContent.Replace("{{logoImgTiktokPath}}", logoImgTiktokPathBase64);
 
-
-            //     footerContent += "<span class='pageNumber'></span> of<span class='totalPages'></span>";
-
-          //  footerContent = footerContent.Replace("{{PageNumber}}", "<span class='pageNumber'></span> of<span class='totalPages'></span>");
+           //footerContent += "<span class='pageNumber'></span> of<span class='totalPages'></span>";
+           footerContent = footerContent.Replace("{{PageNumber}}", "<span class='pageNumber'></span>/<span class='totalPages'></span>");
 
 
             //headerContent = @"<div style='width:100%; height: 50px ;font-weight: 400;margin: 10px auto;background-color: #fff;'><div style='display: flex; justify-content: space-between; padding: 1rem 0 1rem 0; flex-direction: column;'><div style='display:flex;width:100%;gap: 20px;align-items: center;'><div class='fsp-logo'><img  src ='data:image/jpeg;base64,/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAAAmAAD/4QMsaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLwA8P3hwYWNrZXQgYmVnaW49Iu+7vyIgaWQ9Ilc1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCI/PiA8eDp4bXBtZXRhIHhtbG5zOng9ImFkb2JlOm5zOm1ldGEvIiB4OnhtcHRrPSJBZG9iZSBYTVAgQ29yZSA2LjAtYzAwMiA3OS4xNjQ0NjAsIDIwMjAvMDUvMTItMTY6MDQ6MTcgICAgICAgICI+IDxyZGY6UkRGIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+IDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSIiIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bXA6Q3JlYXRvclRvb2w9IkFkb2JlIFBob3Rvc2hvcCAyMS4yIChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo5OUFERjE0Q0EwQzkxMUVFQUI2NkY4QzlBMzYzRjM0MiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo5OUFERjE0REEwQzkxMUVFQUI2NkY4QzlBMzYzRjM0MiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjk5QURGMTRBQTBDOTExRUVBQjY2RjhDOUEzNjNGMzQyIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjk5QURGMTRCQTBDOTExRUVBQjY2RjhDOUEzNjNGMzQyIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+/+4ADkFkb2JlAGTAAAAAAf/bAIQADQkJCQoJDQoKDRMMCwwTFhANDRAWGRQUFhQUGRgTFRUVFRMYGB0eIB4dGCYmKSkmJjg3Nzc4Pj4+Pj4+Pj4+PgEODAwODw4RDw8RFA4QDhQVERERERUfFRUXFRUfJxwYGBgYHCcjJSAgICUjKysnJysrNTUzNTU+Pj4+Pj4+Pj4+/8AAEQgATQBQAwEiAAIRAQMRAf/EAIQAAQACAwEBAAAAAAAAAAAAAAACBQMEBgcBAQEBAQEBAAAAAAAAAAAAAAAAAgEDBBAAAgEDAgQCBwcEAwAAAAAAAQIDABEEBQYhMRITQSJhcYGRIxQVUaGxQmKiB8EyklPRUjMRAAIBAwQDAQAAAAAAAAAAAAABESExAkFRcRJhgSIT/9oADAMBAAIRAxEAPwDi6UpXqOIpSr7b2z9V10CaO2NhXscmQGzW59tebfhWNpVYiShpXpabD2lhAJqGY0k1uIkmWL3ItjR9h7SzQU0/MaOa3ARzLL70a5qf0x8ldWeaUq+3Ds/VNCBmktk4V7DJjBst+XcX8v4VQ1SadUTEClKVoFKUoC92ht/67qoimB+TxwJckjhcXssd/wBR+69dluTc8Wn4ipjfDxjePEghPbaYR+Uv1rxjgU8AV8zeFhxrR2TD29sTtGSk+pZYxescwh6UJHqUuRVBrATVd5tgyEx4/wAwmBEI7fDjQiJekG458a5uuTm2JVlyVk+uarMxKznHUm/bx/gr+yzH1sSaQa5qsLAtO2QoN+3kfGX992HrUg1d4G08DOyJEhyphHj5rYE5ZUDHgxjlTn4rYqfXWvibaw83EizYcwxQySzYpGR0peeNeqJVcXVVk9I4emqnEyGdbtvdEWoYjJk/ExxaPLgmPcaEP5Q/W3GSBjwPV5l8bjjXG7w2/wDQtVMUIPyeQDLjE8bC/mjv+k/das2kQy6Nu7GwpUdRKVxsmGbp4pkL0sp6CVZbngRzq/3tD3NsQNIS8+mZZxes8ynmRSfWvQTUqmSi2Rt1wee0pSuhIpSlAd7sfMQ6N2SQDgahFM9/9c/wur2MTVdrmIukb7TKym7WJJkR5wlIJBTqDSABQSSGBFUuhar9LzTLIplxJ0MGZCObxPzt+peYr0aXF0zdGmxYGbKHnCl8HPS15VAt3Ev+bwlj8D7DXN/OU6MpVXBx2Drsce5VmnylTSosuXMukZUOXDqjsqJ1M9mA48qp5dWzgGx1lRsYdxREsaiJxIwZ2KFRctYcSL1b5/8AH248WQiCJM2L8skThSR6UkKkffTA/j7cmVIBPEmFF+aSVwxA9CRlifurZxvKFSO0sfM1rdOLPMxk+VKzyvawVIR0xIAOAF7ACrnfGYg0bsggnP1CWZLf64B2ur2sBV3Di6ZtfTZcDClCZBUPnZ72vEpFu69vHwij8T7TXnOu6t9UzRJGpixIEEGHCeaxJy6v1NzNYvrKdEHRQVtKUroSKUqcMrwypNHbrjYMtxcXBuOFAQuK3dP1fM066wuGhZgz48nmjLDkwAIKt9jKQajHqOQqogKAIkkQZlv5ZRZr+n1UhzJYI1jSVOhBKoBQn/2Xoc/287cvsrPQOpxP5GyYkCyCXh4HonH+Tdp/expl/wAi5MqFYxLx8B0QD/Je6/uYVzP1Ca6kSRDpEa/2HiIm7i34faK+NnSkEF4vMHU+VuUkgmP7hwqei2K7Pcahq+ZqFlncLCrF0gj8sYY83NySzH/sxJrS4Vvx6lPG0bK8N4y7LeMkfEv1XBFvGsLZsvSkdoysSCNGC2NlcSgk8CT1eJqvRJrUqcsjSyvK1g0jF2A4C7G5sKhWgUpSgFZFmdUCgCwJYEi542/4rHSgM/zcvWHstw3XYCwva3IcKxxzPEQUtcHqFxfjYj+tQpWAm0rMoUgABQvAW4KSR7eNQpStApSlAf/Z' style='width: 50px; height: 50px;' alt='image not found'></div><div><h1 style=' font-size: 28.8px; text-shadow: #c6ced9 1px 1px 1px; margin-bottom: 0;'>Financial Service Provider(FSP) Statement</h1><h6 syle='font-weight: bold;font-size:16px;color: #5b5a5a;margin-bottom: 0;'>{{FSPName}} T/A {{FSPTradingName}}</h6></div></div></div>";
@@ -1555,33 +1553,9 @@
 
             // Create a new page
             var page = await browser.NewPageAsync();
-
             // Navigate to the specified HTML path
             await page.GoToAsync(htmlPath);
-
-         
-
-            ////Add script tags to the page
-            //await page.AddScriptTagAsync(new AddTagOptions { Path = @"C:\UserFiles\common\js\jquery.min.js" });
-            //await page.AddScriptTagAsync(new AddTagOptions { Path = @"C:\UserFiles\common\js\popper.min.js" });
-            //await page.AddScriptTagAsync(new AddTagOptions { Path = @"C:\UserFiles\common\js\bootstrap.min.js" });
-            //await page.AddScriptTagAsync(new AddTagOptions { Path = @"C:\UserFiles\common\js\highcharts.js" });
-            //await page.AddScriptTagAsync(new AddTagOptions { Path = @"C:\UserFiles\common\js\jquery.min.js" });
-            //await page.AddScriptTagAsync(new AddTagOptions { Path = @"C:\UserFiles\common\js\series-label.js" });
-            //await page.AddScriptTagAsync(new AddTagOptions { Path = @"C:\UserFiles\common\js\exporting.js" });
-            //await page.AddScriptTagAsync(new AddTagOptions { Path = @"C:\UserFiles\common\js\export-data.js" });
-            //await page.AddScriptTagAsync(new AddTagOptions { Path = @"C:\UserFiles\common\js\accessibility.js" });
-            //await page.AddScriptTagAsync(new AddTagOptions { Path = @"C:\UserFiles\common\js\script.js" });
-            //// Generate PDF from the page with specified options
-            //// Add style tags to the page
-            //await page.AddStyleTagAsync(new AddTagOptions { Path = @"C:\UserFiles\common\css\bootstrap.min.css" });
-            //await page.AddStyleTagAsync(new AddTagOptions { Path = @"C:\UserFiles\common\css\font-awesome.min.css" });
-            //await page.AddStyleTagAsync(new AddTagOptions { Path = @"C:\UserFiles\common\css\site.css" });
-            //await page.AddStyleTagAsync(new AddTagOptions { Path = @"C:\UserFiles\common\css\ltr.css" });
-            //await page.PdfAsync(outPdfPath, pdfOptions);
-
-
-            //Add script tags to the page
+           //Add script tags to the page
             await page.AddScriptTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"\common\js\jquery.min.js" });
             await page.AddScriptTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"\common\js\popper.min.js" });
             await page.AddScriptTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"\common\js\bootstrap.min.js" });
@@ -1595,143 +1569,15 @@
             // Generate PDF from the page with specified options
             // Add style tags to the page
             await page.AddStyleTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"\common\css\bootstrap.min.css" });
-            await page.AddStyleTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"common\css\font-awesome.min.css" });
-            await page.AddStyleTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"common\css\site.css" });
-            await page.AddStyleTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"common\css\ltr.css" });
+            await page.AddStyleTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"\common\css\font-awesome.min.css" });
+            await page.AddStyleTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"\common\css\site.css" });
+            await page.AddStyleTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"\common\css\ltr.css" });
             await page.PdfAsync(outPdfPath, pdfOptions);
 
 
 
 
-            // // read parameters from the webpage
-            // //SelectPdf.HtmlToPdfOptions.MaximumConcurrentConversions = 0;
-            // PdfPageSize pageSize = PdfPageSize.A4;
-            // PdfPageOrientation pdfOrientation = PdfPageOrientation.Portrait;
-
-            // // instantiate a html to pdf converter object
-            // SelectPdf.HtmlToPdf converter = new SelectPdf.HtmlToPdf();
-
-            // // set converter options
-            // //converter.Options.RenderingEngine = RenderingEngine.Blink;
-            // converter.Options.PdfPageSize = pageSize;
-            // converter.Options.PdfPageOrientation = pdfOrientation;
-            // converter.Options.WebPageWidth = 1152;
-            // converter.Options.WebPageHeight = 960;
-
-            // converter.Options.MarginBottom = 0;
-            // converter.Options.MarginTop = 40;
-            // converter.Options.MarginLeft = 40;
-            // converter.Options.MarginRight = 40;
-
-
-            // converter.Options.JavaScriptEnabled = false;
-            // converter.Options.JpegCompressionEnabled = false;
-            // converter.Options.PdfCompressionLevel = PdfCompressionLevel.NoCompression;
-
-            // converter.Options.MinPageLoadTime = 2;
-            // converter.Options.PluginsEnabled = false;
-
-            // PdfHtmlSection headHtml = new PdfHtmlSection($@"{headerFooterFontFolderPath}\HeaderFooters\" + segment + "_header.html");
-            // converter.Header.Add(headHtml);
-
-            // //if (segment.Contains("Corporate Saver") || segment == "Home Loan For Other Segment English")
-            // //{
-            // //    converter.Header.Height = 125;
-            // //}
-            // //else
-            // //{
-            // //    converter.Header.Height = 125;
-            // //}
-
-            // PdfHtmlSection footHtml = new PdfHtmlSection($@"{headerFooterFontFolderPath}\HeaderFooters\" + segment + "_footer.html");
-            // converter.Footer.Add(footHtml);
-            // converter.Footer.Height = 80;
-            // //if (segment == "Home Loan For Other Segment English" || segment == "Home Loan For Other Segment African"
-            // //    || segment == "Home Loan For PML Segment English" || segment == "Home Loan For PML Segment African"
-            // //    || segment == "Multi Currency For CIB" || segment == "Personal Loan"
-            // //    || segment == "Investment Other Segment For English" || segment == "Investment Other Segment For African"
-            // //    || segment == "Corporate Saver English" || segment == "Corporate Saver African")
-            // //{
-            // //    converter.Footer.Height = 50;
-            // //}
-
-            // converter.Options.DisplayFooter = true;
-            // converter.Options.DisplayHeader = true;
-
-            // var startTime = DateTime.Now;
-
-            // headHtml.AutoFitHeight = HtmlToPdfPageFitMode.AutoFit;
-            // footHtml.AutoFitHeight = HtmlToPdfPageFitMode.AutoFit;
-
-            // try
-            // {
-            //     // create a new pdf document converting an url                    
-            //     doc = converter.ConvertUrl(htmlPath);
-            // }
-            // catch(Exception e)
-            // {
-            //     pdfGenerationError = $"GeneratePdf method get exception which is {e.Message}";
-            // }
-            // var endTime = DateTime.Now;
-            //// _log.Info($"PRF, pdf conversion, Finished, {(endTime - startTime).TotalMilliseconds} MS, {endTime:yyyy-MM-dd HH:mm:ss.fff}");
-
-            // //doc.Fonts.Add($@"{headerFooterFontFolderPath}\Fonts\MarkPro-Regular.ttf");
-            // //doc.Fonts.Add($@"{headerFooterFontFolderPath}\Fonts\Mark Pro.ttf");
-            // //doc.Fonts.Add($@"{headerFooterFontFolderPath}\Fonts\Mark Pro Bold.ttf");
-
-            // if (segment.Contains("Corporate Saver"))
-            // {
-            //     PdfFont font = doc.AddFont(PdfStandardFont.Helvetica);
-            //     font.Size = 7;
-
-            //     PdfTextElement text1 = new PdfTextElement(460, 78, "Page {page_number} of {total_pages}", font);
-            //     if (language == "AFR")
-            //     {
-            //         text1 = new PdfTextElement(460, 78, "Bladsy {page_number} van {total_pages}", font);
-            //     }
-            //     text1.ForeColor = System.Drawing.Color.Black;
-
-            //     doc.Header.Add(text1);
-            // }
-            // else
-            // {
-
-            //     PdfFont footerFont = doc.AddFont(PdfStandardFont.Helvetica);
-            //     footerFont.Size = 7;
-
-            //     var y = 28;
-            //     var x = 10;
-
-            //     if (segment.Contains("Wealth"))
-            //     {
-            //         y = 15;
-            //         x = 473;
-            //     }
-            //     else if (segment.Contains("PML"))
-            //         y = 10;
-
-            //     PdfTextElement footerText = new PdfTextElement(x, y, "Page {page_number} of {total_pages}", footerFont);
-            //     if (language == "AFR")
-            //     {
-            //         if (segment.Contains("Wealth"))
-            //             x = 465;
-            //         footerText = new PdfTextElement(x, y, "Bladsy {page_number} van {total_pages}", footerFont);
-            //     }
-
-            //     footerText.ForeColor = System.Drawing.Color.Black;
-
-            //     doc.Footer.Add(footerText);
-            // }
-
-            // // save pdf document
-            // doc.Save(outPdfPath);
-
-            // // close pdf document
-            // doc.Close();
-            // pdfGenerationError = "";
-            // endTime = DateTime.Now;
-            // //_log.Info($"PRF, pdf saving to drive, Finished, {(endTime - startTime).TotalMilliseconds} MS, {endTime:yyyy-MM-dd HH:mm:ss.fff}");
-            // //   return true;
+            
             return pdfGenerationError;
             }
            // catch (Exception ex)
