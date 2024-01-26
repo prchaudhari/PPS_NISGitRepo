@@ -1338,13 +1338,13 @@ namespace nIS
                                 case HtmlConstants.CUSTOMER_INFORMATION_WIDGET_NAME:
                                     this.BindDummyDataToCustomerInformationWidget(pageContent, statement, page, widget, AppBaseDirectory);
                                     break;
-                                      case HtmlConstants.PRODUCT_SUMMARY_WIDGET_NAME:
+                                case HtmlConstants.PRODUCT_SUMMARY_WIDGET_NAME:
                                     this.BindDummyDataToProductSummaryWidget(pageContent, statement, page, widget, AppBaseDirectory);
                                     break;
                                 case HtmlConstants.PAYMENT_SUMMARY_WIDGET_NAME:
                                     this.BindDummyDataToPaymentSummaryWidget(pageContent, statement, page, widget, AppBaseDirectory);
                                     break;
-                                    
+
                                 case HtmlConstants.PPS_HEADING_WIDGET_NAME:
                                     this.BindDummyDataToPpsHeadingWidget(pageContent, statement, page, widget, AppBaseDirectory);
                                     break;
@@ -2380,7 +2380,7 @@ namespace nIS
 
                                                         // Calculate grand total due
                                                         double grandTotalDue = (Convert.ToDouble(aeAmountColSum) + Convert.ToDouble(productInfo.VAT_Amount));
-                                                       var grandTotalDueR = CommonUtility.concatRWithDouble(grandTotalDue.ToString());
+                                                        var grandTotalDueR = CommonUtility.concatRWithDouble(grandTotalDue.ToString());
                                                         productSumstring = productSumstring.Replace("{{GrandTotalDue}}", grandTotalDueR);
 
                                                         // Calculate PPS payment and update the HTML string
@@ -2397,9 +2397,9 @@ namespace nIS
                                                         htmlString.Append(productSumstring);
                                                     }
                                                 }
-                                                }
-                                            else if (mergedlst[i].WidgetName == HtmlConstants.EARNINGS_FOR_PERIOD_WIDGET_NAME)
-                                            {
+
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.EARNINGS_FOR_PERIOD_WIDGET_NAME)
+                                                {
                                                     string commisionDetailListJson = "[{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1172.08,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-09-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1302220959,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'1st Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1172.08,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-09-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'REQUESTED_DATETIME':'2022-09-23 00:00:00.000','AE_Amount':1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1338674952,'AE_TYPE_ID':541901,'INT_EXT_REF':124565256,'POLICY_REF':3820110,'MEMBER_REF':10436136,'Member_Name':'Mnr JG Rossouw','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health','OID':541991,'MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':928.89,'ALLOCATED_AMOUNT':9474.68,'MEMBER_AGE':43,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-10-28 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'REQUESTED_DATETIME':'2022-10-28 00:00:00.000','AE_Amount':-9474.68,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2022-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1338675128,'AE_TYPE_ID':541901,'INT_EXT_REF':124565256,'POLICY_REF':3820110,'MEMBER_REF':10436136,'Member_Name':'Mnr JG Rossouw','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health','OID':541991,'MeasureType':'Commission','CommissionType':'1st Year','TRANSACTION_AMOUNT':928.89,'ALLOCATED_AMOUNT':6072.47,'MEMBER_AGE':43,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-10-28 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'REQUESTED_DATETIME':'2022-09-28 00:00:00.000','AE_Amount':6072.47,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2022-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1500.00,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-09-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'1st Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1000.00,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-09-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1800.00,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-10-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'1st Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':2000.00,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-10-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1172.08,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-09-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Fiduciary_Data'},{'Request_ID':1302220959,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'1st Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1172.08,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-09-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'REQUESTED_DATETIME':'2022-09-23 00:00:00.000','AE_Amount':1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Fiduciary_Data'},{'Request_ID':1338674952,'AE_TYPE_ID':541901,'INT_EXT_REF':124565256,'POLICY_REF':3820110,'MEMBER_REF':10436136,'Member_Name':'Mnr JG Rossouw','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health','OID':541991,'MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':928.89,'ALLOCATED_AMOUNT':9474.68,'MEMBER_AGE':43,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-10-28 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'REQUESTED_DATETIME':'2022-10-28 00:00:00.000','AE_Amount':-9474.68,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2022-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Fiduciary_Data'},{'Request_ID':1338675128,'AE_TYPE_ID':541901,'INT_EXT_REF':124565256,'POLICY_REF':3820110,'MEMBER_REF':10436136,'Member_Name':'Mnr JG Rossouw','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health','OID':541991,'MeasureType':'Commission','CommissionType':'1st Year','TRANSACTION_AMOUNT':928.89,'ALLOCATED_AMOUNT':6072.47,'MEMBER_AGE':43,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-10-28 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'REQUESTED_DATETIME':'2022-09-28 00:00:00.000','AE_Amount':6072.47,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2022-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Fiduciary_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1500.00,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-09-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Fiduciary_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'1st Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1000.00,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-09-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Fiduciary_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1800.00,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-10-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Fiduciary_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'1st Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':2000.00,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-10-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Fiduciary_Data'},]";
                                                     double totalMonthlyEarnings = 0;
 
@@ -2447,9 +2447,9 @@ namespace nIS
                                                             commisionDetailSrc.Append("<tr><td class='text-left'>" + CommonUtility.GetMonthRange(gpMonthRangeItem.GroupKey.Month) + "</td>");
                                                             List<double> innermonthlyTotalListSum = new List<double>();
 
-                                                            // Iterate through CommissionType groups to populate cells
-                                                            gpCommisionType.ForEach(gpCommisionTypeitem =>
-                                                            {
+                                                        // Iterate through CommissionType groups to populate cells
+                                                        gpCommisionType.ForEach(gpCommisionTypeitem =>
+                                                    {
                                                                 var premiumUnderAdviceTd1Sum = commisionDetail
                                                                     .Where(witem => ((witem.REQUEST_DATETIME.Month == gpMonthRangeItem.GroupKey.Month) &&
                                                                                      (witem.CommissionType == gpCommisionTypeitem.GroupKey.CommissionType) &&
@@ -2461,8 +2461,8 @@ namespace nIS
                                                                 innermonthlyTotalListSum.Add(premiumUnderAdviceTd1Sum);
                                                             });
 
-                                                            // Add monthly total to the list
-                                                            monthlyTotalList.Add(innermonthlyTotalListSum);
+                                                        // Add monthly total to the list
+                                                        monthlyTotalList.Add(innermonthlyTotalListSum);
                                                             commisionDetailSrc.Append("</tr>");
                                                         });
 
@@ -2510,9 +2510,9 @@ namespace nIS
                                                             commisionDetailSrc.Append("<tr><td class='text-left'>" + CommonUtility.GetMonthRange(gpFeesMonthRangeItem.GroupKey.Month) + "</td>");
                                                             List<double> innerFeesMonthlyTotalListSum = new List<double>();
 
-                                                            // Iterate through CommissionType groups to populate cells with Fiduciary Fees
-                                                            gpCommisionType.ForEach(gpCommisionTypeitem =>
-                                                            {
+                                                        // Iterate through CommissionType groups to populate cells with Fiduciary Fees
+                                                        gpCommisionType.ForEach(gpCommisionTypeitem =>
+                                                    {
                                                                 var premiumUnderAdviceTd1Sum = commisionDetail
                                                                     .Where(witem => ((witem.REQUEST_DATETIME.Month == gpFeesMonthRangeItem.GroupKey.Month) &&
                                                                                      (witem.CommissionType == gpCommisionTypeitem.GroupKey.CommissionType) &&
@@ -2524,8 +2524,8 @@ namespace nIS
                                                                 innerFeesMonthlyTotalListSum.Add(premiumUnderAdviceTd1Sum);
                                                             });
 
-                                                            // Add monthly total to the list for Fiduciary Fees
-                                                            monthlyFessTotalList.Add(innerFeesMonthlyTotalListSum);
+                                                        // Add monthly total to the list for Fiduciary Fees
+                                                        monthlyFessTotalList.Add(innerFeesMonthlyTotalListSum);
                                                             commisionDetailSrc.Append("</tr>");
                                                         });
 
@@ -2569,69 +2569,69 @@ namespace nIS
                                                         // Iterating through FSP Name groups
                                                         fspNameRecords.ForEach(gpfspNameItem =>
                                                         {
-                                                            // Initializing variables for monthly totals
-                                                            List<List<double>> monthlyAEPostedTotalList = new List<List<double>>();
+                                                        // Initializing variables for monthly totals
+                                                        List<List<double>> monthlyAEPostedTotalList = new List<List<double>>();
                                                             double totalAEPostedMonthlyEarnings = 0;
 
-                                                            // Grouping records by AE_Posted_Date
-                                                            var aePostedRecords = commisionDetail
-                                                                .Where(witem => witem.FSP_Name == gpfspNameItem.GroupKey.FSP_Name)
-                                                                .GroupBy(gpcommisionitem => new { gpcommisionitem.AE_Posted_Date.Date })
-                                                                .Select(group => new
+                                                        // Grouping records by AE_Posted_Date
+                                                        var aePostedRecords = commisionDetail
+                                                        .Where(witem => witem.FSP_Name == gpfspNameItem.GroupKey.FSP_Name)
+                                                        .GroupBy(gpcommisionitem => new { gpcommisionitem.AE_Posted_Date.Date })
+                                                        .Select(group => new
                                                                 {
                                                                     GroupKey = group.Key,
                                                                 }).ToList();
 
-                                                            // Appending HTML for the earnings section
-                                                            commisionDetailSrc.Append("<!--FSPAccountPostingsSummarySection--><div class='earnings-section-monthly d-flex mb-2'><div class='d-flex gap-1 w-100'><!--FSP Account Postings Summary--><div class='col-6'><!--Headingfor FSP Account PostingsSummary--><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>FSP Account Postings Summary</h4><div class='monthly-table'><!--Table forFSPAccountPostingsSummary--><table width='100%' cellpadding='0' cellspacing='0'><!--TableHeaders--><thead><tr><th style='height:50px' class='text-white font-weight-bold'>PostedDate</th>");
+                                                        // Appending HTML for the earnings section
+                                                        commisionDetailSrc.Append("<!--FSPAccountPostingsSummarySection--><div class='earnings-section-monthly d-flex mb-2'><div class='d-flex gap-1 w-100'><!--FSP Account Postings Summary--><div class='col-6'><!--Headingfor FSP Account PostingsSummary--><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>FSP Account Postings Summary</h4><div class='monthly-table'><!--Table forFSPAccountPostingsSummary--><table width='100%' cellpadding='0' cellspacing='0'><!--TableHeaders--><thead><tr><th style='height:50px' class='text-white font-weight-bold'>PostedDate</th>");
 
-                                                            // Appending HTML for Commission Type headers
-                                                            gpCommisionType.ForEach(gpCommisionTypeitem =>
-                                                            {
+                                                        // Appending HTML for Commission Type headers
+                                                        gpCommisionType.ForEach(gpCommisionTypeitem =>
+                                                    {
                                                                 commisionDetailSrc.Append("<th style='height:50px' class='text-left'> Posted (" + gpCommisionTypeitem.GroupKey.CommissionType + ")</th>");
                                                             });
 
-                                                            // Appending HTML for Posted Amount header
-                                                            commisionDetailSrc.Append("<th style='height:50px' class='text-white font-weight-bold'>Posted Amount</th></tr></thead>");
+                                                        // Appending HTML for Posted Amount header
+                                                        commisionDetailSrc.Append("<th style='height:50px' class='text-white font-weight-bold'>Posted Amount</th></tr></thead>");
 
-                                                            // Appending HTML for Financial Service Provider row
-                                                            commisionDetailSrc.Append("<tr><th class='text-left text-white font-weight-bold' colspan=" + (2 + gpCommisionType.Count) + ">Financial Service Provider: " + gpfspNameItem.GroupKey.FSP_Name + "</th><tr>");
+                                                        // Appending HTML for Financial Service Provider row
+                                                        commisionDetailSrc.Append("<tr><th class='text-left text-white font-weight-bold' colspan=" + (2 + gpCommisionType.Count) + ">Financial Service Provider: " + gpfspNameItem.GroupKey.FSP_Name + "</th><tr>");
 
-                                                            // Iterating through AE_Posted_Date groups
-                                                            aePostedRecords.ForEach(gpMonthRangeItem =>
-                                                            {
-                                                                // Appending HTML for Date and Commission Type columns
-                                                                commisionDetailSrc.Append("<tr><td class='text-left'>" + DateTime.Parse(gpMonthRangeItem.GroupKey.Date.ToString()).ToString("dd-MMM-yyyy") + "</td>");
+                                                        // Iterating through AE_Posted_Date groups
+                                                        aePostedRecords.ForEach(gpMonthRangeItem =>
+                                                    {
+                                                            // Appending HTML for Date and Commission Type columns
+                                                            commisionDetailSrc.Append("<tr><td class='text-left'>" + DateTime.Parse(gpMonthRangeItem.GroupKey.Date.ToString()).ToString("dd-MMM-yyyy") + "</td>");
                                                                 List<double> innermonthlyAEPostedTotalListSum = new List<double>();
 
-                                                                // Iterating through Commission Types
-                                                                gpCommisionType.ForEach(gpCommisionTypeitem =>
-                                                                {
-                                                                    // Calculating and appending HTML for Posted Amount
-                                                                    var premiumUnderAdviceTd1Sum = commisionDetail
-                                                                        .Where(witem => witem.AE_Posted_Date.Date == gpMonthRangeItem.GroupKey.Date && witem.CommissionType == gpCommisionTypeitem.GroupKey.CommissionType)
-                                                                        .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
+                                                            // Iterating through Commission Types
+                                                            gpCommisionType.ForEach(gpCommisionTypeitem =>
+                                                        {
+                                                                // Calculating and appending HTML for Posted Amount
+                                                                var premiumUnderAdviceTd1Sum = commisionDetail
+                                                                .Where(witem => witem.AE_Posted_Date.Date == gpMonthRangeItem.GroupKey.Date && witem.CommissionType == gpCommisionTypeitem.GroupKey.CommissionType)
+                                                                .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
 
                                                                     var premiumUnderAdviceTd1SumR = (premiumUnderAdviceTd1Sum == 0) ? "0.00" : ("R" + premiumUnderAdviceTd1Sum.ToString());
                                                                     commisionDetailSrc.Append("<td class='text-right'>" + premiumUnderAdviceTd1SumR + "</td>");
                                                                     innermonthlyAEPostedTotalListSum.Add(premiumUnderAdviceTd1Sum);
                                                                 });
 
-                                                                // Calculating and appending HTML for Total Posted Amount
-                                                                var postedAmountTdSum = commisionDetail
-                                                                    .Where(witem => witem.AE_Posted_Date.Date == gpMonthRangeItem.GroupKey.Date)
-                                                                    .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
+                                                            // Calculating and appending HTML for Total Posted Amount
+                                                            var postedAmountTdSum = commisionDetail
+                                                            .Where(witem => witem.AE_Posted_Date.Date == gpMonthRangeItem.GroupKey.Date)
+                                                            .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
 
                                                                 var postedAmountTdSumR = (postedAmountTdSum == 0) ? "0.00" : ("R" + postedAmountTdSum.ToString());
                                                                 commisionDetailSrc.Append("<td class='text-right'>R" + postedAmountTdSumR + "</td>");
 
-                                                                // Adding inner list to monthly total list and closing row
-                                                                monthlyAEPostedTotalList.Add(innermonthlyAEPostedTotalListSum);
+                                                            // Adding inner list to monthly total list and closing row
+                                                            monthlyAEPostedTotalList.Add(innermonthlyAEPostedTotalListSum);
                                                                 commisionDetailSrc.Append("</tr>");
                                                             });
 
-                                                            // Calculating and appending HTML for Total row
-                                                            int numaePostedColumns = monthlyAEPostedTotalList[0].Count;
+                                                        // Calculating and appending HTML for Total row
+                                                        int numaePostedColumns = monthlyAEPostedTotalList[0].Count;
                                                             List<double> aePostedColumnSums = new List<double>(Enumerable.Repeat(0.00, numColumns));
 
                                                             foreach (var row in monthlyAEPostedTotalList)
@@ -2650,13 +2650,13 @@ namespace nIS
                                                                 commisionDetailSrc.Append("<td class='text-right font-weight-bold'>R" + aePostedColumnSums[k] + "</ td>");
                                                             }
 
-                                                            // Appending HTML for Total Posted Amount and closing the table
-                                                            var totalAEPostedMonthlyEarningsR = (totalAEPostedMonthlyEarnings == 0) ? "0.00" : ("R" + totalAEPostedMonthlyEarnings.ToString());
+                                                        // Appending HTML for Total Posted Amount and closing the table
+                                                        var totalAEPostedMonthlyEarningsR = (totalAEPostedMonthlyEarnings == 0) ? "0.00" : ("R" + totalAEPostedMonthlyEarnings.ToString());
                                                             commisionDetailSrc.Append("<td class='text-right font-weight-bold'>R" + totalAEPostedMonthlyEarningsR + "</ td>");
                                                             commisionDetailSrc.Append("</tr></table></div></div>");
 
-                                                            // Closing FSP Account Postings Summary section
-                                                        });
+                                                        // Closing FSP Account Postings Summary section
+                                                    });
 
                                                         // FSP Account Postings Summary end
 
@@ -2690,11 +2690,11 @@ namespace nIS
                                                         // Iterating through Due Date groups
                                                         dueDateRecords.ForEach(gpDueDateItem =>
                                                         {
-                                                            // Iterating through Product Description groups
-                                                            prdocutDescriptionRecords.ForEach(prdocutDescription =>
-                                                            {
-                                                                // Appending HTML for Date, Product Description, and Allocated Amount columns
-                                                                commisionDetailSrc.Append("<tr><td class='text-left'>" + DateTime.Parse(gpDueDateItem.GroupKey.Date.ToString()).ToString("dd-MMM-yyyy") + "</td>");
+                                                        // Iterating through Product Description groups
+                                                        prdocutDescriptionRecords.ForEach(prdocutDescription =>
+                                                    {
+                                                            // Appending HTML for Date, Product Description, and Allocated Amount columns
+                                                            commisionDetailSrc.Append("<tr><td class='text-left'>" + DateTime.Parse(gpDueDateItem.GroupKey.Date.ToString()).ToString("dd-MMM-yyyy") + "</td>");
                                                                 sumOfAllocatedAmount = commisionDetail
                                                                     .Where(witem => witem.PRODUCT_DESCRIPTION == prdocutDescription.GroupKey.PRODUCT_DESCRIPTION && witem.DUE_DATE == gpDueDateItem.GroupKey.Date)
                                                                     .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
@@ -2706,8 +2706,8 @@ namespace nIS
                                                                 commisionDetailSrc.Append("</tr>");
                                                             });
 
-                                                            // Appending HTML for SubTotal row
-                                                            var sumOfDueDateAllocatedAmountR = (sumOfDueDateAllocatedAmount == 0) ? "0.00" : ("R" + sumOfDueDateAllocatedAmount.ToString());
+                                                        // Appending HTML for SubTotal row
+                                                        var sumOfDueDateAllocatedAmountR = (sumOfDueDateAllocatedAmount == 0) ? "0.00" : ("R" + sumOfDueDateAllocatedAmount.ToString());
                                                             commisionDetailSrc.Append("<tr><td class='text-right' colspan='2'>SubTotal<td class='text-right'>" + sumOfDueDateAllocatedAmountR + "</td></tr>");
                                                         });
 
@@ -2720,13 +2720,13 @@ namespace nIS
                                                         commisionDetailString.Replace("{{WidgetDivHeight}}", divHeight);
                                                         // Replacing placeholder in the commisionDetailString with the generated commissionDetailSrc content
                                                         commisionDetailString = commisionDetailString.Replace("{{ppsEarningForPeriod}}", commisionDetailSrc.ToString());
-                                                    // Appending the modified commisionDetailString to the htmlString
-                                                    htmlString.Append(commisionDetailString);
-                                                }
-                                                
+                                                        // Appending the modified commisionDetailString to the htmlString
+                                                        htmlString.Append(commisionDetailString);
+                                                    }
 
-                                            }
-                                        
+
+                                                }
+
 
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.PPS_FOOTER1_WIDGET_NAME)
                                                 {
@@ -2764,7 +2764,7 @@ namespace nIS
 
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.DETAILED_TRANSACTIONS_WIDGET_NAME)
                                                 {
-                                               string transactionListJson = "[{'INT_EXT_REF':'2164250','Int_Name':'Mr SCHOELER','Client_Name':'Kruger Van Heerden','Member_Ref':124556686,'Policy_Ref':5596100,'Description':'Safe Custody Service Fee','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'17.55','Query_Link':'https://www.google.com/','TYPE':'Fiduciary_Data','Prod_Group':'Safe Custody Fee'},{'INT_EXT_REF':'2164250','Int_Name':'Yvonne Van Heerden','Client_Name':'Mr SCHOELER','Member_Ref':124556686,'Policy_Ref':'5596100','Description':'Safe Custody Service Fee VAT','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'2.63','Query_Link':'https://www.google.com/','TYPE':'Fiduciary_Data','Prod_Group':'Safe Custody Fee'},{'INT_EXT_REF':'124411745','Int_Name':'Kruger Van Heerden','Client_Name':'DR N J Olivier','Member_Ref':'1217181','Policy_Ref':'5524069','Description':'Safe Custody Service Fee','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'17.55','Query_Link':'https://www.google.com/','TYPE':'Fiduciary_Data','Prod_Group':'Safe Custody Fee'},{'INT_EXT_REF':'124411745','Int_Name':'Kruger Van Heerden','Client_Name':'DR N J Olivier','Member_Ref':'124556686','Policy_Ref':'5596100','Description':'Safe Custody Service Fee VAT','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'2.63','Query_Link':'https://www.google.com/','TYPE':'Fiduciary_Data','Prod_Group':'VAT'}]";
+                                                    string transactionListJson = "[{'INT_EXT_REF':'2164250','Int_Name':'Mr SCHOELER','Client_Name':'Kruger Van Heerden','Member_Ref':124556686,'Policy_Ref':5596100,'Description':'Safe Custody Service Fee','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'17.55','Query_Link':'https://www.google.com/','TYPE':'Fiduciary_Data','Prod_Group':'Safe Custody Fee'},{'INT_EXT_REF':'2164250','Int_Name':'Yvonne Van Heerden','Client_Name':'Mr SCHOELER','Member_Ref':124556686,'Policy_Ref':'5596100','Description':'Safe Custody Service Fee VAT','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'2.63','Query_Link':'https://www.google.com/','TYPE':'Fiduciary_Data','Prod_Group':'Safe Custody Fee'},{'INT_EXT_REF':'124411745','Int_Name':'Kruger Van Heerden','Client_Name':'DR N J Olivier','Member_Ref':'1217181','Policy_Ref':'5524069','Description':'Safe Custody Service Fee','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'17.55','Query_Link':'https://www.google.com/','TYPE':'Fiduciary_Data','Prod_Group':'Safe Custody Fee'},{'INT_EXT_REF':'124411745','Int_Name':'Kruger Van Heerden','Client_Name':'DR N J Olivier','Member_Ref':'124556686','Policy_Ref':'5596100','Description':'Safe Custody Service Fee VAT','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'2.63','Query_Link':'https://www.google.com/','TYPE':'Fiduciary_Data','Prod_Group':'VAT'}]";
                                                     double TotalPostedAmount = 0;
                                                     if (transactionListJson != string.Empty && validationEngine.IsValidJson(transactionListJson))
                                                     {
@@ -2782,12 +2782,12 @@ namespace nIS
                                                             transaction.Where(witem => witem.INT_EXT_REF == transactionitem.FirstOrDefault().INT_EXT_REF).ToList().ForEach(item =>
                                                             {
                                                                 detailedTransactionSrc.Append("<tr><td align = 'center' valign = 'center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" +
-                                                                        item.Client_Name + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Member_Ref + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'> " + item.Policy_Ref + "</td><td class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1'>" + (item.Description == "Commission Service Fee" ? "Premium Under Advise Fee" : item.Description)  + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.POSTED_DATE.ToString("dd-MMM-yyyy") + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'> R" + item.Display_Amount + "</td><td class= 'text-center fsp-bdr-bottom px-1'><a href ='https://www.google.com/' target ='_blank'><img class='leftarrowlogo' src='assets/images/leftarrowlogo.png' alt='Left Arrow'></a></td></tr>");
-                                                                TotalPostedAmount += ((item.TYPE == "Fiduciary_Data") && (item.Prod_Group != "VAT"))?  (Convert.ToDouble(item.Display_Amount)): 0.0;
+                                                                        item.Client_Name + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Member_Ref + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'> " + item.Policy_Ref + "</td><td class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1'>" + (item.Description == "Commission Service Fee" ? "Premium Under Advise Fee" : item.Description) + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.POSTED_DATE.ToString("dd-MMM-yyyy") + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'> R" + item.Display_Amount + "</td><td class= 'text-center fsp-bdr-bottom px-1'><a href ='https://www.google.com/' target ='_blank'><img class='leftarrowlogo' src='assets/images/leftarrowlogo.png' alt='Left Arrow'></a></td></tr>");
+                                                                TotalPostedAmount += ((item.TYPE == "Fiduciary_Data") && (item.Prod_Group != "VAT")) ? (Convert.ToDouble(item.Display_Amount)) : 0.0;
                                                             });
                                                             string TotalPostedAmountR = (TotalPostedAmount == 0) ? "0.00" : ("R" + TotalPostedAmount.ToString());
                                                             detailedTransactionSrc.Append("<tr> <td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'><br /></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'>" + TotalPostedAmountR + "</td> <td class='text-center fsp-bdr-bottom px-1'><a href='https://www.google.com/' target = '_blank' ><img src='assets/images/leftarrowlogo.png'></a></td> </tr></table><div class='text-right w-100 pt-3'><a href='https://www.google.com/' target = '_blank'></a></div></div></div></div>");
-                                                            
+
                                                             TotalPostedAmount = 0;
                                                         });
                                                         detailedTransactionString = detailedTransactionString.Replace("{{detailedTransaction}}", detailedTransactionSrc.ToString());
@@ -3002,7 +3002,7 @@ namespace nIS
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.PAGE_BREAK_WIDGET_NAME)
                                                 {
                                                     var html = "<div style=\"page-break-before:always\">&nbsp;</div>";
-                                                    
+
                                                     var pageBreakWidget = HtmlConstants.STATIC_HTML_WIDGET_HTML.Replace("{{StaticHtml}}", html);
                                                     pageBreakWidget = pageBreakWidget.Replace("{{WidgetDivHeight}}", divHeight);
                                                     htmlString.Append(pageBreakWidget);
@@ -3179,7 +3179,7 @@ namespace nIS
                                                         htmlString.Append(widgetstr);
                                                     }
                                                 }
-                                            
+                                            }
                                             else
                                             {
                                                 if (dynaWidgets.Count > 0)
@@ -6020,12 +6020,12 @@ namespace nIS
 
         //                                        //    tableHTML.Append(tableHTML2);
         //                                        //    // if (customerMaster.InvestorId == 9018933796)
-                                                    
+
         //                                        //        htmlWidget.Replace("{{dynamicMsg}}", "<div class='card border-0'><div class='card-body text-left'style='padding: 0;'><div class='card-body-header mt-3-2' style='font-family: \"Arial\";font-weight: 700;'>Important information</div> <div class='' style='font-size: 9pt; font-family: \"Arial\";'><p>Rente (min agentadministrasiegelde en BTW) word in Maart op u rekening gekrediteer. Die agentadministrasiegelde en BTW word in Maart afgetrek en namens u aan u agent betaal, in ooreenstemming met die mandaat wat gehou word. </p><p> Artikel 86(4) - rekenings wat voor 1 November 2018 geopen is, is aan die bepalings van die Prokureurswet, 53 van 1979, onderworpe.Ingevolge artikel 86(4) van die Wet op Regspraktyk, 28 van 2014, is 5 % van die rente verdien vanaf 1 Maart 2019 aan die Getrouheidsfonds vir Regspraktisyns betaal.</p></div></div></div>");
-                                                    
-                                                  
+
+
         //                                        //        htmlWidget.Replace("{{dynamicMsg}}", "<div class='card border-0'><div class='card-body text-left'style='padding: 0;'><div class='card-body-header mt-3-2' style='font-family: \"Arial\";font-weight: 700;'>Important information</div> <div class='' style='font-size: 9pt; font-family: \"Arial\";'><p>Interest(less agent administration fee and VAT) is credited to your account in March.The agent administration fee and VAT are deducted in March and paid on your behalf to your agent, in accordance with the mandate held.</p></div></div></div>");
-                                                    
+
 
 
         //                                        //    htmlWidget.Replace("{{dynemicTables}}", tableHTML.ToString());
@@ -6299,7 +6299,7 @@ namespace nIS
             widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
             return widgetHTML;
         }
-        
+
         private string PaymentSummaryWidgetFormatting(PageWidget pageWidget, int counter, Statement statement, Page page, string divHeight)
         {
             var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
@@ -6934,7 +6934,7 @@ namespace nIS
         ////    htmlWidget.Replace("{{MCATransactionRow}}", "{{MCATransactionRow_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
         ////    return htmlWidget.ToString();
         ////}
-       
+
 
         ////private string MCAVATAnalysisWidgetFormatting(PageWidget pageWidget, Page page)
         ////{
@@ -7288,11 +7288,11 @@ namespace nIS
                 pageContent.Replace("{{ProductSummary}}", productSummarySrc.ToString());
                 pageContent.Replace("{{QueryBtn}}", ".. / common / images / IfQueryBtn.jpg");
                 pageContent.Replace("{{TotalDue}}", aeAmountColSumR);
-                pageContent.Replace("{{VATDue}}", CommonUtility.concatRWithDouble(productInfo.VAT_Amount.ToString())); 
+                pageContent.Replace("{{VATDue}}", CommonUtility.concatRWithDouble(productInfo.VAT_Amount.ToString()));
 
                 // Calculate grand total due
                 double grandTotalDue = (Convert.ToDouble(aeAmountColSum) + Convert.ToDouble(productInfo.VAT_Amount));
-               var grandTotalDueR = CommonUtility.concatRWithDouble(grandTotalDue.ToString());
+                var grandTotalDueR = CommonUtility.concatRWithDouble(grandTotalDue.ToString());
                 pageContent.Replace("{{GrandTotalDue}}", grandTotalDueR);
 
                 // Calculate PPS payment and update the HTML string
@@ -7336,18 +7336,18 @@ namespace nIS
 
 
             //  }
-       string transactionListJson = "[{'INT_EXT_REF':'2164250','Int_Name':'Mr SCHOELER','Client_Name':'Kruger Van Heerden','Member_Ref':124556686,'Policy_Ref':5596100,'Description':'Safe Custody Service Fee','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'17.55','Query_Link':'https://www.google.com/','TYPE':'Fiduciary_Data','Prod_Group':'Safe Custody Fee'},{'INT_EXT_REF':'2164250','Int_Name':'Yvonne Van Heerden','Client_Name':'Mr SCHOELER','Member_Ref':124556686,'Policy_Ref':'5596100','Description':'Safe Custody Service Fee VAT','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'2.63','Query_Link':'https://www.google.com/','TYPE':'Fiduciary_Data','Prod_Group':'Safe Custody Fee'},{'INT_EXT_REF':'124411745','Int_Name':'Kruger Van Heerden','Client_Name':'DR N J Olivier','Member_Ref':'1217181','Policy_Ref':'5524069','Description':'Safe Custody Service Fee','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'17.55','Query_Link':'https://www.google.com/','TYPE':'Fiduciary_Data','Prod_Group':'Safe Custody Fee'},{'INT_EXT_REF':'124411745','Int_Name':'Kruger Van Heerden','Client_Name':'DR N J Olivier','Member_Ref':'124556686','Policy_Ref':'5596100','Description':'Safe Custody Service Fee VAT','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'2.63','Query_Link':'https://www.google.com/','TYPE':'Fiduciary_Data','Prod_Group':'VAT'}]";
+            string transactionListJson = "[{'INT_EXT_REF':'2164250','Int_Name':'Mr SCHOELER','Client_Name':'Kruger Van Heerden','Member_Ref':124556686,'Policy_Ref':5596100,'Description':'Safe Custody Service Fee','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'17.55','Query_Link':'https://www.google.com/','TYPE':'Fiduciary_Data','Prod_Group':'Safe Custody Fee'},{'INT_EXT_REF':'2164250','Int_Name':'Yvonne Van Heerden','Client_Name':'Mr SCHOELER','Member_Ref':124556686,'Policy_Ref':'5596100','Description':'Safe Custody Service Fee VAT','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'2.63','Query_Link':'https://www.google.com/','TYPE':'Fiduciary_Data','Prod_Group':'Safe Custody Fee'},{'INT_EXT_REF':'124411745','Int_Name':'Kruger Van Heerden','Client_Name':'DR N J Olivier','Member_Ref':'1217181','Policy_Ref':'5524069','Description':'Safe Custody Service Fee','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'17.55','Query_Link':'https://www.google.com/','TYPE':'Fiduciary_Data','Prod_Group':'Safe Custody Fee'},{'INT_EXT_REF':'124411745','Int_Name':'Kruger Van Heerden','Client_Name':'DR N J Olivier','Member_Ref':'124556686','Policy_Ref':'5596100','Description':'Safe Custody Service Fee VAT','Commission_Type':'Safe Custody Fee','POSTED_DATE':'20-Mar-23','Display_Amount':'2.63','Query_Link':'https://www.google.com/','TYPE':'Fiduciary_Data','Prod_Group':'VAT'}]";
             double TotalPostedAmount = 0;
             if (transactionListJson != string.Empty && validationEngine.IsValidJson(transactionListJson))
             {
                 IList<spIAA_PaymentDetail> transaction = JsonConvert.DeserializeObject<List<spIAA_PaymentDetail>>(transactionListJson);
                 StringBuilder detailedTransactionSrc = new StringBuilder();
-             
+
                 var records = transaction.GroupBy(gptransactionitem => gptransactionitem.INT_EXT_REF).ToList();
                 records?.ForEach(transactionitem =>
                 {
                     detailedTransactionSrc.Append("<div class='px-50'><div class='prouct-table-block'><div class='text-left fsp-transaction-title font-weight-bold mb-3'>Intermediary:  " + transactionitem.FirstOrDefault().INT_EXT_REF + " " + transactionitem.FirstOrDefault().Int_Name + "</div><table width='100%' cellpadding='0' cellspacing='0'> <tr><th class='font-weight-bold text-white'>Client name</th> <th class='font-weight-bold text-white text-center pe-0 bdr-r-0'>Member<br /> number</th> <th class='font-weight-bold text-white text-center'>Will<br/> number</th> <th class='font-weight-bold text-white text-center'>Fiduciary fees</th> <th class='font-weight-bold text-white text-center'>Commission<br /> type</th> <th class='font-weight-bold text-white text-center'>Posted date</th> <th class='font-weight-bold text-white text-center'>Posted amount</th> <th class='font-weight-bold text-white'>Query</th> </tr> ");
-       
+
                     pageContent.Replace("{{QueryBtnImgLink}}", "https://www.google.com/");
                     pageContent.Replace("{{QueryBtn}}", "../common/images/IfQueryBtn.jpg");
 
@@ -7355,46 +7355,46 @@ namespace nIS
                     transaction.Where(witem => witem.INT_EXT_REF == transactionitem.FirstOrDefault().INT_EXT_REF).ToList().ForEach(item =>
                     {
                         detailedTransactionSrc.Append("<tr><td align = 'center' valign = 'center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" +
-                                item.Client_Name + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Member_Ref + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'> " + item.Policy_Ref + "</td><td class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1'>" + (item.Description == "Commission Service Fee" ? "Premium Under Advise Fee" : item.Description)  + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.POSTED_DATE.ToString("dd-MMM-yyyy") + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'> R" + item.Display_Amount + "</td><td class= 'text-center fsp-bdr-bottom px-1'><a href ='https://www.google.com/' target ='_blank'><img class='leftarrowlogo' src='assets/images/leftarrowlogo.png' alt='Left Arrow'></a></td></tr>");
-                        TotalPostedAmount += ((item.TYPE == "Fiduciary_Data") && (item.Prod_Group != "VAT"))?  (Convert.ToDouble(item.Display_Amount)): 0.0;
+                                item.Client_Name + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Member_Ref + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'> " + item.Policy_Ref + "</td><td class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1'>" + (item.Description == "Commission Service Fee" ? "Premium Under Advise Fee" : item.Description) + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.POSTED_DATE.ToString("dd-MMM-yyyy") + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'> R" + item.Display_Amount + "</td><td class= 'text-center fsp-bdr-bottom px-1'><a href ='https://www.google.com/' target ='_blank'><img class='leftarrowlogo' src='assets/images/leftarrowlogo.png' alt='Left Arrow'></a></td></tr>");
+                        TotalPostedAmount += ((item.TYPE == "Fiduciary_Data") && (item.Prod_Group != "VAT")) ? (Convert.ToDouble(item.Display_Amount)) : 0.0;
                     });
 
                     detailedTransactionSrc.Append("<tr> <td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'><br /></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'>R" + TotalPostedAmount + "</td> <td class='text-center fsp-bdr-bottom px-1'><a href='https://www.google.com/' target = '_blank' ><img src='assets/images/leftarrowlogo.png'></a></td> </tr></table><div class='text-right w-100 pt-3'><a href='https://www.google.com/' target = '_blank'></a></div></div></div></div>");
 
                 });
                 pageContent.Replace("{{detailedTransaction}}", detailedTransactionSrc.ToString());
-               
+
             }
         }
 
         private void BindDummyDataToPpsDetailedTransactionsWidget(StringBuilder pageContent, Statement statement, Page page, PageWidget widget, string AppBaseDirectory)
         {
-                                                string transactionListJson = "[{'INT_EXT_REF':'124565256 ','POLICY_REF':'3830102','MEMBER_REF':'10024365','Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Professional Health',  'REQUESTED_DATETIME':'01-11-2022  00:00:00', 'REQUEST_DATETIME':'23-09-2022  00:00:00','TRANSACTION_AMOUNT':2265.4 ,'ALLOCATED_AMOUNT':-23107.08 ,'MEMBER_AGE':'45 ','MeasureType':'Commission','CommissionType':'2nd Year','FSP_Name':'Miss HW HLONGWANE'},     {'INT_EXT_REF':'124565256 ','POLICY_REF':'3830102','MEMBER_REF':'10024365','Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CatchAll Exercised ',  'REQUESTED_DATETIME':'01-11-2022  00:00:00', 'REQUEST_DATETIME':'23-09-2022  00:00:00','TRANSACTION_AMOUNT':84.97 ,'ALLOCATED_AMOUNT':-866.69 ,'MEMBER_AGE':'45 ',  'MeasureType':'Commission','CommissionType':'2nd Year','FSP_Name':'Miss HW HLONGWANE'},     {'INT_EXT_REF':'124565256 ','POLICY_REF':'3830102','MEMBER_REF':'10024365','Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Professional Health',  'REQUESTED_DATETIME':'01-11-2022  00:00:00', 'REQUEST_DATETIME':'23-09-2022  00:00:00','TRANSACTION_AMOUNT':2265.4,'ALLOCATED_AMOUNT':10968.98,'MEMBER_AGE':'45 ',  'MeasureType':'Commission','CommissionType':'2nd Year','FSP_Name':'Miss HW HLONGWANE'},     {'INT_EXT_REF':'124565256 ','POLICY_REF':'3820110 ','MEMBER_REF':'10436136 ','Member_Name':'Mnr JG Rossouw ','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Professional Health',  'REQUESTED_DATETIME':'01-11-2022 00:00 ', 'REQUEST_DATETIME':'28-09-2022 00:00 ','TRANSACTION_AMOUNT':928.89 ,'ALLOCATED_AMOUNT':-9474.68 ,'MEMBER_AGE':'43',  'MeasureType':'Commission','CommissionType':'1nd Year','FSP_Name':'Miss HW HLONGWANE'},     {'INT_EXT_REF':'124565256 ','POLICY_REF':'3820110 ','MEMBER_REF':'10436136 ','Member_Name':'Mnr JG Rossouw ','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Professional Health',  'REQUESTED_DATETIME':'01-11-2022 00:00 ', 'REQUEST_DATETIME':'28-09-2022 00:00 ','TRANSACTION_AMOUNT':928.89 ,'ALLOCATED_AMOUNT':6072.47 ,'MEMBER_AGE':'43',  'MeasureType':'Commission','CommissionType':'2nd Year','FSP_Name':'Miss HW HLONGWANE'}]  ";
-                                                double TotalPostedAmount = 0;
-                                                if (transactionListJson != string.Empty && validationEngine.IsValidJson(transactionListJson))
-                                                {
-                                                    IList<spIAA_Commission_Detail> transaction = JsonConvert.DeserializeObject<List<spIAA_Commission_Detail>>(transactionListJson);
-                                                    StringBuilder detailedTransactionSrc = new StringBuilder();
-                                                    string detailedTransactionString = HtmlConstants.PPS_DETAILED_TRANSACTIONS_WIDGET_HTML;
-                                                    detailedTransactionSrc.Append("<div class='pps-monthly-table w-100'><table cellpadding='0' cellspacing='0' width='100%'><tr><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Client<br/>name</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Age</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Policy #</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Policy #</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Product</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Date<br/>issued</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Inception<br/>date</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Com<br/>type</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Quantity</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Posted<br/>date</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Earnings</th></tr>");
-                                                    var records = transaction.GroupBy(gptransactionitem => gptransactionitem.BUS_GROUP).ToList();
-                                                    records?.ForEach(transactionitem =>
-                                                    {
-                                                        detailedTransactionSrc.Append("<tr>"+ transactionitem.FirstOrDefault().BUS_GROUP +"</tr>");
-                                                        var memberRecords = transactionitem.GroupBy(gpmembertransactionitem => gpmembertransactionitem.BUS_GROUP).ToList();
-                                                        transaction.Where(witem => witem.INT_EXT_REF == transactionitem.FirstOrDefault().INT_EXT_REF).ToList().ForEach(item =>
-                                                        {
-                                                            detailedTransactionSrc.Append(" <tr><td class='bdr-right-white'>" + item.Member_Name + "</td><td class='bdr-right-white'>" + item.MEMBER_AGE + "</td><td class='bdr-right-white'>" + item.POLICY_REF + "</td><td class='bdr-right-white'>" + item.PRODUCT_DESCRIPTION + "</td><td class='bdr-right-white'>" + item.REQUEST_DATETIME + "</td><td class='bdr-right-white'>" + item.REQUESTED_DATETIME.ToString("dd-MMM-yyyy") + "</td><td class='bdr-right-white'>" + item.CommissionType + "</td><td class='bdr-right-white'>" + item.TRANSACTION_AMOUNT + "</td><td class='bdr-right-white'>" + item.AE_Posted_Date.ToString("dd-MMM-yyyy") + "</td><td class='bdr-right-white'>" + item.ALLOCATED_AMOUNT + "</td></tr>");
-                                                            TotalPostedAmount = (Convert.ToDouble(item.ALLOCATED_AMOUNT));
-                                                        });
-                                                        string TotalPostedAmountR = (TotalPostedAmount == 0) ? "0.00" : ("R" + TotalPostedAmount.ToString());
-                                                        detailedTransactionSrc.Append("<tr><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold fs-16'>Sub Total</td><td class='' ></td><td class='fw-bold fs-16' height='40'>" + TotalPostedAmountR + "</td></tr></table></div>");
-                                                        TotalPostedAmount = 0;
+            string transactionListJson = "[{'INT_EXT_REF':'124565256 ','POLICY_REF':'3830102','MEMBER_REF':'10024365','Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Professional Health',  'REQUESTED_DATETIME':'01-11-2022  00:00:00', 'REQUEST_DATETIME':'23-09-2022  00:00:00','TRANSACTION_AMOUNT':2265.4 ,'ALLOCATED_AMOUNT':-23107.08 ,'MEMBER_AGE':'45 ','MeasureType':'Commission','CommissionType':'2nd Year','FSP_Name':'Miss HW HLONGWANE'},     {'INT_EXT_REF':'124565256 ','POLICY_REF':'3830102','MEMBER_REF':'10024365','Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CatchAll Exercised ',  'REQUESTED_DATETIME':'01-11-2022  00:00:00', 'REQUEST_DATETIME':'23-09-2022  00:00:00','TRANSACTION_AMOUNT':84.97 ,'ALLOCATED_AMOUNT':-866.69 ,'MEMBER_AGE':'45 ',  'MeasureType':'Commission','CommissionType':'2nd Year','FSP_Name':'Miss HW HLONGWANE'},     {'INT_EXT_REF':'124565256 ','POLICY_REF':'3830102','MEMBER_REF':'10024365','Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Professional Health',  'REQUESTED_DATETIME':'01-11-2022  00:00:00', 'REQUEST_DATETIME':'23-09-2022  00:00:00','TRANSACTION_AMOUNT':2265.4,'ALLOCATED_AMOUNT':10968.98,'MEMBER_AGE':'45 ',  'MeasureType':'Commission','CommissionType':'2nd Year','FSP_Name':'Miss HW HLONGWANE'},     {'INT_EXT_REF':'124565256 ','POLICY_REF':'3820110 ','MEMBER_REF':'10436136 ','Member_Name':'Mnr JG Rossouw ','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Professional Health',  'REQUESTED_DATETIME':'01-11-2022 00:00 ', 'REQUEST_DATETIME':'28-09-2022 00:00 ','TRANSACTION_AMOUNT':928.89 ,'ALLOCATED_AMOUNT':-9474.68 ,'MEMBER_AGE':'43',  'MeasureType':'Commission','CommissionType':'1nd Year','FSP_Name':'Miss HW HLONGWANE'},     {'INT_EXT_REF':'124565256 ','POLICY_REF':'3820110 ','MEMBER_REF':'10436136 ','Member_Name':'Mnr JG Rossouw ','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Professional Health',  'REQUESTED_DATETIME':'01-11-2022 00:00 ', 'REQUEST_DATETIME':'28-09-2022 00:00 ','TRANSACTION_AMOUNT':928.89 ,'ALLOCATED_AMOUNT':6072.47 ,'MEMBER_AGE':'43',  'MeasureType':'Commission','CommissionType':'2nd Year','FSP_Name':'Miss HW HLONGWANE'}]  ";
+            double TotalPostedAmount = 0;
+            if (transactionListJson != string.Empty && validationEngine.IsValidJson(transactionListJson))
+            {
+                IList<spIAA_Commission_Detail> transaction = JsonConvert.DeserializeObject<List<spIAA_Commission_Detail>>(transactionListJson);
+                StringBuilder detailedTransactionSrc = new StringBuilder();
+                string detailedTransactionString = HtmlConstants.PPS_DETAILED_TRANSACTIONS_WIDGET_HTML;
+                detailedTransactionSrc.Append("<div class='pps-monthly-table w-100'><table cellpadding='0' cellspacing='0' width='100%'><tr><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Client<br/>name</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Age</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Policy #</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Policy #</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Product</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Date<br/>issued</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Inception<br/>date</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Com<br/>type</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Quantity</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Posted<br/>date</th><th class='bdr-right-white sky-blue-bg text-white font-weight-bold'>Earnings</th></tr>");
+                var records = transaction.GroupBy(gptransactionitem => gptransactionitem.BUS_GROUP).ToList();
+                records?.ForEach(transactionitem =>
+                {
+                    detailedTransactionSrc.Append("<tr>" + transactionitem.FirstOrDefault().BUS_GROUP + "</tr>");
+                    var memberRecords = transactionitem.GroupBy(gpmembertransactionitem => gpmembertransactionitem.BUS_GROUP).ToList();
+                    transaction.Where(witem => witem.INT_EXT_REF == transactionitem.FirstOrDefault().INT_EXT_REF).ToList().ForEach(item =>
+                    {
+                        detailedTransactionSrc.Append(" <tr><td class='bdr-right-white'>" + item.Member_Name + "</td><td class='bdr-right-white'>" + item.MEMBER_AGE + "</td><td class='bdr-right-white'>" + item.POLICY_REF + "</td><td class='bdr-right-white'>" + item.PRODUCT_DESCRIPTION + "</td><td class='bdr-right-white'>" + item.REQUEST_DATETIME + "</td><td class='bdr-right-white'>" + item.REQUESTED_DATETIME.ToString("dd-MMM-yyyy") + "</td><td class='bdr-right-white'>" + item.CommissionType + "</td><td class='bdr-right-white'>" + item.TRANSACTION_AMOUNT + "</td><td class='bdr-right-white'>" + item.AE_Posted_Date.ToString("dd-MMM-yyyy") + "</td><td class='bdr-right-white'>" + item.ALLOCATED_AMOUNT + "</td></tr>");
+                        TotalPostedAmount = (Convert.ToDouble(item.ALLOCATED_AMOUNT));
+                    });
+                    string TotalPostedAmountR = (TotalPostedAmount == 0) ? "0.00" : ("R" + TotalPostedAmount.ToString());
+                    detailedTransactionSrc.Append("<tr><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold fs-16'>Sub Total</td><td class='' ></td><td class='fw-bold fs-16' height='40'>" + TotalPostedAmountR + "</td></tr></table></div>");
+                    TotalPostedAmount = 0;
 
-                                                    });
+                });
                 pageContent.Replace("{{ppsDetailedTransactions}}", detailedTransactionSrc.ToString());
-                                                }
-                                            }
+            }
+        }
 
 
         private void BindDummyDataToPaymentSummaryWidget(StringBuilder pageContent, Statement statement, Page page, PageWidget widget, string AppBaseDirectory)
@@ -7406,7 +7406,7 @@ namespace nIS
                 pageContent.Replace("{{IntTotal}}", paymentInfo.Earning_Amount);
                 pageContent.Replace("{{Vat}}", paymentInfo.VAT_Amount);
                 pageContent.Replace("{{TotalDue}}", (Convert.ToDouble(paymentInfo.Earning_Amount) + Convert.ToDouble(paymentInfo.VAT_Amount)).ToString());
-              
+
                 // Format the date to month-year format                                                   
                 pageContent.Replace("{{IntTotalDate}}", paymentInfo.POSTED_DATE.ToString("MMMM yyyy"));
                 // Format the date with a custom format
@@ -7468,198 +7468,198 @@ namespace nIS
 
         private void BindDummyDataToEarningForPeriodWidget(StringBuilder pageContent, Statement statement, Page page, PageWidget widget, string AppBaseDirectory)
         {
-           
-
-                string commisionDetailListJson = "[{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1172.08,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-09-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1302220959,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'1st Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1172.08,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-09-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'REQUESTED_DATETIME':'2022-09-23 00:00:00.000','AE_Amount':1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1338674952,'AE_TYPE_ID':541901,'INT_EXT_REF':124565256,'POLICY_REF':3820110,'MEMBER_REF':10436136,'Member_Name':'Mnr JG Rossouw','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health','OID':541991,'MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':928.89,'ALLOCATED_AMOUNT':9474.68,'MEMBER_AGE':43,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-10-28 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'REQUESTED_DATETIME':'2022-10-28 00:00:00.000','AE_Amount':-9474.68,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2022-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1338675128,'AE_TYPE_ID':541901,'INT_EXT_REF':124565256,'POLICY_REF':3820110,'MEMBER_REF':10436136,'Member_Name':'Mnr JG Rossouw','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health','OID':541991,'MeasureType':'Commission','CommissionType':'1st Year','TRANSACTION_AMOUNT':928.89,'ALLOCATED_AMOUNT':6072.47,'MEMBER_AGE':43,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-10-28 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'REQUESTED_DATETIME':'2022-09-28 00:00:00.000','AE_Amount':6072.47,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2022-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1500.00,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-09-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'1st Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1000.00,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-09-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1800.00,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-10-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'1st Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':2000.00,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-10-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1172.08,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-09-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Fiduciary_Data'},{'Request_ID':1302220959,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'1st Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1172.08,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-09-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'REQUESTED_DATETIME':'2022-09-23 00:00:00.000','AE_Amount':1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Fiduciary_Data'},{'Request_ID':1338674952,'AE_TYPE_ID':541901,'INT_EXT_REF':124565256,'POLICY_REF':3820110,'MEMBER_REF':10436136,'Member_Name':'Mnr JG Rossouw','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health','OID':541991,'MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':928.89,'ALLOCATED_AMOUNT':9474.68,'MEMBER_AGE':43,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-10-28 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'REQUESTED_DATETIME':'2022-10-28 00:00:00.000','AE_Amount':-9474.68,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2022-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Fiduciary_Data'},{'Request_ID':1338675128,'AE_TYPE_ID':541901,'INT_EXT_REF':124565256,'POLICY_REF':3820110,'MEMBER_REF':10436136,'Member_Name':'Mnr JG Rossouw','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health','OID':541991,'MeasureType':'Commission','CommissionType':'1st Year','TRANSACTION_AMOUNT':928.89,'ALLOCATED_AMOUNT':6072.47,'MEMBER_AGE':43,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-10-28 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'REQUESTED_DATETIME':'2022-09-28 00:00:00.000','AE_Amount':6072.47,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2022-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Fiduciary_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1500.00,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-09-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Fiduciary_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'1st Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1000.00,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-09-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Fiduciary_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1800.00,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-10-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Fiduciary_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'1st Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':2000.00,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-10-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Fiduciary_Data'},]";
-                double totalMonthlyEarnings = 0;
 
 
-                if (commisionDetailListJson != string.Empty && validationEngine.IsValidJson(commisionDetailListJson))
+            string commisionDetailListJson = "[{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1172.08,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-09-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1302220959,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'1st Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1172.08,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-09-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'REQUESTED_DATETIME':'2022-09-23 00:00:00.000','AE_Amount':1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1338674952,'AE_TYPE_ID':541901,'INT_EXT_REF':124565256,'POLICY_REF':3820110,'MEMBER_REF':10436136,'Member_Name':'Mnr JG Rossouw','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health','OID':541991,'MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':928.89,'ALLOCATED_AMOUNT':9474.68,'MEMBER_AGE':43,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-10-28 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'REQUESTED_DATETIME':'2022-10-28 00:00:00.000','AE_Amount':-9474.68,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2022-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1338675128,'AE_TYPE_ID':541901,'INT_EXT_REF':124565256,'POLICY_REF':3820110,'MEMBER_REF':10436136,'Member_Name':'Mnr JG Rossouw','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health','OID':541991,'MeasureType':'Commission','CommissionType':'1st Year','TRANSACTION_AMOUNT':928.89,'ALLOCATED_AMOUNT':6072.47,'MEMBER_AGE':43,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-10-28 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'REQUESTED_DATETIME':'2022-09-28 00:00:00.000','AE_Amount':6072.47,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2022-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1500.00,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-09-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'1st Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1000.00,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-09-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1800.00,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-10-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'1st Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':2000.00,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-10-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Policy_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1172.08,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-09-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Fiduciary_Data'},{'Request_ID':1302220959,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'1st Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1172.08,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-09-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'REQUESTED_DATETIME':'2022-09-23 00:00:00.000','AE_Amount':1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Fiduciary_Data'},{'Request_ID':1338674952,'AE_TYPE_ID':541901,'INT_EXT_REF':124565256,'POLICY_REF':3820110,'MEMBER_REF':10436136,'Member_Name':'Mnr JG Rossouw','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health','OID':541991,'MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':928.89,'ALLOCATED_AMOUNT':9474.68,'MEMBER_AGE':43,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-10-28 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'REQUESTED_DATETIME':'2022-10-28 00:00:00.000','AE_Amount':-9474.68,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2022-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Fiduciary_Data'},{'Request_ID':1338675128,'AE_TYPE_ID':541901,'INT_EXT_REF':124565256,'POLICY_REF':3820110,'MEMBER_REF':10436136,'Member_Name':'Mnr JG Rossouw','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health','OID':541991,'MeasureType':'Commission','CommissionType':'1st Year','TRANSACTION_AMOUNT':928.89,'ALLOCATED_AMOUNT':6072.47,'MEMBER_AGE':43,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-10-28 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'REQUESTED_DATETIME':'2022-09-28 00:00:00.000','AE_Amount':6072.47,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2022-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Fiduciary_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1500.00,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-09-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Fiduciary_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'1st Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1000.00,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-09-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Fiduciary_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'2nd Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':1800.00,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-10-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Fiduciary_Data'},{'Request_ID':1338675045,'AE_TYPE_ID':542051,'INT_EXT_REF':124565256,'POLICY_REF':3830102,'MEMBER_REF':10024365,'Member_Name':'Dr JC Arthur','BUS_GROUP':'PPS INSURANCE','PRODUCT_DESCRIPTION':'Professional Health Provider Whole Life Level Rated Professional Health CI 100 Cover','OID':542053,'MeasureType':'Commission','CommissionType':'1st Year','TRANSACTION_AMOUNT':344.73,'ALLOCATED_AMOUNT':2000.00,'MEMBER_AGE':45,'MONTHS_IN_FORCE':0,'REQUEST_DATETIME':'2022-10-23 00:00:00.000','REQUESTED_DATETIME':'2022-11-01 00:00:00.000','AE_agmt_id':4755496,'AE_Posted_Date':'2022-09-23 00:00:00.000','AE_Amount':-1172.08,'Acc_Name':'Future Dated Provisions Account','FSP_Name':'NULL','DUE_DATE':'2023-10-07 00:00:00.000','YEAR_START_DATE':'2022-01-01 00:00:00.000','YEAR_END_DATE':'2022-12-31 23:59:00.000','Type':'Fiduciary_Data'},]";
+            double totalMonthlyEarnings = 0;
+
+
+            if (commisionDetailListJson != string.Empty && validationEngine.IsValidJson(commisionDetailListJson))
+            {
+                // Deserialize JSON string to a list of commission details
+                IList<spIAA_Commission_Detail> commisionDetail = JsonConvert.DeserializeObject<List<spIAA_Commission_Detail>>(commisionDetailListJson);
+
+                // Initialize a StringBuilder to store HTML content
+                StringBuilder commisionDetailSrc = new StringBuilder();
+                string commisionDetailString = HtmlConstants.EARNINGS_FOR_PERIOD_WIDGET_HTML;
+
+                // List to store monthly total amounts for each commission type
+                List<List<double>> monthlyTotalList = new List<List<double>>();
+
+                // Group commission details by month and type to get counts
+                var records = commisionDetail.GroupBy(gpcommisionitem => new { gpcommisionitem.REQUEST_DATETIME.Month, gpcommisionitem.Type })
+                    .Select(group => new
+                    {
+                        GroupKey = group.Key,
+                        CountCommissionType = group.Count()
+                    }).ToList();
+
+                // Group commission details by CommissionType to get a list of commission types
+                var gpCommisionType = commisionDetail.OrderBy(item => item.CommissionType).GroupBy(gpcommisionitem => new { gpcommisionitem.CommissionType })
+                    .Select(group => new
+                    {
+                        GroupKey = group.Key
+                    }).ToList();
+
+                // HTML generation for Monthly Production Summary Section
+                commisionDetailSrc.Append("<!-- Monthly Production Summary Section --><div class='earnings-section-monthly d-flex'><!-- Two Columns Layout --><div class='d-flex gap-1 w-100'><!-- Monthly Production Summary T1 --><div class='col-6'><!-- Heading for Monthly Production Summary T1 --><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>Monthly Production Summary</h4><div class='monthly-table'><!-- Table for Monthly Production Summary T1 --><table width='100%' cellpadding='0' cellspacing='0'><!-- Table Headers --><thead><tr><th class='text-white font-weight-bold text-left'>Month</th>");
+
+                // HTML generation for table headers based on CommissionType
+                gpCommisionType.ForEach(gpCommisionTypeitem =>
                 {
-                    // Deserialize JSON string to a list of commission details
-                    IList<spIAA_Commission_Detail> commisionDetail = JsonConvert.DeserializeObject<List<spIAA_Commission_Detail>>(commisionDetailListJson);
+                    commisionDetailSrc.Append("<th style='height:50px' class='text-left'> Premium Under Advice(" + gpCommisionTypeitem.GroupKey.CommissionType + ")</th>");
+                });
+                commisionDetailSrc.Append("</tr></thead>");
 
-                    // Initialize a StringBuilder to store HTML content
-                    StringBuilder commisionDetailSrc = new StringBuilder();
-                    string commisionDetailString = HtmlConstants.EARNINGS_FOR_PERIOD_WIDGET_HTML;
-
-                    // List to store monthly total amounts for each commission type
-                    List<List<double>> monthlyTotalList = new List<List<double>>();
-
-                    // Group commission details by month and type to get counts
-                    var records = commisionDetail.GroupBy(gpcommisionitem => new { gpcommisionitem.REQUEST_DATETIME.Month, gpcommisionitem.Type })
-                        .Select(group => new
-                        {
-                            GroupKey = group.Key,
-                            CountCommissionType = group.Count()
-                        }).ToList();
-
-                    // Group commission details by CommissionType to get a list of commission types
-                    var gpCommisionType = commisionDetail.OrderBy(item => item.CommissionType).GroupBy(gpcommisionitem => new { gpcommisionitem.CommissionType })
-                        .Select(group => new
-                        {
-                            GroupKey = group.Key
-                        }).ToList();
-
-                    // HTML generation for Monthly Production Summary Section
-                    commisionDetailSrc.Append("<!-- Monthly Production Summary Section --><div class='earnings-section-monthly d-flex'><!-- Two Columns Layout --><div class='d-flex gap-1 w-100'><!-- Monthly Production Summary T1 --><div class='col-6'><!-- Heading for Monthly Production Summary T1 --><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>Monthly Production Summary</h4><div class='monthly-table'><!-- Table for Monthly Production Summary T1 --><table width='100%' cellpadding='0' cellspacing='0'><!-- Table Headers --><thead><tr><th class='text-white font-weight-bold text-left'>Month</th>");
-
-                    // HTML generation for table headers based on CommissionType
-                    gpCommisionType.ForEach(gpCommisionTypeitem =>
-                    {
-                        commisionDetailSrc.Append("<th style='height:50px' class='text-left'> Premium Under Advice(" + gpCommisionTypeitem.GroupKey.CommissionType + ")</th>");
-                    });
-                    commisionDetailSrc.Append("</tr></thead>");
-
-                    // Iterate through grouped records to populate table rows
-                    records.ForEach(gpMonthRangeItem =>
-                    {
-                        commisionDetailSrc.Append("<tr><td class='text-left'>" + CommonUtility.GetMonthRange(gpMonthRangeItem.GroupKey.Month) + "</td>");
-                        List<double> innermonthlyTotalListSum = new List<double>();
+                // Iterate through grouped records to populate table rows
+                records.ForEach(gpMonthRangeItem =>
+                {
+                    commisionDetailSrc.Append("<tr><td class='text-left'>" + CommonUtility.GetMonthRange(gpMonthRangeItem.GroupKey.Month) + "</td>");
+                    List<double> innermonthlyTotalListSum = new List<double>();
 
                         // Iterate through CommissionType groups to populate cells
                         gpCommisionType.ForEach(gpCommisionTypeitem =>
-                        {
-                            var premiumUnderAdviceTd1Sum = commisionDetail
-                                .Where(witem => ((witem.REQUEST_DATETIME.Month == gpMonthRangeItem.GroupKey.Month) &&
-                                                 (witem.CommissionType == gpCommisionTypeitem.GroupKey.CommissionType) &&
-                                                 (witem.Type == "Policy_Data")))
-                                .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
+                    {
+                        var premiumUnderAdviceTd1Sum = commisionDetail
+                            .Where(witem => ((witem.REQUEST_DATETIME.Month == gpMonthRangeItem.GroupKey.Month) &&
+                                             (witem.CommissionType == gpCommisionTypeitem.GroupKey.CommissionType) &&
+                                             (witem.Type == "Policy_Data")))
+                            .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
 
-                            var premiumUnderAdviceTd1SumR = (premiumUnderAdviceTd1Sum == 0) ? "0.00" : ("R" + premiumUnderAdviceTd1Sum.ToString());
-                            commisionDetailSrc.Append("<td class='text-right'>" + premiumUnderAdviceTd1SumR + "</td>");
-                            innermonthlyTotalListSum.Add(premiumUnderAdviceTd1Sum);
-                        });
+                        var premiumUnderAdviceTd1SumR = (premiumUnderAdviceTd1Sum == 0) ? "0.00" : ("R" + premiumUnderAdviceTd1Sum.ToString());
+                        commisionDetailSrc.Append("<td class='text-right'>" + premiumUnderAdviceTd1SumR + "</td>");
+                        innermonthlyTotalListSum.Add(premiumUnderAdviceTd1Sum);
+                    });
 
                         // Add monthly total to the list
                         monthlyTotalList.Add(innermonthlyTotalListSum);
-                        commisionDetailSrc.Append("</tr>");
-                    });
+                    commisionDetailSrc.Append("</tr>");
+                });
 
-                    // Calculate column sums for monthly totals
-                    int numColumns = monthlyTotalList[0].Count;
-                    List<double> premiumColumnSums = new List<double>(Enumerable.Repeat(0.00, numColumns));
+                // Calculate column sums for monthly totals
+                int numColumns = monthlyTotalList[0].Count;
+                List<double> premiumColumnSums = new List<double>(Enumerable.Repeat(0.00, numColumns));
 
-                    foreach (var row in monthlyTotalList)
+                foreach (var row in monthlyTotalList)
+                {
+                    for (int j = 0; j < numColumns; j++)
                     {
-                        for (int j = 0; j < numColumns; j++)
-                        {
-                            premiumColumnSums[j] += row[j];
-                        }
+                        premiumColumnSums[j] += row[j];
                     }
+                }
 
-                    // Add total row to the table
-                    commisionDetailSrc.Append("<tr><td class='dark-blue-bg text-white font-weight-bold'>Total</td>");
+                // Add total row to the table
+                commisionDetailSrc.Append("<tr><td class='dark-blue-bg text-white font-weight-bold'>Total</td>");
 
-                    for (int k = 0; k < premiumColumnSums.Count; k++)
-                    {
-                        totalMonthlyEarnings += premiumColumnSums[k];
-                        commisionDetailSrc.Append("<td class='text-right font-weight-bold'>R" + premiumColumnSums[k] + "</ td>");
-                    }
+                for (int k = 0; k < premiumColumnSums.Count; k++)
+                {
+                    totalMonthlyEarnings += premiumColumnSums[k];
+                    commisionDetailSrc.Append("<td class='text-right font-weight-bold'>R" + premiumColumnSums[k] + "</ td>");
+                }
 
-                    commisionDetailSrc.Append("</tr></table></div></div>");
+                commisionDetailSrc.Append("</tr></table></div></div>");
 
 
-                    // Fees Section: Monthly Fiduciary Fees Summary
-                    List<List<double>> monthlyFessTotalList = new List<List<double>>();
+                // Fees Section: Monthly Fiduciary Fees Summary
+                List<List<double>> monthlyFessTotalList = new List<List<double>>();
 
-                    // HTML generation for Monthly Fiduciary Fees Summary Section
-                    commisionDetailSrc.Append("<!-- Monthly Production Summary T2 --><div class='col-6'><!-- Heading for Monthly Production Summary T2 --><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>Monthly Production Summary</h4><div class='monthly-table'><!-- Table for Monthly Production Summary T1 --><table width='100%' cellpadding='0' cellspacing='0'><!-- Table Headers --><thead><tr><th class='text-white font-weight-bold text-left'>Month</th>");
+                // HTML generation for Monthly Fiduciary Fees Summary Section
+                commisionDetailSrc.Append("<!-- Monthly Production Summary T2 --><div class='col-6'><!-- Heading for Monthly Production Summary T2 --><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>Monthly Production Summary</h4><div class='monthly-table'><!-- Table for Monthly Production Summary T1 --><table width='100%' cellpadding='0' cellspacing='0'><!-- Table Headers --><thead><tr><th class='text-white font-weight-bold text-left'>Month</th>");
 
-                    // Generate table headers for each CommissionType in the group
-                    gpCommisionType.ForEach(gpCommisionTypeitem =>
-                    {
-                        commisionDetailSrc.Append("<th style='height:50px' class='text-left'> Fiduciary Fees(" + gpCommisionTypeitem.GroupKey.CommissionType + ")</th>");
-                    });
+                // Generate table headers for each CommissionType in the group
+                gpCommisionType.ForEach(gpCommisionTypeitem =>
+                {
+                    commisionDetailSrc.Append("<th style='height:50px' class='text-left'> Fiduciary Fees(" + gpCommisionTypeitem.GroupKey.CommissionType + ")</th>");
+                });
 
-                    commisionDetailSrc.Append("</tr></thead>");
+                commisionDetailSrc.Append("</tr></thead>");
 
-                    // Iterate through grouped records to populate table rows for Fiduciary Fees
-                    records.ForEach(gpFeesMonthRangeItem =>
-                    {
-                        commisionDetailSrc.Append("<tr><td class='text-left'>" + CommonUtility.GetMonthRange(gpFeesMonthRangeItem.GroupKey.Month) + "</td>");
-                        List<double> innerFeesMonthlyTotalListSum = new List<double>();
+                // Iterate through grouped records to populate table rows for Fiduciary Fees
+                records.ForEach(gpFeesMonthRangeItem =>
+                {
+                    commisionDetailSrc.Append("<tr><td class='text-left'>" + CommonUtility.GetMonthRange(gpFeesMonthRangeItem.GroupKey.Month) + "</td>");
+                    List<double> innerFeesMonthlyTotalListSum = new List<double>();
 
                         // Iterate through CommissionType groups to populate cells with Fiduciary Fees
                         gpCommisionType.ForEach(gpCommisionTypeitem =>
-                        {
-                            var premiumUnderAdviceTd1Sum = commisionDetail
-                                .Where(witem => ((witem.REQUEST_DATETIME.Month == gpFeesMonthRangeItem.GroupKey.Month) &&
-                                                 (witem.CommissionType == gpCommisionTypeitem.GroupKey.CommissionType) &&
-                                                 (witem.Type == "Fiduciary_Data")))
-                                .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
+                    {
+                        var premiumUnderAdviceTd1Sum = commisionDetail
+                            .Where(witem => ((witem.REQUEST_DATETIME.Month == gpFeesMonthRangeItem.GroupKey.Month) &&
+                                             (witem.CommissionType == gpCommisionTypeitem.GroupKey.CommissionType) &&
+                                             (witem.Type == "Fiduciary_Data")))
+                            .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
 
-                            var premiumUnderAdviceTd1SumR = (premiumUnderAdviceTd1Sum == 0) ? "0.00" : ("R" + premiumUnderAdviceTd1Sum.ToString());
-                            commisionDetailSrc.Append("<td class='text-right'>" + premiumUnderAdviceTd1SumR + "</td>");
-                            innerFeesMonthlyTotalListSum.Add(premiumUnderAdviceTd1Sum);
-                        });
+                        var premiumUnderAdviceTd1SumR = (premiumUnderAdviceTd1Sum == 0) ? "0.00" : ("R" + premiumUnderAdviceTd1Sum.ToString());
+                        commisionDetailSrc.Append("<td class='text-right'>" + premiumUnderAdviceTd1SumR + "</td>");
+                        innerFeesMonthlyTotalListSum.Add(premiumUnderAdviceTd1Sum);
+                    });
 
                         // Add monthly total to the list for Fiduciary Fees
                         monthlyFessTotalList.Add(innerFeesMonthlyTotalListSum);
-                        commisionDetailSrc.Append("</tr>");
-                    });
+                    commisionDetailSrc.Append("</tr>");
+                });
 
-                    // Calculate column sums for Fiduciary Fees monthly totals
-                    int numFeesColumns = monthlyFessTotalList[0].Count;
-                    List<double> FeesColumnSums = new List<double>(Enumerable.Repeat(0.00, numFeesColumns));
+                // Calculate column sums for Fiduciary Fees monthly totals
+                int numFeesColumns = monthlyFessTotalList[0].Count;
+                List<double> FeesColumnSums = new List<double>(Enumerable.Repeat(0.00, numFeesColumns));
 
-                    foreach (var row in monthlyFessTotalList)
+                foreach (var row in monthlyFessTotalList)
+                {
+                    for (int j = 0; j < numFeesColumns; j++)
                     {
-                        for (int j = 0; j < numFeesColumns; j++)
-                        {
-                            FeesColumnSums[j] += row[j];
-                        }
+                        FeesColumnSums[j] += row[j];
                     }
+                }
 
-                    // Add total row for Fiduciary Fees to the table
-                    commisionDetailSrc.Append("<tr><td class='dark-blue-bg text-white font-weight-bold'>Total</td>");
+                // Add total row for Fiduciary Fees to the table
+                commisionDetailSrc.Append("<tr><td class='dark-blue-bg text-white font-weight-bold'>Total</td>");
 
-                    for (int k = 0; k < FeesColumnSums.Count; k++)
+                for (int k = 0; k < FeesColumnSums.Count; k++)
+                {
+                    totalMonthlyEarnings += FeesColumnSums[k];
+                    commisionDetailSrc.Append("<td class='text-right font-weight-bold'>R" + FeesColumnSums[k] + "</ td>");
+                }
+
+                // Add total monthly earnings to the widget
+                var totalMonthlyEarningsR = (totalMonthlyEarnings == 0) ? "0.00" : ("R" + totalMonthlyEarnings.ToString());
+                commisionDetailSrc.Append("</tr></table></div></div>");
+                commisionDetailSrc.Append("</div></div><!-- Total Earning Section --><div class='total-earning mb-4'><div class='row'><div class='col-3 text-right'></div><div class='col-3 text-right'><div class='dark-blue-bg text-white text-right font-weight-bold pe-3 py-1'>Total Earnings</div></div><div class='col-3 text-left'><div class='total-price-title py-1 font-weight-bold text-center'>" + totalMonthlyEarningsR + "</div></div>");
+
+                // Fees Section: Monthly Fiduciary Fees Summary - End
+
+                // FSP Account Postings Summary start
+
+                // Grouping records by FSP Name
+                var fspNameRecords = commisionDetail.GroupBy(gpcommisionitem => new { gpcommisionitem.FSP_Name })
+                    .Select(group => new
                     {
-                        totalMonthlyEarnings += FeesColumnSums[k];
-                        commisionDetailSrc.Append("<td class='text-right font-weight-bold'>R" + FeesColumnSums[k] + "</ td>");
-                    }
+                        GroupKey = group.Key,
+                    }).ToList();
 
-                    // Add total monthly earnings to the widget
-                    var totalMonthlyEarningsR = (totalMonthlyEarnings == 0) ? "0.00" : ("R" + totalMonthlyEarnings.ToString());
-                    commisionDetailSrc.Append("</tr></table></div></div>");
-                    commisionDetailSrc.Append("</div></div><!-- Total Earning Section --><div class='total-earning mb-4'><div class='row'><div class='col-3 text-right'></div><div class='col-3 text-right'><div class='dark-blue-bg text-white text-right font-weight-bold pe-3 py-1'>Total Earnings</div></div><div class='col-3 text-left'><div class='total-price-title py-1 font-weight-bold text-center'>" + totalMonthlyEarningsR + "</div></div>");
+                // Iterating through FSP Name groups
+                fspNameRecords.ForEach(gpfspNameItem =>
+                {
+                        // Initializing variables for monthly totals
+                        List<List<double>> monthlyAEPostedTotalList = new List<List<double>>();
+                    double totalAEPostedMonthlyEarnings = 0;
 
-                    // Fees Section: Monthly Fiduciary Fees Summary - End
-
-                    // FSP Account Postings Summary start
-
-                    // Grouping records by FSP Name
-                    var fspNameRecords = commisionDetail.GroupBy(gpcommisionitem => new { gpcommisionitem.FSP_Name })
+                        // Grouping records by AE_Posted_Date
+                        var aePostedRecords = commisionDetail
+                        .Where(witem => witem.FSP_Name == gpfspNameItem.GroupKey.FSP_Name)
+                        .GroupBy(gpcommisionitem => new { gpcommisionitem.AE_Posted_Date.Date })
                         .Select(group => new
                         {
                             GroupKey = group.Key,
                         }).ToList();
-
-                    // Iterating through FSP Name groups
-                    fspNameRecords.ForEach(gpfspNameItem =>
-                    {
-                        // Initializing variables for monthly totals
-                        List<List<double>> monthlyAEPostedTotalList = new List<List<double>>();
-                        double totalAEPostedMonthlyEarnings = 0;
-
-                        // Grouping records by AE_Posted_Date
-                        var aePostedRecords = commisionDetail
-                            .Where(witem => witem.FSP_Name == gpfspNameItem.GroupKey.FSP_Name)
-                            .GroupBy(gpcommisionitem => new { gpcommisionitem.AE_Posted_Date.Date })
-                            .Select(group => new
-                            {
-                                GroupKey = group.Key,
-                            }).ToList();
 
                         // Appending HTML for the earnings section
                         commisionDetailSrc.Append("<!--FSPAccountPostingsSummarySection--><div class='earnings-section-monthly d-flex mb-2'><div class='d-flex gap-1 w-100'><!--FSP Account Postings Summary--><div class='col-6'><!--Headingfor FSP Account PostingsSummary--><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>FSP Account Postings Summary</h4><div class='monthly-table'><!--Table forFSPAccountPostingsSummary--><table width='100%' cellpadding='0' cellspacing='0'><!--TableHeaders--><thead><tr><th style='height:50px' class='text-white font-weight-bold'>PostedDate</th>");
 
                         // Appending HTML for Commission Type headers
                         gpCommisionType.ForEach(gpCommisionTypeitem =>
-                        {
-                            commisionDetailSrc.Append("<th style='height:50px' class='text-left'> Posted (" + gpCommisionTypeitem.GroupKey.CommissionType + ")</th>");
-                        });
+                    {
+                        commisionDetailSrc.Append("<th style='height:50px' class='text-left'> Posted (" + gpCommisionTypeitem.GroupKey.CommissionType + ")</th>");
+                    });
 
                         // Appending HTML for Posted Amount header
                         commisionDetailSrc.Append("<th style='height:50px' class='text-white font-weight-bold'>Posted Amount</th></tr></thead>");
@@ -7669,130 +7669,130 @@ namespace nIS
 
                         // Iterating through AE_Posted_Date groups
                         aePostedRecords.ForEach(gpMonthRangeItem =>
-                        {
+                    {
                             // Appending HTML for Date and Commission Type columns
                             commisionDetailSrc.Append("<tr><td class='text-left'>" + DateTime.Parse(gpMonthRangeItem.GroupKey.Date.ToString()).ToString("dd-MMM-yyyy") + "</td>");
-                            List<double> innermonthlyAEPostedTotalListSum = new List<double>();
+                        List<double> innermonthlyAEPostedTotalListSum = new List<double>();
 
                             // Iterating through Commission Types
                             gpCommisionType.ForEach(gpCommisionTypeitem =>
-                            {
+                        {
                                 // Calculating and appending HTML for Posted Amount
                                 var premiumUnderAdviceTd1Sum = commisionDetail
-                                    .Where(witem => witem.AE_Posted_Date.Date == gpMonthRangeItem.GroupKey.Date && witem.CommissionType == gpCommisionTypeitem.GroupKey.CommissionType)
-                                    .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
+                                .Where(witem => witem.AE_Posted_Date.Date == gpMonthRangeItem.GroupKey.Date && witem.CommissionType == gpCommisionTypeitem.GroupKey.CommissionType)
+                                .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
 
-                                var premiumUnderAdviceTd1SumR = (premiumUnderAdviceTd1Sum == 0) ? "0.00" : ("R" + premiumUnderAdviceTd1Sum.ToString());
-                                commisionDetailSrc.Append("<td class='text-right'>" + premiumUnderAdviceTd1SumR + "</td>");
-                                innermonthlyAEPostedTotalListSum.Add(premiumUnderAdviceTd1Sum);
-                            });
+                            var premiumUnderAdviceTd1SumR = (premiumUnderAdviceTd1Sum == 0) ? "0.00" : ("R" + premiumUnderAdviceTd1Sum.ToString());
+                            commisionDetailSrc.Append("<td class='text-right'>" + premiumUnderAdviceTd1SumR + "</td>");
+                            innermonthlyAEPostedTotalListSum.Add(premiumUnderAdviceTd1Sum);
+                        });
 
                             // Calculating and appending HTML for Total Posted Amount
                             var postedAmountTdSum = commisionDetail
-                                .Where(witem => witem.AE_Posted_Date.Date == gpMonthRangeItem.GroupKey.Date)
-                                .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
+                            .Where(witem => witem.AE_Posted_Date.Date == gpMonthRangeItem.GroupKey.Date)
+                            .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
 
-                            var postedAmountTdSumR = (postedAmountTdSum == 0) ? "0.00" : ("R" + postedAmountTdSum.ToString());
-                            commisionDetailSrc.Append("<td class='text-right'>R" + postedAmountTdSumR + "</td>");
+                        var postedAmountTdSumR = (postedAmountTdSum == 0) ? "0.00" : ("R" + postedAmountTdSum.ToString());
+                        commisionDetailSrc.Append("<td class='text-right'>R" + postedAmountTdSumR + "</td>");
 
                             // Adding inner list to monthly total list and closing row
                             monthlyAEPostedTotalList.Add(innermonthlyAEPostedTotalListSum);
-                            commisionDetailSrc.Append("</tr>");
-                        });
+                        commisionDetailSrc.Append("</tr>");
+                    });
 
                         // Calculating and appending HTML for Total row
                         int numaePostedColumns = monthlyAEPostedTotalList[0].Count;
-                        List<double> aePostedColumnSums = new List<double>(Enumerable.Repeat(0.00, numColumns));
+                    List<double> aePostedColumnSums = new List<double>(Enumerable.Repeat(0.00, numColumns));
 
-                        foreach (var row in monthlyAEPostedTotalList)
+                    foreach (var row in monthlyAEPostedTotalList)
+                    {
+                        for (int j = 0; j < numColumns; j++)
                         {
-                            for (int j = 0; j < numColumns; j++)
-                            {
-                                aePostedColumnSums[j] += row[j];
-                            }
+                            aePostedColumnSums[j] += row[j];
                         }
+                    }
 
-                        commisionDetailSrc.Append("<tr><td class='dark-blue-bg text-white font-weight-bold'>Total</td>");
+                    commisionDetailSrc.Append("<tr><td class='dark-blue-bg text-white font-weight-bold'>Total</td>");
 
-                        for (int k = 0; k < aePostedColumnSums.Count; k++)
-                        {
-                            totalAEPostedMonthlyEarnings += aePostedColumnSums[k];
-                            commisionDetailSrc.Append("<td class='text-right font-weight-bold'>R" + aePostedColumnSums[k] + "</ td>");
-                        }
+                    for (int k = 0; k < aePostedColumnSums.Count; k++)
+                    {
+                        totalAEPostedMonthlyEarnings += aePostedColumnSums[k];
+                        commisionDetailSrc.Append("<td class='text-right font-weight-bold'>R" + aePostedColumnSums[k] + "</ td>");
+                    }
 
                         // Appending HTML for Total Posted Amount and closing the table
                         var totalAEPostedMonthlyEarningsR = (totalAEPostedMonthlyEarnings == 0) ? "0.00" : ("R" + totalAEPostedMonthlyEarnings.ToString());
-                        commisionDetailSrc.Append("<td class='text-right font-weight-bold'>R" + totalAEPostedMonthlyEarningsR + "</ td>");
-                        commisionDetailSrc.Append("</tr></table></div></div>");
+                    commisionDetailSrc.Append("<td class='text-right font-weight-bold'>R" + totalAEPostedMonthlyEarningsR + "</ td>");
+                    commisionDetailSrc.Append("</tr></table></div></div>");
 
                         // Closing FSP Account Postings Summary section
                     });
 
-                    // FSP Account Postings Summary end
+                // FSP Account Postings Summary end
 
-                    // Future Date Production start
+                // Future Date Production start
 
-                    // Grouping records by Due Date
-                    var dueDateRecords = commisionDetail.GroupBy(gpDueDateitem => new { gpDueDateitem.DUE_DATE.Date })
-                        .Select(group => new
-                        {
-                            GroupKey = group.Key,
-                        }).ToList();
-
-                    // Grouping records by Product Description
-                    var prdocutDescriptionRecords = commisionDetail.GroupBy(gpDueDateitem => new { gpDueDateitem.PRODUCT_DESCRIPTION })
-                        .Select(group => new
-                        {
-                            GroupKey = group.Key,
-                        }).ToList();
-
-                    // Initializing variables for monthly totals
-                    List<List<double>> monthlyDueDateTotalList = new List<List<double>>();
-
-                    // Appending HTML for the Future Dated Production section
-                    commisionDetailSrc.Append("<!-- Future Dated Production Section --><div class='col-6'><!-- Heading for Future Dated Production --><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>Future Dated Production</h4><div class='monthly-table'><!-- Table for Future Dated Production --><table width='100%' cellpadding='0' cellspacing='0'><!-- Table Headers --><thead><tr><th class='text-left text-white font-weight-bold'>Due Date</th><th class='height:50px;text-left'>Fiduciary fees</th><th class='text-left'>Allocated Amount</th></tr></thead>");
-
-                    // Initializing variables for column sums
-                    double FutureColumnSums = 0.00;
-                    double sumOfAllocatedAmount = 0.00;
-                    double sumOfDueDateAllocatedAmount = 0.00;
-
-                    // Iterating through Due Date groups
-                    dueDateRecords.ForEach(gpDueDateItem =>
+                // Grouping records by Due Date
+                var dueDateRecords = commisionDetail.GroupBy(gpDueDateitem => new { gpDueDateitem.DUE_DATE.Date })
+                    .Select(group => new
                     {
+                        GroupKey = group.Key,
+                    }).ToList();
+
+                // Grouping records by Product Description
+                var prdocutDescriptionRecords = commisionDetail.GroupBy(gpDueDateitem => new { gpDueDateitem.PRODUCT_DESCRIPTION })
+                    .Select(group => new
+                    {
+                        GroupKey = group.Key,
+                    }).ToList();
+
+                // Initializing variables for monthly totals
+                List<List<double>> monthlyDueDateTotalList = new List<List<double>>();
+
+                // Appending HTML for the Future Dated Production section
+                commisionDetailSrc.Append("<!-- Future Dated Production Section --><div class='col-6'><!-- Heading for Future Dated Production --><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>Future Dated Production</h4><div class='monthly-table'><!-- Table for Future Dated Production --><table width='100%' cellpadding='0' cellspacing='0'><!-- Table Headers --><thead><tr><th class='text-left text-white font-weight-bold'>Due Date</th><th class='height:50px;text-left'>Fiduciary fees</th><th class='text-left'>Allocated Amount</th></tr></thead>");
+
+                // Initializing variables for column sums
+                double FutureColumnSums = 0.00;
+                double sumOfAllocatedAmount = 0.00;
+                double sumOfDueDateAllocatedAmount = 0.00;
+
+                // Iterating through Due Date groups
+                dueDateRecords.ForEach(gpDueDateItem =>
+                {
                         // Iterating through Product Description groups
                         prdocutDescriptionRecords.ForEach(prdocutDescription =>
-                        {
+                    {
                             // Appending HTML for Date, Product Description, and Allocated Amount columns
                             commisionDetailSrc.Append("<tr><td class='text-left'>" + DateTime.Parse(gpDueDateItem.GroupKey.Date.ToString()).ToString("dd-MMM-yyyy") + "</td>");
-                            sumOfAllocatedAmount = commisionDetail
-                                .Where(witem => witem.PRODUCT_DESCRIPTION == prdocutDescription.GroupKey.PRODUCT_DESCRIPTION && witem.DUE_DATE == gpDueDateItem.GroupKey.Date)
-                                .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
+                        sumOfAllocatedAmount = commisionDetail
+                            .Where(witem => witem.PRODUCT_DESCRIPTION == prdocutDescription.GroupKey.PRODUCT_DESCRIPTION && witem.DUE_DATE == gpDueDateItem.GroupKey.Date)
+                            .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
 
-                            commisionDetailSrc.Append("<td class='text-left'>" + (prdocutDescription.GroupKey.PRODUCT_DESCRIPTION == "Commission Service Fee" ? "Premium Under Advise Fee" : prdocutDescription.GroupKey.PRODUCT_DESCRIPTION) + "</td>");
-                            var sumOfAllocatedAmountR = (sumOfAllocatedAmount == 0) ? "0.00" : ("R" + sumOfAllocatedAmount.ToString());
-                            commisionDetailSrc.Append("<td class='text-right'>" + sumOfAllocatedAmountR + "</td>");
-                            FutureColumnSums += sumOfAllocatedAmount;
-                            commisionDetailSrc.Append("</tr>");
-                        });
+                        commisionDetailSrc.Append("<td class='text-left'>" + (prdocutDescription.GroupKey.PRODUCT_DESCRIPTION == "Commission Service Fee" ? "Premium Under Advise Fee" : prdocutDescription.GroupKey.PRODUCT_DESCRIPTION) + "</td>");
+                        var sumOfAllocatedAmountR = (sumOfAllocatedAmount == 0) ? "0.00" : ("R" + sumOfAllocatedAmount.ToString());
+                        commisionDetailSrc.Append("<td class='text-right'>" + sumOfAllocatedAmountR + "</td>");
+                        FutureColumnSums += sumOfAllocatedAmount;
+                        commisionDetailSrc.Append("</tr>");
+                    });
 
                         // Appending HTML for SubTotal row
                         var sumOfDueDateAllocatedAmountR = (sumOfDueDateAllocatedAmount == 0) ? "0.00" : ("R" + sumOfDueDateAllocatedAmount.ToString());
-                        commisionDetailSrc.Append("<tr><td class='text-right' colspan='2'>SubTotal<td class='text-right'>" + sumOfDueDateAllocatedAmountR + "</td></tr>");
-                    });
+                    commisionDetailSrc.Append("<tr><td class='text-right' colspan='2'>SubTotal<td class='text-right'>" + sumOfDueDateAllocatedAmountR + "</td></tr>");
+                });
 
-                    // Appending HTML for Total Earnings row and closing the table
-                    commisionDetailSrc.Append("<td class='dark-blue-bg text-white font-weight-bold text-right' colspan='2'>Total Earnings</td><td class='text-right font-weight-bold'>R" + FutureColumnSums + "</td>");
-                    commisionDetailSrc.Append("</tr></table></div></div>");
-                    commisionDetailSrc.Append("</div></div>");
-                    // Future Date Production end
-                    // Replacing placeholder in the commisionDetailString with the specified divHeight value
-                  
+                // Appending HTML for Total Earnings row and closing the table
+                commisionDetailSrc.Append("<td class='dark-blue-bg text-white font-weight-bold text-right' colspan='2'>Total Earnings</td><td class='text-right font-weight-bold'>R" + FutureColumnSums + "</td>");
+                commisionDetailSrc.Append("</tr></table></div></div>");
+                commisionDetailSrc.Append("</div></div>");
+                // Future Date Production end
+                // Replacing placeholder in the commisionDetailString with the specified divHeight value
+
                 // Replacing placeholder in the commisionDetailString with the generated commissionDetailSrc content
                 pageContent.Replace("{{ppsEarningForPeriod}}", commisionDetailSrc.ToString());
-                    // Appending the modified commisionDetailString to the htmlString
-                }
-            
+                // Appending the modified commisionDetailString to the htmlString
+            }
+
             // JSON representation of product summary list
             string productSummaryListJson = "[{ 'Commission_Type': 'Safe Custody Fee', 'Prod_Group': 'Safe Custody Fee', 'AE_Amount': '52.65', 'QueryLink': 'https://www.google.com/', 'DR_CR': 'DR'}, { 'Commission_Type': 'Safe Custody Fee', 'Prod_Group': 'Service Fee', 'AE_Amount': '52.66', 'QueryLink': 'https://www.google.com/', 'DR_CR': 'DR'}, { 'Commission_Type': 'Safe Custody Fee', 'Prod_Group': 'Safe Custody Fee', 'AE_Amount': '152.67', 'QueryLink': 'https://www.google.com/', 'DR_CR': 'DR'}, { 'Commission_Type': 'Safe Custody Fee', 'Prod_Group': 'Service Fee', 'AE_Amount': '52.68', 'QueryLink': 'https://www.google.com/', 'DR_CR': 'CR'}]";
 
@@ -7879,10 +7879,10 @@ namespace nIS
                 var ppsDetails1Info = JsonConvert.DeserializeObject<spIAA_Commission_Detail>(ppsDetails1InfoJson);
                 pageContent.Replace("{{ref}}", ppsDetails1Info.INT_EXT_REF);
                 pageContent.Replace("{{mtype}}", ppsDetails1Info.MeasureType);
-                pageContent.Replace("{{month}}", DateFrom.ToString("MMMM yyyy"));                
-                pageContent.Replace("{{paramDate}}", DateFrom.ToString()+ " To "+ DateTo.ToString()) ;
+                pageContent.Replace("{{month}}", DateFrom.ToString("MMMM yyyy"));
+                pageContent.Replace("{{paramDate}}", DateFrom.ToString() + " To " + DateTo.ToString());
 
-               
+
             }
         }
         private void BindDummyDataToPpsDetails2Widget(StringBuilder pageContent, Statement statement, Page page, PageWidget widget, string AppBaseDirectory)
@@ -10102,7 +10102,7 @@ namespace nIS
         private void BindDummyDataToPageBreakWidget(StringBuilder pageContent, Statement statement, Page page, PageWidget widget)
         {
             var html = "<div style=\"page-break-before:always\">&nbsp;</div>";
-            
+
             pageContent.Replace("{{PageBreak_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", html);
         }
 
