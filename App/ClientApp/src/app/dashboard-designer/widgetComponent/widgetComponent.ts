@@ -748,20 +748,16 @@ export class PPSDetails2Component {
                                     <td class="bdr-right-white" height="40"></td>
                                 </tr>
 
-                                <tr>
-                                    <td class="dark-blue-bg text-white font-weight-bold "></td>
-                                    <td class="dark-blue-bg text-white font-weight-bold "></td>
-                                    <td class="dark-blue-bg text-white font-weight-bold "></td>
-                                    <td class="dark-blue-bg text-white font-weight-bold "></td>
-                                    <td class="dark-blue-bg text-white font-weight-bold text-right fs-16">Sub Total</td>
-                                    <td class="dark-blue-bg text-white font-weight-bold "></td>
-                                    <td class="dark-blue-bg text-white font-weight-bold "></td>
-                                    <td class="dark-blue-bg text-white font-weight-bold "></td>
-                                    <td class="dark-blue-bg text-white font-weight-bold "></td>
-                                    <td class="pps-bg-gray" ></td>
-                                    <td class="font-weight-bold fs-16 pps-bg-gray" height="40">R15 133.33</td>
-                                </tr>
-                               
+                                    <tr>
+                                       <td class="dark-blue-bg text-white font-weight-bold "></td>
+                                       <td class="dark-blue-bg text-white font-weight-bold "></td>
+                                       <td class="dark-blue-bg text-white font-weight-bold "></td>
+                                       <td class="dark-blue-bg text-white font-weight-bold "></td>
+                                       <td class="dark-blue-bg text-white font-weight-bold "></td>
+                                       <td class="dark-blue-bg text-white font-weight-bold "></td>
+                                       <td class="dark-blue-bg text-white font-weight-bold "></td>
+                                       <td class="dark-blue-bg text-white font-weight-bold " colspan="2">Sub Total</td>
+                                       <td colspan="2" class="font-weight-bold text-right fs-16 pps-bg-gray" height="40">R29250.62</td></tr>
                             </table>
                     </div>
 
