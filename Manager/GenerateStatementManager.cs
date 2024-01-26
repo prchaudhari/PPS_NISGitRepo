@@ -2331,7 +2331,7 @@ namespace nIS
 
                     // Initializing variables for column sums
                     long index = 1;
-                    var aeAmountColSum = 0.00;
+                   double aeAmountColSum = 0.00;
                     var aeAmountColSumR = "";
                     var vat = 0.00;
                     var payment = 0.00;
@@ -2346,7 +2346,10 @@ namespace nIS
                         // Iterating through Product Description groups
                         prdocutDescriptionRecords.ForEach(gpPrdocutDescriptionItem =>
                         {
-                            if ((gpCommissionTypeItem.Key.Commission_Type != "VAT") || (gpCommissionTypeItem.Key.Commission_Type != "Payment"))
+                            if ((gpCommissionTypeItem.Key.Commission_Type == "VAT") || (gpCommissionTypeItem.Key.Commission_Type == "Payment")) { 
+                            
+                            
+                            }else
                             {
                                 // Calculate sums for CR and DR amounts
                                 aeAmountCRSum = productSummary
@@ -2369,50 +2372,47 @@ namespace nIS
                                 // Update column sum and increment index
                                 productSummarySrc.Append("</tr>");
                                 index++;
-                            }
-                          
-                            aeAmountColSum += aeAmountSum;
-                            }
-                            else
-                            {
-                                string aeAmountString = productSummary
-                          .Where(witem => witem.Commission_Type == "VAT" && witem.DR_CR == "CR")
-                          .FirstOrDefault().AE_Amount;
-
-                                if (double.TryParse(aeAmountString, out double parsedValue))
-                                {
-                                    vat = parsedValue;
-                                }
-                                else
-                                {
-                                    // Handle the case where the conversion fails
-                                    // You may throw an exception, log an error, or assign a default value
-                                    vat = 0.0; // Default value, choose based on your requirements
+                                aeAmountColSum += aeAmountSum;
                                 }
                             }
-
-                            string aePaymentAmountString = productSummary
-                       .Where(witem => witem.Commission_Type == "Payment" && witem.DR_CR == "CR")
-                       .FirstOrDefault().AE_Amount;
-
-                            if (double.TryParse(aePaymentAmountString, out double PaymenValue))
-                            {
-                                payment = PaymenValue;
-                            }
-                            else
-                            {
-                                // Handle the case where the conversion fails
-                                // You may throw an exception, log an error, or assign a default value
-                                payment = 0.0; // Default value, choose based on your requirements
-                            }
-
-
+                            
                         });
                        
                         
                     });
 
                     aeAmountColSumR = (aeAmountColSum == 0) ? "0.00" : ("R" + aeAmountColSum.ToString());
+
+                    string aeAmountString = productSummary
+                          .Where(witem => (witem.Commission_Type == "VAT") && (witem.DR_CR == "CR"))
+                          .FirstOrDefault().AE_Amount;
+
+                    if ((aeAmountString != null) && double.TryParse(aeAmountString, out double parsedValue))
+                    {
+                        vat = parsedValue;
+                    }
+                    else
+                    {
+                        // Handle the case where the conversion fails
+                        // You may throw an exception, log an error, or assign a default value
+                        vat = 0.0; // Default value, choose based on your requirements
+                    }
+
+                    string aePaymentAmountString = productSummary
+               .Where(witem => (witem.Commission_Type == "Payment") && (witem.DR_CR == "DR"))
+               .FirstOrDefault().AE_Amount;
+
+                    if ((aePaymentAmountString != null) && double.TryParse(aePaymentAmountString, out double PaymenValue))
+                    {
+                        payment = PaymenValue;
+                    }
+                    else
+                    {
+                        // Handle the case where the conversion fails
+                        // You may throw an exception, log an error, or assign a default value
+                        payment = 0.0; // Default value, choose based on your requirements
+                    }
+
                     // Generate the HTML string for the product summary widget
 
                     //string productInfoJson = "{VAT_Amount : '38001.27'}";
@@ -2430,7 +2430,7 @@ namespace nIS
                     pageContent.Replace("{{GrandTotalDue}}", grandTotalDueR);
 
                     // Calculate PPS payment and update the HTML string
-                    double ppsPayment = grandTotalDue;
+                    double ppsPayment = payment;
                     var ppsPaymentR = (ppsPayment == 0) ? "0.00" : ("-R" + ppsPayment.ToString("F2"));
                     pageContent.Replace("{{PPSPayment}}", ppsPaymentR);
 
