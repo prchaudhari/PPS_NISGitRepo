@@ -2861,21 +2861,21 @@ namespace nIS
                 // Iterating through Due Date groups
                 dueDateRecords.ForEach(gpDueDateItem =>
                 {
-                    // Iterating through Product Description groups
-                    prdocutDescriptionRecords.ForEach(prdocutDescription =>
-            {
-                // Appending HTML for Date, Product Description, and Allocated Amount columns
-                commisionDetailSrc.Append("<tr><td class='text-left'>" + DateTime.Parse(gpDueDateItem.GroupKey.Date.ToString()).ToString("dd-MMM-yyyy") + "</td>");
-                sumOfAllocatedAmount = commisionDetail
-                    .Where(witem => witem.PRODUCT_DESCRIPTION == prdocutDescription.GroupKey.PRODUCT_DESCRIPTION && witem.DUE_DATE == gpDueDateItem.GroupKey.Date)
-                    .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
+            //        // Iterating through Product Description groups
+            //        prdocutDescriptionRecords.ForEach(prdocutDescription =>
+            //{
+            //    // Appending HTML for Date, Product Description, and Allocated Amount columns
+            //    commisionDetailSrc.Append("<tr><td class='text-left'>" + DateTime.Parse(gpDueDateItem.GroupKey.Date.ToString()).ToString("dd-MMM-yyyy") + "</td>");
+            //    sumOfAllocatedAmount = commisionDetail
+            //        .Where(witem => witem.PRODUCT_DESCRIPTION == prdocutDescription.GroupKey.PRODUCT_DESCRIPTION && witem.DUE_DATE == gpDueDateItem.GroupKey.Date)
+            //        .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
 
-                commisionDetailSrc.Append("<td class='text-left'>" + (prdocutDescription.GroupKey.PRODUCT_DESCRIPTION == "Commission Service Fee" ? "Premium Under Advise Fee" : prdocutDescription.GroupKey.PRODUCT_DESCRIPTION) + "</td>");
-                var sumOfAllocatedAmountR = (sumOfAllocatedAmount == 0) ? "0.00" : ("R" + sumOfAllocatedAmount.ToString());
-                commisionDetailSrc.Append("<td class='text-right'>" + sumOfAllocatedAmountR + "</td>");
-                FutureColumnSums += sumOfAllocatedAmount;
-                commisionDetailSrc.Append("</tr>");
-            });
+            //    commisionDetailSrc.Append("<td class='text-left'>" + (prdocutDescription.GroupKey.PRODUCT_DESCRIPTION == "Commission Service Fee" ? "Premium Under Advise Fee" : prdocutDescription.GroupKey.PRODUCT_DESCRIPTION) + "</td>");
+            //    var sumOfAllocatedAmountR = (sumOfAllocatedAmount == 0) ? "0.00" : ("R" + sumOfAllocatedAmount.ToString());
+            //    commisionDetailSrc.Append("<td class='text-right'>" + sumOfAllocatedAmountR + "</td>");
+            //    FutureColumnSums += sumOfAllocatedAmount;
+            //    commisionDetailSrc.Append("</tr>");
+            //});
 
                     // Appending HTML for SubTotal row
                     var sumOfDueDateAllocatedAmountR = (sumOfDueDateAllocatedAmount == 0) ? "0.00" : ("R" + sumOfDueDateAllocatedAmount.ToString());
