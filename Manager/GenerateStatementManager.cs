@@ -2334,6 +2334,7 @@ namespace nIS
                     var aeAmountColSum = 0.00;
                     var aeAmountColSumR = "";
                     var vat = 0.00;
+                    var payment = 0.00;
                     var aeAmountSum = 0.00;
                     var aeAmountSumR = "";
                     double aeAmountCRSum = 0.00;
@@ -2345,8 +2346,10 @@ namespace nIS
                         // Iterating through Product Description groups
                         prdocutDescriptionRecords.ForEach(gpPrdocutDescriptionItem =>
                         {
-                            // Calculate sums for CR and DR amounts
-                            aeAmountCRSum = productSummary
+                            if ((gpCommissionTypeItem.Key.Commission_Type != "VAT") || (gpCommissionTypeItem.Key.Commission_Type != "Payment"))
+                            {
+                                // Calculate sums for CR and DR amounts
+                                aeAmountCRSum = productSummary
                                 .Where(witem => ((witem.Commission_Type == gpCommissionTypeItem.Key.Commission_Type) &&
                                                  (witem.DR_CR == "CR") && (witem.Prod_Group == gpPrdocutDescriptionItem.Key.Prod_Group))).Sum(item => Convert.ToDouble(item.AE_Amount));
 
@@ -2354,20 +2357,7 @@ namespace nIS
                                 .Where(witem => ((witem.Commission_Type == gpCommissionTypeItem.Key.Commission_Type) &&
                                                  (witem.DR_CR == "DR") && (witem.Prod_Group == gpPrdocutDescriptionItem.Key.Prod_Group))).Sum(item => Convert.ToDouble(item.AE_Amount));
 
-                            string aeAmountString = productSummary
-                            .Where(witem => witem.Commission_Type == "VAT" && witem.DR_CR == "CR")
-                            .FirstOrDefault().AE_Amount;
-
-                            if (double.TryParse(aeAmountString, out double parsedValue))
-                            {
-                                vat = parsedValue;
-                            }
-                            else
-                            {
-                                // Handle the case where the conversion fails
-                                // You may throw an exception, log an error, or assign a default value
-                                vat = 0.0; // Default value, choose based on your requirements
-                            }
+                          
 
                             // Calculate total AE Amount
                              aeAmountSum = (aeAmountCRSum - aeAmountDRSum);
@@ -2377,14 +2367,52 @@ namespace nIS
                                 productSummarySrc.Append("<tr><td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" + index + "</td><td class='fsp-bdr-right text-left fsp-bdr-bottom px-1'>" + gpCommissionTypeItem.Key.Commission_Type + "</td>" + "<td class='fsp-bdr-right text-left fsp-bdr-bottom px-1'> " + (gpPrdocutDescriptionItem.Key.Prod_Group == "Service Fee" ? "Premium Under Advise Fee" : gpPrdocutDescriptionItem.Key.Prod_Group) + "</td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1'>" + aeAmountSumR + "</td><td class='text-center fsp-bdr-bottom px-1'><a  href ='https://www.google.com/' target='_blank'><img class='leftarrowlogo' src ='../common/images/leftarrowlogo.png' alt = 'Left Arrow'></a></td></tr>");
 
                                 // Update column sum and increment index
-                                aeAmountColSum += aeAmountSum;
                                 productSummarySrc.Append("</tr>");
                                 index++;
                             }
+                          
+                            aeAmountColSum += aeAmountSum;
+                            }
+                            else
+                            {
+                                string aeAmountString = productSummary
+                          .Where(witem => witem.Commission_Type == "VAT" && witem.DR_CR == "CR")
+                          .FirstOrDefault().AE_Amount;
+
+                                if (double.TryParse(aeAmountString, out double parsedValue))
+                                {
+                                    vat = parsedValue;
+                                }
+                                else
+                                {
+                                    // Handle the case where the conversion fails
+                                    // You may throw an exception, log an error, or assign a default value
+                                    vat = 0.0; // Default value, choose based on your requirements
+                                }
+                            }
+
+                            string aePaymentAmountString = productSummary
+                       .Where(witem => witem.Commission_Type == "Payment" && witem.DR_CR == "CR")
+                       .FirstOrDefault().AE_Amount;
+
+                            if (double.TryParse(aePaymentAmountString, out double PaymenValue))
+                            {
+                                payment = PaymenValue;
+                            }
+                            else
+                            {
+                                // Handle the case where the conversion fails
+                                // You may throw an exception, log an error, or assign a default value
+                                payment = 0.0; // Default value, choose based on your requirements
+                            }
+
+
                         });
-                        aeAmountColSumR = (aeAmountColSum == 0) ? "0.00" : ("R" + aeAmountColSum.ToString());
+                       
+                        
                     });
 
+                    aeAmountColSumR = (aeAmountColSum == 0) ? "0.00" : ("R" + aeAmountColSum.ToString());
                     // Generate the HTML string for the product summary widget
 
                     //string productInfoJson = "{VAT_Amount : '38001.27'}";

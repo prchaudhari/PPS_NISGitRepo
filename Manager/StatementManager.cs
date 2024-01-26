@@ -2720,10 +2720,10 @@ namespace nIS
                                                         commisionDetailString.Replace("{{WidgetDivHeight}}", divHeight);
                                                         // Replacing placeholder in the commisionDetailString with the generated commissionDetailSrc content
                                                         commisionDetailString = commisionDetailString.Replace("{{ppsEarningForPeriod}}", commisionDetailSrc.ToString());
-                                                        // Appending the modified commisionDetailString to the htmlString
-                                                       
-                                                    }
-                                                htmlString.Append(commisionDetailString);
+                                                    // Appending the modified commisionDetailString to the htmlString
+                                                    htmlString.Append(commisionDetailString);
+                                                }
+                                                
 
                                             }
                                         

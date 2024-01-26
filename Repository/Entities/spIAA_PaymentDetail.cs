@@ -8,7 +8,7 @@ namespace nIS
         public int Reg_ID { get; set; }
         public DateTime? Start_Date { get; set; }
         public DateTime? End_Date { get; set; }
-        public DateTime Request_DateTime { get; set; }
+        public string Request_DateTime { get; set; }
         public string ID { get; set; }
         public string Intermediary_Code { get; set; }
         public string FSP_ID { get; set; }
