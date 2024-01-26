@@ -2305,10 +2305,11 @@ namespace nIS
 
         private void BindPaymentSummaryWidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<spIAA_PaymentDetail> fspDetails, IList<BatchDetail> batchDetails)
         {
-            pageContent.Replace("{{IntTotal}}", fspDetails.First().Earning_Amount);
-            pageContent.Replace("{{Vat}}", fspDetails.First().VAT_Amount);
-            pageContent.Replace("{{TotalDue}}", (Convert.ToDouble(fspDetails.First().Earning_Amount) +
-                Convert.ToDouble(fspDetails.First().VAT_Amount)).ToString());
+            pageContent.Replace("{{IntTotal}}", "R248729.73");  // fspDetails.First().Earning_Amount);
+            pageContent.Replace("{{Vat}}", "R36881.20");    // fspDetails.First().VAT_Amount);
+            pageContent.Replace("{{TotalDue}}", "R285610.93");  
+            //(Convert.ToDouble(fspDetails.First().Earning_Amount) +
+            //    Convert.ToDouble(fspDetails.First().VAT_Amount)).ToString());
             pageContent.Replace("{{IntTotalDate}}", fspDetails.First().POSTED_DATE.ToString("MMMM yyyy"));
             // Format the date with a custom format
             string formattedOrdinalDate = FormatDateWithOrdinal(fspDetails.First().POSTED_DATE);
