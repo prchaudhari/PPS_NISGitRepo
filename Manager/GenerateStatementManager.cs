@@ -2305,9 +2305,9 @@ namespace nIS
 
         private void BindPaymentSummaryWidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<spIAA_PaymentDetail> fspDetails, IList<BatchDetail> batchDetails)
         {
-            pageContent.Replace("{{IntTotal}}", "R248729.73");  // fspDetails.First().Earning_Amount);
-            pageContent.Replace("{{Vat}}", "R36881.20");    // fspDetails.First().VAT_Amount);
-            pageContent.Replace("{{TotalDue}}", "R285610.93");  
+            pageContent.Replace("{{IntTotal}}", Utility.FormatCurrency("248729.73"));  // fspDetails.First().Earning_Amount);
+            pageContent.Replace("{{Vat}}", Utility.FormatCurrency("36881.20"));    // fspDetails.First().VAT_Amount);
+            pageContent.Replace("{{TotalDue}}", Utility.FormatCurrency("285610.93"));  
             //(Convert.ToDouble(fspDetails.First().Earning_Amount) +
             //    Convert.ToDouble(fspDetails.First().VAT_Amount)).ToString());
             pageContent.Replace("{{IntTotalDate}}", fspDetails.First().POSTED_DATE.ToString("MMMM yyyy"));
@@ -2368,7 +2368,7 @@ namespace nIS
                              aeAmountSumR = CommonUtility.concatRWithDouble(aeAmountSum.ToString());
                             if (aeAmountSum != 0) {
                                 // Append the table row to productSummarySrc
-                                productSummarySrc.Append("<tr><td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" + index + "</td><td class='fsp-bdr-right text-left fsp-bdr-bottom px-1'>" + gpCommissionTypeItem.Key.Commission_Type + "</td>" + "<td class='fsp-bdr-right text-left fsp-bdr-bottom px-1'> " + (gpPrdocutDescriptionItem.Key.Prod_Group == "Service Fee" ? "Premium Under Advise Fee" : gpPrdocutDescriptionItem.Key.Prod_Group) + "</td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1'>" + aeAmountSumR + "</td><td class='text-center fsp-bdr-bottom px-1'><a  href ='https://www.google.com/' target='_blank'><img class='leftarrowlogo' src ='../common/images/leftarrowlogo.png' alt = 'Left Arrow'></a></td></tr>");
+                                productSummarySrc.Append("<tr><td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" + index + "</td><td class='fsp-bdr-right text-left fsp-bdr-bottom px-1'>" + gpCommissionTypeItem.Key.Commission_Type + "</td>" + "<td class='fsp-bdr-right text-left fsp-bdr-bottom px-1'> " + (gpPrdocutDescriptionItem.Key.Prod_Group == "Service Fee" ? "Premium Under Advise Fee" : gpPrdocutDescriptionItem.Key.Prod_Group) + "</td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1'>" + Utility.FormatCurrency(aeAmountSumR) + "</td><td class='text-center fsp-bdr-bottom px-1'><a  href ='https://www.google.com/' target='_blank'><img class='leftarrowlogo' src ='../common/images/leftarrowlogo.png' alt = 'Left Arrow'></a></td></tr>");
 
                                 // Update column sum and increment index
                                 productSummarySrc.Append("</tr>");
@@ -2521,7 +2521,7 @@ namespace nIS
                             transaction.Where(witem => witem.INT_EXT_REF == transactionitem.FirstOrDefault().INT_EXT_REF).ToList().ForEach(item =>
                             {
                                 detailedTransactionSrc1.Append("<tr><td align = 'center' valign = 'center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" +
-                                        item.Client_Name + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Member_Ref + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'> " + item.Policy_Ref + "</td><td class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1'>" + (item.Description == "Commission Service Fee" ? "Premium Under Advise Fee" : item.Description) + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.POSTED_DATE.ToString("dd-MMM-yyyy") + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Display_Amount + "</td><td class= 'text-center fsp-bdr-bottom px-1'><a href ='https://www.google.com/' target ='_blank'><img class='leftarrowlogo' src='../common/images/leftarrowlogo.png' alt='Left Arrow'></a></td></tr>");
+                                        item.Client_Name + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Member_Ref + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'> " + item.Policy_Ref + "</td><td class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1'>" + (item.Description == "Commission Service Fee" ? "Premium Under Advise Fee" : item.Description) + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.POSTED_DATE.ToString("dd-MMM-yyyy") + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + Utility.FormatCurrency(item.Display_Amount) + "</td><td class= 'text-center fsp-bdr-bottom px-1'><a href ='https://www.google.com/' target ='_blank'><img class='leftarrowlogo' src='../common/images/leftarrowlogo.png' alt='Left Arrow'></a></td></tr>");
                                 TotalPostedAmount += ((item.TYPE == "Fiduciary_Data") && (item.Prod_Group != "VAT")) ? (Convert.ToDouble(item.Display_Amount)) : 0.0;
                             });
                             string TotalPostedAmountR = (TotalPostedAmount == 0) ? Utility.FormatCurrency("0.00"): Utility.FormatCurrency(TotalPostedAmount.ToString());
@@ -3142,7 +3142,7 @@ namespace nIS
                         commisionDetailSrc.Append("<th style='height:50px' class='text-white font-weight-bold'>Premium under advice</th></tr></thead>");
 
                         // Appending HTML for Financial Service Provider row
-                        commisionDetailSrc.Append("<tr><th class='text-left text-white font-weight-bold' colspan=" + (2 + gpCommisionType.Count) + ">Financial Service Provider: " + gpfspNameItem.GroupKey.FSP_Name?? "N/A" + "</th><tr>");
+                        //commisionDetailSrc.Append("<tr><th class='text-left text-white font-weight-bold' colspan=" + (2 + gpCommisionType.Count) + ">Financial Service Provider: " + gpfspNameItem.GroupKey.FSP_Name?? "N/A" + "</th><tr>");
 
                         // Iterating through AE_Posted_Date groups
                         aePostedRecords.ForEach(gpMonthRangeItem =>

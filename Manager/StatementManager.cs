@@ -2595,7 +2595,7 @@ namespace nIS
                                                         commisionDetailSrc.Append("<th style='height:50px' class='text-white font-weight-bold'>Premium under advice</th></tr></thead>");
 
                                                         // Appending HTML for Financial Service Provider row
-                                                        commisionDetailSrc.Append("<tr><th class='text-left text-white font-weight-bold' colspan=" + (2 + gpCommisionType.Count) + ">Financial Service Provider: " + gpfspNameItem.GroupKey.FSP_Name ?? "N/A" + "</th><tr>");
+                                                        //commisionDetailSrc.Append("<tr><th class='text-left text-white font-weight-bold' colspan=" + (2 + gpCommisionType.Count) + ">Financial Service Provider: " + gpfspNameItem.GroupKey.FSP_Name ?? "N/A" + "</th><tr>");
 
                                                         // Iterating through AE_Posted_Date groups
                                                         aePostedRecords.ForEach(gpMonthRangeItem =>
@@ -7662,7 +7662,7 @@ namespace nIS
                         commisionDetailSrc.Append("<th style='height:50px' class='text-white font-weight-bold'>Premium under advice</th></tr></thead>");
 
                         // Appending HTML for Financial Service Provider row
-                        commisionDetailSrc.Append("<tr><th class='text-left text-white font-weight-bold' colspan=" + (2 + gpCommisionType.Count) + ">Financial Service Provider: " + gpfspNameItem.GroupKey.FSP_Name ?? "N/A" + "</th><tr>");
+                        //commisionDetailSrc.Append("<tr><th class='text-left text-white font-weight-bold' colspan=" + (2 + gpCommisionType.Count) + ">Financial Service Provider: " + gpfspNameItem.GroupKey.FSP_Name ?? "N/A" + "</th><tr>");
 
                         // Iterating through AE_Posted_Date groups
                         aePostedRecords.ForEach(gpMonthRangeItem =>
