@@ -69,7 +69,7 @@
         public static string FormatCurrency(double amount)
         {
             string formattedAmount = amount.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-ZA"));
-            return (amount < 0 ? "-" : "") + formattedAmount;
+            return (amount < 0 ? "-" : "") + formattedAmount.Replace(",", ".");
         }
 
         //ILog _log = log4net.LogManager.GetLogger(typeof(Utility));
