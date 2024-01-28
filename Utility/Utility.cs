@@ -55,6 +55,12 @@
             return description.Description;
         }
 
+        public static string FormatCurrency(string input)
+        {
+            string formattedAmount = input.ToString("R 0,0", System.Globalization.CultureInfo.GetCultureInfo("en-ZA"));
+            return formattedAmount;
+        }
+
         //ILog _log = log4net.LogManager.GetLogger(typeof(Utility));
 
         //ILog _schdeuleLog = log4net.LogManager.GetLogger("RunSchedule");

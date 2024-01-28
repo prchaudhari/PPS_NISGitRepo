@@ -792,16 +792,16 @@ export class PPSDetailedTransactionsComponent {
           <!-- Earnings for Period Heading -->
           <h2 class="pps-earning-for-period-heading dark-blue-bg text-white">Earnings For Period</h2>
 
-          <!-- Monthly Production Summary Section -->
+          <!-- Monthly production summary Section -->
           <div class="earnings-section-monthly d-flex">
             <!-- Two Columns Layout -->
             <div class="d-flex gap-1 w-100">
-              <!-- Monthly Production Summary T1 -->
+              <!-- Monthly production summary T1 -->
               <div class="col-6">
-                <!-- Heading for Monthly Production Summary T1 -->
-                <h4 class="monthly-production-summary skyblue-bg-title text-white text-center">Monthly Production Summary</h4>
+                <!-- Heading for Monthly production summary T1 -->
+                <h4 class="monthly-production-summary skyblue-bg-title text-white text-center">Monthly production summary</h4>
                 <div class="monthly-table">
-                  <!-- Table for Monthly Production Summary T1 -->
+                  <!-- Table for Monthly production summary T1 -->
                   <table width="100%" cellpadding="0" cellspacing="0">
                     <!-- Table Headers -->
                   <thead>
@@ -811,14 +811,14 @@ export class PPSDetailedTransactionsComponent {
                       <th class="text-right">Premium<br/>Under Advice</th>
                     </tr>
                   </thead>
-                    <!-- Table Body - Display Monthly Production Summary T1 -->
+                    <!-- Table Body - Display Monthly production summary T1 -->
                     <tbody>
                       <tr *ngFor="let item of monthlyProductionSummaryT1List">
                         <td>{{ item.Month }}</td>
                         <td class="text-right">R{{ item.Premium_Under_Advice_Td1.toFixed(2) }}</td>
                         <td class="text-right">R{{ item.Premium_Under_Advice_Td2.toFixed(2) }}</td>
                       </tr>
-                      <!-- Total row for Monthly Production Summary T1 -->
+                      <!-- Total row for Monthly production summary T1 -->
                       <tr>
                         <td class="dark-blue-bg text-white font-weight-bold">Total</td>
                         <td class="text-right font-weight-bold">R{{premiumUnderAdviceTd1Sum}}</td>
@@ -829,12 +829,12 @@ export class PPSDetailedTransactionsComponent {
                 </div>
               </div>
 
-              <!-- Monthly Production Summary T2 -->
+              <!-- Monthly production summary T2 -->
               <div class="col-6">
-                <!-- Heading for Monthly Production Summary T2 -->
-                <h4 class="monthly-production-summary skyblue-bg-title text-white text-center">Monthly Production Summary</h4>
+                <!-- Heading for Monthly production summary T2 -->
+                <h4 class="monthly-production-summary skyblue-bg-title text-white text-center">Monthly production summary</h4>
                 <div class="monthly-table">
-                  <!-- Table for Monthly Production Summary T2 -->
+                  <!-- Table for Monthly production summary T2 -->
                   <table width="100%" cellpadding="0" cellspacing="0">
                     <!-- Table Headers -->
                   <thead>
@@ -844,14 +844,14 @@ export class PPSDetailedTransactionsComponent {
                       <th class="text-right">Fiduciary Fees</th>
                     </tr>
                   </thead>
-                    <!-- Table Body - Display Monthly Production Summary T2 -->
+                    <!-- Table Body - Display Monthly production summary T2 -->
                     <tbody>
                       <tr *ngFor="let item of monthlyProductionSummaryT2List">
                         <td>{{ item.Month }}</td>
                         <td class="text-right">R{{ item.Fiduciary_Fees_Td1.toFixed(2) }}</td>
                         <td class="text-right">R{{ item.Fiduciary_Fees_Td2.toFixed(2) }}</td>
                       </tr>
-                      <!-- Total row for Monthly Production Summary T2 -->
+                      <!-- Total row for Monthly production summary T2 -->
                       <tr>
                         <td class="dark-blue-bg text-white font-weight-bold">Total</td>
                         <td class="text-right font-weight-bold">R{{fiduciaryFeesTd1Sum}}</td>
@@ -869,7 +869,7 @@ export class PPSDetailedTransactionsComponent {
             <div class="row">
               <div class="col-3 text-right"></div>
               <div class="col-3 text-right">
-                <div class="dark-blue-bg text-white text-right font-weight-bold pe-3 py-1">Total Earnings</div>
+                <div class="dark-blue-bg text-white text-right font-weight-bold pe-3 py-1">Total earnings</div>
               </div>
               <div class="col-3 text-left">
                 <div class="total-price-title py-1 font-weight-bold text-center">R{{ totalEarnings }}</div>
@@ -878,26 +878,26 @@ export class PPSDetailedTransactionsComponent {
             </div>
           </div>
 
-          <!-- FSP Account Postings Summary Section -->
+          <!-- FSP account postings summary Section -->
           <div class="earnings-section-monthly d-flex mb-2">
             <div class="d-flex gap-1 w-100">
-              <!-- FSP Account Postings Summary -->
+              <!-- FSP account postings summary -->
               <div class="col-6">
-                <!-- Heading for FSP Account Postings Summary -->
-                <h4  class="monthly-production-summary skyblue-bg-title text-white text-center">FSP Account Postings Summary</h4>
+                <!-- Heading for FSP account postings summary -->
+                <h4  class="monthly-production-summary skyblue-bg-title text-white text-center">FSP account postings summary</h4>
                 <div class="monthly-table">
-                  <!-- Table for FSP Account Postings Summary -->
+                  <!-- Table for FSP account postings summary -->
                   <table width="100%" cellpadding="0" cellspacing="0">
                     <!-- Table Headers -->
                     <thead>
                       <tr>
                         <th class="text-white font-weight-bold">Posted Date</th>
-                        <th class="text-right">Posted 1st Year</th>
-                        <th class="text-right">Posted 2nd Year</th>
-                        <th class="text-right">Posted Amount</th>
+                        <th class="text-right">Premium under advice</th>
+                        <th class="text-right">Premium under advice</th>
+                        <th class="text-right">Premium under advice</th>
                       </tr>
                     </thead>
-                    <!-- Table Body - Display FSP Account Postings Summary -->
+                    <!-- Table Body - Display FSP account postings summary -->
                     <tbody>
                       <tr *ngFor="let item of FSPAccountPostingsSummaryList; ">
                         <td>{{ item.Posted_Date }}</td>
@@ -905,7 +905,7 @@ export class PPSDetailedTransactionsComponent {
                         <td class="text-right">R{{ item.Posted_Second_Year.toFixed(2) }}</td>
                         <td class="text-right">R{{item.Posted_First_Year+ item.Posted_Second_Year}}</td>
                       </tr>
-                      <!-- Total row for FSP Account Postings Summary -->
+                      <!-- Total row for FSP account postings summary -->
                       <tr>
                         <td class="dark-blue-bg text-white font-weight-bold">Total</td>
                        <td class="text-right font-weight-bold">R{{ firstYearSum }}</td>
@@ -917,31 +917,31 @@ export class PPSDetailedTransactionsComponent {
                 </div>
               </div>
 
-              <!-- Future Dated Production Section -->
+              <!-- Future-dated production Section -->
               <div class="col-6">
-                <!-- Heading for Future Dated Production -->
-                <h4 class="monthly-production-summary skyblue-bg-title text-white text-center">Future Dated Production</h4>
+                <!-- Heading for Future-dated production -->
+                <h4 class="monthly-production-summary skyblue-bg-title text-white text-center">Future-dated production</h4>
                 <div class="monthly-table">
-                  <!-- Table for Future Dated Production -->
+                  <!-- Table for Future-dated production -->
                   <table width="100%" cellpadding="0" cellspacing="0">
                     <!-- Table Headers -->
                     <thead>
                       <tr>
-                        <th class="text-white font-weight-bold">Due Date</th>
-                        <th class="text-right">Product Description</th>
-                        <th class="text-right">Allocated Amount</th>
+                        <th class="text-white font-weight-bold">Due date</th>
+                        <th class="text-right">Fiduciary fees</th>
+                        <th class="text-right">Allocated amount</th>
                       </tr>
                     </thead>
-                    <!-- Table Body - Display Future Dated Production -->
+                    <!-- Table Body - Display Future-dated production -->
                     <tbody>
                       <tr *ngFor="let item of FutureDatedProductionList;">
                         <td>{{ item.Due_Date }}</td>
                         <td> {{ item.Product_Description.trim() == 'Commission Service Fee' ? 'Premium Under Advise Fee' : item.Product_Description }} </td>
                         <td class="text-right">R{{ item.Allocated_Amount.toFixed(2) }}</td>
                       </tr>
-                      <!-- Total row for Future Dated Production -->
+                      <!-- Total row for Future-dated production -->
                       <tr>
-                        <td class="dark-blue-bg text-white font-weight-bold text-right" colspan="2">Total Earnings</td>
+                        <td class="dark-blue-bg text-white font-weight-bold text-right" colspan="2">Total earnings</td>
                         <td  class="font-weight-bold text-right">R{{ allocatedAmountSum }}</td>
                       </tr>
                     </tbody>
@@ -959,7 +959,7 @@ export class PPSEarningForPeriodComponent {
   // Input property to receive data from parent component
   @Input() widgetsGridsterItemArray: any[] = [];
 
-  // Monthly Production Summary T1 Data
+  // Monthly production summary T1 Data
   public monthlyProductionSummaryT1List: any[] = [
     { Month: "1 Sep-30 Sep", Premium_Under_Advice_Td1: 41940.06, Premium_Under_Advice_Td2: 13980.03	 },
     { Month: "1 Nov-30 Nov", Premium_Under_Advice_Td1: 12258.45, Premium_Under_Advice_Td2: 4086.16 },
@@ -967,7 +967,7 @@ export class PPSEarningForPeriodComponent {
     { Month: "1 Jul-31 Jul", Premium_Under_Advice_Td1: 4525.03, Premium_Under_Advice_Td2: 1508.35 }
   ];
 
-  // Monthly Production Summary T2 Data
+  // Monthly production summary T2 Data
   public monthlyProductionSummaryT2List: any[] = [
     { Month: "1 Sep-30 Sep", Fiduciary_Fees_Td1: 41940.06, Fiduciary_Fees_Td2: 13980.03	 },
     { Month: "1 Nov-30 Nov", Fiduciary_Fees_Td1: 12258.45, Fiduciary_Fees_Td2: 4086.16 },
@@ -975,7 +975,7 @@ export class PPSEarningForPeriodComponent {
     { Month: "1 Jul-31 Jul", Fiduciary_Fees_Td1: 4525.03, Fiduciary_Fees_Td2: 1508.35 }
   ];
 
-  // FSP Account Postings Summary Data
+  // FSP account postings summary Data
   public FSPAccountPostingsSummaryList: any[] = [
     { Posted_Date: "10-Dec-2023", Posted_First_Year: -84343.70, Posted_Second_Year: -28114.52 },
     { Posted_Date: "07-Oct-2022", Posted_First_Year: 95952.63, Posted_Second_Year: 0.00 },
@@ -989,7 +989,7 @@ export class PPSEarningForPeriodComponent {
     { Posted_Date: "08-Aug-2022", Posted_First_Year: 10211.82, Posted_Second_Year: 0.00 }
   ];
 
-  // Future Dated Production Data
+  // Future-dated production Data
   public FutureDatedProductionList: any[] = [
     { Due_Date: "1 Sep-30 Sep", Product_Description: "Commission Service Fee", Allocated_Amount: 13980.03 },
     { Due_Date: "1 Nov-30 Nov", Product_Description: "Safe Custody Service Fee VAT", Allocated_Amount: 4086.16 },
