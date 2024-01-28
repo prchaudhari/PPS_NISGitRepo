@@ -57,8 +57,19 @@
 
         public static string FormatCurrency(string input)
         {
-            string formattedAmount = input.ToString("R 0,0", System.Globalization.CultureInfo.GetCultureInfo("en-ZA"));
-            return formattedAmount;
+            if(input.Contains("R"))
+                return input;
+
+            decimal amount = decimal.Parse(input, System.Globalization.CultureInfo.InvariantCulture); // Parse the string to a decimal
+
+            string formattedAmount = amount.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-ZA"));
+            return (amount < 0 ? "-" : "") + formattedAmount;
+        }
+
+        public static string FormatCurrency(double amount)
+        {
+            string formattedAmount = amount.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-ZA"));
+            return (amount < 0 ? "-" : "") + formattedAmount;
         }
 
         //ILog _log = log4net.LogManager.GetLogger(typeof(Utility));
