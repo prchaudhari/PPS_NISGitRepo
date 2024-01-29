@@ -717,7 +717,13 @@ namespace nIS
                                                         });
                                                        
                                                     });
-                                                    detailedTransactionSrc.Append("</table></div>");
+                                                    detailedTransactionSrc.Append("</table>");
+
+                                                    //Adding button
+                                                    detailedTransactionSrc.Append("<div class='text-center py-3'><a href='#'><img src='../common/images/IfQueryBtn.jpg'></a></div>");
+
+                                                    detailedTransactionSrc.Append("</div>");
+                                                    
                                                     detailedTransactionString = detailedTransactionString.Replace("{{ppsDetailedTransactions}}", detailedTransactionSrc.ToString());
                                                     htmlString.Append(detailedTransactionString);
                                                 }

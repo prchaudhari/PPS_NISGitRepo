@@ -759,6 +759,8 @@ export class PPSDetails2Component {
                                        <td class="dark-blue-bg text-white font-weight-bold " colspan="2">Sub Total</td>
                                        <td colspan="2" class="font-weight-bold text-right fs-16 pps-bg-gray" height="40">R29250.62</td></tr>
                             </table>
+
+                            <div class="text-center py-3"><a href="#"><img src="../common/images/IfQueryBtn.jpg"></a></div>
                     </div>
 
                     

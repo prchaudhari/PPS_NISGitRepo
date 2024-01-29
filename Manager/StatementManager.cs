@@ -2828,7 +2828,13 @@ namespace nIS
                                                             });
 
                                                         });
-                                                        detailedTransactionSrc.Append("</table></div>");
+                                                        detailedTransactionSrc.Append("</table>");
+
+                                                        //Adding button
+                                                        detailedTransactionSrc.Append("<div class='text-center py-3'><a href='#'><img src='../common/images/IfQueryBtn.jpg'></a></div>");
+
+                                                        detailedTransactionSrc.Append("</div>");
+
                                                         detailedTransactionString = detailedTransactionString.Replace("{{ppsDetailedTransactions}}", detailedTransactionSrc.ToString());
                                                         htmlString.Append(detailedTransactionString);
                                                     }
@@ -7385,7 +7391,13 @@ namespace nIS
                         TotalPostedAmount = (Convert.ToDouble(item.ALLOCATED_AMOUNT));
                     });
                     string TotalPostedAmountR = (TotalPostedAmount == 0) ? "0.00" : Utility.FormatCurrency(TotalPostedAmount.ToString());
-                    detailedTransactionSrc.Append("<tr><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold fs-16'>Sub Total</td><td class='' ></td><td class='fw-bold fs-16' height='40'>" + TotalPostedAmountR + "</td></tr></table></div>");
+                    detailedTransactionSrc.Append("<tr><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold fs-16'>Sub Total</td><td class='' ></td><td class='fw-bold fs-16' height='40'>" + TotalPostedAmountR + "</td></tr></table>");
+
+                    //Adding button
+                    detailedTransactionSrc.Append("<div class='text-center py-3'><a href='#'><img src='../common/images/IfQueryBtn.jpg'></a></div>");
+
+                    detailedTransactionSrc.Append("</div>");
+
                     TotalPostedAmount = 0;
 
                 });
