@@ -377,6 +377,40 @@
     <Content Include="Resources\js\series-label.js" />
     <Content Include="Resources\sampledata\icon-image.png" />
     <Content Include="Resources\sampledata\SampleVideo.mp4" />
+    <Content Include="UserFiles\HeaderFooters\At a Glance_footer.html" />
+    <Content Include="UserFiles\HeaderFooters\At a Glance_header.html" />
+    <Content Include="UserFiles\HeaderFooters\common\css\bootstrap.min.css" />
+    <Content Include="UserFiles\HeaderFooters\common\css\font-awesome.min.css" />
+    <Content Include="UserFiles\HeaderFooters\common\css\ltr.css" />
+    <Content Include="UserFiles\HeaderFooters\common\css\site.css" />
+    <Content Include="UserFiles\HeaderFooters\common\fonts\fontawesome-webfont.svg" />
+    <Content Include="UserFiles\HeaderFooters\common\images\ABSAHeader.png" />
+    <Content Include="UserFiles\HeaderFooters\common\images\CorporateSaverConfirmLogo.png" />
+    <Content Include="UserFiles\HeaderFooters\common\images\eConfirm.png" />
+    <Content Include="UserFiles\HeaderFooters\common\images\Footer_Image.png" />
+    <Content Include="UserFiles\HeaderFooters\common\images\Footer_Image2.png" />
+    <Content Include="UserFiles\HeaderFooters\common\images\logo.png" />
+    <Content Include="UserFiles\HeaderFooters\common\images\logo3.jpg" />
+    <Content Include="UserFiles\HeaderFooters\common\images\NEDBANKLogo.png" />
+    <Content Include="UserFiles\HeaderFooters\common\images\NedBankLogoBlack.png" />
+    <Content Include="UserFiles\HeaderFooters\common\images\NEDBANK_Name.png" />
+    <Content Include="UserFiles\HeaderFooters\common\images\nisLogo.png" />
+    <Content Include="UserFiles\HeaderFooters\common\images\PML.png" />
+    <Content Include="UserFiles\HeaderFooters\common\images\See_money_differently.PNG" />
+    <Content Include="UserFiles\HeaderFooters\common\images\Wealth_Footer.png" />
+    <Content Include="UserFiles\HeaderFooters\common\js\accessibility.js" />
+    <Content Include="UserFiles\HeaderFooters\common\js\bootstrap.min.js" />
+    <Content Include="UserFiles\HeaderFooters\common\js\export-data.js" />
+    <Content Include="UserFiles\HeaderFooters\common\js\exporting.js" />
+    <Content Include="UserFiles\HeaderFooters\common\js\highcharts.js" />
+    <Content Include="UserFiles\HeaderFooters\common\js\jquery.min.js" />
+    <Content Include="UserFiles\HeaderFooters\common\js\popper.min.js" />
+    <Content Include="UserFiles\HeaderFooters\common\js\script.js" />
+    <Content Include="UserFiles\HeaderFooters\common\js\series-label.js" />
+    <Content Include="UserFiles\HeaderFooters\FSP_footer.html" />
+    <Content Include="UserFiles\HeaderFooters\FSP_header.html" />
+    <Content Include="UserFiles\HeaderFooters\PPS_footer.html" />
+    <Content Include="UserFiles\HeaderFooters\PPS_header.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -461,6 +495,17 @@
     <Content Include="Resources\fonts\MARKPRO.woff" />
     <Content Include="Resources\fonts\MARKPROBOLD.woff" />
     <Content Include="Resources\fonts\MARKPROMEDIUM.woff" />
+    <Content Include="UserFiles\HeaderFooters\common\fonts\fontawesome-webfont.eot" />
+    <Content Include="UserFiles\HeaderFooters\common\fonts\fontawesome-webfont.ttf" />
+    <Content Include="UserFiles\HeaderFooters\common\fonts\fontawesome-webfont.woff" />
+    <Content Include="UserFiles\HeaderFooters\common\fonts\fontawesome-webfont.woff2" />
+    <Content Include="UserFiles\HeaderFooters\common\fonts\FontAwesome.otf" />
+    <Content Include="UserFiles\HeaderFooters\common\fonts\Mark Pro Bold.ttf" />
+    <Content Include="UserFiles\HeaderFooters\common\fonts\Mark Pro.ttf" />
+    <Content Include="UserFiles\HeaderFooters\common\fonts\MarkPro-Regular.ttf" />
+    <Content Include="UserFiles\HeaderFooters\common\fonts\MARKPRO.woff" />
+    <Content Include="UserFiles\HeaderFooters\common\fonts\MARKPROBOLD.woff" />
+    <Content Include="UserFiles\HeaderFooters\common\fonts\MARKPROMEDIUM.woff" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -471,6 +516,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="UserFiles\Statements\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CryptoManager\CryptoManager.csproj">
