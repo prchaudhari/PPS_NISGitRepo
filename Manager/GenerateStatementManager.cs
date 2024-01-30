@@ -2305,6 +2305,7 @@ namespace nIS
 
         private void BindPaymentSummaryWidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<spIAA_PaymentDetail> fspDetails, IList<BatchDetail> batchDetails)
         {
+
             pageContent.Replace("{{IntTotal}}", Utility.FormatCurrency("248729.73"));  // fspDetails.First().Earning_Amount);
             pageContent.Replace("{{Vat}}", Utility.FormatCurrency("36881.20"));    // fspDetails.First().VAT_Amount);
             pageContent.Replace("{{TotalDue}}", Utility.FormatCurrency("285610.93"));  
@@ -2422,7 +2423,7 @@ namespace nIS
                     // Replace placeholders in the HTML string with actual values
                     pageContent.Replace("{{QueryBtn}}", "../common/images/IfQueryBtn.jpg");
                     pageContent.Replace("{{ProductSummary}}", productSummarySrc.ToString());
-                    pageContent.Replace("{{TotalDue}}", aeAmountColSumR);
+                    pageContent.Replace("{{ProductTotalDue}}", aeAmountColSumR);
                     pageContent.Replace("{{VATDue}}", CommonUtility.concatRWithDouble(vat.ToString()));
 
                     // Calculate grand total due
