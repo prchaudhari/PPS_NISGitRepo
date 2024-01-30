@@ -11,43 +11,13 @@ namespace nIS
 
         public static string concatRWithDouble(string value)
         {
-            // Initialize the result variable
-            string result;
+            if (value.Contains("R"))
+                return value;
 
-            // Declare a variable to store the parsed double value
-            double valueDbl;
+            decimal amount = decimal.Parse(value, System.Globalization.CultureInfo.InvariantCulture); // Parse the string to a decimal
 
-            // Try to parse the input value to a double
-            bool success = double.TryParse(value, out valueDbl);
-
-            // Check if parsing was successful
-            if (success)
-            {
-                // Check if the parsed double value is negative
-                if (valueDbl < 0)
-                {
-                    result = "-R" + (-valueDbl).ToString("F2");
-                }
-                // Check if the parsed double value is zero
-                else if (valueDbl == 0)
-                {
-                    result = "R" + "0.00";
-                }
-                // If the parsed double value is positive
-                else
-                {
-                    result = "R" + valueDbl.ToString("F2");
-                }
-
-                // Return the result
-                return result;
-            }
-            else
-            {
-                // If parsing fails, print an error message and return null
-                Console.WriteLine($"Attempted conversion of '{value ?? "<null>"}' failed.");
-                return result = null;
-            }
+            string formattedAmount = amount.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-ZA"));
+            return formattedAmount.Replace(",", ".");
         }
         public static string GetMonthRange(int month)
         {

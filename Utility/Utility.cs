@@ -4,6 +4,7 @@
 
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
+    using PuppeteerSharp;
     using SelectPdf;
     using System;
     using System.Collections.Generic;
@@ -12,22 +13,14 @@
     using System.Drawing.Imaging;
     using System.Globalization;
     using System.IO;
-    using System.IO.Compression;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Net.Mail;
-    //using Websym.Core.ConfigurationManager;
-    //using Websym.Core.ResourceManager;
-    //using Websym.Core.EventManager;
-    //using Websym.Core.NotificationEngine;
     using System.Reflection;
     using System.Text;
-    using Websym.Core.ConfigurationManager;
-    using PuppeteerSharp;
     using System.Threading.Tasks;
-
-    //using Microsoft.Practices.Unity;
+    using Websym.Core.ConfigurationManager;
 
 
     #endregion
@@ -55,9 +48,22 @@
             return description.Description;
         }
 
-        //ILog _log = log4net.LogManager.GetLogger(typeof(Utility));
+        public static string FormatCurrency(string input)
+        {
+            if (input.Contains("R"))
+                return input;
 
-        //ILog _schdeuleLog = log4net.LogManager.GetLogger("RunSchedule");
+            decimal amount = decimal.Parse(input, System.Globalization.CultureInfo.InvariantCulture); // Parse the string to a decimal
+
+            string formattedAmount = amount.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-ZA"));
+            return ((amount < 0 ? "-" : "") + formattedAmount.Replace(",", ".")).Replace("--", "-");
+        }
+
+        public static string FormatCurrency(double amount)
+        {
+            string formattedAmount = amount.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-ZA"));
+            return ((amount < 0 ? "-" : "") + formattedAmount.Replace(",", ".")).Replace("--", "-");
+        }
 
         /// <summary>
         /// This method will helps to get enum key valuee pair of perticular entity of class.
@@ -196,7 +202,6 @@
             string sqlConnectionString = string.Empty;
             try
             {
-                //return System.Configuration.ConfigurationManager.ConnectionStrings["FMSEntitiesDataContext"].ConnectionString;
                 ConfigurationSearchParameter configurationSearchParameter = new ConfigurationSearchParameter();
                 configurationSearchParameter.SectionName = section;
                 configurationSearchParameter.ConfigurationKey = configurationKey;
@@ -211,9 +216,6 @@
                 }
 
                 sqlConnectionString = sqlConnectionString.EndsWith(";") ? sqlConnectionString : sqlConnectionString + ";";
-                // sqlConnectionString = "metadata=res://*/nVidYoDataContext.csdl|res://*/nVidYoDataContext.ssdl|res://*/nVidYoDataContext.msl;provider=System.Data.SqlClient;provider connection string=';Data Source=192.168.100.7;Initial Catalog=nvidyo;User ID=sa;Password=Admin@123;multipleactiveresultsets=True;application name=EntityFramework';";
-
-                //sqlConnectionString = @"metadata=res://*/nVidYoDataContext.csdl|res://*/nVidYoDataContext.ssdl|res://*/nVidYoDataContext.msl;provider=System.Data.SqlClient;provider connection string=';" + sqlConnectionString + "multipleactiveresultsets=True;application name=EntityFramework';";
             }
             catch (Exception exception)
             {
@@ -222,32 +224,6 @@
 
             return sqlConnectionString;
         }
-
-        /// <summary>
-        /// This method gets this list of localized resources as per the specified search parameter
-        /// </summary>
-        /// <param name="resourceSearchParameter">The resource search parameter.</param>
-        /// <param name="resourceBaseURLKey">The resource base URL key.</param>
-        /// <param name="tenantKey">The tenant key.</param>
-        /// <param name="tenantCode">The tenant code.</param>
-        /// <returns>
-        /// Returns the list of resources for a particular locale
-        /// </returns>
-        //public IList<Resource> GetResources(ResourceSearchParameter resourceSearchParameter, string resourceBaseURLKey, string tenantKey, string tenantCode)
-        //{
-        //    IList<Resource> resources = null;
-        //    try
-        //    {
-        //        string resourceBaseURL = System.Configuration.ConfigurationManager.AppSettings[resourceBaseURLKey];
-        //        resources = JsonConvert.DeserializeObject<List<Resource>>(this.ExecuteWebRequest(resourceBaseURL, "Resource", "Get", JsonConvert.SerializeObject(resourceSearchParameter), tenantKey, tenantCode.ToString()));
-
-        //        return resources;
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        throw exception;
-        //    }
-        //}
 
         /// <summary>
         /// This method gets this list of localized resources for cshtml as per the specified search parameter
@@ -261,24 +237,6 @@
         public Dictionary<string, string> GetResourcesForUI(string culture, string sectionName, string resourceBaseUrl, string tenantKey, string defaultTenant)
         {
             Dictionary<string, string> resourceItems = new Dictionary<string, string>();
-            //try
-            //{
-            //    ResourceSearchParameter resourceSearchParameter = new ResourceSearchParameter();
-            //    resourceSearchParameter.Locale = culture;
-            //    resourceSearchParameter.SectionName = sectionName;
-            //    IList<Resource> resourceList = this.GetResources(resourceSearchParameter, resourceBaseUrl, tenantKey, defaultTenant);
-            //    if (resourceList.Count > 0)
-            //    {
-            //        resourceList.ToList().ForEach(section => section.ResourceSections.ToList()
-            //        .ForEach(item => item.ResourceItems.ToList()
-            //        .ForEach(data => resourceItems.Add(data.Key, data.Value))));
-            //    }
-            //}
-            //catch (Exception)
-            //{
-            //    throw;
-            //}
-
             return resourceItems;
         }
 
@@ -346,8 +304,6 @@
 
                 client.BaseAddress = new Uri(baseURL);
                 HttpResponseMessage response = null;
-                // response = client.PostAsync(baseURL + actionPath, new Content(parameters)).Result;
-                //response = client.PostAsJsonAsync(baseURL + actionPath, parameters).Result;
                 string responseString = response.Content.ReadAsStringAsync().Result;
 
                 return response;
@@ -382,7 +338,6 @@
                     {
                         client.DefaultRequestHeaders.Add(header.Key, header.Value);
                     }
-                    //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
                 }
 
                 client.BaseAddress = new Uri(baseURL);
@@ -390,7 +345,6 @@
                 using (StringContent content = new StringContent(parameters, Encoding.Default, "application/x-www-form-urlencoded"))
                 {
                     response = client.PostAsync(baseURL + actionPath, content).Result;
-                    //response = client.PostAsJsonAsync(baseURL + actionPath, parameters).Result;
                     string responseString = response.Content.ReadAsStringAsync().Result;
                 }
                 return response;
@@ -429,7 +383,6 @@
 
                 client.BaseAddress = new Uri(baseURL);
                 HttpResponseMessage response = null;
-                //response = client.PutAsJsonAsync(baseURL + actionPath, parameters).Result;
                 return response;
             }
             catch (Exception exception)
@@ -462,23 +415,12 @@
                     foreach (KeyValuePair<string, string> header in headersDictionary)
                     {
                         pairs.Add(new KeyValuePair<string, string>(header.Key, header.Value));
-                        //client.DefaultRequestHeaders.Add(header.Key, header.Value);
                     }
                 }
-
-                //var pairs = new List<KeyValuePair<string, string>>
-                //{
-                //    new KeyValuePair<string, string>("grant_type", "password"),
-                //    new KeyValuePair<string, string>("Client_Id", ModelConstants.DEFAULTTENANTVALUE),
-                //    new KeyValuePair<string, string>("UserName", model.Email),
-                //    new KeyValuePair<string, string>("password", model.Password)
-                //};
-
                 FormUrlEncodedContent content = new FormUrlEncodedContent(headersDictionary);
                 client.BaseAddress = new Uri(baseURL);
                 HttpResponseMessage response = null;
                 response = client.PostAsync(baseURL + actionPath, content).Result;
-                //response = client.PostAsync(baseURL + actionPath, parameters, new FormUrlEncodedMediaTypeFormatter() { }/*new MediaTypeFormatter() { }*/).Result;
 
                 return response;
             }
@@ -522,73 +464,6 @@
             }
         }
 
-        //public IList<Websym.Core.EventManager.Event> AddUserNotificationSubscription(EventSearchParameter eventSearchParameter, DeliveryMode deliveryMode, string userIdentifier, string contactNumber, string emailAddress, string tenantCode)
-        //{
-        //    try
-        //    {
-        //        string eventManagerBaseURL = System.Configuration.ConfigurationManager.AppSettings["EventManagerBaseURL"]?.ToString();
-        //        string subscriptionManagerBaseURL = System.Configuration.ConfigurationManager.AppSettings["SubscriptionManagerBaseURL"]?.ToString();
-        //        IDictionary<string, string> headerValues = new Dictionary<string, string>();
-        //        headerValues.Add("TenantCode", tenantCode);
-
-        //        HttpResponseMessage response = this.HttpPostRequest(eventManagerBaseURL, "event/get", eventSearchParameter, headerValues);
-        //        if (response.IsSuccessStatusCode)
-        //        {
-        //            IList<Websym.Core.EventManager.Event> eventList = JsonConvert.DeserializeObject<IList<Websym.Core.EventManager.Event>>(response.Content.ReadAsStringAsync().Result);
-        //            if (eventList == null && eventList.Count() == 0)
-        //            {
-        //                throw new Exception("Event list not found.");
-        //            }
-
-        //            IList<Subscription> subscriptions = eventList?.Select(eventDetail => new Subscription()
-        //            {
-        //                ComponentCode = eventDetail.ComponentCode,
-        //                EntityName = eventDetail.EntityName,
-        //                EventCode = eventDetail.EventCode,
-        //                UserIdentifier = userIdentifier,
-        //                MobileNumber = contactNumber,
-        //                EmailAddress = emailAddress,
-        //                DeliveryMode = deliveryMode,
-        //                IsActive = true
-        //            })
-        //            .ToList();
-
-        //            response = this.HttpPostRequest(subscriptionManagerBaseURL, "subscription/add", subscriptions, headerValues);
-        //            if (response.IsSuccessStatusCode)
-        //            {
-        //                return eventList;
-        //            }
-        //        }
-
-        //        return null;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //}
-
-        //public bool SendNotification(EventContext eventContext, DeliveryMode deliveryMode, string tenantCode)
-        //{
-        //    try
-        //    {
-        //        string notificationManagerBaseURL = System.Configuration.ConfigurationManager.AppSettings["NotificationEngineApiUrl"]?.ToString();
-        //        IDictionary<string, string> headerValues = new Dictionary<string, string>();
-        //        headerValues.Add("TenantCode", tenantCode);
-
-        //        HttpResponseMessage response = this.HttpPostRequest(notificationManagerBaseURL, "notification/ProcessNotification?deliveryMode=" + deliveryMode.ToString(), eventContext, headerValues);
-        //        if (response.IsSuccessStatusCode)
-        //        {
-        //            return true;
-        //        }
-
-        //        return false;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //}
         /// <summary>
         /// This method help to write html string to actual file
         /// </summary>
@@ -599,8 +474,6 @@
         public string WriteToFile(string Message, string fileName, string scheduleName, string batchName, long customerId, string baseURL, string outputLocation, bool printPdf = false, string headerHtml = "", string footerHtml = "", string segment = "", string language = "")
         {
             string resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
-            //string statementDestPath = outputLocation + "\\Statements" + "\\" + batchId;
-            //string statementPath = baseURL + "\\Statements" + "\\" + batchId + "\\" + customerId + "\\" + fileName;
             string statementDestPath = outputLocation + "\\Statements" + "\\" + scheduleName + "\\" + batchName;
             string statementPath = baseURL + "\\Statements" + "\\" + scheduleName + "\\" + batchName + "\\" + customerId + "\\" + fileName;
             if (!Directory.Exists(statementDestPath))
@@ -635,7 +508,6 @@
                 DirectoryCopy(resourceFilePath, (statementDestPath + "\\common"), true);
             }
 
-           // string pdfGenerationError = null;
             //Printing PDF
             if (printPdf)
             {
@@ -643,34 +515,17 @@
                 bool.TryParse(System.Configuration.ConfigurationManager.AppSettings["DeleteHtmlAfterPdfGenerate"], out deleteHtmlAfterPdfGenerate);
                 var outputPdfPath = Path.Combine(path, Path.GetFileNameWithoutExtension(fileName) + ".pdf");
 
-
-
-                //  pdfGenerationError =  GeneratePdf(filepath, outputPdfPath, segment, language);
-
                 Task.Run(async () =>
                 {
                     var result = await GeneratePdf(filepath, outputPdfPath, headerHtml, language);
-                    if (string.IsNullOrEmpty(result)) {
+                    if (string.IsNullOrEmpty(result))
+                    {
                         if (deleteHtmlAfterPdfGenerate)
                         {
                             File.Delete(filepath);
                         }
                     };
                 }).Wait();
-
-                //if ( await GeneratePdf(filepath, outputPdfPath, segment, language)!=null)
-                //{
-
-                //}
-                //else
-                //{
-                //    //if (deleteHtmlAfterPdfGenerate)
-                //    //{
-                //    //    File.Delete(filepath);
-                //    //}
-                //}
-
-               
             }
 
             return filepath;
@@ -765,27 +620,6 @@
         {
             CreateAndWriteToZipFileCount += 1;
             var callerName = (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name;
-            //  _log.Info($"CreateAndWriteToZipFile is being called {CreateAndWriteToZipFileCount} time. Called by {callerName}");
-
-            ////create folder to store the html statement files for current batch customers
-            //string path = outputLocation + "\\Statements" + "\\" + batchId + "\\";
-            //if (!Directory.Exists(path))
-            //{
-            //    Directory.CreateDirectory(path);
-            //}
-
-            ////create media folder for common images and videos files of asset library
-            //string mediaPath = path + "\\common\\media\\";
-            //if (!Directory.Exists(mediaPath))
-            //{
-            //    Directory.CreateDirectory(mediaPath);
-            //}
-
-            ////common resource files path 
-            //string resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
-
-            //string zipFileVirtualPath = "\\Statements" + "\\" + batchId + "\\statement" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".zip";
-            // string zipPath = outputLocation + zipFileVirtualPath;
             string zipPath = string.Empty;
             try
             {
@@ -812,43 +646,6 @@
                 //common resource files path 
                 string resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
 
-                //string zipFileVirtualPath = "\\Statements" + "\\" + scheduleName + "\\" + batchName + "\\statement" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".zip";
-                //zipPath = outputLocation + zipFileVirtualPath;
-
-                ////create temp folder for common html statement
-                //string temppath = path + "\\temp\\";
-                //if (!Directory.Exists(temppath))
-                //{
-                //    Directory.CreateDirectory(temppath);
-                //}
-
-                ////create temp media folder for common images and videos files of asset library
-                //string tempmediaPath = temppath + "\\common\\media\\";
-                //if (!Directory.Exists(tempmediaPath))
-                //{
-                //    Directory.CreateDirectory(tempmediaPath);
-                //}
-
-                ////folder to save actual common html statement file
-                //string spath = temppath + "\\statement\\";
-                //if (!Directory.Exists(spath))
-                //{
-                //    Directory.CreateDirectory(spath);
-                //}
-
-                ////to delete any common html statement file, if exist 
-                //string filepath = spath + fileName;
-                //if (File.Exists(filepath))
-                //{
-                //    File.Delete(filepath);
-                //}
-
-                //// Create a html file to write to common html statement
-                //using (StreamWriter sw = File.CreateText(filepath))
-                //{
-                //    sw.WriteLine(htmlstr);
-                //}
-
                 //asset (images and videos) files as well as json files
                 if (filesDictionary != null && filesDictionary?.Count > 0)
                 {
@@ -869,107 +666,18 @@
                                     File.Delete(Path.Combine(mediaPath, file.Key));
                                 }
                                 File.Copy(file.Value, Path.Combine(mediaPath, file.Key));
-                                //File.Copy(file.Value, Path.Combine(tempmediaPath, file.Key));
                             }
                         }
-                        //webClient.DownloadFile(file.Value, (spath + file.Key));
                     }
                 }
 
                 //copy all common resource file to current batch statement folder as well as at common statement folder
                 DirectoryCopy(resourceFilePath, (path + "\\common"), true);
-                //DirectoryCopy(resourceFilePath, (temppath + "\\common"), true);
-
-                ////create a zip file for common html statement and related resources and media files
-                //if (!File.Exists(Path.Combine(temppath, zipPath)))
-                //{
-                //    ZipFile.CreateFromDirectory(temppath, zipPath);
-                //}
-
-                ////delete temp folder after zip file created
-                //string deleteFile = path + "\\temp";
-                //DirectoryInfo directoryInfo = new DirectoryInfo(deleteFile);
-                //if (directoryInfo.Exists)
-                //{
-                //    directoryInfo.Delete(true);
-                //}
             }
             catch (Exception ex)
             {
                 throw ex;
-               // _log.Error($"CreateAndWriteToZipFile method get exception which is {ex.Message}. Called by {callerName}.");
             }
-            // //create temp folder for common html statement
-            // string temppath = path + "\\temp\\";
-            // if (!Directory.Exists(temppath))
-            // {
-            //     Directory.CreateDirectory(temppath);
-            // }
-
-            // //create temp media folder for common images and videos files of asset library
-            // string tempmediaPath = temppath + "\\common\\media\\";
-            // if (!Directory.Exists(tempmediaPath))
-            // {
-            //     Directory.CreateDirectory(tempmediaPath);
-            // }
-
-            // //folder to save actual common html statement file
-            // string spath = temppath + "\\statement\\";
-            // if (!Directory.Exists(spath))
-            // {
-            //     Directory.CreateDirectory(spath);
-            // }
-
-            // //to delete any common html statement file, if exist 
-            // string filepath = spath + fileName;
-            // if (File.Exists(filepath))
-            // {
-            //     File.Delete(filepath);
-            // }
-
-            // // Create a html file to write to common html statement
-            // using (StreamWriter sw = File.CreateText(filepath))
-            // {
-            //     sw.WriteLine(htmlstr);
-            // }
-
-            // //asset (images and videos) files as well as json files
-            // if (filesDictionary != null && filesDictionary?.Count > 0)
-            // {
-            //     //WebClient webClient = new WebClient();
-            //     foreach (KeyValuePair<string, string> file in filesDictionary)
-            //     {
-            //         if (File.Exists(file.Value))
-            //         {
-            //             if (file.Key.Contains(".json"))
-            //             {
-            //                 File.Copy(file.Value, Path.Combine(spath, file.Key));
-            //             }
-            //             else
-            //             {
-            //                 File.Copy(file.Value, Path.Combine(mediaPath, file.Key));
-            //                // File.Copy(file.Value, Path.Combine(tempmediaPath, file.Key));
-            //             }
-            //         }
-            //         //webClient.DownloadFile(file.Value, (spath + file.Key));
-            //     }
-            // }
-
-            // //copy all common resource file to current batch statement folder as well as at common statement folder
-            // DirectoryCopy(resourceFilePath, (path + "\\common"), true);
-            //// DirectoryCopy(resourceFilePath, (temppath + "\\common"), true);
-
-            // //create a zip file for common html statement and related resources and media files
-            // ZipFile.CreateFromDirectory(temppath, zipPath);
-
-            // //delete temp folder after zip file created
-            // string deleteFile = path + "\\temp";
-            // DirectoryInfo directoryInfo = new DirectoryInfo(deleteFile);
-            // if (directoryInfo.Exists)
-            // {
-            //     directoryInfo.Delete(true);
-            // }
-
             return zipPath;
         }
 
@@ -1343,42 +1051,6 @@
             return isPdfSuccess;
         }
 
-        ///// <summary>
-        ///// This method helps to format nedbank tenant amount value
-        ///// </summary>
-        ///// <param name="amount">The value.</param>
-        ///// <returns>
-        ///// Returns the the formatted amount value string
-        ///// </returns>
-        //public string NedbankClientAmountFormatter(double amount)
-        //{
-        //    try
-        //    {
-        //        var totalAmtStr = Convert.ToString(amount).Split(new Char[] { '.', ',' });
-        //        var wholeNo = totalAmtStr[0];
-        //        var franctionNo = totalAmtStr.Length > 1 ? (new string(totalAmtStr[1].Take(2).ToArray())) : "0";
-
-        //        char[] cArray = wholeNo.ToCharArray();
-        //        Array.Reverse(cArray);
-
-        //        var tempAmountVal = ".";
-        //        int cnt = 0;
-        //        while (cArray.Length != cnt)
-        //        {
-        //            tempAmountVal = (tempAmountVal.Length > 1 && tempAmountVal.Length % 4 == 0) ? tempAmountVal + " " + cArray[cnt].ToString() : tempAmountVal + cArray[cnt].ToString();
-        //            cnt++;
-        //        }
-
-        //        cArray = tempAmountVal.ToCharArray();
-        //        Array.Reverse(cArray);
-        //        return (new string(cArray) + franctionNo);
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return "0";
-        //    }
-        //}
-
         /// <summary>
         /// This method helps to format currency as per provided country currency details amount value
         /// </summary>
@@ -1403,142 +1075,71 @@
             }
         }
 
-        public async Task<string>  GeneratePdf(string htmlPath, string outPdfPath, string segment, string language)
+        public async Task<string> GeneratePdf(string htmlPath, string outPdfPath, string segment, string language)
         {
             string pdfGenerationError = null;
 
-            // Switch case based on the value of segment
-            //switch (segment)
-            //{
-            //    case "FSP":
-            //        // Handle the "pps" case
-            //        // You can add your logic specific to "pps" segment here
-            //        segment = "fsp";
-            //        break;
-            //    case "PPS":
-            //        // Handle the "pps" case
-            //        // You can add your logic specific to "pps" segment here
-            //        segment = "pps";
-            //        break;
-            //    // Add more cases as needed
-            //    // case "otherSegment":
-            //    //     // Handle the "otherSegment" case
-            //    //     break;
-            //    default:
-            //        // Handle the case when segment doesn't match any expected value
-            //        break;
-            //}
-
-
-
-
-
             SelectPdf.PdfDocument doc = new PdfDocument();
-           // segment = "pps";
-       //     try
-        //    {
-                string headerFooterFontFolderPath = System.Configuration.ConfigurationManager.AppSettings["HeaderFooterFontFolderPath"];
+            string headerFooterFontFolderPath = System.Configuration.ConfigurationManager.AppSettings["HeaderFooterFontFolderPath"];
 
             if (string.IsNullOrWhiteSpace(headerFooterFontFolderPath))
             {
-                // _log.Error($"HeaderFooterFontFolderPath appSetting key is missing in web.config.");
                 pdfGenerationError = "HeaderFooterFontFolderPath appSetting key is missing in web.config.";
-                //  return false;
                 return pdfGenerationError;
             }
 
-         //   var html = File.ReadAllText("./invoice.html");
-             var headerContent = File.ReadAllText($@"{headerFooterFontFolderPath}\HeaderFooters\" + segment + "_header.html");
-              var footerContent =  File.ReadAllText($@"{headerFooterFontFolderPath}\HeaderFooters\" + segment + "_footer.html");
+            var headerContent = File.ReadAllText($@"{headerFooterFontFolderPath}\HeaderFooters\" + segment + "_header.html");
+            var footerContent = File.ReadAllText($@"{headerFooterFontFolderPath}\HeaderFooters\" + segment + "_footer.html");
 
-           
+
             // Get the directory path without the file name
             string directoryPath = Path.GetDirectoryName(outPdfPath);
-          // Get the parent directory path
+            // Get the parent directory path
             string parentDirectoryPath = Directory.GetParent(directoryPath).FullName;
 
             // Read the local image file as base64
-            var logoImgPath = parentDirectoryPath+ @"\common\images\logo3.jpg";
+            var logoImgPath = parentDirectoryPath + @"\common\images\logo3.jpg";
             var logoImgPathBase64 = Convert.ToBase64String(File.ReadAllBytes(logoImgPath));
 
-            var logoFbPath = parentDirectoryPath+ @"\common\images\fb_foot.png";
+            var logoFbPath = parentDirectoryPath + @"\common\images\fb_foot.png";
             var logoFbPathBase64 = Convert.ToBase64String(File.ReadAllBytes(logoFbPath));
 
-            var logoImgInstaPath = parentDirectoryPath+ @"\common\images\insta_foot.png";
+            var logoImgInstaPath = parentDirectoryPath + @"\common\images\insta_foot.png";
             var logoImgInstaPathBase64 = Convert.ToBase64String(File.ReadAllBytes(logoImgInstaPath));
 
-            var logoImgTwitterPath = parentDirectoryPath+ @"\common\images\twitter_foot.png";
+            var logoImgTwitterPath = parentDirectoryPath + @"\common\images\twitter_foot.png";
             var logoImgTwitterPathBase64 = Convert.ToBase64String(File.ReadAllBytes(logoImgTwitterPath));
 
-            var logoImgInPath = parentDirectoryPath+ @"\common\images\in_foot.png";
+            var logoImgInPath = parentDirectoryPath + @"\common\images\in_foot.png";
             var logoImgInBase64 = Convert.ToBase64String(File.ReadAllBytes(logoImgInPath));
 
-            var logoImgYouPath = parentDirectoryPath+ @"\common\images\you_foot.png";
+            var logoImgYouPath = parentDirectoryPath + @"\common\images\you_foot.png";
             var logoImgYouPathBase64 = Convert.ToBase64String(File.ReadAllBytes(logoImgYouPath));
 
-            var logoImgTiktokPath = parentDirectoryPath+ @"\common\images\ticktok_foot.png";
+            var logoImgTiktokPath = parentDirectoryPath + @"\common\images\ticktok_foot.png";
             var logoImgTiktokPathBase64 = Convert.ToBase64String(File.ReadAllBytes(logoImgTiktokPath));
 
             headerContent = headerContent.Replace("{{logoImgPath}}", logoImgPathBase64);
-            footerContent= footerContent.Replace("{{logoImgFbPath}}", logoFbPathBase64);
-            footerContent= footerContent.Replace("{{logoImgInstaPath}}", logoImgInstaPathBase64);
-            footerContent=footerContent.Replace("{{logoImgTwitterPath}}", logoImgTwitterPathBase64);
+            footerContent = footerContent.Replace("{{logoImgFbPath}}", logoFbPathBase64);
+            footerContent = footerContent.Replace("{{logoImgInstaPath}}", logoImgInstaPathBase64);
+            footerContent = footerContent.Replace("{{logoImgTwitterPath}}", logoImgTwitterPathBase64);
             footerContent = footerContent.Replace("{{logoImgInPath}}", logoImgInBase64);
             footerContent = footerContent.Replace("{{logoImgYouPath}}", logoImgYouPathBase64);
             footerContent = footerContent.Replace("{{logoImgTiktokPath}}", logoImgTiktokPathBase64);
 
-           //footerContent += "<span class='pageNumber'></span> of<span class='totalPages'></span>";
-           footerContent = footerContent.Replace("{{PageNumber}}", "<span class='pageNumber'></span>/<span class='totalPages'></span>");
-
-            //headerContent = @"<div style='width:100%; height: 50px ;font-weight: 400;margin: 10px auto;background-color: #fff;'><div style='display: flex; justify-content: space-between; padding: 1rem 0 1rem 0; flex-direction: column;'><div style='display:flex;width:100%;gap: 20px;align-items: center;'><div class='fsp-logo'><img  src ='data:image/jpeg;base64,/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAAAmAAD/4QMsaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLwA8P3hwYWNrZXQgYmVnaW49Iu+7vyIgaWQ9Ilc1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCI/PiA8eDp4bXBtZXRhIHhtbG5zOng9ImFkb2JlOm5zOm1ldGEvIiB4OnhtcHRrPSJBZG9iZSBYTVAgQ29yZSA2LjAtYzAwMiA3OS4xNjQ0NjAsIDIwMjAvMDUvMTItMTY6MDQ6MTcgICAgICAgICI+IDxyZGY6UkRGIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+IDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSIiIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bXA6Q3JlYXRvclRvb2w9IkFkb2JlIFBob3Rvc2hvcCAyMS4yIChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo5OUFERjE0Q0EwQzkxMUVFQUI2NkY4QzlBMzYzRjM0MiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo5OUFERjE0REEwQzkxMUVFQUI2NkY4QzlBMzYzRjM0MiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjk5QURGMTRBQTBDOTExRUVBQjY2RjhDOUEzNjNGMzQyIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjk5QURGMTRCQTBDOTExRUVBQjY2RjhDOUEzNjNGMzQyIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+/+4ADkFkb2JlAGTAAAAAAf/bAIQADQkJCQoJDQoKDRMMCwwTFhANDRAWGRQUFhQUGRgTFRUVFRMYGB0eIB4dGCYmKSkmJjg3Nzc4Pj4+Pj4+Pj4+PgEODAwODw4RDw8RFA4QDhQVERERERUfFRUXFRUfJxwYGBgYHCcjJSAgICUjKysnJysrNTUzNTU+Pj4+Pj4+Pj4+/8AAEQgATQBQAwEiAAIRAQMRAf/EAIQAAQACAwEBAAAAAAAAAAAAAAACBQMEBgcBAQEBAQEBAAAAAAAAAAAAAAAAAgEDBBAAAgEDAgQCBwcEAwAAAAAAAQIDABEEBQYhMRITQSJhcYGRIxQVUaGxQmKiB8EyklPRUjMRAAIBAwQDAQAAAAAAAAAAAAABESExAkFRcRJhgSIT/9oADAMBAAIRAxEAPwDi6UpXqOIpSr7b2z9V10CaO2NhXscmQGzW59tebfhWNpVYiShpXpabD2lhAJqGY0k1uIkmWL3ItjR9h7SzQU0/MaOa3ARzLL70a5qf0x8ldWeaUq+3Ds/VNCBmktk4V7DJjBst+XcX8v4VQ1SadUTEClKVoFKUoC92ht/67qoimB+TxwJckjhcXssd/wBR+69dluTc8Wn4ipjfDxjePEghPbaYR+Uv1rxjgU8AV8zeFhxrR2TD29sTtGSk+pZYxescwh6UJHqUuRVBrATVd5tgyEx4/wAwmBEI7fDjQiJekG458a5uuTm2JVlyVk+uarMxKznHUm/bx/gr+yzH1sSaQa5qsLAtO2QoN+3kfGX992HrUg1d4G08DOyJEhyphHj5rYE5ZUDHgxjlTn4rYqfXWvibaw83EizYcwxQySzYpGR0peeNeqJVcXVVk9I4emqnEyGdbtvdEWoYjJk/ExxaPLgmPcaEP5Q/W3GSBjwPV5l8bjjXG7w2/wDQtVMUIPyeQDLjE8bC/mjv+k/das2kQy6Nu7GwpUdRKVxsmGbp4pkL0sp6CVZbngRzq/3tD3NsQNIS8+mZZxes8ynmRSfWvQTUqmSi2Rt1wee0pSuhIpSlAd7sfMQ6N2SQDgahFM9/9c/wur2MTVdrmIukb7TKym7WJJkR5wlIJBTqDSABQSSGBFUuhar9LzTLIplxJ0MGZCObxPzt+peYr0aXF0zdGmxYGbKHnCl8HPS15VAt3Ev+bwlj8D7DXN/OU6MpVXBx2Drsce5VmnylTSosuXMukZUOXDqjsqJ1M9mA48qp5dWzgGx1lRsYdxREsaiJxIwZ2KFRctYcSL1b5/8AH248WQiCJM2L8skThSR6UkKkffTA/j7cmVIBPEmFF+aSVwxA9CRlifurZxvKFSO0sfM1rdOLPMxk+VKzyvawVIR0xIAOAF7ACrnfGYg0bsggnP1CWZLf64B2ur2sBV3Di6ZtfTZcDClCZBUPnZ72vEpFu69vHwij8T7TXnOu6t9UzRJGpixIEEGHCeaxJy6v1NzNYvrKdEHRQVtKUroSKUqcMrwypNHbrjYMtxcXBuOFAQuK3dP1fM066wuGhZgz48nmjLDkwAIKt9jKQajHqOQqogKAIkkQZlv5ZRZr+n1UhzJYI1jSVOhBKoBQn/2Xoc/287cvsrPQOpxP5GyYkCyCXh4HonH+Tdp/expl/wAi5MqFYxLx8B0QD/Je6/uYVzP1Ca6kSRDpEa/2HiIm7i34faK+NnSkEF4vMHU+VuUkgmP7hwqei2K7Pcahq+ZqFlncLCrF0gj8sYY83NySzH/sxJrS4Vvx6lPG0bK8N4y7LeMkfEv1XBFvGsLZsvSkdoysSCNGC2NlcSgk8CT1eJqvRJrUqcsjSyvK1g0jF2A4C7G5sKhWgUpSgFZFmdUCgCwJYEi542/4rHSgM/zcvWHstw3XYCwva3IcKxxzPEQUtcHqFxfjYj+tQpWAm0rMoUgABQvAW4KSR7eNQpStApSlAf/Z' style='width: 50px; height: 50px;' alt='image not found'></div><div><h1 style=' font-size: 28.8px; text-shadow: #c6ced9 1px 1px 1px; margin-bottom: 0;'>Financial Service Provider(FSP) Statement</h1><h6 syle='font-weight: bold;font-size:16px;color: #5b5a5a;margin-bottom: 0;'>{{FSPName}} T/A {{FSPTradingName}}</h6></div></div></div>";
-
-
-
-            // string headerContent = @"<div style='width:100%; height: 50px ;font-weight: 400;margin: 10px auto;background-color: #fff;'><div style='display: flex; justify-content: space-between; padding: 1rem 0 1rem 0; flex-direction: column;'><div style='display:flex;width:100%;gap: 20px;align-items: center;'><div class='fsp-logo'><img  src ='../common/images/logo3.jpg' style='width: 50px; height: 50px;' alt='image not found'></div><div><h1 style=' font-size: 28.8px; text-shadow: #c6ced9 1px 1px 1px; margin-bottom: 0;'>Financial Service Provider(FSP) Statement</h1><h6 syle='font-weight: bold;font-size:16px;color: #5b5a5a;margin-bottom: 0;'>{{FSPName}} T/A {{FSPTradingName}}</h6></div></div></div>";
-
-
-
-
-
-            //    var footerContent = @"<div class='container_area'><div class='fsp-footer-section dark-blue-bg py-1 px-2'><ul class='fsp-social-icons'><li><a href='#'><img src='../common/images/fb_foot.png'></a></li><li><a href='#'><img src=''../common/images/insta_foot.png'></a></li><li><a href='#'><img src='../common/images/twitter_foot.png'></a></li><li><a href='#'><img src='../common/images/in_foot.png'></a></li><li><a href='#'><img src='../common/images/you_foot.png'></a></li><li><a href='#'><img src='../common/images/ticktok_foot.png'></a></li></ul><div class='fsp-copyright mb-0'>{{FSPFooterDetails}}</div><div></div><div></div><div></div><div class='fsp-page mb-0'>{{FSPPage}}</div></div></div>";
-
-
-            //string Header = @"<div style='text-align: center; font-size: 12px;'><span class='date'></span>|<span class='title'></span> |<span class='url'></span>|<span class='pageNumber'></span> of<span class='totalPages'></span></div>";
-            //   string footerContent = "<div style='text-align: center; font-size: 12px;'>Page <span class='pageNumber'></span></div>";
-
-
-            //var headerContent = "<span style='font-size: 30px; width: 200px; height: 50px; background - color: red; color: black; margin: 20px;'>Header<a href='#'><img src='../common/images/you_foot.png'></a></span>";
-            //  var footerContent = "<span style='font-size: 30px;background-color: red; color:black;'>Footer</span>";
+            footerContent = footerContent.Replace("{{PageNumber}}", "<span class='pageNumber'></span>/<span class='totalPages'></span>");
 
             var pdfOptions = new PuppeteerSharp.PdfOptions();
 
             pdfOptions.PrintBackground = true;
             pdfOptions.DisplayHeaderFooter = true;
-            pdfOptions.HeaderTemplate = headerContent; 
-            pdfOptions.Landscape = false; 
-            pdfOptions.MarginOptions = new PuppeteerSharp.Media.MarginOptions() { Bottom = "4cm", Left = "0", Right = "0", Top = "4cm" };
-            pdfOptions.Scale = 1m; 
-            pdfOptions.FooterTemplate = footerContent; 
+            pdfOptions.HeaderTemplate = headerContent;
+            pdfOptions.Landscape = false;
+            pdfOptions.MarginOptions = new PuppeteerSharp.Media.MarginOptions() { Bottom = "4cm", Left = "1cm", Right = "1cm", Top = "4cm" };
+            pdfOptions.Scale = 1m;
+            pdfOptions.FooterTemplate = footerContent;
             pdfOptions.PreferCSSPageSize = true;
             pdfOptions.Format = PuppeteerSharp.Media.PaperFormat.A4;
-
-
-            //var options = new LaunchOptions
-            //{
-            //    Headless = false,
-            //    ExecutablePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-            //};
-
-            //using (var browser = await Puppeteer.LaunchAsync(options))
-            //{
-
-
-            //}
-            //var page = await browser.NewPageAsync();
-
-
-            //await page.GoToAsync("https://www.google.com/");
-            //await page.PdfAsync(outPdfPath, pdfOptions);
 
             var browserFetcher = new BrowserFetcher();
             // Download the necessary browser binaries
@@ -1554,7 +1155,7 @@
             var page = await browser.NewPageAsync();
             // Navigate to the specified HTML path
             await page.GoToAsync(htmlPath);
-           //Add script tags to the page
+            //Add script tags to the page
             await page.AddScriptTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"\common\js\jquery.min.js" });
             await page.AddScriptTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"\common\js\popper.min.js" });
             await page.AddScriptTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"\common\js\bootstrap.min.js" });
@@ -1576,158 +1177,12 @@
 
 
 
-            
+
             return pdfGenerationError;
-            }
-           // catch (Exception ex)
-           // {
-                //_log.Error($"GeneratePdf method get exception which is {ex.Message}.");
-              //  pdfGenerationError = $"GeneratePdf method get exception which is {ex.Message}";
-              //  return pdfGenerationError;
-           // }
-            
-            //try
-            //{
-            //    //htmlStatementPath = @"C:\UserFiles\Statements\1161\112233\Statement_112233_78_4_19_2022_7_44_29_PM.html";
-
-            //    // read parameters from the webpage
-            //    string url = htmlStatementPath;
-
-            //    PdfPageSize pageSize = PdfPageSize.A4;
-
-            //    PdfPageOrientation pdfOrientation = PdfPageOrientation.Portrait;
-
-            //    // instantiate a html to pdf converter object
-            //    HtmlToPdf converter = new HtmlToPdf();
-
-            //    // set converter options
-            //    converter.Options.PdfPageSize = pageSize;
-            //    converter.Options.PdfPageOrientation = pdfOrientation;
-            //    converter.Options.WebPageWidth = 1152;
-            //    converter.Options.WebPageHeight = 960;
-
-            //    converter.Options.MarginBottom = 0;
-            //    converter.Options.MarginTop = 40;
-            //    converter.Options.MarginLeft = 40;
-            //    converter.Options.MarginRight = 40;
-
-            //headerHtml = "<b>Header</b>";
-            //footerHtml = "<b>Footer</b>";
-
-
-            //    if (customerId == 8001586813601 || customerId == 8000487288901 || customerId == 8001552853901 || customerId == 8000923280901 || customerId == 8001294271701)
-            //    {
-            //        segment = "Home Loan For Other Segment African";
-            //    }
-
-            //    if (customerId == 8000459699201 || customerId == 981511000101 || customerId == 8000703912901)
-            //    {
-            //        segment = "Home Loan For Wealth Segment African";
-            //    }
-
-            //    if (customerId == 8001453741401)
-            //    {
-            //        segment = "Home Loan For Wealth Segment African";
-            //    }
-            //    if (customerId == 8000104791201)
-            //    {
-            //        segment = "Home Loan For Wealth Segment English";
-            //    }
-
-            //    if (customerId == 6468878000101)
-            //    {
-            //        segment = "Home Loan For PML Segment English";
-            //    }
-
-            //    if (customerId == 8382274900101)
-            //    {
-            //        segment = "Home Loan For PML Segment African";
-            //    }
-
-            //    if (customerId == 1588756700101 || customerId == 5126658600201 || customerId == 5870511200201 || customerId == 5955131300101 || customerId == 6414207700101 || customerId == 3152385300101 || customerId == 5682491700101 || customerId == 6372679800101 || customerId == 6000734400101 || customerId == 5445044200201 || customerId == 5844741100101 || customerId == 6395898300101 || customerId == 2566840700101 || customerId == 6168293500101 || customerId == 6285740700101 || customerId == 399272200101 || customerId == 505313900101 || customerId == 3640939700101 || customerId == 5973293400201 || customerId == 6259987900101 || customerId == 6329572700101 || customerId == 924640000101 || customerId == 4926004900101 || customerId == 5903081000101 || customerId == 5654457700101)
-            //    {
-            //        segment = "Home Loan For PML Segment African";
-            //    }
-
-            //    if (customerId == 7503010231)
-            //    {
-            //        segment = "Multi Currency For CIB";
-            //    }
-
-            //    if (customerId == 7526721177)
-            //    {
-            //        segment = "Multi Currency For Wealth";
-            //    }
-            //    if (customerId == 4)
-            //    {
-            //        segment = "PPS";
-            //    }
-            //    //PdfHtmlSection headHtml = new PdfHtmlSection(headerHtml, Path.GetDirectoryName(htmlStatementPath));
-            //    PdfHtmlSection headHtml = new PdfHtmlSection(@"C:\UserFiles\HeaderFooters\" + segment + "_header.html");
-            //    //PdfHtmlSection headHtml = new PdfHtmlSection(@"C:\UserFiles\Statements\1163\header.html");//Wealth
-            //    converter.Header.Add(headHtml);
-
-            //    if(segment.Contains("Corporate Saver"))
-            //    {
-            //        converter.Header.Height = 100;
-            //    }
-            //    else
-            //    {
-            //        converter.Header.Height = 80;
-            //    }
-            //    //PdfHtmlSection footHtml = new PdfHtmlSection(footerHtml, Path.GetDirectoryName(htmlStatementPath));
-            //    PdfHtmlSection footHtml = new PdfHtmlSection(@"C:\UserFiles\HeaderFooters\" + segment + "_footer.html");
-            //    converter.Footer.Add(footHtml);
-            //    converter.Footer.Height = 80;
-            //    if (segment == "Home Loan For Other Segment English" || segment == "Home Loan For Other Segment African" 
-            //        || segment == "Home Loan For PML Segment English" || segment == "Home Loan For PML Segment African" 
-            //        || segment == "Multi Currency For CIB"
-            //        || segment == "Investment Other Segment For English" || segment == "Investment Other Segment For African")
-            //    {
-            //        converter.Footer.Height = 50;
-            //    }
-
-            //    converter.Options.DisplayFooter = true;
-            //    converter.Options.DisplayHeader = true;
-
-            //    headHtml.AutoFitHeight = HtmlToPdfPageFitMode.AutoFit;
-            //    footHtml.AutoFitHeight = HtmlToPdfPageFitMode.AutoFit;
-
-            //    // create a new pdf document converting an url
-            //    PdfDocument doc = converter.ConvertUrl(url);
-            //    doc.Fonts.Add(@"C:\UserFiles\Fonts\MarkPro-Regular.ttf");
-            //    doc.Fonts.Add(@"C:\UserFiles\Fonts\Mark Pro.ttf");
-            //    doc.Fonts.Add(@"C:\UserFiles\Fonts\Mark Pro Bold.ttf");
-
-            //    if (segment.Contains("Corporate Saver"))
-            //    {
-            //        PdfFont font = doc.AddFont(PdfStandardFont.Helvetica);
-            //        font.Size = 7;
-
-            //        PdfTextElement text1 = new PdfTextElement(447, 75, "Page {page_number} of {total_pages}", font);
-            //        if(language == "AFR")
-            //        {
-            //            text1 = new PdfTextElement(447, 75, "Bladsy {page_number} van {total_pages}", font);
-            //        }
-            //        text1.ForeColor = System.Drawing.Color.Black;
-
-            //        doc.Header.Add(text1);
-            //    }
-
-            //    // save pdf document
-            //    doc.Save(outPdfPath);
-
-            //    // close pdf document
-            //    doc.Close();
-            //    return true;
-            //}
-            //catch (Exception ex)
-            //{
-            //    return false;
-            //}
         }
+    }
 
-        #endregion
+    #endregion
 
-  //  }
+    //  }
 }

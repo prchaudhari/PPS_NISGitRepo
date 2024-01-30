@@ -1042,7 +1042,7 @@ export class AddDashboardDesignerComponent implements OnInit {
           else if (widget.WidgetName == "DetailedTransactions") {
             return this.widgetsGridsterItemArray.push({
               cols: 8,
-              rows: 5,
+              rows: 10,
               y: 0,
               x: 0,
               component: DetailedTransactionsComponent,
