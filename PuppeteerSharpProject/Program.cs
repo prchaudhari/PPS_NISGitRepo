@@ -16,9 +16,77 @@ namespace PuppeteerSharpProject
               //  var htmlPath = "./invoice2/7/Statement_7_19_12_01_2024_20_20_55.html";
                   //   var pdfOptions = new PuppeteerSharp.PdfOptions();
 
-              var headerContent = File.ReadAllText($@"C:\UserFiles\HeaderFooters\PPS_header.html");
-              var footerContent =  File.ReadAllText($@"C:\UserFiles\HeaderFooters\PPS_footer.html");
+              var headerContent = File.ReadAllText($@"C:\UserFiles\HeaderFooters\FSP_header.html");
+              var footerContent =  File.ReadAllText($@"C:\UserFiles\HeaderFooters\FSP_footer.html");
 
+                  // Get the directory path without the file name
+            string directoryPath = Path.GetDirectoryName($@"C:\UserFiles\HeaderFooters\FSP_footer.html");
+          // Get the parent directory path
+            string parentDirectoryPath = Directory.GetParent(directoryPath).FullName;
+
+            // Read the local image file as base64
+            var logoImgPath = parentDirectoryPath+ @"\common\images\logo3.jpg";
+            var logoImgPathBase64 = Convert.ToBase64String(File.ReadAllBytes(logoImgPath));
+
+            var logoFbPath = parentDirectoryPath+ @"\common\images\fb_foot.png";
+            var logoFbPathBase64 = Convert.ToBase64String(File.ReadAllBytes(logoFbPath));
+
+            var logoImgInstaPath = parentDirectoryPath+ @"\common\images\insta_foot.png";
+            var logoImgInstaPathBase64 = Convert.ToBase64String(File.ReadAllBytes(logoImgInstaPath));
+
+            var logoImgTwitterPath = parentDirectoryPath+ @"\common\images\twitter_foot.png";
+            var logoImgTwitterPathBase64 = Convert.ToBase64String(File.ReadAllBytes(logoImgTwitterPath));
+
+            var logoImgInPath = parentDirectoryPath+ @"\common\images\in_foot.png";
+            var logoImgInBase64 = Convert.ToBase64String(File.ReadAllBytes(logoImgInPath));
+
+            var logoImgYouPath = parentDirectoryPath+ @"\common\images\you_foot.png";
+            var logoImgYouPathBase64 = Convert.ToBase64String(File.ReadAllBytes(logoImgYouPath));
+
+            var logoImgTiktokPath = parentDirectoryPath+ @"\common\images\ticktok_foot.png";
+            var logoImgTiktokPathBase64 = Convert.ToBase64String(File.ReadAllBytes(logoImgTiktokPath));
+
+            headerContent = headerContent.Replace("{{logoImgPath}}", logoImgPathBase64);
+            footerContent= footerContent.Replace("{{logoImgFbPath}}", logoFbPathBase64);
+            footerContent= footerContent.Replace("{{logoImgInstaPath}}", logoImgInstaPathBase64);
+            footerContent=footerContent.Replace("{{logoImgTwitterPath}}", logoImgTwitterPathBase64);
+            footerContent = footerContent.Replace("{{logoImgInPath}}", logoImgInBase64);
+            footerContent = footerContent.Replace("{{logoImgYouPath}}", logoImgYouPathBase64);
+            footerContent = footerContent.Replace("{{logoImgTiktokPath}}", logoImgTiktokPathBase64);
+
+           //footerContent += "<span class='pageNumber'></span> of<span class='totalPages'></span>";
+           footerContent = footerContent.Replace("{{PageNumber}}", "<span class='pageNumber'></span>/<span class='totalPages'></span>");
+
+            //   var htmlContent = @"
+            //                     <html>
+            //                     <head>
+            //                         <style>
+            //                             body {
+            //                                 margin: 0;
+            //                                 padding: 0;
+            //                             }
+            //                             .footer {
+            //                                 -webkit-print-color-adjust: exact;
+            //                                 display: flex;
+            //                                 justify-content: space-between;
+            //                                 background-color: blue;
+            //                                 padding: 10px;
+            //                                 width:100%;
+            //                                 font-size:10px;
+
+            //                             }
+            //                         </style>
+            //                     </head>
+            //                     <body>
+            //                         <div class='footer'>
+            //                             <div>Left content</div>
+            //                             <div>Right content</div>
+            //                         </div>
+            //                     </body>
+            //                     </html>";
+
+                               
+ //var htmlContent="<div style=' font-size: 28px;  width:100%; -webkit-print-color-adjust: exact;height:180px; min-height: 69px;overflow: auto;clear: both;border-bottom: 1px solid #ddd;background: red;'> Footer</div>";
                   
         
 //     pdfOptions.DisplayHeaderFooter=true;
@@ -37,7 +105,7 @@ namespace PuppeteerSharpProject
             pdfOptions.DisplayHeaderFooter = true;
             pdfOptions.HeaderTemplate = headerContent; 
             pdfOptions.Landscape = false; 
-            pdfOptions.MarginOptions = new PuppeteerSharp.Media.MarginOptions() { Bottom = "100px", Left = "10px", Right = "10px", Top = "100px" };
+            pdfOptions.MarginOptions = new PuppeteerSharp.Media.MarginOptions() { Bottom = "200px", Left = "100px", Right = "100px", Top = "100px" };
             pdfOptions.Scale = 1m; 
             pdfOptions.FooterTemplate = footerContent; 
             pdfOptions.PreferCSSPageSize = true;
@@ -66,8 +134,7 @@ namespace PuppeteerSharpProject
 
         var browser = await PuppeteerSharp.Puppeteer.LaunchAsync(new LaunchOptions
                      {
-                      Headless = false,
-                      ExecutablePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+                      Headless = true
                 });
 
                 var page = await browser.NewPageAsync(); //æå¼ä¸ä¸ªæ°æ ç­¾
@@ -99,7 +166,7 @@ namespace PuppeteerSharpProject
 
 
             
-             await page.GoToAsync("E:\\nis_pps\\phase3\\PuppeteerSharpProject\\bin\\Debug\\net8.0\\invoice2\\7\\Statement_7_19_12_01_2024_20_20_55.html");
+             await page.GoToAsync($@"C:\UserFiles\Statements\26detailed transaction_26detailedTransaction\Batch 1 of 26detailed transaction_26detailedTransaction\10021\Statement_10021_10039_27_01_2024_01_51_58.html");
         
             // Add style tags to the page
         //     await page.AddStyleTagAsync("./common/css/bootstrap.min.css" );
