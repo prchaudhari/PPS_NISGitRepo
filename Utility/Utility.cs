@@ -1077,48 +1077,59 @@
 
         public async Task<string> GeneratePdf(string htmlPath, string outPdfPath, string segment, string language)
         {
+            // Declare and initialize a variable for potential PDF generation errors
             string pdfGenerationError = null;
 
-            SelectPdf.PdfDocument doc = new PdfDocument();
+            // Retrieve the font folder path for headers and footers from the configuration settings
             string headerFooterFontFolderPath = System.Configuration.ConfigurationManager.AppSettings["HeaderFooterFontFolderPath"];
 
+            // Check if the font folder path is missing or empty
             if (string.IsNullOrWhiteSpace(headerFooterFontFolderPath))
             {
+                // Set an error message if the font folder path is missing
                 pdfGenerationError = "HeaderFooterFontFolderPath appSetting key is missing in web.config.";
+                // Return the error message and exit the method
                 return pdfGenerationError;
             }
 
+            // Read the content of the header and footer HTML files based on the 'segment'
             var headerContent = File.ReadAllText($@"{headerFooterFontFolderPath}\HeaderFooters\" + segment + "_header.html");
             var footerContent = File.ReadAllText($@"{headerFooterFontFolderPath}\HeaderFooters\" + segment + "_footer.html");
 
-
-            // Get the directory path without the file name
+            // Get the directory path of the output PDF file
             string directoryPath = Path.GetDirectoryName(outPdfPath);
             // Get the parent directory path
             string parentDirectoryPath = Directory.GetParent(directoryPath).FullName;
 
-            // Read the local image file as base64
+            // Construct the full path for the logo image file and read its content as bytes
             var logoImgPath = parentDirectoryPath + @"\common\images\logo3.jpg";
             var logoImgPathBase64 = Convert.ToBase64String(File.ReadAllBytes(logoImgPath));
 
+            // Construct the full path for the Facebook logo image file and read its content as bytes
             var logoFbPath = parentDirectoryPath + @"\common\images\fb_foot.png";
             var logoFbPathBase64 = Convert.ToBase64String(File.ReadAllBytes(logoFbPath));
 
+            // Construct the full path for the Instagram logo image file and read its content as bytes
             var logoImgInstaPath = parentDirectoryPath + @"\common\images\insta_foot.png";
             var logoImgInstaPathBase64 = Convert.ToBase64String(File.ReadAllBytes(logoImgInstaPath));
 
+            // Construct the full path for the Twitter logo image file and read its content as bytes
             var logoImgTwitterPath = parentDirectoryPath + @"\common\images\twitter_foot.png";
             var logoImgTwitterPathBase64 = Convert.ToBase64String(File.ReadAllBytes(logoImgTwitterPath));
 
+            // Construct the full path for the LinkedIn logo image file and read its content as bytes
             var logoImgInPath = parentDirectoryPath + @"\common\images\in_foot.png";
             var logoImgInBase64 = Convert.ToBase64String(File.ReadAllBytes(logoImgInPath));
 
+            // Construct the full path for the YouTube logo image file and read its content as bytes
             var logoImgYouPath = parentDirectoryPath + @"\common\images\you_foot.png";
             var logoImgYouPathBase64 = Convert.ToBase64String(File.ReadAllBytes(logoImgYouPath));
 
+            // Construct the full path for the TikTok logo image file and read its content as bytes
             var logoImgTiktokPath = parentDirectoryPath + @"\common\images\ticktok_foot.png";
             var logoImgTiktokPathBase64 = Convert.ToBase64String(File.ReadAllBytes(logoImgTiktokPath));
 
+            // Replace placeholders in the header and footer HTML content with base64-encoded image strings
             headerContent = headerContent.Replace("{{logoImgPath}}", logoImgPathBase64);
             footerContent = footerContent.Replace("{{logoImgFbPath}}", logoFbPathBase64);
             footerContent = footerContent.Replace("{{logoImgInstaPath}}", logoImgInstaPathBase64);
@@ -1126,20 +1137,18 @@
             footerContent = footerContent.Replace("{{logoImgInPath}}", logoImgInBase64);
             footerContent = footerContent.Replace("{{logoImgYouPath}}", logoImgYouPathBase64);
             footerContent = footerContent.Replace("{{logoImgTiktokPath}}", logoImgTiktokPathBase64);
-
             footerContent = footerContent.Replace("{{PageNumber}}", "<span class='pageNumber'></span>/<span class='totalPages'></span>");
 
-            var pdfOptions = new PuppeteerSharp.PdfOptions();
-
-            pdfOptions.PrintBackground = true;
-            pdfOptions.DisplayHeaderFooter = true;
-            pdfOptions.HeaderTemplate = headerContent;
-            pdfOptions.Landscape = false;
-            pdfOptions.MarginOptions = new PuppeteerSharp.Media.MarginOptions() { Bottom = "4cm", Left = "1cm", Right = "1cm", Top = "4cm" };
-            pdfOptions.Scale = 1m;
-            pdfOptions.FooterTemplate = footerContent;
-            pdfOptions.PreferCSSPageSize = true;
-            pdfOptions.Format = PuppeteerSharp.Media.PaperFormat.A4;
+              var pdfOptions = new PuppeteerSharp.PdfOptions();
+                    pdfOptions.PrintBackground = true;
+                    pdfOptions.DisplayHeaderFooter = true;
+                    pdfOptions.HeaderTemplate = headerContent;
+                    pdfOptions.Landscape = false;
+                    pdfOptions.MarginOptions = new PuppeteerSharp.Media.MarginOptions() { Bottom = "4cm", Left = "1cm", Right = "1cm", Top = "4cm" };
+                    pdfOptions.Scale = 1m;
+                    pdfOptions.FooterTemplate = footerContent;
+                    pdfOptions.PreferCSSPageSize = true;
+                    pdfOptions.Format = PuppeteerSharp.Media.PaperFormat.A4;
 
             var browserFetcher = new BrowserFetcher();
             // Download the necessary browser binaries
@@ -1173,15 +1182,9 @@
             await page.AddStyleTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"\common\css\site.css" });
             await page.AddStyleTagAsync(new AddTagOptions { Path = parentDirectoryPath + @"\common\css\ltr.css" });
             await page.PdfAsync(outPdfPath, pdfOptions);
-
-
-
-
-
             return pdfGenerationError;
         }
     }
-
     #endregion
 
     //  }
