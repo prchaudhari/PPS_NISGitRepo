@@ -5,7 +5,6 @@
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using PuppeteerSharp;
-    using SelectPdf;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
@@ -463,7 +462,6 @@
                 throw exception;
             }
         }
-
         /// <summary>
         /// This method help to write html string to actual file
         /// </summary>
@@ -471,9 +469,12 @@
         /// <param name="fileName"> the file name </param>
         /// <param name="batchId"> the batch identifier </param>
         /// <param name="customerId"> the customer identifier </param>
-        public string WriteToFile(string Message, string fileName, string scheduleName, string batchName, long customerId, string baseURL, string outputLocation, bool printPdf = false, string headerHtml = "", string footerHtml = "", string segment = "", string language = "")
+        public string WriteToFile(string Message, string fileName, string scheduleName, string batchName, long customerId, string baseURL, string outputLocation,bool printPdf = false, string headerHtml = "", string fspName = "", string fspTradingName = "", string footerHtml = "", string segment = "", string language ="")
         {
-            string resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
+            string fspNameHeader = fspName;
+            string fspTradingNameHeader = fspTradingName;
+            
+    string resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
             string statementDestPath = outputLocation + "\\Statements" + "\\" + scheduleName + "\\" + batchName;
             string statementPath = baseURL + "\\Statements" + "\\" + scheduleName + "\\" + batchName + "\\" + customerId + "\\" + fileName;
             if (!Directory.Exists(statementDestPath))
@@ -517,7 +518,8 @@
 
                 Task.Run(async () =>
                 {
-                    var result = await GeneratePdf(filepath, outputPdfPath, headerHtml, language);
+
+                    var result = await GeneratePdf(filepath, outputPdfPath,headerHtml,language, fspNameHeader, fspTradingNameHeader);
                     if (string.IsNullOrEmpty(result))
                     {
                         if (deleteHtmlAfterPdfGenerate)
@@ -1075,13 +1077,13 @@
             }
         }
 
-        public async Task<string> GeneratePdf(string htmlPath, string outPdfPath, string segment, string language)
+        public async Task<string> GeneratePdf(string htmlPath, string outPdfPath, string segment, string language ,string fspName,string fspTradingName)
         {
             // Declare and initialize a variable for potential PDF generation errors
             string pdfGenerationError = null;
 
-            // Retrieve the font folder path for headers and footers from the configuration settings
-            string headerFooterFontFolderPath = System.Configuration.ConfigurationManager.AppSettings["HeaderFooterFontFolderPath"];
+        // Retrieve the font folder path for headers and footers from the configuration settings
+        string headerFooterFontFolderPath = System.Configuration.ConfigurationManager.AppSettings["HeaderFooterFontFolderPath"];
 
             // Check if the font folder path is missing or empty
             if (string.IsNullOrWhiteSpace(headerFooterFontFolderPath))
@@ -1092,9 +1094,29 @@
                 return pdfGenerationError;
             }
 
+           
             // Read the content of the header and footer HTML files based on the 'segment'
-            var headerContent = File.ReadAllText($@"{headerFooterFontFolderPath}\HeaderFooters\" + segment + "_header.html");
-            var footerContent = File.ReadAllText($@"{headerFooterFontFolderPath}\HeaderFooters\" + segment + "_footer.html");
+         string  headerPdfContent = File.ReadAllText($@"{headerFooterFontFolderPath}\HeaderFooters\" + segment + "_header.html", Encoding.UTF8);
+         string footerPdfContent = File.ReadAllText($@"{headerFooterFontFolderPath}\HeaderFooters\" + segment + "_footer.html", Encoding.UTF8);
+
+            switch (segment)
+            {
+                case "PPS":
+                  string  ppsNameWithValue = string.IsNullOrEmpty(fspName) ? "hard coded" : fspName;
+                    headerPdfContent = headerPdfContent.Replace("{{fspNameHeader}}", ppsNameWithValue);
+                    // Perform actions for PPS
+                    break;
+                case "FSP":
+                    string fspNameWithValue = string.IsNullOrEmpty(fspName) ? "hard coded" : fspName;
+                    string fspTradingNameWithValue = string.IsNullOrEmpty(fspTradingName) ? "hard coded" : fspName;
+                    string fspNameHeader = fspNameWithValue + " T/A " + fspTradingNameWithValue;
+                    headerPdfContent = headerPdfContent.Replace("{{fspNameHeader}}", fspNameHeader);
+                    // Perform actions for FSP
+                    break;
+                default:
+                    Console.WriteLine("Unknown Page Type");
+                    break;
+            }
 
             // Get the directory path of the output PDF file
             string directoryPath = Path.GetDirectoryName(outPdfPath);
@@ -1130,23 +1152,24 @@
             var logoImgTiktokPathBase64 = Convert.ToBase64String(File.ReadAllBytes(logoImgTiktokPath));
 
             // Replace placeholders in the header and footer HTML content with base64-encoded image strings
-            headerContent = headerContent.Replace("{{logoImgPath}}", logoImgPathBase64);
-            footerContent = footerContent.Replace("{{logoImgFbPath}}", logoFbPathBase64);
-            footerContent = footerContent.Replace("{{logoImgInstaPath}}", logoImgInstaPathBase64);
-            footerContent = footerContent.Replace("{{logoImgTwitterPath}}", logoImgTwitterPathBase64);
-            footerContent = footerContent.Replace("{{logoImgInPath}}", logoImgInBase64);
-            footerContent = footerContent.Replace("{{logoImgYouPath}}", logoImgYouPathBase64);
-            footerContent = footerContent.Replace("{{logoImgTiktokPath}}", logoImgTiktokPathBase64);
-            footerContent = footerContent.Replace("{{PageNumber}}", "<span class='pageNumber'></span>/<span class='totalPages'></span>");
+            headerPdfContent = headerPdfContent.Replace("{{fspLogoImgPath}}", logoImgPathBase64);
+            footerPdfContent = footerPdfContent.Replace("{{logoImgFbPath}}", logoFbPathBase64);
+            footerPdfContent = footerPdfContent.Replace("{{logoImgInstaPath}}", logoImgInstaPathBase64);
+            footerPdfContent = footerPdfContent.Replace("{{logoImgTwitterPath}}", logoImgTwitterPathBase64);
+            footerPdfContent = footerPdfContent.Replace("{{logoImgInPath}}", logoImgInBase64);
+            footerPdfContent = footerPdfContent.Replace("{{logoImgYouPath}}", logoImgYouPathBase64);
+            footerPdfContent = footerPdfContent.Replace("{{logoImgTiktokPath}}", logoImgTiktokPathBase64);
+            footerPdfContent = footerPdfContent.Replace("{{PageNumber}}", "<span class='pageNumber'></span>/<span class='totalPages'></span>");
 
-              var pdfOptions = new PuppeteerSharp.PdfOptions();
+      
+            var pdfOptions = new PuppeteerSharp.PdfOptions();
                     pdfOptions.PrintBackground = true;
                     pdfOptions.DisplayHeaderFooter = true;
-                    pdfOptions.HeaderTemplate = headerContent;
+                    pdfOptions.HeaderTemplate = headerPdfContent;
                     pdfOptions.Landscape = false;
                     pdfOptions.MarginOptions = new PuppeteerSharp.Media.MarginOptions() { Bottom = "4cm", Left = "1cm", Right = "1cm", Top = "4cm" };
                     pdfOptions.Scale = 1m;
-                    pdfOptions.FooterTemplate = footerContent;
+                    pdfOptions.FooterTemplate = footerPdfContent;
                     pdfOptions.PreferCSSPageSize = true;
                     pdfOptions.Format = PuppeteerSharp.Media.PaperFormat.A4;
 
@@ -1184,6 +1207,7 @@
             await page.PdfAsync(outPdfPath, pdfOptions);
             return pdfGenerationError;
         }
+
     }
     #endregion
 

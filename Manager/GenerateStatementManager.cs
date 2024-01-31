@@ -1548,7 +1548,23 @@ namespace nIS
                     else
                     {
                         string fileName = "Statement_" + customer.Identifier + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
-                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, statementRawData.ScheduleLog.ScheduleName, batchMaster.BatchName, customer.Identifier, statementRawData.BaseURL, statementRawData.OutputLocation, true, statement.Pages[0].PageTypeName);
+                        //string fspName = (string.IsNullOrEmpty(fspDetails.FirstOrDefault().FSP_Name)) ? "" : fspDetails.FirstOrDefault().FSP_Name;
+                        //string fspTradingName = (string.IsNullOrEmpty(fspDetails.FirstOrDefault().FSP_Trading_Name)) ? "" : fspDetails.FirstOrDefault().FSP_Trading_Name;
+                        //string ppsName = (string.IsNullOrEmpty(ppsDetails.FirstOrDefault().FSP_Name)) ? "" : ppsDetails.FirstOrDefault().FSP_Name;
+                        string fspName = "";
+                        string fspTradingName = "";
+                        if (IsFSPPagePresent)
+                        {
+                            fspName = string.IsNullOrEmpty(fspDetails.FirstOrDefault().FSP_Name) ? "" : fspDetails.FirstOrDefault().FSP_Name;
+                            fspTradingName = string.IsNullOrEmpty(fspDetails.FirstOrDefault().FSP_Trading_Name) ? "" : fspDetails.FirstOrDefault().FSP_Trading_Name;
+
+                        }
+                        else if (IsPPSPagePresent)
+                        {
+                            fspName = string.IsNullOrEmpty(ppsDetails.FirstOrDefault().FSP_Name) ? "" : ppsDetails.FirstOrDefault().FSP_Name;
+                        }
+
+                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, statementRawData.ScheduleLog.ScheduleName, batchMaster.BatchName, customer.Identifier, statementRawData.BaseURL, statementRawData.OutputLocation, true, statement.Pages[0].PageTypeName, fspName, fspTradingName);
 
                         logDetailRecord.StatementFilePath = filePath;
                         logDetailRecord.Status = ScheduleLogStatus.Completed.ToString();
@@ -2510,7 +2526,7 @@ namespace nIS
                     if (transaction != null && transaction.Count > 0)
                     {
                         double TotalPostedAmount = 0;
-                        string detailedTransactionString = HtmlConstants.DETAILED_TRANSACTIONS_WIDGET_HTML;
+                      //  string detailedTransactionString = HtmlConstants.DETAILED_TRANSACTIONS_WIDGET_HTML;
                         StringBuilder detailedTransactionSrc1 = new StringBuilder();
                         var records = transaction.GroupBy(gptransactionitem => gptransactionitem.INT_EXT_REF).ToList();
                         records?.ForEach(transactionitem =>

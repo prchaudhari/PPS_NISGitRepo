@@ -1,78 +1,76 @@
-﻿<!doctype html>
-<html lang="en">
-  <head>
+﻿<html lang="en">
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<style>
-	
-	.container_area {
-    max-width: 1000px;
-	margin-left: 50px;
-}
+    <style>
 
-.header_section {
-    display: flex;
-    justify-content: space-between;
-}
+        .container_area {
+            max-width: 1000px;
+            margin-left: 50px;
+        }
 
-.socail_list.box-rdm {
-    padding: 9px 0px;
-}
-.socail_list {
-    display: flex;
-    align-items: center;
-}
+        .header_section {
+            display: flex;
+            justify-content: space-between;
+        }
 
-.logo img {
-    max-width: 170px;
-    width: 100%;
-}
+        .socail_list.box-rdm {
+            padding: 9px 0px;
+        }
 
-.logo_text {
-    padding-left: 10px;
-    color: #091E35!important;
-    font-family: 'Calibri','Helvetica Neue', Arial,sans-serif;
-    font-weight: 400;
-}
+        .socail_list {
+            display: flex;
+            align-items: center;
+        }
 
-.intermediary_title {
-    font-size: 26px;
-}
+        .logo img {
+            max-width: 170px;
+            width: 100%;
+        }
 
-.intermediary_title2 {
-    font-size: 12px;
-}
+        .logo_text {
+            padding-left: 10px;
+            color: #091E35 !important;
+            font-family: 'Calibri','Helvetica Neue', Arial,sans-serif;
+            font-weight: 400;
+        }
 
-.h6, h6 {
-    font-size: 1rem;
-}
-.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
-    margin-top: 0;
-    margin-bottom: .5rem;
-    font-weight: 500;
-    line-height: 1.2;
-}
-	
-	
-	</style>
+        .intermediary_title {
+            font-size: 26px;
+        }
 
-  </head>
-  <body>
+        .intermediary_title2 {
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .h6, h6 {
+            font-size: 1rem;
+        }
+
+        .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+            margin-top: 0;
+            margin-bottom: .5rem;
+            font-weight: 500;
+            line-height: 1.2;
+        }
+    </style>
+</head>
+<body>
     <div class="container_area">
         <div class="header_section">
             <div class="socail_list box-rdm">
                 <div class="logo">
-				<img src="data:image/jpeg;base64,{{logoImgPath}}" style="height:50px;width:50px;" alt="">
-				</div>
+                    <img src="data:image/jpeg;base64,{{fspLogoImgPath}}" style="height:50px;width:50px;" alt="">
+                </div>
                 <div class="logo_text">
                     <span class="intermediary_title">Intermediary production statement</span>
-                    <div class="intermediary_title2">Miss HW HLONGWANE</div>
+                    <div class="intermediary_title2">{{fspNameHeader}}</div>
                 </div>
             </div>
-            
         </div>
-	</div>
-  </body>
- </html>
+    </div>
+</body>
+</html>
