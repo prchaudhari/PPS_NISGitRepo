@@ -2375,7 +2375,7 @@ namespace nIS
                                                         // Replace placeholders in the HTML string with actual values
                                                         productSumstring = productSumstring.Replace("{{WidgetDivHeight}}", divHeight);
                                                         productSumstring = productSumstring.Replace("{{QueryBtn}}", "assets/images/IfQueryBtn.jpg");
-                                                        productSumstring = productSumstring.Replace("{{TotalDue}}", aeAmountColSumR);
+                                                        productSumstring = productSumstring.Replace("{{ProductTotalDue}}", aeAmountColSumR);
                                                         productSumstring = productSumstring.Replace("{{VATDue}}", CommonUtility.concatRWithDouble(productInfo.VAT_Amount.ToString()));
 
                                                         // Calculate grand total due
@@ -7290,7 +7290,7 @@ namespace nIS
                 // Replace placeholders in the HTML string with actual values
                 pageContent.Replace("{{ProductSummary}}", productSummarySrc.ToString());
                 pageContent.Replace("{{QueryBtn}}", ".. / common / images / IfQueryBtn.jpg");
-                pageContent.Replace("{{TotalDue}}", aeAmountColSumR);
+                pageContent.Replace("{{ProductTotalDue}}", aeAmountColSumR);
                 pageContent.Replace("{{VATDue}}", CommonUtility.concatRWithDouble(productInfo.VAT_Amount.ToString()));
 
                 // Calculate grand total due
@@ -7859,7 +7859,7 @@ namespace nIS
                 // Replace placeholders in the HTML string with actual values
                 pageContent.Replace("{{ProductSummary}}", productSummarySrc.ToString());
                 pageContent.Replace("{{QueryBtn}}", ".. / common / images / IfQueryBtn.jpg");
-                pageContent.Replace("{{TotalDue}}", aeAmountColSumR);
+                pageContent.Replace("{{ProductTotalDue}}", aeAmountColSumR);
                 pageContent.Replace("{{VATDue}}", CommonUtility.concatRWithDouble(productInfo.VAT_Amount.ToString()));
 
                 // Calculate grand total due
