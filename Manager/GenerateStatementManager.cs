@@ -2305,16 +2305,58 @@ namespace nIS
 
         private void BindPaymentSummaryWidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<spIAA_PaymentDetail> fspDetails, IList<BatchDetail> batchDetails)
         {
+            double sumOfEarnings = 0;
+           
+            // Search for the substring
+            string searchString = "{{ProductTotalDue}}";
+            double vatAmount = 0.00;
+            int indexOfSubstring = pageContent.ToString().IndexOf(searchString);
+            //Following code executes only if product summary widget is not present in this page or not
+            if (indexOfSubstring == -1)
+            {
+                foreach (var detail in fspDetails)
+                {
+                    double earningAmount = GetEarnings(detail.Commission_Type, detail.DR_CR, Convert.ToDouble(detail.AE_Amount));
+                    sumOfEarnings += earningAmount;
+                 
+                    if (detail.Commission_Type == "VAT" && detail.DR_CR == "CR")
+                    {
+                        vatAmount = Convert.ToDouble(detail.AE_Amount);
+                    }
+                }
+                pageContent.Replace("{{IntTotal}}", Utility.FormatCurrency(sumOfEarnings)); 
+                pageContent.Replace("{{Vat}}", Utility.FormatCurrency(vatAmount));
+                pageContent.Replace("{{TotalDue}}", Utility.FormatCurrency(sumOfEarnings + vatAmount));
+            }
+            //pageContent.Replace("{{IntTotal}}", Utility.FormatCurrency("248729.73"));  // fspDetails.First().Earning_Amount);
+            //pageContent.Replace("{{Vat}}", Utility.FormatCurrency("36881.20"));    // fspDetails.First().VAT_Amount);
+            //pageContent.Replace("{{TotalDue}}", Utility.FormatCurrency("285610.93"));            
 
-            pageContent.Replace("{{IntTotal}}", Utility.FormatCurrency("248729.73"));  // fspDetails.First().Earning_Amount);
-            pageContent.Replace("{{Vat}}", Utility.FormatCurrency("36881.20"));    // fspDetails.First().VAT_Amount);
-            pageContent.Replace("{{TotalDue}}", Utility.FormatCurrency("285610.93"));  
-            //(Convert.ToDouble(fspDetails.First().Earning_Amount) +
-            //    Convert.ToDouble(fspDetails.First().VAT_Amount)).ToString());
             pageContent.Replace("{{IntTotalDate}}", fspDetails.First().POSTED_DATE.ToString("MMMM yyyy"));
             // Format the date with a custom format
             string formattedOrdinalDate = FormatDateWithOrdinal(fspDetails.First().POSTED_DATE);
             pageContent.Replace("{{IntPostedDate}}", formattedOrdinalDate);
+        }
+
+        private double GetEarnings(string commissionType, string drCr, double aeAmount)
+        {
+            return GetEarningAmount(commissionType, drCr, aeAmount);
+        }
+        private double GetEarningAmount(string commissionType, string drCr, double aeAmount)
+        {
+            if (commissionType != "Payment" && commissionType != "VAT")
+            {
+                if (drCr == "CR")
+                {
+                    return aeAmount;
+                }
+                else if (drCr == "DR")
+                {
+                    return -aeAmount;
+                }
+            }
+
+            return 0;
         }
 
         private bool BindProductSummaryWidgetData(StringBuilder pageContent, StringBuilder ErrorMessages, IList<spIAA_PaymentDetail> productSummary, Page page, PageWidget widget)
@@ -2333,7 +2375,7 @@ namespace nIS
 
                     // Initializing variables for column sums
                     long index = 1;
-                   double aeAmountColSum = 0.00;
+                    double aeAmountColSum = 0.00;
                     var aeAmountColSumR = "";
                     var vat = 0.00;
                     var payment = 0.00;
@@ -2430,6 +2472,12 @@ namespace nIS
                     double grandTotalDue = (Convert.ToDouble(aeAmountColSum) + Convert.ToDouble(vat));
                     var grandTotalDueR = CommonUtility.concatRWithDouble(grandTotalDue.ToString("F2"));
                     pageContent.Replace("{{GrandTotalDue}}", grandTotalDueR);
+
+                    //Payment Summary Widget placeholders
+                    pageContent.Replace("{{IntTotal}}", aeAmountColSumR);
+                    pageContent.Replace("{{Vat}}", CommonUtility.concatRWithDouble(vat.ToString()));
+                    pageContent.Replace("{{TotalDue}}", grandTotalDueR);
+                    //end
 
                     // Calculate PPS payment and update the HTML string
                     double ppsPayment = payment;
