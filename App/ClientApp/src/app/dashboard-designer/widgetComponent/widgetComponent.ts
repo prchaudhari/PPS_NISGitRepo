@@ -216,7 +216,7 @@ export class PPSFooter1Component {
                                     <th class="font-weight-bold text-white text-right pe-0 bdr-r-0">Product</th>
                                     <th class="font-weight-bold text-white text-left">Summary</th>
                                     <th class="font-weight-bold text-white text-center">Amount Payable</th>
-                                    <th class="font-weight-bold text-white">Query</th>
+                                   
                                 </tr>
                        </thead>
                             <tbody>
@@ -227,41 +227,36 @@ export class PPSFooter1Component {
                                 {{ item.Prod_Group.trim() == 'Service Fee' ? 'Premium Under Advise Fee' : item.Prod_Group }}
                                     </td>
                                 <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">R{{item.Display_Amount}}
-                                </td><td class="text-center fsp-bdr-bottom px-1"><a href="{{item.Query_Link}}" target="_blank"> <img class="leftarrowlogo" src = "assets/images/leftarrowlogo.png" alt = "Left Arrow"> </a></td></tr>
+                                </td></tr>
                                 <tr>
                                     <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"></td>
                                     <td class="fsp-bdr-bottom ps-1 text-right">Total</td>
                                     <td class="fsp-bdr-right fsp-bdr-bottom ps-1 text-left">Due</td>
                                     <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">R256 670.66</td>
-                                    <td class="text-center fsp-bdr-bottom px-1"></td>
                                 </tr>
                                 <tr>
                                     <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"></td>
                                     <td class="fsp-bdr-bottom ps-1 text-right">VAT</td>
                                     <td class="fsp-bdr-right fsp-bdr-bottom ps-1 text-left">Due</td>
                                     <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">R38 001.27</td>
-                                    <td class="text-center fsp-bdr-bottom px-1"></td>
                                 </tr>
                                 <tr>
                                     <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"></td>
                                     <td class="fsp-bdr-bottom ps-1 text-right">Grand</td>
                                     <td class="fsp-bdr-right fsp-bdr-bottom ps-1 text-left">Total Due</td>
                                     <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">R294 671.93</td>
-                                    <td class="text-center fsp-bdr-bottom px-1"></td>
                                 </tr>
                                 <tr>
                                     <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"></td>
                                     <td class="fsp-bdr-bottom ps-1 text-right">PPS</td>
                                     <td class="fsp-bdr-right fsp-bdr-bottom ps-1 text-left">Payment</td>
                                     <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">-R294 671.93</td>
-                                    <td class="text-center fsp-bdr-bottom px-1"></td>
                                 </tr>
                                 <tr>
                                     <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"></td>
                                     <td class="fsp-bdr-bottom ps-1 text-right font-weight-bold">Balance</td>
                                     <td class="fsp-bdr-right fsp-bdr-bottom ps-1 text-left"></td>
                                     <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1 font-weight-bold">R0.00</td>
-                                    <td class="text-center fsp-bdr-bottom px-1"></td>
                                 </tr>
                       </tbody>
                            </table>
@@ -610,8 +605,8 @@ export class PPSDetails2Component {
                                 <tr>
                                     <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Client<br/>name</th>
                                     <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Age</th>
-                                    <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Policy #</th>
-                                    <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Policy #</th>
+                                    <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Member Number</th>
+                                    <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Policy Number</th>
                                     <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Product</th>
                                     <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Date<br/>issued</th>
                                     <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Inception<br/>date</th>
@@ -757,7 +752,7 @@ export class PPSDetails2Component {
                                        <td class="dark-blue-bg text-white font-weight-bold "></td>
                                        <td class="dark-blue-bg text-white font-weight-bold "></td>
                                        <td class="dark-blue-bg text-white font-weight-bold " colspan="2">Sub Total</td>
-                                       <td colspan="2" class="font-weight-bold text-right fs-16 pps-bg-gray" height="40">R29250.62</td></tr>
+                                       <td colspan="2" class="font-weight-bold text-right fs-16 pps-bg-gray" height="40">R29 250.62</td></tr>
                             </table>
 
                             <div class="text-center py-3"><a href="#"><img src="../common/images/IfQueryBtn.jpg"></a></div>
@@ -794,7 +789,81 @@ export class PPSDetailedTransactionsComponent {
           <!-- Earnings for Period Heading -->
           <h2 class="pps-earning-for-period-heading dark-blue-bg text-white">Earnings For Period</h2>
 
-          <!-- Monthly production summary Section -->
+        
+
+          <!-- FSP account postings summary Section -->
+          <div class="earnings-section-monthly d-flex mb-2">
+            <div class="d-flex gap-1 w-100">
+              <!-- FSP account postings summary -->
+              <div class="col-6">
+                <!-- Heading for FSP account postings summary -->
+                <h4  class="monthly-production-summary skyblue-bg-title text-white text-center">FSP account postings summary</h4>
+                <div class="monthly-table">
+                  <!-- Table for FSP account postings summary -->
+                  <table width="100%" cellpadding="0" cellspacing="0">
+                    <!-- Table Headers -->
+                    <thead>
+                      <tr>
+                        <th class="text-white font-weight-bold">Posted Date</th>
+                        <th class="text-right">Premium under advice</th>
+                        <th class="text-right">Premium under advice</th>
+                        <th class="text-right">Premium under advice</th>
+                      </tr>
+                    </thead>
+                    <!-- Table Body - Display FSP account postings summary -->
+                    <tbody>
+                      <tr *ngFor="let item of FSPAccountPostingsSummaryList; ">
+                        <td>{{ item.Posted_Date }}</td>
+                        <td class="text-right">R{{ item.Posted_First_Year.toFixed(2)}}</td>
+                        <td class="text-right">R{{ item.Posted_Second_Year.toFixed(2) }}</td>
+                        <td class="text-right">R{{item.Posted_First_Year+ item.Posted_Second_Year}}</td>
+                      </tr>
+                      <!-- Total row for FSP account postings summary -->
+                      <tr>
+                        <td class="dark-blue-bg text-white font-weight-bold">Total</td>
+                       <td class="text-right font-weight-bold">R{{ firstYearSum }}</td>
+                       <td class="text-right font-weight-bold">R{{ secondYearSum }}</td>
+                       <td class="text-right font-weight-bold">R{{ totalSum }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Future-dated production Section -->
+              <div class="col-6">
+                <!-- Heading for Future-dated production -->
+                <h4 class="monthly-production-summary skyblue-bg-title text-white text-center">Future-dated production</h4>
+                <div class="monthly-table">
+                  <!-- Table for Future-dated production -->
+                  <table width="100%" cellpadding="0" cellspacing="0">
+                    <!-- Table Headers -->
+                    <thead>
+                      <tr>
+                        <th class="text-white font-weight-bold">Due date</th>
+                        <th class="text-right">Fiduciary fees</th>
+                        <th class="text-right">Allocated amount</th>
+                      </tr>
+                    </thead>
+                    <!-- Table Body - Display Future-dated production -->
+                    <tbody>
+                      <tr *ngFor="let item of FutureDatedProductionList;">
+                        <td>{{ item.Due_Date }}</td>
+                        <td> {{ item.Product_Description.trim() == 'Commission Service Fee' ? 'Premium Under Advise Fee' : item.Product_Description }} </td>
+                        <td class="text-right">R{{ item.Allocated_Amount.toFixed(2) }}</td>
+                      </tr>
+                      <!-- Total row for Future-dated production -->
+                      <tr>
+                        <td class="dark-blue-bg text-white font-weight-bold text-right" colspan="2">Total earnings</td>
+                        <td  class="font-weight-bold text-right">R{{ allocatedAmountSum }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+            <!-- Monthly production summary Section -->
           <div class="earnings-section-monthly d-flex">
             <!-- Two Columns Layout -->
             <div class="d-flex gap-1 w-100">
@@ -877,79 +946,6 @@ export class PPSDetailedTransactionsComponent {
                 <div class="total-price-title py-1 font-weight-bold text-center">R{{ totalEarnings }}</div>
               </div>
               <div class="col-3 text-right"></div>
-            </div>
-          </div>
-
-          <!-- FSP account postings summary Section -->
-          <div class="earnings-section-monthly d-flex mb-2">
-            <div class="d-flex gap-1 w-100">
-              <!-- FSP account postings summary -->
-              <div class="col-6">
-                <!-- Heading for FSP account postings summary -->
-                <h4  class="monthly-production-summary skyblue-bg-title text-white text-center">FSP account postings summary</h4>
-                <div class="monthly-table">
-                  <!-- Table for FSP account postings summary -->
-                  <table width="100%" cellpadding="0" cellspacing="0">
-                    <!-- Table Headers -->
-                    <thead>
-                      <tr>
-                        <th class="text-white font-weight-bold">Posted Date</th>
-                        <th class="text-right">Premium under advice</th>
-                        <th class="text-right">Premium under advice</th>
-                        <th class="text-right">Premium under advice</th>
-                      </tr>
-                    </thead>
-                    <!-- Table Body - Display FSP account postings summary -->
-                    <tbody>
-                      <tr *ngFor="let item of FSPAccountPostingsSummaryList; ">
-                        <td>{{ item.Posted_Date }}</td>
-                        <td class="text-right">R{{ item.Posted_First_Year.toFixed(2)}}</td>
-                        <td class="text-right">R{{ item.Posted_Second_Year.toFixed(2) }}</td>
-                        <td class="text-right">R{{item.Posted_First_Year+ item.Posted_Second_Year}}</td>
-                      </tr>
-                      <!-- Total row for FSP account postings summary -->
-                      <tr>
-                        <td class="dark-blue-bg text-white font-weight-bold">Total</td>
-                       <td class="text-right font-weight-bold">R{{ firstYearSum }}</td>
-                       <td class="text-right font-weight-bold">R{{ secondYearSum }}</td>
-                       <td class="text-right font-weight-bold">R{{ totalSum }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <!-- Future-dated production Section -->
-              <div class="col-6">
-                <!-- Heading for Future-dated production -->
-                <h4 class="monthly-production-summary skyblue-bg-title text-white text-center">Future-dated production</h4>
-                <div class="monthly-table">
-                  <!-- Table for Future-dated production -->
-                  <table width="100%" cellpadding="0" cellspacing="0">
-                    <!-- Table Headers -->
-                    <thead>
-                      <tr>
-                        <th class="text-white font-weight-bold">Due date</th>
-                        <th class="text-right">Fiduciary fees</th>
-                        <th class="text-right">Allocated amount</th>
-                      </tr>
-                    </thead>
-                    <!-- Table Body - Display Future-dated production -->
-                    <tbody>
-                      <tr *ngFor="let item of FutureDatedProductionList;">
-                        <td>{{ item.Due_Date }}</td>
-                        <td> {{ item.Product_Description.trim() == 'Commission Service Fee' ? 'Premium Under Advise Fee' : item.Product_Description }} </td>
-                        <td class="text-right">R{{ item.Allocated_Amount.toFixed(2) }}</td>
-                      </tr>
-                      <!-- Total row for Future-dated production -->
-                      <tr>
-                        <td class="dark-blue-bg text-white font-weight-bold text-right" colspan="2">Total earnings</td>
-                        <td  class="font-weight-bold text-right">R{{ allocatedAmountSum }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
             </div>
           </div>
         </div>
