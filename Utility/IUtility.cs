@@ -151,7 +151,7 @@
         /// <param
         /// name="printPdf"> specify if pdf need to be printed.</param>
         //string WriteToFile(string Message, string fileName, long batchId, long customerId, string baseURL, string outputLocation, bool printPdf = false, string headerHtml = "", string footerHtml = "", string segment = "", string language = "");
-        string WriteToFile(string Message, string fileName, string scheduleName, string batchName, long customerId, string baseURL, string outputLocation, bool printPdf = false, string headerHtml = "", string footerHtml = "", string segment = "", string language = "");
+        string WriteToFile(string Message, string fileName, string scheduleName, string batchName, long customerId, string baseURL, string outputLocation, bool printPdf = false, string headerHtml = "", string fspName = "", string fspTradingName = "", string footerHtml = "", string segment = "", string language = "");
         /// <summary>
         /// This method help to write json stringin to actual file
         /// </summary>
@@ -282,6 +282,6 @@
         /// </returns>
         string CurrencyFormatting(string CountryCultureInfoCode, string CurrencyDecimalSeparator, string currencyFormat, decimal amount);
 
-      //  string CreateAndWriteToZipFileForNedBank(string htmlstr, string fileName, string batchExecutionDate, string productType, List<string> listSegment, string baseURL, string outputLocation, IDictionary<string, string> filesDictionary = null);
+        //  string CreateAndWriteToZipFileForNedBank(string htmlstr, string fileName, string batchExecutionDate, string productType, List<string> listSegment, string baseURL, string outputLocation, IDictionary<string, string> filesDictionary = null);
     }
 }
