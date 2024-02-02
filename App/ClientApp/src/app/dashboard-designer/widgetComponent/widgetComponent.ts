@@ -568,8 +568,8 @@ export class PPSDetails1Component {
 			                  <td>September 2023</td>
                     </tr>
                     <tr>
-                        <td class= "font-weight-bold" colspan="2">
-                        <b>Date From:</b>
+                        <td colspan="2">
+                       <b> Date From:</b>
                         2023-09-01 to 2023-01-01
                         </td>
                     </tr>
