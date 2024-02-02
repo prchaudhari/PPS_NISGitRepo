@@ -112,7 +112,7 @@ export class ListComponent implements OnInit {
 
   public array: any;
 
-  public pageSize = 5;
+  public pageSize = 10;
   public currentPage = 0;
   public totalSize = 0;
   public previousPageLabel: string;

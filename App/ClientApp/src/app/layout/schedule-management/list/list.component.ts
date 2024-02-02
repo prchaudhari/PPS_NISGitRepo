@@ -21,7 +21,7 @@ import { ProductService } from '../../products/product.service';
 
 export class ListComponent implements OnInit {
   public isFilter: boolean = false;
-  public pageSize = 10;
+  public pageSize = 20;
   public currentPage = 0;
   public totalSize = 0;
   public scheduleList: Schedule[] = [];

@@ -44,7 +44,7 @@ export class ListComponent implements OnInit {
   public displayedColumns: string[] = ['name', 'description', 'active', 'actions'];
   public dataSource: any;
 
-  public pageSize = 5;
+  public pageSize = 10;
   public currentPage = 0;
   public totalSize = 0;
   public previousPageLabel: string;

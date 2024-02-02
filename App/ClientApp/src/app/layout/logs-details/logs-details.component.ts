@@ -37,7 +37,7 @@ export class LogsDetailsComponent implements OnInit {
   public isLoaderActive: boolean = false;
   public isRecordFound: boolean = false;
   public pageNo = 0;
-  public pageSize = 5;
+  public pageSize = 20;
   public currentPage = 0;
   public totalSize = 0;
   public array: any;
