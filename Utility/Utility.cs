@@ -57,8 +57,23 @@
             string formattedAmount = amount.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-ZA"));
             return ((amount < 0 ? "-" : "") + formattedAmount.Replace(",", ".")).Replace("--", "-");
         }
+        public static string FormatDecimaltoStringValue(string input)
+        {
+            // Convert the string to a decimal
+            if (decimal.TryParse(input, out decimal number))
+            {
+                // Format the decimal without trailing .00
+                string formattedNumber = number.ToString("0.##");
+                // Display the result
+                return formattedNumber;
+            }
+            else
+            {
+                return "Invalid input";
+            }
 
-        public static string FormatCurrency(double amount)
+        }
+public static string FormatCurrency(double amount)
         {
             string formattedAmount = amount.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-ZA"));
             return ((amount < 0 ? "-" : "") + formattedAmount.Replace(",", ".")).Replace("--", "-");
