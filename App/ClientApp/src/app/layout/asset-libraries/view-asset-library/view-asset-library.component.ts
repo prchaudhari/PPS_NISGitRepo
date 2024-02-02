@@ -35,7 +35,7 @@ const List_Data: ListElement[] = [
 })
 export class ViewAssetLibraryComponent implements OnInit {
 
-  public pageSize = 5;
+  public pageSize = 20;
   public currentPage = 0;
   public totalSize = 0;
   public assetLibrary: AssetLibrary;
