@@ -76,16 +76,23 @@
               }">
           </span><span class="nav-title text-truncate" title="{{ widget.DisplayName }}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100px"> {{widget.DisplayName}} </span>-->
           <span class="nav-icon fa"
-                [class.icon-rp-production1]="widget.WidgetName == 'FSPDetails'"
+                [class.icon-line-dashboard-config2]="widget.WidgetName == 'FSPDetails'"
+                [class.icon-operations2]="widget.WidgetName == 'PPSFooter1'"
+
                 [class.fa-address-book-o]="['CustomerInformation', 'CustomerDetails', 'PortfolioCustomerDetails'].includes(widget.WidgetName)"
                 [class.icon-org-profile1]="['AccountInformation', 'CustomerAddressDetails','FooterImage'].includes(widget.WidgetName)"            
                 [class.icon-videoWidget]="widget.WidgetName == 'Video'"
-                [class.icon-TransactionMixWidget]="['PPSDetails1', 'PPSDetails1', 'PortfolioCustomerDetails'].includes(widget.WidgetName)" 
+                [class.icon-TransactionMixWidget]="['PPSDetails1', 'PPSDetails1','PortfolioCustomerDetails','PPSFooter1'].includes(widget.WidgetName)" 
                 [class.icon-statemenrDefinitions]="widget.WidgetName == 'PPSDetailedTransactions'"
-               [class.icon-home-line2]="widget.WidgetName == 'Image'"   
+
+             
+               [class.icon-allowance2]="widget.WidgetName == 'DetailedTransactions'"  
+               [class.icon-widget-value2]="widget.WidgetName == 'PPSEarningForPeriod'" 
+               [class.icon-speed-loss1]="widget.WidgetName == 'PPSFooter1'"
+
                 [class.icon-organizationunit-line2]="widget.WidgetName == 'ProductSummary'"
                 [class.icon-widget-process-control2]="widget.WidgetName == 'FSPHeading'"              
-                [class.icon-operations2]="['PPSFooter1' , 'FSPHeading','DetailedTransactions','PPSEarningForPeriod','FSPDetails','Summary','BreakdownOfInvestmentAccounts',
+                [class.icon-operations2]="['DetailedTransactions','Summary','BreakdownOfInvestmentAccounts',
                 'WealthBreakdownOfInvestmentAccounts','PersonalLoanDetail','PersonalLoanTotalAmountDetail',
                 'HomeLoanTotalAmountDetail','AccountSummary','WealthHomeLoanTotalAmountDetail'].includes(widget.WidgetName)"
                 [class.icon-view2]="['PPSDetails2'].includes(widget.WidgetName)"
@@ -95,6 +102,7 @@
                 [class.icon-rp-production1]="widget.WidgetName == 'SpendingTrend'"
                 [class.icon-machine-dashboard2]="['SavingAvailableBalance', 'PaymentSummary', 'CurrentAvailableBalance'].includes(widget.WidgetName)" 
             
+                [class.icon-reportGenerations2]="widget.WidgetName == 'Image'"
                 [class.fa-bell-o]="widget.WidgetName == 'ReminderaAndRecommendation'"
                 [class.fa-code.fa-code]="widget.WidgetName == 'StaticHtml'"
                 [class.fa-credit-card]="widget.WidgetName == 'CurrentTransaction'">

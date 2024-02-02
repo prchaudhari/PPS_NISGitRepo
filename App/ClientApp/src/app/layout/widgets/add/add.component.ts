@@ -81,7 +81,7 @@ export class AddComponent implements OnInit {
         }
         else if (this.widgetList[i].WidgetName == "FSPDetails") {
           this.widgetList[i].ImageSource = "assets/images/FSPDetails.png";
-          this.widgetList[i].WidgetIcon = "icon-rp-production1";
+          this.widgetList[i].WidgetIcon = "icon-line-dashboard-config2";
         }
         else if (this.widgetList[i].WidgetName == "PaymentSummary") {
           this.widgetList[i].ImageSource = "assets/images/PaymentSummary.png";
@@ -105,7 +105,7 @@ export class AddComponent implements OnInit {
         }
         else if (this.widgetList[i].WidgetName == "PPSFooter1") {
           this.widgetList[i].ImageSource = "assets/images/footer1.PNG";
-          this.widgetList[i].WidgetIcon = "icon-operations2";
+          this.widgetList[i].WidgetIcon = "icon-speed-loss1";
         }
         else if (this.widgetList[i].WidgetName == "PPSDetails1") {
           this.widgetList[i].ImageSource = "assets/images/Details1.PNG";
@@ -121,7 +121,7 @@ export class AddComponent implements OnInit {
         }
         else if (this.widgetList[i].WidgetName == "PPSEarningForPeriod") {
           this.widgetList[i].ImageSource = "assets/images/PPSEarningForPeriod.png";
-          this.widgetList[i].WidgetIcon = "fa fa-address-book-o";
+          this.widgetList[i].WidgetIcon = "icon-widget-value2";
         }
         else if (this.widgetList[i].WidgetName == "AccountInformation") {
           this.widgetList[i].ImageSource = "assets/images/AccountInfoWidget.PNG"
@@ -134,7 +134,7 @@ export class AddComponent implements OnInit {
         }
         else if (this.widgetList[i].WidgetName == "Image") {
           this.widgetList[i].ImageSource = "assets/images/icon-image.png"
-          this.widgetList[i].WidgetIcon = "fa fa-image";
+          this.widgetList[i].WidgetIcon = "icon-reportGenerations2";
         }
         else if (this.widgetList[i].WidgetName == "Video") {
           this.widgetList[i].ImageSource = "assets/images/VideoPlaceholder.jpg"
