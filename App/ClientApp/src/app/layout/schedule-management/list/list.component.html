@@ -17,7 +17,7 @@
     <div class="card-body">
       <div class="d-flex justify-content-center mb-4">
         <div class="pagination-mat position-relative">
-          <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true"
+          <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[20, 50, 100]" [showFirstLastButtons]="true"
             [length]="totalSize" [pageIndex]="currentPage" (page)="handlePage($event)">
           </mat-paginator>
         </div>

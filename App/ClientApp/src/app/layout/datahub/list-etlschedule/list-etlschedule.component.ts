@@ -23,7 +23,7 @@ import { ProductService } from '../../products/product.service';
 export class ListEtlscheduleComponent implements OnInit {
   public isFilter: boolean = false;
   public pageNo = 0;
-  public pageSize = 5;
+  public pageSize = 20;
   public currentPage = 0;
   public totalSize = 0;
   public isFilterDone = false;

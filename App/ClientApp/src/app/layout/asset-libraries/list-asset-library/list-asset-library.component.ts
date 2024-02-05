@@ -26,7 +26,7 @@ export interface ListElement {
 export class ListAssetLibraryComponent implements OnInit {
 
   public isFilter: boolean = false;
-  public pageSize = 5;
+  public pageSize = 20;
   public currentPage = 0;
   public totalSize = 0;
   public assetLibraryFilterForm: FormGroup;
