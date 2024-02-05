@@ -416,10 +416,10 @@ export class DetailedTransactionsComponent {
                         <img src="assets/images/img_1.png">
                     </div>
                     <div class="colom-4">
-                        <img src="assets/images/img_2.png">
+                        <img style="height:100%"  src="assets/images/img_2.png">
                     </div>
-                    <div class="colom-4">
-                        <img src="assets/images/img_3.png">
+                    <div  class="colom-4">
+                        <img style="height:100%"  src="assets/images/img_3.png">
                     </div>
 
                 </div>
