@@ -2536,11 +2536,9 @@ namespace nIS
                     records?.ForEach(transactionitem =>
                     {
                         detailedTransactionSrc.Append("<div class='text-left fsp-transaction-title font-weight-bold mb-3'>Intermediary:  " + transactionitem.FirstOrDefault().INT_EXT_REF + " " + transactionitem.FirstOrDefault().Int_Name + "</div>");
-                        
                         double aeAmountSumDT = 0.00;
                         double aeAmountCRSumDT = 0.00;
                         double aeAmountDRSumDT = 0.00;
-
                         transaction.Where(mwitem => (mwitem.INT_EXT_REF == transactionitem.FirstOrDefault().INT_EXT_REF)).GroupBy(gpDTTItem => new { gpDTTItem.INT_EXT_REF, gpDTTItem.Member_Ref }).ToList().ForEach(memberitem =>
                         {
                            
@@ -2551,7 +2549,7 @@ namespace nIS
                           {
                              double aeAmount = Convert.ToDouble(itemDTT.AE_Amount);
                              double displayItem = (itemDTT.DR_CR == "CR") ? aeAmount : (aeAmount * (-1));
-                              detailedTransactionSrc.Append("<tr><td class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom text-nowrap '>" + itemDTT.Member_Name + "</td><td  class= 'fsp-bdr-right fsp-bdr-bottom px-1 text-nowrap text-right'>" + itemDTT.Member_Ref + "</td><td  class= 'fsp-bdr-right fsp-bdr-bottom px-1 text-nowrap text-right'> " + itemDTT.Policy_Ref + "</td><td class= 'text-left fsp-bdr-right fsp-bdr-bottom px-1 ewidth text-wrap'>" + (itemDTT.Description == "Commission Service Fee" ? "Premium Under Advise Fee" : itemDTT.Description) + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + itemDTT.Commission_Type + "</td><td  class= 'text-left fsp-bdr-right fsp-bdr-bottom px-1 text-nowrap'>" + itemDTT.POSTED_DATE.ToString("dd-MMM-yyyy") + "</td><td  class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1 text-nowrap ewidth'>" + Utility.FormatCurrency(displayItem) + "</td><td class= 'text-left fsp-bdr-bottom px-1'><a href ='https://www.google.com/' target ='_blank'><img class='leftarrowlogo' src='../common/images/leftarrowlogo.png' alt='Left Arrow'></a></td></tr>");
+                              detailedTransactionSrc.Append("<tr><td class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom text-nowrap '>" + itemDTT.Member_Name + "</td><td  class= 'fsp-bdr-right fsp-bdr-bottom px-1 text-nowrap text-right'>" + itemDTT.Member_Ref + "</td><td  class= 'fsp-bdr-right fsp-bdr-bottom px-1 text-nowrap text-right'> " + itemDTT.Policy_Ref + "</td><td class= 'text-left fsp-bdr-right fsp-bdr-bottom px-1 ewidth text-wrap text-break'>" + (itemDTT.Description == "Commission Service Fee" ? "Premium Under Advise Fee" : itemDTT.Description) + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + itemDTT.Commission_Type + "</td><td  class= 'text-left fsp-bdr-right fsp-bdr-bottom px-1 text-nowrap'>" + itemDTT.POSTED_DATE.ToString("dd-MMM-yyyy") + "</td><td  class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1 text-nowrap ewidth'>" + Utility.FormatCurrency(displayItem) + "</td><td class= 'text-left fsp-bdr-bottom px-1'><a href ='https://www.google.com/' target ='_blank'><img class='leftarrowlogo' src='../common/images/leftarrowlogo.png' alt='Left Arrow'></a></td></tr>");
                               TotalPostedAmount +=  (itemDTT.Prod_Group != "VAT") ? displayItem : 0.0;
                           });
                             string TotalPostedAmountRDT = (TotalPostedAmount == 0) ? "0.00" : Utility.FormatCurrency(TotalPostedAmount);
