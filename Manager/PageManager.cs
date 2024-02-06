@@ -623,7 +623,7 @@ namespace nIS
 
                                                     // Calculate PPS payment and update the HTML string
                                                     double ppsPayment = grandTotalDue;
-                                                    var ppsPaymentR = (ppsPayment == 0) ? "0.00" : Utility.FormatCurrency(ppsPayment.ToString());
+                                                    var ppsPaymentR = (ppsPayment == 0) ? "R0.00" : Utility.FormatCurrency(ppsPayment.ToString());
                                                     productSumstring = productSumstring.Replace("{{PPSPayment}}", ppsPaymentR);
 
                                                     var balance = Convert.ToDouble((grandTotalDue - ppsPayment)).ToString("F2");
@@ -674,7 +674,7 @@ namespace nIS
                                                         detailedTransactionSrc.Append("<tr><td align = 'center' valign = 'center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" + item.Client_Name + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Member_Ref + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'> " + item.Policy_Ref + "</td><td class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1'>" + (item.Description == "Commission Service Fee" ? "Premium Under Advise Fee" : item.Description) + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.POSTED_DATE.ToString("dd-MMM-yyyy") + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + Utility.FormatCurrency(item.Display_Amount) + "</td><td class= 'text-center fsp-bdr-bottom px-1'><a href ='https://www.google.com/' target ='_blank'><img class='leftarrowlogo' src='assets/images/leftarrowlogo.png' alt='Left Arrow'></a></td></tr>");
                                                         TotalPostedAmount += ((item.TYPE == "Fiduciary_Data") && (item.Prod_Group != "VAT")) ? (Convert.ToDouble(item.Display_Amount)) : 0.0;
                                                     });
-                                                        string TotalPostedAmountR = (TotalPostedAmount == 0) ? "0.00" : Utility.FormatCurrency(TotalPostedAmount.ToString());
+                                                        string TotalPostedAmountR = (TotalPostedAmount == 0) ? "R0.00" : Utility.FormatCurrency(TotalPostedAmount.ToString());
                                                         detailedTransactionSrc.Append("<tr> <td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'><br /></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'>" + TotalPostedAmountR + "</td> <td class='text-center fsp-bdr-bottom px-1'><a href='https://www.google.com/' target = '_blank' ><img src='assets/images/leftarrowlogo.png'></a></td> </tr></table><div class='text-right w-100 pt-3'><a href='https://www.google.com/' target = '_blank'></a></div></div></div></div>");
                                                         TotalPostedAmount = 0;
 
@@ -713,7 +713,7 @@ namespace nIS
                                                                   + memberitemrecord.AE_Posted_Date.ToString("dd-MMM-yyyy") + "</td>" +
                                                                     "<td class='bdr-right-white ewidth text-right'>" + Utility.FormatCurrency(memberitemrecord.ALLOCATED_AMOUNT) + "</td></tr>");
                                                             });
-                                                            string TotalPostedAmountR = (TotalPostedAmount == 0) ? "0.00" : (TotalPostedAmount.ToString());
+                                                            string TotalPostedAmountR = (TotalPostedAmount == 0) ? "R0.00" : (TotalPostedAmount.ToString());
                                                             detailedTransactionSrc.Append(" <tr><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold '></td><td class='dark-blue-bg text-white font-weight-bold tright fs-16'>Sub Total</td><td colspan='2' class='font-weight-bold text-right fs-16 pps-bg-gray' height='40'>" + Utility.FormatCurrency(TotalPostedAmountR) + "</td></tr>");
                                                         });
                                                        
@@ -866,7 +866,7 @@ namespace nIS
                                                                     .Where(witem => witem.AE_Posted_Date.Date == gpMonthRangeItem.GroupKey.Date && witem.CommissionType == gpCommisionTypeitem.GroupKey.CommissionType)
                                                                     .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
 
-                                                                var premiumUnderAdviceTd1SumR = (premiumUnderAdviceTd1Sum == 0) ? "0.00" : Utility.FormatCurrency(premiumUnderAdviceTd1Sum.ToString());
+                                                                var premiumUnderAdviceTd1SumR = (premiumUnderAdviceTd1Sum == 0) ? "R0.00" : Utility.FormatCurrency(premiumUnderAdviceTd1Sum.ToString());
                                                                 commisionDetailSrc.Append("<td class='text-right'>" + premiumUnderAdviceTd1SumR + "</td>");
                                                                 innermonthlyAEPostedTotalListSum.Add(premiumUnderAdviceTd1Sum);
                                                             });
@@ -876,7 +876,7 @@ namespace nIS
                                                                 .Where(witem => witem.AE_Posted_Date.Date == gpMonthRangeItem.GroupKey.Date)
                                                                 .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
 
-                                                            var postedAmountTdSumR = (postedAmountTdSum == 0) ? "0.00" : Utility.FormatCurrency(postedAmountTdSum.ToString());
+                                                            var postedAmountTdSumR = (postedAmountTdSum == 0) ? "R0.00" : Utility.FormatCurrency(postedAmountTdSum.ToString());
                                                             commisionDetailSrc.Append("<td class='text-right'>" + Utility.FormatCurrency(postedAmountTdSumR) + "</td>");
 
                                                             // Adding inner list to monthly total list and closing row
@@ -906,7 +906,7 @@ namespace nIS
                                                         }
 
                                                         // Appending HTML for Total Premium under advice and closing the table
-                                                        var totalAEPostedMonthlyEarningsR = (totalAEPostedMonthlyEarnings == 0) ? "0.00" : Utility.FormatCurrency(totalAEPostedMonthlyEarnings.ToString());
+                                                        var totalAEPostedMonthlyEarningsR = (totalAEPostedMonthlyEarnings == 0) ? "R0.00" : Utility.FormatCurrency(totalAEPostedMonthlyEarnings.ToString());
                                                         commisionDetailSrc.Append("<td class='text-right font-weight-bold'>" + Utility.FormatCurrency(totalAEPostedMonthlyEarningsR) + "</ td>");
                                                         commisionDetailSrc.Append("</tr></table></div></div>");
 
@@ -955,14 +955,14 @@ namespace nIS
                                                                 .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
 
                                                             commisionDetailSrc.Append("<td class='text-left'>" + (prdocutDescription.GroupKey.PRODUCT_DESCRIPTION == "Commission Service Fee" ? "Premium Under Advise Fee" : prdocutDescription.GroupKey.PRODUCT_DESCRIPTION) + "</td>");
-                                                            var sumOfAllocatedAmountR = (sumOfAllocatedAmount == 0) ? "0.00" : Utility.FormatCurrency(sumOfAllocatedAmount.ToString());
+                                                            var sumOfAllocatedAmountR = (sumOfAllocatedAmount == 0) ? "R0.00" : Utility.FormatCurrency(sumOfAllocatedAmount.ToString());
                                                             commisionDetailSrc.Append("<td class='text-right'>" + sumOfAllocatedAmountR + "</td>");
                                                             FutureColumnSums += sumOfAllocatedAmount;
                                                             commisionDetailSrc.Append("</tr>");
                                                         });
 
                                                         // Appending HTML for SubTotal row
-                                                        var sumOfDueDateAllocatedAmountR = (sumOfDueDateAllocatedAmount == 0) ? "0.00" : Utility.FormatCurrency(sumOfDueDateAllocatedAmount.ToString());
+                                                        var sumOfDueDateAllocatedAmountR = (sumOfDueDateAllocatedAmount == 0) ? "R0.00" : Utility.FormatCurrency(sumOfDueDateAllocatedAmount.ToString());
                                                         commisionDetailSrc.Append("<tr><td class='text-right' colspan='2'>SubTotal<td class='text-right'>" + sumOfDueDateAllocatedAmountR + "</td></tr>");
                                                     });
 
@@ -1000,7 +1000,7 @@ namespace nIS
                                                                                  (witem.Type == "Policy_Data")))
                                                                 .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
 
-                                                            var premiumUnderAdviceTd1SumR = (premiumUnderAdviceTd1Sum == 0) ? "0.00" : Utility.FormatCurrency(premiumUnderAdviceTd1Sum.ToString());
+                                                            var premiumUnderAdviceTd1SumR = (premiumUnderAdviceTd1Sum == 0) ? "R0.00" : Utility.FormatCurrency(premiumUnderAdviceTd1Sum.ToString());
                                                             commisionDetailSrc.Append("<td class='text-right'>" + premiumUnderAdviceTd1SumR + "</td>");
                                                             innermonthlyTotalListSum.Add(premiumUnderAdviceTd1Sum);
                                                         });
@@ -1063,7 +1063,7 @@ namespace nIS
                                                                                  (witem.Type == "Fiduciary_Data")))
                                                                 .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
 
-                                                            var premiumUnderAdviceTd1SumR = (premiumUnderAdviceTd1Sum == 0) ? "0.00" : Utility.FormatCurrency(premiumUnderAdviceTd1Sum.ToString());
+                                                            var premiumUnderAdviceTd1SumR = (premiumUnderAdviceTd1Sum == 0) ? "R0.00" : Utility.FormatCurrency(premiumUnderAdviceTd1Sum.ToString());
                                                             commisionDetailSrc.Append("<td class='text-right'>" + premiumUnderAdviceTd1SumR + "</td>");
                                                             innerFeesMonthlyTotalListSum.Add(premiumUnderAdviceTd1Sum);
                                                         });
@@ -1095,7 +1095,7 @@ namespace nIS
                                                     }
 
                                                     // Add total monthly earnings to the widget
-                                                    var totalMonthlyEarningsR = (totalMonthlyEarnings == 0) ? "0.00" : Utility.FormatCurrency(totalMonthlyEarnings.ToString());
+                                                    var totalMonthlyEarningsR = (totalMonthlyEarnings == 0) ? "R0.00" : Utility.FormatCurrency(totalMonthlyEarnings.ToString());
                                                     commisionDetailSrc.Append("</tr></table>");
 
                                                     commisionDetailSrc.Append("</div></div></div></div>");
