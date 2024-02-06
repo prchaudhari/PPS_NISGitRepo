@@ -34,7 +34,7 @@ noData(Highcharts);
       <div class="row">
         <div class="col-sm-4">
           <h4 class="mb-4">Laura J Donald</h4>
-          <h6>4000 Executive Parkway, Saint Globin Rd #250,<br /> Canary Wharf, E94583</h6>
+          <h6>4000 Executive Parkway, Saint Globin Rd #250,<br/> Canary Wharf, E94583</h6>
         </div>
       
       </div>
@@ -226,7 +226,7 @@ export class PPSFooter1Component {
                                     <td class="fsp-bdr-right fsp-bdr-bottom px-1">
                                 {{ item.Prod_Group.trim() == 'Service Fee' ? 'Premium Under Advise Fee' : item.Prod_Group }}
                                     </td>
-                                <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">R{{item.Display_Amount}}
+                                <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">{{formatCurrency(item.Display_Amount)}}
                                 </td></tr>
                                 <tr>
                                     <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"></td>
@@ -277,7 +277,15 @@ export class ProductSummaryComponent {
     { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Safe Custody Fee', Display_Amount: '52.67', Query_Link: "https://facebook.com" },
     { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Service Fee', Display_Amount: '52.68', Query_Link: "https://facebook.com" }
   ]
+  public formatCurrency(input: any): any {
+    const amount: number = parseFloat(input); // Parse the string to a decimal
+    const formattedAmount: string = amount.toLocaleString('en-ZA', {
+      style: 'currency',
+      currency: 'ZAR'
+    });
 
+    return ((amount < 0 ? '-' : '') + formattedAmount.replace(',', '.')).replace('--', '-');
+  }
 
 }
 
@@ -300,26 +308,26 @@ export class ProductSummaryComponent {
                         <table width="100%" cellpadding="0" cellspacing="0">
                             <thead>
                                 <tr>
-                                    <th class="font-weight-bold text-white">Client name</th>
-                                    <th class="font-weight-bold text-white text-center pe-0 bdr-r-0">Member<br />number</th>
-                                    <th class="font-weight-bold text-white text-center">Will<br />number</th>
-                                    <th class="font-weight-bold text-white text-center">Fiduciary fees</th>
-                                    <th class="font-weight-bold text-white text-center">Commission<br />type</th>
-                                    <th class="font-weight-bold text-white text-center">Posted date</th>
-                                    <th class="font-weight-bold text-white text-center">Posted amount</th>
+                                    <th class="font-weight-bold text-white text-left text-nowrap">Client name</th>
+                                    <th class="font-weight-bold text-white pe-0 bdr-r-0 text-left text-nowrap">Member<br/>number</th>
+                                    <th class="font-weight-bold text-white text-left text-nowrap">Policy number</th>
+                                    <th class="font-weight-bold text-white text-left">Description</th>
+                                    <th class="font-weight-bold text-white text-left">Commission<br/>type</th>
+                                    <th class="font-weight-bold text-white text-left text-nowrap">Posted date</th>
+                                    <th class="font-weight-bold text-white text-left text-nowrap">Posted amount</th>
                                     <th class="font-weight-bold text-white">Query</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let item of detailedTransactionList">
-                                    <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"> {{item.Client_Name}}  </td>
-                                    <td class="fsp-bdr-right fsp-bdr-bottom px-1"> {{item.Member_Ref}} </td>
-                                    <td class="fsp-bdr-right fsp-bdr-bottom px-1"> {{item.Policy_Ref}} </td>
-                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">{{item.Description}}</td>
-                                    <td class="text-center fsp-bdr-right fsp-bdr-bottom px-1">{{item.Commission_Type}}</td>
-                                    <td class="text-center fsp-bdr-right fsp-bdr-bottom px-1">{{item.POSTED_DATE}}</td>
-                                    <td class="text-center fsp-bdr-right fsp-bdr-bottom px-1">R{{item.Display_Amount}}</td>
-                                    <td class="text-center fsp-bdr-bottom px-1">
+                                    <td class="text-left px-1 py-1 fsp-bdr-right fsp-bdr-bottom">{{item.Client_Name}}</td>
+                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">{{item.Member_Ref}}</td>
+                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">{{item.Policy_Ref}}</td>
+                                    <td class="fsp-bdr-right fsp-bdr-bottom px-1">{{item.Description}}</td>
+                                    <td class="text-left fsp-bdr-right fsp-bdr-bottom px-1">{{item.Commission_Type}}</td>
+                                    <td class="text-left fsp-bdr-right fsp-bdr-bottom px-1">{{item.POSTED_DATE}}</td>
+                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">{{formatCurrency(item.Display_Amount)}}</td>
+                                    <td class="text-left fsp-bdr-bottom px-1">
                                         <a href="{{item.Query_Link}}" target="_blank">
                                             <img class="leftarrowlogo" src="assets/images/leftarrowlogo.png" alt="Left Arrow">
                                         </a>
@@ -330,10 +338,10 @@ export class ProductSummaryComponent {
                                     <td class="fsp-bdr-right fsp-bdr-bottom px-1 py-1"></td>
                                     <td class="fsp-bdr-right fsp-bdr-bottom px-1 py-1"></td>
                                     <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1"></td>
-                                    <td class="text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1"><br /></td>
-                                    <td class="text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1"></td>
-                                    <td class="text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1">R20.18</td>
-                                    <td class="text-center fsp-bdr-bottom px-1"><a href="#"><img src="assets/images/leftarrowlogo.png"></a></td>
+                                    <td class="fsp-bdr-right fsp-bdr-bottom px-1 py-1"><br/></td>
+                                    <td class="fsp-bdr-right fsp-bdr-bottom px-1 py-1"></td>
+                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1">R20.18</td>
+                                    <td class="text-left fsp-bdr-bottom px-1"><a href="#"><img src="assets/images/leftarrowlogo.png"></a></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -346,26 +354,26 @@ export class ProductSummaryComponent {
                         <table width="100%" cellpadding="0" cellspacing="0">
                             <thead>
                                 <tr>
-                                    <th class="font-weight-bold text-white">Client name</th>
-                                    <th class="font-weight-bold text-white text-center pe-0 bdr-r-0">Member<br />number</th>
-                                    <th class="font-weight-bold text-white text-center">Will<br />number</th>
-                                    <th class="font-weight-bold text-white text-center">Fiduciary fees</th>
-                                    <th class="font-weight-bold text-white text-center">Commission<br />type</th>
-                                    <th class="font-weight-bold text-white text-center">Posted date</th>
-                                    <th class="font-weight-bold text-white text-center">Posted amount</th>
+                                    <th class="font-weight-bold text-white text-left text-nowrap">Client name</th>
+                                    <th class="font-weight-bold text-white pe-0 bdr-r-0 text-left text-nowrap">Member<br/>number</th>
+                                    <th class="font-weight-bold text-white text-left text-nowrap">Policy number</th>
+                                    <th class="font-weight-bold text-white text-left">Description</th>
+                                    <th class="font-weight-bold text-white text-left">Commission<br/>type</th>
+                                    <th class="font-weight-bold text-white text-left text-nowrap">Posted date</th>
+                                    <th class="font-weight-bold text-white text-left text-nowrap">Posted amount</th>
                                     <th class="font-weight-bold text-white">Query</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let item of detailedTransactionIntList">
-                                    <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"> {{item.Client_Name}}  </td>
-                                    <td class="fsp-bdr-right fsp-bdr-bottom px-1"> {{item.Member_Ref}} </td>
-                                    <td class="fsp-bdr-right fsp-bdr-bottom px-1"> {{item.Policy_Ref}} </td>
-                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">{{item.Description}}</td>
-                                    <td class="text-center fsp-bdr-right fsp-bdr-bottom px-1">{{item.Commission_Type}}</td>
-                                    <td class="text-center fsp-bdr-right fsp-bdr-bottom px-1">{{item.POSTED_DATE}}</td>
-                                    <td class="text-center fsp-bdr-right fsp-bdr-bottom px-1">R{{item.Display_Amount}}</td>
-                                    <td class="text-center fsp-bdr-bottom px-1">
+                                    <td class="text-left px-1 py-1 fsp-bdr-right fsp-bdr-bottom">{{item.Client_Name}}</td>
+                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">{{item.Member_Ref}}</td>
+                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">{{item.Policy_Ref}}</td>
+                                    <td class="fsp-bdr-right fsp-bdr-bottom px-1">{{item.Description}}</td>
+                                    <td class="text-left fsp-bdr-right fsp-bdr-bottom px-1">{{item.Commission_Type}}</td>
+                                    <td class="text-left fsp-bdr-right fsp-bdr-bottom px-1">{{item.POSTED_DATE}}</td>
+                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">{{formatCurrency(item.Display_Amount)}}</td>
+                                    <td class="text-left fsp-bdr-bottom px-1">
                                         <a href="{{item.Query_Link}}" target="_blank">
                                             <img class="leftarrowlogo" src="assets/images/leftarrowlogo.png" alt="Left Arrow">
                                         </a>
@@ -376,10 +384,10 @@ export class ProductSummaryComponent {
                                     <td class="fsp-bdr-right fsp-bdr-bottom px-1 py-1"></td>
                                     <td class="fsp-bdr-right fsp-bdr-bottom px-1 py-1"></td>
                                     <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1"></td>
-                                    <td class="text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1"><br /></td>
-                                    <td class="text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1"></td>
-                                    <td class="text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1">R20.18</td>
-                                    <td class="text-center fsp-bdr-bottom px-1"><a href="#"><img src="assets/images/leftarrowlogo.png"></a></td>
+                                    <td class="fsp-bdr-right fsp-bdr-bottom px-1 py-1"><br/></td>
+                                    <td class="fsp-bdr-right fsp-bdr-bottom px-1 py-1"></td>
+                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1">R20.18</td>
+                                    <td class="text-left fsp-bdr-bottom px-1"><a href="#"><img src="assets/images/leftarrowlogo.png"></a></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -393,6 +401,7 @@ export class ProductSummaryComponent {
 export class DetailedTransactionsComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
+
   public detailedTransactionList: any[] = [
     { INT_EXT_REF: '2164250', Int_Name: 'Mr SCHOELER', Client_Name: 'Mr SCHOELER', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '17.55', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'Safe Custody Fee' },
     { INT_EXT_REF: '2164250', Int_Name: 'Yvonne Van Heerden', Client_Name: 'Mr SCHOELER', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee VAT', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '2.63', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'Safe Custody Fee' },
@@ -401,6 +410,16 @@ export class DetailedTransactionsComponent {
     { INT_EXT_REF: '124411745', Int_Name: 'Kruger Van Heerden', Client_Name: 'DR N J Olivier', Member_Ref: '1217181', Policy_Ref: '5524069', Description: 'Safe Custody Service Fee', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '17.55', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'Safe Custody Fee' },
     { INT_EXT_REF: '124411745', Int_Name: 'Kruger Van Heerden', Client_Name: 'DR N J Olivier', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee VAT	', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '2.63', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'VAT' },
   ]
+  public formatCurrency(input: any): any {
+    const amount: number = parseFloat(input); // Parse the string to a decimal
+    const formattedAmount: string = amount.toLocaleString('en-ZA', {
+      style: 'currency',
+      currency: 'ZAR'
+    });
+
+    return ((amount < 0 ? '-' : '') + formattedAmount.replace(',', '.')).replace('--', '-');
+  }
+ 
 }
 
 // Component Created for PPS Details--
@@ -773,6 +792,7 @@ export class PPSDetailedTransactionsComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
 
+
 }
 
 /**
@@ -787,10 +807,7 @@ export class PPSDetailedTransactionsComponent {
       <div class="middle-section">
         <div class="earnings-section">
           <!-- Earnings for Period Heading -->
-          <h2 class="pps-earning-for-period-heading dark-blue-bg text-white">Earnings For Period</h2>
-
-        
-
+          <h2 class="pps-earning-for-period-heading dark-blue-bg text-white">Earnings for Period</h2>
           <!-- FSP account postings summary Section -->
           <div class="earnings-section-monthly d-flex mb-2">
             <div class="d-flex gap-1 w-100">
@@ -804,26 +821,26 @@ export class PPSDetailedTransactionsComponent {
                     <!-- Table Headers -->
                     <thead>
                       <tr>
-                        <th class="text-white font-weight-bold">Posted Date</th>
-                        <th class="text-right">Premium under advice</th>
-                        <th class="text-right">Premium under advice</th>
-                        <th class="text-right">Premium under advice</th>
+                        <th class="text-white text-nowrap font-weight-bold">Posted Date</th>
+                        <th class="text-left">Posted (1st Year)</th>
+                        <th class="text-left">Posted (2nd Year)</th>
+                        <th class="text-left">Premium under advice</th>
                       </tr>
                     </thead>
                     <!-- Table Body - Display FSP account postings summary -->
                     <tbody>
                       <tr *ngFor="let item of FSPAccountPostingsSummaryList; ">
-                        <td>{{ item.Posted_Date }}</td>
-                        <td class="text-right">R{{ item.Posted_First_Year.toFixed(2)}}</td>
-                        <td class="text-right">R{{ item.Posted_Second_Year.toFixed(2) }}</td>
-                        <td class="text-right">R{{item.Posted_First_Year+ item.Posted_Second_Year}}</td>
+                        <td class="text-nowrap">{{ item.Posted_Date }}</td>
+                        <td class="text-right">{{formatCurrency(item.Posted_First_Year.toFixed(2))}}</td>
+                        <td class="text-right">{{ formatCurrency(item.Posted_Second_Year)}}</td>
+                        <td class="text-right">{{formatCurrency(item.Posted_First_Year+ item.Posted_Second_Year)}}</td>
                       </tr>
                       <!-- Total row for FSP account postings summary -->
                       <tr>
                         <td class="dark-blue-bg text-white font-weight-bold">Total</td>
-                       <td class="text-right font-weight-bold">R{{ firstYearSum }}</td>
-                       <td class="text-right font-weight-bold">R{{ secondYearSum }}</td>
-                       <td class="text-right font-weight-bold">R{{ totalSum }}</td>
+                       <td class="text-right font-weight-bold">{{ formatCurrency(firstYearSum) }}</td>
+                       <td class="text-right font-weight-bold">{{ formatCurrency(secondYearSum) }}</td>
+                       <td class="text-right font-weight-bold">{{ formatCurrency(totalSum) }}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -840,22 +857,22 @@ export class PPSDetailedTransactionsComponent {
                     <!-- Table Headers -->
                     <thead>
                       <tr>
-                        <th class="text-white font-weight-bold">Due date</th>
-                        <th class="text-right">Fiduciary fees</th>
-                        <th class="text-right">Allocated amount</th>
+                        <th class="text-left text-nowrap text-white font-weight-bold">Due date</th>
+                        <th class="text-left">Fiduciary fees</th>
+                        <th class="text-left">Allocated amount</th>
                       </tr>
                     </thead>
                     <!-- Table Body - Display Future-dated production -->
                     <tbody>
                       <tr *ngFor="let item of FutureDatedProductionList;">
-                        <td>{{ item.Due_Date }}</td>
+                        <td class="text-nowrap">{{item.Due_Date }}</td>
                         <td> {{ item.Product_Description.trim() == 'Commission Service Fee' ? 'Premium Under Advise Fee' : item.Product_Description }} </td>
-                        <td class="text-right">R{{ item.Allocated_Amount.toFixed(2) }}</td>
+                        <td class="text-right">{{ formatCurrency(item.Allocated_Amount.toFixed(2)) }}</td>
                       </tr>
                       <!-- Total row for Future-dated production -->
                       <tr>
-                        <td class="dark-blue-bg text-white font-weight-bold text-right" colspan="2">Total earnings</td>
-                        <td  class="font-weight-bold text-right">R{{ allocatedAmountSum }}</td>
+                        <td class="text-right font-weight-bold" colspan="2">SubTotal</td>
+                        <td class="text-right font-weight-bold">{{ formatCurrency(allocatedAmountSum) }}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -877,23 +894,23 @@ export class PPSDetailedTransactionsComponent {
                     <!-- Table Headers -->
                   <thead>
                     <tr>
-                      <th class="text-white font-weight-bold">Month</th>
-                      <th class="text-right">Premium<br/>Under Advice</th>
-                      <th class="text-right">Premium<br/>Under Advice</th>
+                      <th class="text-nowrap text-white font-weight-bold text-left">Month</th>
+                      <th class="text-left">Premium Under Advice(1st Year)</th>
+                      <th class="text-left">Premium Under Advice(2nd Year)</th>
                     </tr>
                   </thead>
                     <!-- Table Body - Display Monthly production summary T1 -->
                     <tbody>
                       <tr *ngFor="let item of monthlyProductionSummaryT1List">
-                        <td>{{ item.Month }}</td>
-                        <td class="text-right">R{{ item.Premium_Under_Advice_Td1.toFixed(2) }}</td>
-                        <td class="text-right">R{{ item.Premium_Under_Advice_Td2.toFixed(2) }}</td>
+                        <td class="text-nowrap">{{item.Month }}</td>
+                        <td class="text-right">{{ formatCurrency(item.Premium_Under_Advice_Td1.toFixed(2)) }}</td>
+                        <td class="text-right">{{ formatCurrency(item.Premium_Under_Advice_Td2.toFixed(2)) }}</td>
                       </tr>
                       <!-- Total row for Monthly production summary T1 -->
                       <tr>
                         <td class="dark-blue-bg text-white font-weight-bold">Total</td>
-                        <td class="text-right font-weight-bold">R{{premiumUnderAdviceTd1Sum}}</td>
-                        <td class="text-right font-weight-bold">R{{premiumUnderAdviceTd2Sum}}</td>
+                        <td class="text-right font-weight-bold">{{formatCurrency(premiumUnderAdviceTd1Sum)}}</td>
+                        <td class="text-right font-weight-bold">{{formatCurrency(premiumUnderAdviceTd2Sum)}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -910,23 +927,23 @@ export class PPSDetailedTransactionsComponent {
                     <!-- Table Headers -->
                   <thead>
                     <tr>
-                      <th class="text-white font-weight-bold">Month</th>
-                      <th class="text-right">Fiduciary Fees</th>
-                      <th class="text-right">Fiduciary Fees</th>
+                      <th class="text-nowrap text-white font-weight-bold text-left">Month</th>
+                      <th class="text-left">Fiduciary Fees(1st Year)</th>
+                      <th class="text-left">Fiduciary Fees(2nd Year)</th>
                     </tr>
                   </thead>
                     <!-- Table Body - Display Monthly production summary T2 -->
                     <tbody>
                       <tr *ngFor="let item of monthlyProductionSummaryT2List">
-                        <td>{{ item.Month }}</td>
-                        <td class="text-right">R{{ item.Fiduciary_Fees_Td1.toFixed(2) }}</td>
-                        <td class="text-right">R{{ item.Fiduciary_Fees_Td2.toFixed(2) }}</td>
+                        <td class="text-nowrap">{{ item.Month }}</td>
+                        <td class="text-right">{{ formatCurrency(item.Fiduciary_Fees_Td1.toFixed(2)) }}</td>
+                        <td class="text-right">{{ formatCurrency(item.Fiduciary_Fees_Td2.toFixed(2)) }}</td>
                       </tr>
                       <!-- Total row for Monthly production summary T2 -->
                       <tr>
                         <td class="dark-blue-bg text-white font-weight-bold">Total</td>
-                        <td class="text-right font-weight-bold">R{{fiduciaryFeesTd1Sum}}</td>
-                        <td class="text-right font-weight-bold">R{{fiduciaryFeesTd2Sum}}</td>
+                        <td class="text-right font-weight-bold">{{formatCurrency(fiduciaryFeesTd1Sum)}}</td>
+                        <td class="text-right font-weight-bold">{{formatCurrency(fiduciaryFeesTd2Sum)}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -940,10 +957,10 @@ export class PPSDetailedTransactionsComponent {
             <div class="row">
               <div class="col-3 text-right"></div>
               <div class="col-3 text-right">
-                <div class="dark-blue-bg text-white text-right font-weight-bold pe-3 py-1">Total earnings</div>
+              <div style="padding-left: 12px;" class="dark-blue-bg text-white text-left font-weight-bold pe-3 py-1">Total earnings</div>
               </div>
               <div class="col-3 text-left">
-                <div class="total-price-title py-1 font-weight-bold text-center">R{{ totalEarnings }}</div>
+                <div class="total-price-title py-1 font-weight-bold text-center">{{ formatCurrency(totalEarnings) }}</div>
               </div>
               <div class="col-3 text-right"></div>
             </div>
@@ -1027,8 +1044,15 @@ export class PPSEarningForPeriodComponent {
   // Calculate total sum combining 'firstYearSum' and 'secondYearSum'
   totalSum: number = this.firstYearSum + this.secondYearSum;
 
+  public formatCurrency(input: any): any {
+    const amount: number = parseFloat(input); // Parse the string to a decimal
+    const formattedAmount: string = amount.toLocaleString('en-ZA', {
+      style: 'currency',
+      currency: 'ZAR'
+    });
 
-
+    return ((amount < 0 ? '-' : '') + formattedAmount.replace(',', '.')).replace('--', '-');
+  }
   /**
   * Private method to calculate the sum of a specified property in a given list.
   * @param property The property to calculate the sum for.
@@ -1324,9 +1348,9 @@ const List_Data_Summary: ListSummary[] = [
     </div>
     <div class="widget-area">
           <h4 style="text-align:right" class='mb-4'><i style="color: limegreen" class="fa fa-sort-asc" aria-hidden="true"></i>3245323</h4>
-          <span style="float:left;">Total Deposits</span><span style="float:right;">16750,00</span><br />
-          <span style="float:left;">Total Spend</span><span style="float:right;">16750,00</span><br />
-          <span style="float:left;">Savings</span><span style="float:right;">3250.00</span><br />
+          <span style="float:left;">Total Deposits</span><span style="float:right;">16750,00</span><br/>
+          <span style="float:left;">Total Spend</span><span style="float:right;">16750,00</span><br/>
+          <span style="float:left;">Savings</span><span style="float:right;">3250.00</span><br/>
     </div>
 </div>`
 })
@@ -1344,9 +1368,9 @@ export class SavingAvailableBalanceComponent {
       </div>
       <div class="widget-area  position-relative width100">
         <h4 style="text-align:right" class='mb-4'><i style="color: limegreen" class="fa fa-sort-asc" aria-hidden="true"></i> 3245323</h4>
-          <span style="float:left;">Total Deposits</span><span style="float:right;">1675000</span><br />
-          <span style="float:left;">Total Spend</span><span style="float:right;">1675000</span><br />
-          <span style="float:left;">Savings</span><span style="float:right;">3250.00</span><br />
+          <span style="float:left;">Total Deposits</span><span style="float:right;">1675000</span><br/>
+          <span style="float:left;">Total Spend</span><span style="float:right;">1675000</span><br/>
+          <span style="float:left;">Savings</span><span style="float:right;">3250.00</span><br/>
     </div>
 </div>`
 })
@@ -3747,8 +3771,8 @@ export class DynamicPieChartWidgetPreviewComponent {
 //          <div class='card-body text-left'>
 //              <div class="card-body-header pb-2">Explanatory notes</div>
 //              <div class='ExplanatoryNotes'>
-//                  <span>Fixed deposits — Total balance of all your fixed-type accounts.</span><br />
-//                  <span>Notice deposits — Total balance of all your notice deposit accounts.</span><br />
+//                  <span>Fixed deposits — Total balance of all your fixed-type accounts.</span><br/>
+//                  <span>Notice deposits — Total balance of all your notice deposit accounts.</span><br/>
 //                  <span>Linked deposits — Total balance of all your linked-type accounts.</span>
 //              </div>
 //          </div>
@@ -3770,8 +3794,8 @@ export class DynamicPieChartWidgetPreviewComponent {
 //          <div class='card-body text-left'>
 //              <div class="card-body-header-w pb-2">Explanatory notes</div>
 //              <div class='ExplanatoryNotes'>
-//                  <span>Fixed deposits — Total balance of all your fixed-type accounts.</span><br />
-//                  <span>Notice deposits — Total balance of all your notice deposit accounts.</span><br />
+//                  <span>Fixed deposits — Total balance of all your fixed-type accounts.</span><br/>
+//                  <span>Notice deposits — Total balance of all your notice deposit accounts.</span><br/>
 //                  <span>Linked deposits — Total balance of all your linked-type accounts.</span>
 //              </div>
 //          </div>
@@ -4411,7 +4435,7 @@ export class PersonalLoanInsuranceMessageComponent {
 //                                    <td class="w-25">Bond no:</td>
 //                                    <td class="w-25 text-right pr-4 text-success">8003876814001</td>
 //                                    <td class="w-25">Address:</td>
-//                                    <td class="w-25 text-right text-success" rowspan="3">ERF 44 THE COVES H <br />ARTBEESPOORT <br /></td>
+//                                    <td class="w-25 text-right text-success" rowspan="3">ERF 44 THE COVES H <br/>ARTBEESPOORT <br/></td>
 //                                </tr>
 //                                <tr>
 //                                    <td class="w-25">Instalment:</td>
@@ -4589,7 +4613,7 @@ export class PersonalLoanInsuranceMessageComponent {
 //                                    <td class="w-25">Bond no:</td>
 //                                    <td class="w-25 text-right pr-4 text-success">8003876816001</td>
 //                                    <td class="w-25">Address:</td>
-//                                    <td class="w-25 text-right text-success" rowspan="3">ERF 44 THE COVES H <br />ARTBEESPOORT <br /></td>
+//                                    <td class="w-25 text-right text-success" rowspan="3">ERF 44 THE COVES H <br/>ARTBEESPOORT <br/></td>
 //                                </tr>
 //                                <tr>
 //                                    <td class="w-25">Instalment:</td>
@@ -4853,7 +4877,7 @@ export class PersonalLoanInsuranceMessageComponent {
 //    <div class="widget-area height100">
 //       <div class='card border-0'>
 //          <div class="card-body CustomerDetails">
-//              <span class="fnt-14pt pt-1">MR. Firstname Lastname</span> <br />
+//              <span class="fnt-14pt pt-1">MR. Firstname Lastname</span> <br/>
 //              <p class="fnt-8pt pt-1">Customer Id: 171001255307</p>
 //              <p class="fnt-8pt">Mobile No: +2367 345 786</p>
 //              <p>Email: custemail@demo.com</p>
@@ -4874,9 +4898,9 @@ export class PersonalLoanInsuranceMessageComponent {
 //    <div class="widget-area height100">
 //       <div class='card border-0'>
 //          <div class="card-body CustomerDetails">
-//              <span class="fnt-14pt">Address</span> <br />
-//              VERDEAU LIFESTYLE ESTATE <br />
-//              6 HERCULE CRESCENT DRIVE <br />
+//              <span class="fnt-14pt">Address</span> <br/>
+//              VERDEAU LIFESTYLE ESTATE <br/>
+//              6 HERCULE CRESCENT DRIVE <br/>
 //              WELLINGTON, 7655
 //          </div>
 //      </div>
@@ -4895,7 +4919,7 @@ export class PersonalLoanInsuranceMessageComponent {
 //    <div class="widget-area height100">
 //       <div class='card border-0'>
 //          <div class="card-body ClientDetails">
-//              <span class="fnt-14pt">Client contact details</span><br />
+//              <span class="fnt-14pt">Client contact details</span><br/>
 //              <p>Mobile No: 0860 555 111</p>
 //              <p>Email: supportdesk@nedbank.com</p>
 //          </div>
@@ -6003,7 +6027,7 @@ export class PersonalLoanInsuranceMessageComponent {
 //                                    <td class="w-25">Bond no:</td>
 //                                    <td class="w-25 text-right pr-4 text-success">8003876814001</td>
 //                                    <td class="w-25">Address:</td>
-//                                    <td class="w-25 text-right text-success" rowspan="3">ERF 44 THE COVES H <br />ARTBEESPOORT <br /></td>
+//                                    <td class="w-25 text-right text-success" rowspan="3">ERF 44 THE COVES H <br/>ARTBEESPOORT <br/></td>
 //                                </tr>
 //                                <tr>
 //                                    <td class="w-25">Instalment:</td>
@@ -6181,7 +6205,7 @@ export class PersonalLoanInsuranceMessageComponent {
 //                                    <td class="w-25">Bond no:</td>
 //                                    <td class="w-25 text-right pr-4 text-success-w">8003876816001</td>
 //                                    <td class="w-25">Address:</td>
-//                                    <td class="w-25 text-right text-success" rowspan="3">ERF 44 THE COVES H <br />ARTBEESPOORT <br /></td>
+//                                    <td class="w-25 text-right text-success" rowspan="3">ERF 44 THE COVES H <br/>ARTBEESPOORT <br/></td>
 //                                </tr>
 //                                <tr>
 //                                    <td class="w-25">Instalment:</td>
