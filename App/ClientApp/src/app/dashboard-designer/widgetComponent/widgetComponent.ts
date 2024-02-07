@@ -619,9 +619,13 @@ export class PPSDetails2Component {
 @Component({
   selector: 'PPSDetailedTransactions',
   template: `<div class="widget">
+    <div class="widget-header">
+      <span class="widget-header-title"> Detailed transactions </span>
+   </div>
+<div class="widget-area position-relative width100">
    <div class="container_area">
             <div class="fsp-earnings-section">
-                <div class="dark-blue-bg payment-sum text-white text-center">Detailed transactions</div>
+                <div class="widget-indicator-inner  pt-2 dark-blue-bg payment-sum text-white text-center">Detailed transactions</div>
                 
                 <div class="pps-earning-period pps-details-table pt-1 pb-2 d-flex justify-content-between">                  
                     <div class="pps-monthly-table w-100">
@@ -646,12 +650,12 @@ export class PPSDetails2Component {
                                     <td class="bdr-right-white">1012890</td>
                                     <td class="bdr-right-white">1845387</td>
                                     <td class="bdr-right-white">Professional Health<br/>Provider Whole Life<br/>Professional Health</td>
-                                    <td class="bdr-right-white">22-Aug-<br/>2022</td>
-                                    <td class="bdr-right-white">01-Oct-2022</td>
+                                    <td class="bdr-right-white text-nowrap">22-Aug-2022</td>
+                                    <td class="bdr-right-white text-nowrap">01-Oct-2022</td>
                                     <td class="bdr-right-white">2nd Year</td>
-                                    <td class="bdr-right-white">R3 964.19</td>
-                                    <td class="bdr-right-white">06-Sept-<br/>2023</td>
-                                    <td class="bdr-right-white ewidth">R10 822.24</td>
+                                    <td class="bdr-right-white text-right">R3 964.19</td>
+                                    <td class="bdr-right-white text-nowrap">06-Sept-2023</td>
+                                    <td class="bdr-right-white text-right ewidth">R10 822.24</td>
                                 </tr>
 
                                 <tr>
@@ -775,16 +779,16 @@ export class PPSDetails2Component {
                                        <td class="dark-blue-bg text-white font-weight-bold "></td>
                                        <td class="dark-blue-bg text-white font-weight-bold "></td>
                                        <td class="dark-blue-bg text-white font-weight-bold "></td>
-                                       <td class="dark-blue-bg text-white font-weight-bold " colspan="2">Sub Total</td>
+                                       <td class='dark-blue-bg text-white font-weight-bold text-right' colspan='2'>Sub Total</td>
                                        <td colspan="2" class="font-weight-bold text-right fs-16 pps-bg-gray" height="40">R29 250.62</td></tr>
                             </table>
 
-                            <div class="text-center py-3"><a href="#"><img src="../common/images/IfQueryBtn.jpg"></a></div>
+                            <div class="text-center py-3"><a href="#"><img src="assets/images/IfQueryBtn.jpg"></a></div>
                     </div>
 
                     
                 </div>
-                  
+                </div>
             </div>
 
         </div>
