@@ -2542,18 +2542,18 @@ namespace nIS
                         transaction.Where(mwitem => (mwitem.INT_EXT_REF == transactionitem.FirstOrDefault().INT_EXT_REF)).GroupBy(gpDTTItem => new { gpDTTItem.INT_EXT_REF, gpDTTItem.Member_Ref }).ToList().ForEach(memberitem =>
                         {
 
-                            detailedTransactionSrc.Append("<div class='prouct-table-block'><table width='100%' cellpadding='0' cellspacing='0'><tr><th class='font-weight-bold text-white text-left text-nowrap'>Client name</th><th  class='font-weight-bold text-white text-center pe-0 bdr-r-0 text-right text-nowrap'>Member number</th><th  class='font-weight-bold text-white text-right text-nowrap'>Policy number</th><th class='font-weight-bold text-white text-left'>Description</th><th class='font-weight-bold text-white text-left text-nowrap'>Commission<br/>type</th><th class='font-weight-bold text-white text-left text-nowrap'>Posted date</th><th class='font-weight-bold text-white text-right text-nowrap'>Posted amount</th><th class='font-weight-bold text-white'>Query</th></tr>");
+                            detailedTransactionSrc.Append("<div class='prouct-table-block'><table width='100%' cellpadding='0' cellspacing='0'><tr><th class='font-weight-bold text-white text-left text-nowrap' width='185px'>Client name</th><th  class='font-weight-bold text-white text-center pe-0 bdr-r-0 text-left' width='7%'>Member number</th><th  class='font-weight-bold text-white text-left' width='7%'>Policy number</th><th class='font-weight-bold text-white text-left' width='26%'>Description</th><th class='font-weight-bold text-white text-left' width='7%'>Commission<br/>type</th><th class='font-weight-bold text-white text-left text-nowrap' width='9%'>Posted date</th><th class='font-weight-bold text-white text-left' width='9%'>Posted amount</th><th class='font-weight-bold text-white' width='30px'>Query</th></tr>");
 
                             double TotalPostedAmount = 0;
                             transaction.Where(witem => (witem.INT_EXT_REF == transactionitem.FirstOrDefault().INT_EXT_REF) && (witem.Member_Ref == memberitem.FirstOrDefault().Member_Ref)).ToList().ForEach(itemDTT =>
                           {
                               double aeAmount = Convert.ToDouble(itemDTT.AE_Amount);
                               double displayItem = (itemDTT.DR_CR == "CR") ? aeAmount : (aeAmount * (-1));
-                              detailedTransactionSrc.Append("<tr><td class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom text-nowrap '>" + itemDTT.Member_Name + "</td><td  class= 'fsp-bdr-right fsp-bdr-bottom px-1 text-nowrap text-right'>" + itemDTT.Member_Ref + "</td><td  class= 'fsp-bdr-right fsp-bdr-bottom px-1 text-nowrap text-right'> " + itemDTT.Policy_Ref + "</td><td class= 'text-left fsp-bdr-right fsp-bdr-bottom px-1 ewidth text-wrap text-break'>" + (itemDTT.Description == "Commission Service Fee" ? "Premium Under Advise Fee" : itemDTT.Description) + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + itemDTT.Commission_Type + "</td><td  class= 'text-left fsp-bdr-right fsp-bdr-bottom px-1 text-nowrap'>" + itemDTT.POSTED_DATE.ToString("dd-MMM-yyyy") + "</td><td  class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1 text-nowrap ewidth'>" + Utility.FormatCurrency(displayItem) + "</td><td class= 'text-left fsp-bdr-bottom px-1'><a href ='https://www.google.com/' target ='_blank'><img class='leftarrowlogo' src='../common/images/leftarrowlogo.png' alt='Left Arrow'></a></td></tr>");
+                              detailedTransactionSrc.Append("<tr><td class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom text-nowrap '>" + itemDTT.Member_Name + "</td><td  class= 'fsp-bdr-right fsp-bdr-bottom px-1 text-nowrap text-left'>" + itemDTT.Member_Ref + "</td><td  class= 'fsp-bdr-right fsp-bdr-bottom px-1 text-nowrap text-left'> " + itemDTT.Policy_Ref + "</td><td class= 'text-left fsp-bdr-right fsp-bdr-bottom px-1 ewidth text-wrap text-break'><p style='inline-size:300px;overflow-wrap:break-word'>" + (itemDTT.Description == "Commission Service Fee" ? "Premium Under Advise Fee" : itemDTT.Description) + "</p></td><td class= 'text-left fsp-bdr-right fsp-bdr-bottom px-1 text-nowrap'>" + itemDTT.Commission_Type + "</td><td  class= 'text-left fsp-bdr-right fsp-bdr-bottom px-1 text-nowrap'>" + itemDTT.POSTED_DATE.ToString("dd-MMM-yyyy") + "</td><td  class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1 text-nowrap ewidth'>" + Utility.FormatCurrency(displayItem) + "</td><td class= 'text-left fsp-bdr-bottom px-1'><a href ='https://www.google.com/' target ='_blank'><img class='leftarrowlogo' src='../common/images/leftarrowlogo.png' alt='Left Arrow'></a></td></tr>");
                               TotalPostedAmount += (itemDTT.Prod_Group != "VAT") ? displayItem : 0.0;
                           });
                             string TotalPostedAmountRDT = (TotalPostedAmount == 0) ? "R0.00" : Utility.FormatCurrency(TotalPostedAmount);
-                            detailedTransactionSrc.Append("<tr><td class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'></td><td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td><td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td><td class='text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td><td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'><br/></td><td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td><td class='text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1 text-nowrap'>" + TotalPostedAmountRDT + "</td><td class='text-left fsp-bdr-bottom px-1'><a href='https://www.google.com/' target = '_blank' ><img src='../common/images/leftarrowlogo.png'></a></td></tr></table><div class='text-right py-3'><a href='#'><img src='../common/images/IfQueryBtn.jpg'></a></div></div>");
+                            detailedTransactionSrc.Append("<tr><td class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'></td><td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td><td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td><td class='text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td><td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'><br/></td><td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td><td class='text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1 text-nowrap'>" + TotalPostedAmountRDT + "</td><td class='text-left fsp-bdr-bottom px-1'><a href='https://www.google.com/' target = '_blank' ><img src='../common/images/leftarrowlogo.png'></a></td></tr></table><div class='text-right py-3'></div></div>");
                         });
 
                     });
@@ -3028,7 +3028,7 @@ namespace nIS
             }).ToList();
 
                 // Appending HTML for the earnings section
-                commisionDetailSrc.Append("<!--FSPAccountPostingsSummarySection--><div class='earnings-section-monthly d-flex mb-2'><div class='d-flex gap-1 w-100'><!--FSP account postings summary--><div class='col-6'><!--Headingfor FSP Account PostingsSummary--><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>FSP account postings summary</h4><div class='monthly-table'><!--Table forFSPAccountPostingsSummary--><table width='100%' cellpadding='0' cellspacing='0'><!--TableHeaders--><thead><tr><th style='height:50px' class='text-white font-weight-bold'>PostedDate</th>");
+                commisionDetailSrc.Append("<!--FSPAccountPostingsSummarySection--><div class='earnings-section-monthly d-flex mb-2'><div class='d-flex gap-1 w-100'><!--FSP account postings summary--><div class='col-6'><!--Headingfor FSP Account PostingsSummary--><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>FSP account postings summary</h4><div class='monthly-table'><!--Table forFSPAccountPostingsSummary--><table width='100%' cellpadding='0' cellspacing='0'><!--TableHeaders--><thead><tr><th style='height:50px' class='text-white font-weight-bold'>Posted Date</th>");
 
                 // Appending HTML for Commission Type headers
                 gpCommisionType.ForEach(gpCommisionTypeitem =>
@@ -3046,7 +3046,7 @@ namespace nIS
                 aePostedRecords.ForEach(gpMonthRangeItem =>
         {
                 // Appending HTML for Date and Commission Type columns
-                commisionDetailSrc.Append("<tr><td class='text-left'>" + DateTime.Parse(gpMonthRangeItem.GroupKey.Date.ToString()).ToString("dd-MMM-yyyy") + "</td>");
+                commisionDetailSrc.Append("<tr><td class='text-left text-nowrap'>" + DateTime.Parse(gpMonthRangeItem.GroupKey.Date.ToString()).ToString("dd-MMM-yyyy") + "</td>");
             List<double> innermonthlyAEPostedTotalListSum = new List<double>();
 
                 // Iterating through Commission Types
@@ -3159,7 +3159,7 @@ namespace nIS
 
                 // Appending HTML for SubTotal row
                 var sumOfDueDateAllocatedAmountR = (sumOfDueDateAllocatedAmount == 0) ? "R0.00" : Utility.FormatCurrency(sumOfDueDateAllocatedAmount.ToString());
-                commisionDetailSrc.Append("<tr><td class='text-right font-weight-bold' colspan='2'>SubTotal<td class='text-right font-weight-bold'>" + sumOfDueDateAllocatedAmountR + "</td></tr>");
+                commisionDetailSrc.Append("<tr><td class='text-right font-weight-bold' colspan='2'>Sub Total<td class='text-right font-weight-bold'>" + sumOfDueDateAllocatedAmountR + "</td></tr>");
             });
 
             // Appending HTML for Total earnings row and closing the table
@@ -3211,7 +3211,7 @@ namespace nIS
             {
                 if (gpMonthRangeItem.SumAllocatedAmount != 0)
                 {
-                    commisionDetailSrc.Append("<tr><td class='text-left'>" + CommonUtility.GetMonthRange(gpMonthRangeItem.GroupKey.Month) + "</td>");
+                    commisionDetailSrc.Append("<tr><td class='text-left text-nowrap'>" + CommonUtility.GetMonthRange(gpMonthRangeItem.GroupKey.Month) + "</td>");
                     List<double> innermonthlyTotalListSum = new List<double>();
 
                     // Iterate through CommissionType groups to populate cells
@@ -3284,7 +3284,7 @@ namespace nIS
             {
          if (gpFeesMonthRangeItem.SumAllocatedAmount != 0)
             {
-                commisionDetailSrc.Append("<tr><td class='text-left'>" + CommonUtility.GetMonthRange(gpFeesMonthRangeItem.GroupKey.Month) + "</td>");
+                commisionDetailSrc.Append("<tr><td class='text-left text-nowrap'>" + CommonUtility.GetMonthRange(gpFeesMonthRangeItem.GroupKey.Month) + "</td>");
                 List<double> innerFeesMonthlyTotalListSum = new List<double>();
 
                 // Iterate through CommissionType groups to populate cells with Fiduciary Fees

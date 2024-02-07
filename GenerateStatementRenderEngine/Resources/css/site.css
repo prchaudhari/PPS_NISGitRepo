@@ -3275,3 +3275,7 @@
 .text-gray1 {
     color: #0965c2;
 }
+.descriptionWidth {
+    inline-size: 300px;
+    overflow-wrap: break-word;
+}
