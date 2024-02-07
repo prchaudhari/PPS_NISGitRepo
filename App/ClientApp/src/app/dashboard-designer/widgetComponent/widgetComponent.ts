@@ -294,7 +294,7 @@ export class ProductSummaryComponent {
   selector: 'detailedTransactions',
   template: `<div class="widget">
   
-<div class="container_area" >
+<div class="container_area">
         <div class="fsp-earnings-section">
             <div class="dark-blue-bg payment-sum text-white text-center">Detailed Transactions</div>
             <div class="fsp-product-summery">
@@ -395,6 +395,11 @@ export class ProductSummaryComponent {
                 </div>
             </div>
         </div>
+        <div class="container_area">
+            <div class="click-btn text-center w-100 pb-3" style="padding-top: 150px;">
+                <a href="#"><img src="assets/images/click-more-information.png"></a>
+            </div>
+    </div>
     </div>`
 })
 
