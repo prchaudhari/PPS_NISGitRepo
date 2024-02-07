@@ -482,7 +482,7 @@ namespace nIS
 
 
 
-        public const string DETAILED_TRANSACTIONS_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='page-break-before: always;'><div class='container_area' ><div class='dark-blue-bg payment-sum text-white text-center'>Detailed Transactions</div><div class='fsp-product-summery'><div class='text-center py-3'><a href='{{QueryBtnImgLink}}' target = '_blank' ><img src='{{QueryBtn}}'></a>{{detailedTransaction}}</div></div><div class='container_area'></div></div></div>";
+        public const string DETAILED_TRANSACTIONS_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='page-break-before: always;'><div class='container_area'><div class='dark-blue-bg payment-sum text-white text-center'>Detailed Transactions</div><div class='fsp-product-summery'><div class='text-center py-3'><a href='{{QueryBtnImgLink}}' target = '_blank' ><img src='{{QueryBtn}}'></a>{{detailedTransaction}}</div></div><div class='container_area'><div class='click-btn text-center w-100' style='padding-top: 50px;'><a href='#'><img src='../common/images/click-more-information.png'></a></div></div></div></div>";
 
         public const string PPS_DETAILED_TRANSACTIONS_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0' ><div class='container_area'><div class='fsp-earnings-section'><div class='dark-blue-bg payment-sum text-white text-center'>Detailed transactions</div><div class='pps-earning-period pps-details-table pt-1 pb-2 d-flex justify-content-between'>{{ppsDetailedTransactions}}</div></div></div></div";
 

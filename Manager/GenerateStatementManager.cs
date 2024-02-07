@@ -2535,17 +2535,16 @@ namespace nIS
 
                     records?.ForEach(transactionitem =>
                     {
-                        detailedTransactionSrc.Append("<div class='text-left fsp-transaction-title font-weight-bold mb-3'>Intermediary:  " + transactionitem.FirstOrDefault().INT_EXT_REF + " " + transactionitem.FirstOrDefault().Int_Name + "</div>");
-                        double aeAmountSumDT = 0.00;
-                        double aeAmountCRSumDT = 0.00;
-                        double aeAmountDRSumDT = 0.00;
+                      string intermediatryHeading= (String.IsNullOrEmpty(transactionitem.FirstOrDefault().INT_EXT_REF)) ? "Payment Details" : "Intermediary: " + transactionitem.FirstOrDefault().INT_EXT_REF + " " + transactionitem.FirstOrDefault().Int_Name; 
+                        detailedTransactionSrc.Append("<div class='text-left fsp-transaction-title font-weight-bold mb-3'>"+ intermediatryHeading + "</div>");
+                        
                         transaction.Where(mwitem => (mwitem.INT_EXT_REF == transactionitem.FirstOrDefault().INT_EXT_REF)).GroupBy(gpDTTItem => new { gpDTTItem.INT_EXT_REF, gpDTTItem.Member_Ref }).ToList().ForEach(memberitem =>
                         {
 
                             detailedTransactionSrc.Append("<div class='prouct-table-block'><table width='100%' cellpadding='0' cellspacing='0'><tr><th class='font-weight-bold text-white text-left text-nowrap' width='185px'>Client name</th><th  class='font-weight-bold text-white text-center pe-0 bdr-r-0 text-left' width='7%'>Member number</th><th  class='font-weight-bold text-white text-left' width='7%'>Policy number</th><th class='font-weight-bold text-white text-left' width='26%'>Description</th><th class='font-weight-bold text-white text-left' width='7%'>Commission<br/>type</th><th class='font-weight-bold text-white text-left text-nowrap' width='9%'>Posted date</th><th class='font-weight-bold text-white text-left' width='9%'>Posted amount</th><th class='font-weight-bold text-white' width='30px'>Query</th></tr>");
 
                             double TotalPostedAmount = 0;
-                            transaction.Where(witem => (witem.INT_EXT_REF == transactionitem.FirstOrDefault().INT_EXT_REF) && (witem.Member_Ref == memberitem.FirstOrDefault().Member_Ref)).ToList().ForEach(itemDTT =>
+                            transaction.Where(witem => (witem.INT_EXT_REF == transactionitem.FirstOrDefault().INT_EXT_REF) && (witem.Member_Ref == memberitem.FirstOrDefault().Member_Ref)).OrderBy(item=>item.POSTED_DATE).ToList().ForEach(itemDTT =>
                           {
                               double aeAmount = Convert.ToDouble(itemDTT.AE_Amount);
                               double displayItem = (itemDTT.DR_CR == "CR") ? aeAmount : (aeAmount * (-1));

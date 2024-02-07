@@ -205,7 +205,7 @@ export class PPSFooter1Component {
                 <div class="dark-blue-bg payment-sum text-white text-center">Product summary</div>
                 <div class="fsp-product-summery">
                     <div class="text-center py-3">
-                        <a href="#"><img src="././assets/images/IfQueryBtn.jpg"></a>
+                        <a href="#"><img src="assets/images/IfQueryBtn.jpg"></a>
                     </div>
                     <div class="px-50">
                         <div class="prouct-table-block">

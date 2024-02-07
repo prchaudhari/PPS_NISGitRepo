@@ -327,6 +327,7 @@
     <Content Include="Resources\css\ltr.css" />
     <Content Include="Resources\fonts\fontawesome-webfont.svg" />
     <Content Include="Resources\images\click-btn.jpg" />
+    <Content Include="Resources\images\click-more-information.png" />
     <Content Include="Resources\images\click-print-stmt-btn.jpg" />
     <Content Include="Resources\images\click.jpg" />
     <Content Include="Resources\images\CorporateSaverConfirmLogo.png" />
