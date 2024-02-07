@@ -2537,7 +2537,7 @@ namespace nIS
                                                         List<List<double>> monthlyDueDateTotalList = new List<List<double>>();
 
                                                         // Appending HTML for the Future-dated production section
-                                                        commisionDetailSrc.Append("<!-- Future-dated production Section --><div class='col-6'><!-- Heading for Future-dated production --><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>Future-dated production</h4><div class='monthly-table'><!-- Table for Future-dated production --><table width='100%' cellpadding='0' cellspacing='0'><!-- Table Headers --><thead><tr><th class='text-left text-white font-weight-bold'>Due date</th><th class='height:50px;text-left'>Fiduciary fees</th><th class='text-left'>Allocated amount</th></tr></thead>");
+                                                        commisionDetailSrc.Append("<!-- Future-dated production Section --><div class='col-6'><!-- Heading for Future-dated production --><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>Future-dated production</h4><div class='monthly-table'><!-- Table for Future-dated production --><table width='100%' cellpadding='0' cellspacing='0'><!-- Table Headers --><thead><tr><th class='text-left text-white font-weight-bold'>Due date</th><th style='height:50px;' class='text-left'>Fiduciary fees</th><th class='text-left'>Allocated amount</th></tr></thead>");
 
                                                         // Initializing variables for column sums
                                                         double FutureColumnSums = 0.00;
@@ -2551,7 +2551,7 @@ namespace nIS
                                                             prdocutDescriptionRecords.ForEach(prdocutDescription =>
                                                             {
                                                                 // Appending HTML for Date, Fiduciary fees, and Allocated amount columns
-                                                                commisionDetailSrc.Append("<tr><td class='text-left'>" + DateTime.Parse(gpDueDateItem.GroupKey.Date.ToString()).ToString("dd-MMM-yyyy") + "</td>");
+                                                                commisionDetailSrc.Append("<tr><td class='text-left text-nowrap'>" + DateTime.Parse(gpDueDateItem.GroupKey.Date.ToString()).ToString("dd-MMM-yyyy") + "</td>");
                                                                 sumOfAllocatedAmount = commisionDetail
                                                                     .Where(witem => witem.PRODUCT_DESCRIPTION == prdocutDescription.GroupKey.PRODUCT_DESCRIPTION && witem.DUE_DATE == gpDueDateItem.GroupKey.Date)
                                                                     .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
@@ -2767,7 +2767,7 @@ namespace nIS
                                                         var records = transaction.GroupBy(gptransactionitem => gptransactionitem.INT_EXT_REF).ToList();
                                                         records?.ForEach(transactionitem =>
                                                         {
-                                                            detailedTransactionSrc.Append("<div class='px-50'><div class='prouct-table-block'><div class='text-left fsp-transaction-title font-weight-bold mb-3'>Intermediary:  " + transactionitem.FirstOrDefault().INT_EXT_REF + " " + transactionitem.FirstOrDefault().Int_Name + "</div><table width='100%' cellpadding='0' cellspacing='0'> <tr><th class='font-weight-bold text-white'>Client name</th> <th class='font-weight-bold text-white text-center pe-0 bdr-r-0'>Member<br /> number</th> <th class='font-weight-bold text-white text-center'>Policy number</th> <th class='font-weight-bold text-white text-center'>Fiduciary fees</th> <th class='font-weight-bold text-white text-center'>Commission<br /> type</th> <th class='font-weight-bold text-white text-center'>Posted date</th> <th class='font-weight-bold text-white text-center'>Posted amount</th> <th class='font-weight-bold text-white'>Query</th> </tr> ");
+                                                            detailedTransactionSrc.Append("<div class='px-50'><div class='prouct-table-block'><div class='text-left fsp-transaction-title font-weight-bold mb-3'>Intermediary:  " + transactionitem.FirstOrDefault().INT_EXT_REF + " " + transactionitem.FirstOrDefault().Int_Name + "</div><table width='100%' cellpadding='0' cellspacing='0'> <tr><th class='font-weight-bold text-white'>Client name</th> <th class='font-weight-bold text-white text-left pe-0 bdr-r-0'>Member<br /> number</th> <th class='font-weight-bold text-white text-left'>Policy number</th> <th class='font-weight-bold text-white text-left'>Fiduciary fees</th> <th class='font-weight-bold text-white text-left'>Commission<br /> type</th> <th class='font-weight-bold text-white text-left'>Posted date</th> <th class='font-weight-bold text-white text-left'>Posted amount</th> <th class='font-weight-bold text-white'>Query</th> </tr> ");
                                                             detailedTransactionString = detailedTransactionString.Replace("{{QueryBtnImgLink}}", "https://www.google.com/");
                                                             detailedTransactionString = detailedTransactionString.Replace("{{QueryBtn}}", "assets/images/IfQueryBtn.jpg");
 
@@ -2775,7 +2775,7 @@ namespace nIS
                                                             transaction.Where(witem => witem.INT_EXT_REF == transactionitem.FirstOrDefault().INT_EXT_REF).ToList().ForEach(item =>
                                                             {
                                                                 detailedTransactionSrc.Append("<tr><td align = 'center' valign = 'center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" +
-                                                                        item.Client_Name + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Member_Ref + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'> " + item.Policy_Ref + "</td><td class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1'>" + (item.Description == "Commission Service Fee" ? "Premium Under Advise Fee" : item.Description) + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.POSTED_DATE.ToString("dd-MMM-yyyy") + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'> " + Utility.FormatCurrency(item.Display_Amount) + "</td><td class= 'text-center fsp-bdr-bottom px-1'><a href ='https://www.google.com/' target ='_blank'><img class='leftarrowlogo' src='assets/images/leftarrowlogo.png' alt='Left Arrow'></a></td></tr>");
+                                                                        item.Client_Name + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Member_Ref + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'> " + item.Policy_Ref + "</td><td class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1'>" + (item.Description == "Commission Service Fee" ? "Premium Under Advise Fee" : item.Description) + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td><td class= 'text-left text-nowrap fsp-bdr-right fsp-bdr-bottom px-1'>" + item.POSTED_DATE.ToString("dd-MMM-yyyy") + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'> " + Utility.FormatCurrency(item.Display_Amount) + "</td><td class= 'text-center fsp-bdr-bottom px-1'><a href ='https://www.google.com/' target ='_blank'><img class='leftarrowlogo' src='assets/images/leftarrowlogo.png' alt='Left Arrow'></a></td></tr>");
                                                                 TotalPostedAmount += ((item.TYPE == "Fiduciary_Data") && (item.Prod_Group != "VAT")) ? (Convert.ToDouble(item.Display_Amount)) : 0.0;
                                                             });
                                                             string TotalPostedAmountR = (TotalPostedAmount == 0) ? "R0.00" : Utility.FormatCurrency(TotalPostedAmount.ToString());
@@ -2824,7 +2824,7 @@ namespace nIS
                                                         detailedTransactionSrc.Append("</table>");
 
                                                         //Adding button
-                                                        detailedTransactionSrc.Append("<div class='text-center py-3'><a href='#'><img src='../common/images/IfQueryBtn.jpg'></a></div>");
+                                                        detailedTransactionSrc.Append("<div class='text-center py-3'><a href='#'><img src='assets/images/IfQueryBtn.jpg'></a></div>");
 
                                                         detailedTransactionSrc.Append("</div>");
 
@@ -7342,7 +7342,7 @@ namespace nIS
                 var records = transaction.GroupBy(gptransactionitem => gptransactionitem.INT_EXT_REF).ToList();
                 records?.ForEach(transactionitem =>
                 {
-                    detailedTransactionSrc.Append("<div class='px-50'><div class='prouct-table-block'><div class='text-left fsp-transaction-title font-weight-bold mb-3'>Intermediary:  " + transactionitem.FirstOrDefault().INT_EXT_REF + " " + transactionitem.FirstOrDefault().Int_Name + "</div><table width='100%' cellpadding='0' cellspacing='0'> <tr><th class='font-weight-bold text-white'>Client name</th> <th class='font-weight-bold text-white text-center pe-0 bdr-r-0'>Member<br /> number</th> <th class='font-weight-bold text-white text-center'>Policy number</th> <th class='font-weight-bold text-white text-center'>Fiduciary fees</th> <th class='font-weight-bold text-white text-center'>Commission<br /> type</th> <th class='font-weight-bold text-white text-center'>Posted date</th> <th class='font-weight-bold text-white text-center'>Posted amount</th> <th class='font-weight-bold text-white'>Query</th> </tr> ");
+                    detailedTransactionSrc.Append("<div class='px-50'><div class='prouct-table-block'><div class='text-left fsp-transaction-title font-weight-bold mb-3'>Intermediary:  " + transactionitem.FirstOrDefault().INT_EXT_REF + " " + transactionitem.FirstOrDefault().Int_Name + "</div><table width='100%' cellpadding='0' cellspacing='0'> <tr><th class='font-weight-bold text-white'>Client name</th> <th class='font-weight-bold text-white text-left pe-0 bdr-r-0'>Member<br /> number</th> <th class='font-weight-bold text-white text-left'>Policy number</th> <th class='font-weight-bold text-white text-left'>Fiduciary fees</th> <th class='font-weight-bold text-white text-left'>Commission<br /> type</th> <th class='font-weight-bold text-white text-left'>Posted date</th> <th class='font-weight-bold text-white text-left'>Posted amount</th> <th class='font-weight-bold text-white'>Query</th> </tr> ");
 
                     pageContent.Replace("{{QueryBtnImgLink}}", "https://www.google.com/");
                     pageContent.Replace("{{QueryBtn}}", "../common/images/IfQueryBtn.jpg");
@@ -7351,7 +7351,7 @@ namespace nIS
                     transaction.Where(witem => witem.INT_EXT_REF == transactionitem.FirstOrDefault().INT_EXT_REF).ToList().ForEach(item =>
                     {
                         detailedTransactionSrc.Append("<tr><td align = 'center' valign = 'center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'>" +
-                                item.Client_Name + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Member_Ref + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'> " + item.Policy_Ref + "</td><td class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1'>" + (item.Description == "Commission Service Fee" ? "Premium Under Advise Fee" : item.Description) + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.POSTED_DATE.ToString("dd-MMM-yyyy") + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + Utility.FormatCurrency(item.Display_Amount) + "</td><td class= 'text-center fsp-bdr-bottom px-1'><a href ='https://www.google.com/' target ='_blank'><img class='leftarrowlogo' src='assets/images/leftarrowlogo.png' alt='Left Arrow'></a></td></tr>");
+                                item.Client_Name + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Member_Ref + "</td><td class= 'fsp-bdr-right fsp-bdr-bottom px-1'> " + item.Policy_Ref + "</td><td class= 'text-right fsp-bdr-right fsp-bdr-bottom px-1'>" + (item.Description == "Commission Service Fee" ? "Premium Under Advise Fee" : item.Description) + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + item.Commission_Type + "</td><td class= 'text-left text-nowrap fsp-bdr-right fsp-bdr-bottom px-1'>" + item.POSTED_DATE.ToString("dd-MMM-yyyy") + "</td><td class= 'text-center fsp-bdr-right fsp-bdr-bottom px-1'>" + Utility.FormatCurrency(item.Display_Amount) + "</td><td class= 'text-center fsp-bdr-bottom px-1'><a href ='https://www.google.com/' target ='_blank'><img class='leftarrowlogo' src='assets/images/leftarrowlogo.png' alt='Left Arrow'></a></td></tr>");
                         TotalPostedAmount += ((item.TYPE == "Fiduciary_Data") && (item.Prod_Group != "VAT")) ? (Convert.ToDouble(item.Display_Amount)) : 0.0;
                     });
 
@@ -7387,7 +7387,7 @@ namespace nIS
                     detailedTransactionSrc.Append("<tr><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold '></td><td class='dark-blue-bg text-white fw-bold fs-16'>Sub Total</td><td class='' ></td><td class='fw-bold fs-16' height='40'>" + TotalPostedAmountR + "</td></tr></table>");
 
                     //Adding button
-                    detailedTransactionSrc.Append("<div class='text-center py-3'><a href='#'><img src='../common/images/IfQueryBtn.jpg'></a></div>");
+                    detailedTransactionSrc.Append("<div class='text-center py-3'><a href='#'><img src='assets/images/IfQueryBtn.jpg'></a></div>");
 
                     detailedTransactionSrc.Append("</div>");
 
@@ -7752,7 +7752,7 @@ namespace nIS
                 List<List<double>> monthlyDueDateTotalList = new List<List<double>>();
 
                 // Appending HTML for the Future-dated production section
-                commisionDetailSrc.Append("<!-- Future-dated production Section --><div class='col-6'><!-- Heading for Future-dated production --><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>Future-dated production</h4><div class='monthly-table'><!-- Table for Future-dated production --><table width='100%' cellpadding='0' cellspacing='0'><!-- Table Headers --><thead><tr><th class='text-left text-white font-weight-bold'>Due date</th><th class='height:50px;text-left'>Fiduciary fees</th><th class='text-left'>Allocated amount</th></tr></thead>");
+                commisionDetailSrc.Append("<!-- Future-dated production Section --><div class='col-6'><!-- Heading for Future-dated production --><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>Future-dated production</h4><div class='monthly-table'><!-- Table for Future-dated production --><table width='100%' cellpadding='0' cellspacing='0'><!-- Table Headers --><thead><tr><th class='text-left text-white font-weight-bold'>Due date</th><th style='height:50px;' class='text-left'>Fiduciary fees</th><th class='text-left'>Allocated amount</th></tr></thead>");
 
                 // Initializing variables for column sums
                 double FutureColumnSums = 0.00;
@@ -7766,7 +7766,7 @@ namespace nIS
                         prdocutDescriptionRecords.ForEach(prdocutDescription =>
                     {
                             // Appending HTML for Date, Fiduciary fees, and Allocated amount columns
-                            commisionDetailSrc.Append("<tr><td class='text-left'>" + DateTime.Parse(gpDueDateItem.GroupKey.Date.ToString()).ToString("dd-MMM-yyyy") + "</td>");
+                            commisionDetailSrc.Append("<tr><td class='text-left text-nowrap'>" + DateTime.Parse(gpDueDateItem.GroupKey.Date.ToString()).ToString("dd-MMM-yyyy") + "</td>");
                         sumOfAllocatedAmount = commisionDetail
                             .Where(witem => witem.PRODUCT_DESCRIPTION == prdocutDescription.GroupKey.PRODUCT_DESCRIPTION && witem.DUE_DATE == gpDueDateItem.GroupKey.Date)
                             .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));

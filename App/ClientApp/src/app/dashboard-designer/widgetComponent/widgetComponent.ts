@@ -424,7 +424,7 @@ export class DetailedTransactionsComponent {
 
     return ((amount < 0 ? '-' : '') + formattedAmount.replace(',', '.')).replace('--', '-');
   }
- 
+
 }
 
 // Component Created for PPS Details--
@@ -619,10 +619,6 @@ export class PPSDetails2Component {
 @Component({
   selector: 'PPSDetailedTransactions',
   template: `<div class="widget">
-    <div class="widget-header">
-      <span class="widget-header-title"> Detailed transactions </span>
-   </div>
-<div class="widget-area position-relative width100">
    <div class="container_area">
             <div class="fsp-earnings-section">
                 <div class="widget-indicator-inner  pt-2 dark-blue-bg payment-sum text-white text-center">Detailed transactions</div>
@@ -630,7 +626,8 @@ export class PPSDetails2Component {
                 <div class="pps-earning-period pps-details-table pt-1 pb-2 d-flex justify-content-between">                  
                     <div class="pps-monthly-table w-100">
                             <table cellpadding="0" cellspacing="0" width="100%">
-                                <tr>
+                               <thead>
+                                    <tr>
                                     <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Client<br/>name</th>
                                     <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Age</th>
                                     <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Member Number</th>
@@ -643,7 +640,10 @@ export class PPSDetails2Component {
                                     <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Posted<br/>date</th>
                                     <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Earnings</th>
                                 </tr>
-
+                            </thead>
+                                <tr>
+                                  <td colspan = '11' class='text-left font-weight-bold'>PPS INSURANCE</td>
+                                </tr>
                                 <tr>
                                     <td class="bdr-right-white">Dr L Guvha</td>
                                     <td class="bdr-right-white">54</td>
@@ -783,17 +783,11 @@ export class PPSDetails2Component {
                                        <td colspan="2" class="font-weight-bold text-right fs-16 pps-bg-gray" height="40">R29 250.62</td></tr>
                             </table>
 
-                            <div class="text-center py-3"><a href="#"><img src="assets/images/IfQueryBtn.jpg"></a></div>
+                       <div class="text-center py-3"><a href="#"><img src="assets/images/IfQueryBtn.jpg"></a></div>
                     </div>
-
-                    
                 </div>
-                </div>
-            </div>
-
-        </div>
- 
-
+              </div>
+         </div>
   </div>`
 })
 
@@ -867,7 +861,7 @@ export class PPSDetailedTransactionsComponent {
                     <thead>
                       <tr>
                         <th class="text-left text-nowrap text-white font-weight-bold">Due date</th>
-                        <th class="text-left">Fiduciary fees</th>
+                        <th style='height:50px;' class='text-left'>Fiduciary fees</th>
                         <th class="text-left">Allocated amount</th>
                       </tr>
                     </thead>
@@ -985,7 +979,7 @@ export class PPSEarningForPeriodComponent {
 
   // Monthly production summary T1 Data
   public monthlyProductionSummaryT1List: any[] = [
-    { Month: "1 Sep-30 Sep", Premium_Under_Advice_Td1: 41940.06, Premium_Under_Advice_Td2: 13980.03	 },
+    { Month: "1 Sep-30 Sep", Premium_Under_Advice_Td1: 41940.06, Premium_Under_Advice_Td2: 13980.03 },
     { Month: "1 Nov-30 Nov", Premium_Under_Advice_Td1: 12258.45, Premium_Under_Advice_Td2: 4086.16 },
     { Month: "1 Aug-31 Aug", Premium_Under_Advice_Td1: 3802.87, Premium_Under_Advice_Td2: 1267.62 },
     { Month: "1 Jul-31 Jul", Premium_Under_Advice_Td1: 4525.03, Premium_Under_Advice_Td2: 1508.35 }
@@ -993,7 +987,7 @@ export class PPSEarningForPeriodComponent {
 
   // Monthly production summary T2 Data
   public monthlyProductionSummaryT2List: any[] = [
-    { Month: "1 Sep-30 Sep", Fiduciary_Fees_Td1: 41940.06, Fiduciary_Fees_Td2: 13980.03	 },
+    { Month: "1 Sep-30 Sep", Fiduciary_Fees_Td1: 41940.06, Fiduciary_Fees_Td2: 13980.03 },
     { Month: "1 Nov-30 Nov", Fiduciary_Fees_Td1: 12258.45, Fiduciary_Fees_Td2: 4086.16 },
     { Month: "1 Aug-31 Aug", Fiduciary_Fees_Td1: 3802.87, Fiduciary_Fees_Td2: 1267.62 },
     { Month: "1 Jul-31 Jul", Fiduciary_Fees_Td1: 4525.03, Fiduciary_Fees_Td2: 1508.35 }
@@ -1005,9 +999,9 @@ export class PPSEarningForPeriodComponent {
     { Posted_Date: "07-Oct-2022", Posted_First_Year: 95952.63, Posted_Second_Year: 0.00 },
     { Posted_Date: "09-Oct-2023", Posted_First_Year: 0.00, Posted_Second_Year: 31984.20 },
     { Posted_Date: "12-Nov-2022", Posted_First_Year: 8865.64, Posted_Second_Year: 0.00 },
-    { Posted_Date: "06-Nov-2023", Posted_First_Year: 0.00, Posted_Second_Year: 11266.57	 },
+    { Posted_Date: "06-Nov-2023", Posted_First_Year: 0.00, Posted_Second_Year: 11266.57 },
     { Posted_Date: "15-Nov-2022", Posted_First_Year: 12884.95, Posted_Second_Year: 0.00 },
-    { Posted_Date: "09-Nov-2022", Posted_First_Year: 12049.16	, Posted_Second_Year: 0.00 },
+    { Posted_Date: "09-Nov-2022", Posted_First_Year: 12049.16, Posted_Second_Year: 0.00 },
     { Posted_Date: "17-Aug-2022", Posted_First_Year: 6905.91, Posted_Second_Year: 0.00 },
     { Posted_Date: "07-Aug-2023", Posted_First_Year: 0.00, Posted_Second_Year: 5705.91 },
     { Posted_Date: "08-Aug-2022", Posted_First_Year: 10211.82, Posted_Second_Year: 0.00 }

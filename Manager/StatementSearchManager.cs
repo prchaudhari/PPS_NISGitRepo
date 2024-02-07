@@ -1682,7 +1682,7 @@ namespace nIS
                 List<List<double>> monthlyDueDateTotalList = new List<List<double>>();
 
                 // Appending HTML for the Future Dated Production section
-                commisionDetailSrc.Append("<!-- Future Dated Production Section --><div class='col-6'><!-- Heading for Future Dated Production --><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>Future Dated Production</h4><div class='monthly-table'><!-- Table for Future Dated Production --><table width='100%' cellpadding='0' cellspacing='0'><!-- Table Headers --><thead><tr><th class='text-left text-white font-weight-bold'>Due Date</th><th class='height:50px;text-left'>Fiduciary fees</th><th class='text-left'>Allocated Amount</th></tr></thead>");
+                commisionDetailSrc.Append("<!-- Future Dated Production Section --><div class='col-6'><!-- Heading for Future Dated Production --><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>Future Dated Production</h4><div class='monthly-table'><!-- Table for Future Dated Production --><table width='100%' cellpadding='0' cellspacing='0'><!-- Table Headers --><thead><tr><th class='text-left text-white font-weight-bold'>Due Date</th><th style='height:50px;' class='text-left'>Fiduciary fees</th><th class='text-left'>Allocated Amount</th></tr></thead>");
 
                 // Initializing variables for column sums
                 double FutureColumnSums = 0.00;
@@ -1696,7 +1696,7 @@ namespace nIS
                     prdocutDescriptionRecords.ForEach(prdocutDescription =>
                     {
                         // Appending HTML for Date, Product Description, and Allocated Amount columns
-                        commisionDetailSrc.Append("<tr><td class='text-left'>" + DateTime.Parse(gpDueDateItem.GroupKey.Date.ToString()).ToString("dd-MMM-yyyy") + "</td>");
+                        commisionDetailSrc.Append("<tr><td class='text-left text-nowrap'>" + DateTime.Parse(gpDueDateItem.GroupKey.Date.ToString()).ToString("dd-MMM-yyyy") + "</td>");
                         sumOfAllocatedAmount = commisionDetail
                             .Where(witem => witem.PRODUCT_DESCRIPTION == prdocutDescription.GroupKey.PRODUCT_DESCRIPTION && witem.DUE_DATE == gpDueDateItem.GroupKey.Date)
                             .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));

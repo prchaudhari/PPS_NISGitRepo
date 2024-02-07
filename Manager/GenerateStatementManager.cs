@@ -2541,7 +2541,7 @@ namespace nIS
                         transaction.Where(mwitem => (mwitem.INT_EXT_REF == transactionitem.FirstOrDefault().INT_EXT_REF)).GroupBy(gpDTTItem => new { gpDTTItem.INT_EXT_REF, gpDTTItem.Member_Ref }).ToList().ForEach(memberitem =>
                         {
 
-                            detailedTransactionSrc.Append("<div class='prouct-table-block'><table width='100%' cellpadding='0' cellspacing='0'><tr><th class='font-weight-bold text-white text-left text-nowrap' width='185px'>Client name</th><th  class='font-weight-bold text-white text-center pe-0 bdr-r-0 text-left' width='7%'>Member number</th><th  class='font-weight-bold text-white text-left' width='7%'>Policy number</th><th class='font-weight-bold text-white text-left' width='26%'>Description</th><th class='font-weight-bold text-white text-left' width='7%'>Commission<br/>type</th><th class='font-weight-bold text-white text-left text-nowrap' width='9%'>Posted date</th><th class='font-weight-bold text-white text-left' width='9%'>Posted amount</th><th class='font-weight-bold text-white' width='30px'>Query</th></tr>");
+                            detailedTransactionSrc.Append("<div class='prouct-table-block'><table width='100%' cellpadding='0' cellspacing='0'><tr><th class='font-weight-bold text-white text-left text-nowrap' width='185px'>Client name</th><th  class='font-weight-bold text-white pe-0 bdr-r-0 text-left' width='7%'>Member number</th><th  class='font-weight-bold text-white text-left' width='7%'>Policy number</th><th class='font-weight-bold text-white text-left' width='26%'>Description</th><th class='font-weight-bold text-white text-left' width='7%'>Commission<br/>type</th><th class='font-weight-bold text-white text-left text-nowrap' width='9%'>Posted date</th><th class='font-weight-bold text-white text-left' width='9%'>Posted amount</th><th class='font-weight-bold text-white' width='30px'>Query</th></tr>");
 
                             double TotalPostedAmount = 0;
                             transaction.Where(witem => (witem.INT_EXT_REF == transactionitem.FirstOrDefault().INT_EXT_REF) && (witem.Member_Ref == memberitem.FirstOrDefault().Member_Ref)).OrderBy(item=>item.POSTED_DATE).ToList().ForEach(itemDTT =>
@@ -2933,7 +2933,7 @@ namespace nIS
         //        List<List<double>> monthlyDueDateTotalList = new List<List<double>>();
 
         //        // Appending HTML for the Future-dated production section
-        //        commisionDetailSrc.Append("<!-- Future-dated production Section --><div class='col-6'><!-- Heading for Future-dated production --><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>Future-dated production</h4><div class='monthly-table'><!-- Table for Future-dated production --><table width='100%' cellpadding='0' cellspacing='0'><!-- Table Headers --><thead><tr><th class='text-left text-white font-weight-bold'>Due date</th><th class='height:50px;text-left'>Fiduciary fees</th><th class='text-left'>Allocated amount</th></tr></thead>");
+        //        commisionDetailSrc.Append("<!-- Future-dated production Section --><div class='col-6'><!-- Heading for Future-dated production --><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>Future-dated production</h4><div class='monthly-table'><!-- Table for Future-dated production --><table width='100%' cellpadding='0' cellspacing='0'><!-- Table Headers --><thead><tr><th class='text-left text-white font-weight-bold'>Due date</th><th style='height:50px;' class='text-left'>Fiduciary fees</th><th class='text-left'>Allocated amount</th></tr></thead>");
 
         //        // Initializing variables for column sums
         //        double FutureColumnSums = 0.00;
@@ -2947,7 +2947,7 @@ namespace nIS
         //            prdocutDescriptionRecords.ForEach(prdocutDescription =>
         //    {
         //                    // Appending HTML for Date, Fiduciary fees, and Allocated amount columns
-        //                    commisionDetailSrc.Append("<tr><td class='text-left'>" + DateTime.Parse(gpDueDateItem.GroupKey.Date.ToString()).ToString("dd-MMM-yyyy") + "</td>");
+        //                    commisionDetailSrc.Append("<tr><td class='text-left text-nowrap'>" + DateTime.Parse(gpDueDateItem.GroupKey.Date.ToString()).ToString("dd-MMM-yyyy") + "</td>");
         //        sumOfAllocatedAmount = commisionDetail
         //            .Where(witem => witem.PRODUCT_DESCRIPTION == prdocutDescription.GroupKey.PRODUCT_DESCRIPTION && witem.DUE_DATE == gpDueDateItem.GroupKey.Date)
         //            .Sum(item => Convert.ToDouble(item.ALLOCATED_AMOUNT));
@@ -3125,7 +3125,7 @@ namespace nIS
             List<List<double>> monthlyDueDateTotalList = new List<List<double>>();
 
             // Appending HTML for the Future-dated production section
-            commisionDetailSrc.Append("<!-- Future-dated production Section --><div class='col-6'><!-- Heading for Future-dated production --><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>Future-dated production</h4><div class='monthly-table'><!-- Table for Future-dated production --><table width='100%' cellpadding='0' cellspacing='0'><!-- Table Headers --><thead><tr><th class='text-left text-white font-weight-bold'>Due date</th><th class='height:50px;text-left'>Fiduciary fees</th><th class='text-left'>Allocated amount</th></tr></thead>");
+            commisionDetailSrc.Append("<!-- Future-dated production Section --><div class='col-6'><!-- Heading for Future-dated production --><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>Future-dated production</h4><div class='monthly-table'><!-- Table for Future-dated production --><table width='100%' cellpadding='0' cellspacing='0'><!-- Table Headers --><thead><tr><th class='text-left text-white font-weight-bold'>Due date</th><th style='height:50px;' class='text-left'>Fiduciary fees</th><th class='text-left'>Allocated amount</th></tr></thead>");
 
             // Initializing variables for column sums
             double FutureColumnSums = 0.00;
