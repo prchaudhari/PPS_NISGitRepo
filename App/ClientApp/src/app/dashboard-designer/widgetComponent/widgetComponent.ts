@@ -141,15 +141,15 @@ export class FSPHeadingComponent {
                         </li>
                         <li>
                             <dd>Mobile</dd>
-                            <dt class="text-gray">0821234567</dt>
+                            <dt class="text-gray">hard coded</dt>
                         </li>
                         <li>
                             <dd>Email</dd>
-                            <dt class="text-gray1">y.vanheerden@google.com</dt>
+                            <dt class="text-gray1">hard coded</dt>
                         </li>
                         <li>
                             <dd>Address</dd>
-                            <dt class="text-gray">1 John Vorster Drive,<br/>Randburg, Gauteng</dt>
+                            <dt class="text-gray">hard coded</dt>
                         </li>
                     </ul>
                 </div>
@@ -179,7 +179,7 @@ export class FSPDetailsComponent {
                         <li><a href="#"><img src="assets/images/you_foot.png"></a></li>
                         <li><a href="#"><img src="assets/images/ticktok_foot.png"></a></li>
                     </ul>
-                    <div class="fsp-copyright mb-0">PPS Insurance is a registered Insurer and FSP</div>
+                    <div class="fsp-copyright mb-0">hard coded</div>
                     <div></div>
                     <div></div>
                      <div></div>
@@ -505,15 +505,15 @@ export class AccountInformationComponent {
                         </li>
                         <li>
                             <dd>M:</dd>
-                            <dt class="text-gray">0821234567</dt>
+                            <dt class="text-gray">hard coded</dt>
                         </li>
                         <li>
                             <dd>E:</dd>
-                            <dt class="text-gray1">y.vanheerden@google.com</dt>
+                            <dt class="text-gray1">hard coded</dt>
                         </li>
                         <li>
                             <dd>A:</dd>
-                            <dt class="text-gray">1 John Vorster Drive,<br/>Randburg, Gauteng  </dt>
+                            <dt class="text-gray">hard coded</dt>
                         </li>
                     </ul>
                 </div>
@@ -540,16 +540,16 @@ export class PPSDetails1Component {
                             <h4 class="font-weight-bold">Miss HW HLONGWANE</h4>
                             <div class="client-content">
                                 <p class="font-weight-bold">Client contact details</p>
-                                <p><span class="font-weight-bold">M:</span> 082 1234567</p>
-                                <p><span class="font-weight-bold">E:</span> <a href="">y.vanheerden@google.com</a></p>
+                                <p><span class="font-weight-bold">M:</span> hard coded</p>
+                                <p><span class="font-weight-bold">E:</span> <a href="">hard coded</a></p>
                             </div>
                         </div>
 
                         <div class="col-3 py-2 bdr-end-5">
-                            <h4 class="font-weight-bold">Address</h4>
-                            <div class="client-content">
-                                <p>1 John Vorster Drive<br/>Randburg<br/>Gauteng</p>
-                            </div>
+                            <h4 class="font-weight-bold">hard coded</h4>
+                            // <div class="client-content">
+                            //    <p>1 John Vorster Drive<br/>Randburg<br/>Gauteng</p>
+                            //</div>
                         </div>
 
                         <div class="col-5 py-2">
