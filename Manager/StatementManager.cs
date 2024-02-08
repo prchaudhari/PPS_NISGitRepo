@@ -2499,7 +2499,7 @@ namespace nIS
                                                                 }
                                                             }
 
-                                                            commisionDetailSrc.Append("<tr><td class='dark-blue-bg text-white font-weight-bold'>Total</td>");
+                                                            commisionDetailSrc.Append("<tr><td class='text-left dark-blue-bg text-white font-weight-bold'>Total</td>");
 
                                                             for (int k = 0; k < aePostedColumnSums.Count; k++)
                                                             {
@@ -2565,7 +2565,7 @@ namespace nIS
 
                                                             // Appending HTML for SubTotal row
                                                             var sumOfDueDateAllocatedAmountR = (sumOfDueDateAllocatedAmount == 0) ? "R0.00" : Utility.FormatCurrency(sumOfDueDateAllocatedAmount.ToString());
-                                                            commisionDetailSrc.Append("<tr><td class='text-right' colspan='2'>SubTotal<td class='text-right'>" + sumOfDueDateAllocatedAmountR + "</td></tr>");
+                                                            commisionDetailSrc.Append("<tr><td class='text-right' colspan='2'>Sub Total<td class='text-right'>" + sumOfDueDateAllocatedAmountR + "</td></tr>");
                                                         });
 
                                                         // Appending HTML for Total earnings row and closing the table
@@ -2578,7 +2578,7 @@ namespace nIS
 
 
                                                         // HTML generation for Monthly production summary Section
-                                                        commisionDetailSrc.Append("<!-- Monthly production summary Section --><div class='earnings-section-monthly d-flex'><!-- Two Columns Layout --><div class='d-flex gap-1 w-100'><!-- Monthly production summary T1 --><div class='col-6'><!-- Heading for Monthly production summary T1 --><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>Monthly production summary</h4><div class='monthly-table'><!-- Table for Monthly production summary T1 --><table width='100%' cellpadding='0' cellspacing='0'><!-- Table Headers --><thead><tr><th class='text-white font-weight-bold text-left'>Month</th>");
+                                                        commisionDetailSrc.Append("<!-- Monthly production summary Section --><div class='earnings-section-monthly d-flex'><!-- Two Columns Layout --><div class='d-flex gap-1 w-100'><!-- Monthly production summary T1 --><div class='col-6'><!-- Heading for Monthly production summary T1 --><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>Monthly production summary</h4><div class='monthly-table'><!-- Table for Monthly production summary T1 --><table width='100%' cellpadding='0' cellspacing='0'><!-- Table Headers --><thead><tr><th class='text-white font-weight-boldtext-nowrap text-left'>Month</th>");
 
                                                         // HTML generation for table headers based on CommissionType
                                                         gpCommisionType.ForEach(gpCommisionTypeitem =>
@@ -2590,7 +2590,7 @@ namespace nIS
                                                         // Iterate through grouped records to populate table rows
                                                         records.ForEach(gpMonthRangeItem =>
                                                         {
-                                                            commisionDetailSrc.Append("<tr><td class='text-left'>" + CommonUtility.GetMonthRange(gpMonthRangeItem.GroupKey.Month) + "</td>");
+                                                            commisionDetailSrc.Append("<tr><td class='text-nowrap text-left'>" + CommonUtility.GetMonthRange(gpMonthRangeItem.GroupKey.Month) + "</td>");
                                                             List<double> innermonthlyTotalListSum = new List<double>();
 
                                                             // Iterate through CommissionType groups to populate cells
@@ -2625,7 +2625,7 @@ namespace nIS
                                                         }
 
                                                         // Add total row to the table
-                                                        commisionDetailSrc.Append("<tr><td class='dark-blue-bg text-white font-weight-bold'>Total</td>");
+                                                        commisionDetailSrc.Append("<tr><td class='text-left dark-blue-bg text-white font-weight-bold'>Total</td>");
 
                                                         for (int k = 0; k < premiumColumnSums.Count; k++)
                                                         {
@@ -2688,7 +2688,7 @@ namespace nIS
                                                         }
 
                                                         // Add total row for Fiduciary Fees to the table
-                                                        commisionDetailSrc.Append("<tr><td class='dark-blue-bg text-white font-weight-bold'>Total</td>");
+                                                        commisionDetailSrc.Append("<tr><td class='text-left dark-blue-bg text-white font-weight-bold'>Total</td>");
 
                                                         for (int k = 0; k < FeesColumnSums.Count; k++)
                                                         {
@@ -2779,7 +2779,7 @@ namespace nIS
                                                                 TotalPostedAmount += ((item.TYPE == "Fiduciary_Data") && (item.Prod_Group != "VAT")) ? (Convert.ToDouble(item.Display_Amount)) : 0.0;
                                                             });
                                                             string TotalPostedAmountR = (TotalPostedAmount == 0) ? "R0.00" : Utility.FormatCurrency(TotalPostedAmount.ToString());
-                                                            detailedTransactionSrc.Append("<tr> <td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'><br /></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'>" + TotalPostedAmountR + "</td> <td class='text-center fsp-bdr-bottom px-1'><a href='https://www.google.com/' target = '_blank' ><img src='assets/images/leftarrowlogo.png'></a></td> </tr></table><div class='text-right w-100 pt-3'><a href='https://www.google.com/' target = '_blank'></a></div></div></div></div>");
+                                                            detailedTransactionSrc.Append("<tr> <td align='center' valign='center' class='px-1 py-1 fsp-bdr-right fsp-bdr-bottom'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'><br /></td> <td class='text-center fsp-bdr-right fsp-bdr-bottom px-1 py-1'></td> <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1 py-1'>" + TotalPostedAmountR + "</td> <td class='text-center fsp-bdr-bottom px-1'><a href='https://www.google.com/' target = '_blank' ><img src='assets/images/leftarrowlogo.png'></a></td> </tr></table><div class='text-right w-100 pt-3'><a href='https://www.google.com/' target = '_blank'></a></div></div></div></div>");
 
                                                             TotalPostedAmount = 0;
                                                         });
@@ -7551,7 +7551,7 @@ namespace nIS
                 }
 
                 // Add total row to the table
-                commisionDetailSrc.Append("<tr><td class='dark-blue-bg text-white font-weight-bold'>Total</td>");
+                commisionDetailSrc.Append("<tr><td class='text-left dark-blue-bg text-white font-weight-bold'>Total</td>");
 
                 for (int k = 0; k < premiumColumnSums.Count; k++)
                 {
@@ -7614,7 +7614,7 @@ namespace nIS
                 }
 
                 // Add total row for Fiduciary Fees to the table
-                commisionDetailSrc.Append("<tr><td class='dark-blue-bg text-white font-weight-bold'>Total</td>");
+                commisionDetailSrc.Append("<tr><td class='text-left dark-blue-bg text-white font-weight-bold'>Total</td>");
 
                 for (int k = 0; k < FeesColumnSums.Count; k++)
                 {
@@ -7714,7 +7714,7 @@ namespace nIS
                         }
                     }
 
-                    commisionDetailSrc.Append("<tr><td class='dark-blue-bg text-white font-weight-bold'>Total</td>");
+                    commisionDetailSrc.Append("<tr><td class='text-left dark-blue-bg text-white font-weight-bold'>Total</td>");
 
                     for (int k = 0; k < aePostedColumnSums.Count; k++)
                     {
@@ -7780,7 +7780,7 @@ namespace nIS
 
                         // Appending HTML for SubTotal row
                         var sumOfDueDateAllocatedAmountR = (sumOfDueDateAllocatedAmount == 0) ? "R0.00" : Utility.FormatCurrency(sumOfDueDateAllocatedAmount.ToString());
-                    commisionDetailSrc.Append("<tr><td class='text-right' colspan='2'>SubTotal<td class='text-right'>" + sumOfDueDateAllocatedAmountR + "</td></tr>");
+                    commisionDetailSrc.Append("<tr><td class='text-right' colspan='2'>Sub Total<td class='text-right'>" + sumOfDueDateAllocatedAmountR + "</td></tr>");
                 });
 
                 // Appending HTML for Total earnings row and closing the table

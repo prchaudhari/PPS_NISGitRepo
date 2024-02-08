@@ -897,7 +897,7 @@ namespace nIS
                                                             }
                                                         }
 
-                                                        commisionDetailSrc.Append("<tr><td class='dark-blue-bg text-white font-weight-bold'>Total</td>");
+                                                        commisionDetailSrc.Append("<tr><td class='text-left dark-blue-bg text-white font-weight-bold'>Total</td>");
 
                                                         for (int k = 0; k < aePostedColumnSums.Count; k++)
                                                         {
@@ -963,7 +963,7 @@ namespace nIS
 
                                                         // Appending HTML for SubTotal row
                                                         var sumOfDueDateAllocatedAmountR = (sumOfDueDateAllocatedAmount == 0) ? "R0.00" : Utility.FormatCurrency(sumOfDueDateAllocatedAmount.ToString());
-                                                        commisionDetailSrc.Append("<tr><td class='text-right' colspan='2'>SubTotal<td class='text-right'>" + sumOfDueDateAllocatedAmountR + "</td></tr>");
+                                                        commisionDetailSrc.Append("<tr><td class='text-right' colspan='2'>Sub Total<td class='text-right'>" + sumOfDueDateAllocatedAmountR + "</td></tr>");
                                                     });
 
                                                     // Appending HTML for Total earnings row and closing the table
@@ -988,7 +988,7 @@ namespace nIS
                                                     // Iterate through grouped records to populate table rows
                                                     records.ForEach(gpMonthRangeItem =>
                                                     {
-                                                        commisionDetailSrc.Append("<tr><td class='text-left'>" + CommonUtility.GetMonthRange(gpMonthRangeItem.GroupKey.Month) + "</td>");
+                                                        commisionDetailSrc.Append("<tr><td class='text-nowrap text-left'>" + CommonUtility.GetMonthRange(gpMonthRangeItem.GroupKey.Month) + "</td>");
                                                         List<double> innermonthlyTotalListSum = new List<double>();
 
                                                         // Iterate through CommissionType groups to populate cells
@@ -1023,7 +1023,7 @@ namespace nIS
                                                     }
 
                                                     // Add total row to the table
-                                                    commisionDetailSrc.Append("<tr><td class='dark-blue-bg text-white font-weight-bold'>Total</td>");
+                                                    commisionDetailSrc.Append("<tr><td class='text-left dark-blue-bg text-white font-weight-bold'>Total</td>");
 
                                                     for (int k = 0; k < premiumColumnSums.Count; k++)
                                                     {
@@ -1051,7 +1051,7 @@ namespace nIS
                                                     // Iterate through grouped records to populate table rows for Fiduciary Fees
                                                     records.ForEach(gpFeesMonthRangeItem =>
                                                     {
-                                                        commisionDetailSrc.Append("<tr><td class='text-left'>" + CommonUtility.GetMonthRange(gpFeesMonthRangeItem.GroupKey.Month) + "</td>");
+                                                        commisionDetailSrc.Append("<tr><td class='text-nowrap text-left'>" + CommonUtility.GetMonthRange(gpFeesMonthRangeItem.GroupKey.Month) + "</td>");
                                                         List<double> innerFeesMonthlyTotalListSum = new List<double>();
 
                                                         // Iterate through CommissionType groups to populate cells with Fiduciary Fees
@@ -1086,7 +1086,7 @@ namespace nIS
                                                     }
 
                                                     // Add total row for Fiduciary Fees to the table
-                                                    commisionDetailSrc.Append("<tr><td class='dark-blue-bg text-white font-weight-bold'>Total</td>");
+                                                    commisionDetailSrc.Append("<tr><td class='text-left dark-blue-bg text-white font-weight-bold'>Total</td>");
 
                                                     for (int k = 0; k < FeesColumnSums.Count; k++)
                                                     {

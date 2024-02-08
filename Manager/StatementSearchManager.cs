@@ -1710,7 +1710,7 @@ namespace nIS
 
                     // Appending HTML for SubTotal row
                     var sumOfDueDateAllocatedAmountR = (sumOfDueDateAllocatedAmount == 0) ? "R0.00" : ("R" + sumOfDueDateAllocatedAmount.ToString());
-                    commisionDetailSrc.Append("<tr><td class='text-right' colspan='2'>SubTotal<td class='text-right'>" + sumOfDueDateAllocatedAmountR + "</td></tr>");
+                    commisionDetailSrc.Append("<tr><td class='text-right' colspan='2'>Sub Total<td class='text-right'>" + sumOfDueDateAllocatedAmountR + "</td></tr>");
                 });
 
                 // Appending HTML for Total Earnings row and closing the table
