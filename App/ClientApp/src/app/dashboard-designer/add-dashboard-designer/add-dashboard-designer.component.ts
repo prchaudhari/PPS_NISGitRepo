@@ -951,8 +951,8 @@ export class AddDashboardDesignerComponent implements OnInit {
           }
           else if (widget.WidgetName == "FSPDetails") {
             return this.widgetsGridsterItemArray.push({
-              cols: 10,
-              rows: 2,
+              cols: 12,
+              rows: 1,
               y: 0,
               x: 0,
               component: FSPDetailsComponent,
@@ -966,8 +966,8 @@ export class AddDashboardDesignerComponent implements OnInit {
           }
           else if (widget.WidgetName == "PaymentSummary") {
             return this.widgetsGridsterItemArray.push({
-              cols: 11,
-              rows: 3,
+              cols: 12,
+              rows: 2,
               y: 0,
               x: 0,
               component: PaymentSummaryComponent,
@@ -982,7 +982,7 @@ export class AddDashboardDesignerComponent implements OnInit {
           else if (widget.WidgetName == "FSPHeading") {
             return this.widgetsGridsterItemArray.push({
               cols: 12,
-              rows: 2,
+              rows: 1,
               y: 0,
               x: 0,
               component: FSPHeadingComponent,
@@ -997,7 +997,7 @@ export class AddDashboardDesignerComponent implements OnInit {
           else if (widget.WidgetName == "PPSFooter1") {
             return this.widgetsGridsterItemArray.push({
               cols: 12,
-              rows: 2,
+              rows: 1,
               y: 0,
               x: 0,
               component: PPSFooter1Component,
@@ -1011,8 +1011,8 @@ export class AddDashboardDesignerComponent implements OnInit {
           }
           else if (widget.WidgetName == "ProductSummary") {
             return this.widgetsGridsterItemArray.push({
-              cols: 9,
-              rows: 7,
+              cols: 12,
+              rows: 4,
               y: 0,
               x: 0,
               component: ProductSummaryComponent,
@@ -1027,7 +1027,7 @@ export class AddDashboardDesignerComponent implements OnInit {
           else if (widget.WidgetName == "FooterImage") {
             return this.widgetsGridsterItemArray.push({
               cols: 12,
-              rows: 4,
+              rows: 3,
               y: 0,
               x: 0,
               component: FooterImageComponent,
@@ -1041,7 +1041,7 @@ export class AddDashboardDesignerComponent implements OnInit {
           }
           else if (widget.WidgetName == "DetailedTransactions") {
             return this.widgetsGridsterItemArray.push({
-              cols: 8,
+              cols: 12,
               rows: 6,
               y: 0,
               x: 0,
@@ -1056,7 +1056,7 @@ export class AddDashboardDesignerComponent implements OnInit {
           }
           else if (widget.WidgetName == "PPSDetailedTransactions") {
             return this.widgetsGridsterItemArray.push({
-              cols: 8,
+              cols: 12,
               rows: 6,
               y: 0,
               x: 0,
@@ -1071,8 +1071,8 @@ export class AddDashboardDesignerComponent implements OnInit {
           }
           else if (widget.WidgetName == "PPSEarningForPeriod") {
             return this.widgetsGridsterItemArray.push({
-              cols: 8,
-              rows: 5,
+              cols: 12,
+              rows: 8,
               y: 0,
               x: 0,
               component: PPSEarningForPeriodComponent,
@@ -1101,8 +1101,8 @@ export class AddDashboardDesignerComponent implements OnInit {
           }
           else if (widget.WidgetName == "PPSDetails1") {
             return this.widgetsGridsterItemArray.push({
-              cols: 10,
-              rows: 2,
+              cols: 12,
+              rows: 1,
               y: 0,
               x: 0,
               component: PPSDetails1Component,
@@ -1116,7 +1116,7 @@ export class AddDashboardDesignerComponent implements OnInit {
           }
           else if (widget.WidgetName == "PPSDetails2") {
             return this.widgetsGridsterItemArray.push({
-              cols: 10,
+              cols: 12,
               rows: 2,
               y: 0,
               x: 0,

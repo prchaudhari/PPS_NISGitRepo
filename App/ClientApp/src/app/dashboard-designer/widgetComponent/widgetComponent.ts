@@ -230,32 +230,27 @@ export class PPSFooter1Component {
                                 </td></tr>
                                 <tr>
                                     <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"></td>
-                                    <td class="fsp-bdr-bottom ps-1 text-right">Total</td>
-                                    <td class="fsp-bdr-right fsp-bdr-bottom ps-1 text-left">Due</td>
+                                    <td colspan="2" class="fsp-bdr-right fsp-bdr-bottom ps-1 text-center">Total Due</td>
                                     <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">R256 670.66</td>
                                 </tr>
                                 <tr>
                                     <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"></td>
-                                    <td class="fsp-bdr-bottom ps-1 text-right">VAT</td>
-                                    <td class="fsp-bdr-right fsp-bdr-bottom ps-1 text-left">Due</td>
+                                    <td colspan="2" class="fsp-bdr-right fsp-bdr-bottom ps-1 text-center">VAT Due</td>
                                     <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">R38 001.27</td>
                                 </tr>
                                 <tr>
                                     <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"></td>
-                                    <td class="fsp-bdr-bottom ps-1 text-right">Grand</td>
-                                    <td class="fsp-bdr-right fsp-bdr-bottom ps-1 text-left">Total Due</td>
+                                    <td cplspan="2" class="fsp-bdr-right fsp-bdr-bottom ps-1 text-center">Grand Total Due</td>
                                     <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">R294 671.93</td>
                                 </tr>
                                 <tr>
                                     <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"></td>
-                                    <td class="fsp-bdr-bottom ps-1 text-right">PPS</td>
-                                    <td class="fsp-bdr-right fsp-bdr-bottom ps-1 text-left">Payment</td>
+                                    <td colspan="2" class="fsp-bdr-right fsp-bdr-bottom ps-1 text-center">PPS Payment</td>
                                     <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">-R294 671.93</td>
                                 </tr>
                                 <tr>
                                     <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"></td>
-                                    <td class="fsp-bdr-bottom ps-1 text-right font-weight-bold">Balance</td>
-                                    <td class="fsp-bdr-right fsp-bdr-bottom ps-1 text-left"></td>
+                                    <td colspan="2" class="fsp-bdr-bottom ps-1 text-center font-weight-bold fsp-bdr-right">Balance</td>
                                     <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1 font-weight-bold">R0.00</td>
                                 </tr>
                       </tbody>
@@ -272,10 +267,10 @@ export class ProductSummaryComponent {
   widgetsGridsterItemArray: any[] = [];
 
   public actionPSList: any[] = [
-    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Safe Custody Fee', Display_Amount: '52.65', Query_Link: "https://facebook.com" },
-    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Service Fee', Display_Amount: '52.66', Query_Link: "https://facebook.com" },
-    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Safe Custody Fee', Display_Amount: '52.67', Query_Link: "https://facebook.com" },
-    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Service Fee', Display_Amount: '52.68', Query_Link: "https://facebook.com" }
+    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Safe Custody Fee', Display_Amount:'52.65', Query_Link: "https://facebook.com" },
+    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Service Fee', Display_Amount:'52.66', Query_Link: "https://facebook.com" },
+    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Safe Custody Fee', Display_Amount:'52.67', Query_Link: "https://facebook.com" },
+    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Service Fee', Display_Amount:'52.68', Query_Link: "https://facebook.com" }
   ]
   public formatCurrency(input: any): any {
     const amount: number = parseFloat(input); // Parse the string to a decimal
@@ -309,8 +304,8 @@ export class ProductSummaryComponent {
                             <thead>
                                 <tr>
                                     <th class="font-weight-bold text-white text-left text-nowrap">Client name</th>
-                                    <th class="font-weight-bold text-white pe-0 bdr-r-0 text-left text-nowrap">Member<br/>number</th>
-                                    <th class="font-weight-bold text-white text-left text-nowrap">Policy number</th>
+                                    <th class="font-weight-bold text-white pe-0 bdr-r-0 text-left">Member<br/>number</th>
+                                    <th class="font-weight-bold text-white text-left">Policy number</th>
                                     <th class="font-weight-bold text-white text-left">Description</th>
                                     <th class="font-weight-bold text-white text-left">Commission<br/>type</th>
                                     <th class="font-weight-bold text-white text-left text-nowrap">Posted date</th>
@@ -321,9 +316,9 @@ export class ProductSummaryComponent {
                             <tbody>
                                 <tr *ngFor="let item of detailedTransactionList">
                                     <td class="text-left px-1 py-1 fsp-bdr-right fsp-bdr-bottom">{{item.Client_Name}}</td>
-                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">{{item.Member_Ref}}</td>
-                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">{{item.Policy_Ref}}</td>
-                                    <td class="fsp-bdr-right fsp-bdr-bottom px-1">{{item.Description}}</td>
+                                    <td class="text-left fsp-bdr-right fsp-bdr-bottom px-1">{{item.Member_Ref}}</td>
+                                    <td class="text-left fsp-bdr-right fsp-bdr-bottom px-1">{{item.Policy_Ref}}</td>
+                                    <td class="text-left fsp-bdr-right fsp-bdr-bottom px-1">{{item.Description}}</td>
                                     <td class="text-left fsp-bdr-right fsp-bdr-bottom px-1">{{item.Commission_Type}}</td>
                                     <td class="text-left fsp-bdr-right fsp-bdr-bottom px-1">{{item.POSTED_DATE}}</td>
                                     <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">{{formatCurrency(item.Display_Amount)}}</td>
@@ -354,9 +349,9 @@ export class ProductSummaryComponent {
                         <table width="100%" cellpadding="0" cellspacing="0">
                             <thead>
                                 <tr>
-                                    <th class="font-weight-bold text-white text-left text-nowrap">Client name</th>
-                                    <th class="font-weight-bold text-white pe-0 bdr-r-0 text-left text-nowrap">Member<br/>number</th>
-                                    <th class="font-weight-bold text-white text-left text-nowrap">Policy number</th>
+                                    <th class="font-weight-bold text-white text-left">Client name</th>
+                                    <th class="font-weight-bold text-white pe-0 bdr-r-0 text-left">Member<br/>number</th>
+                                    <th class="font-weight-bold text-white text-left">Policy number</th>
                                     <th class="font-weight-bold text-white text-left">Description</th>
                                     <th class="font-weight-bold text-white text-left">Commission<br/>type</th>
                                     <th class="font-weight-bold text-white text-left text-nowrap">Posted date</th>
@@ -367,9 +362,9 @@ export class ProductSummaryComponent {
                             <tbody>
                                 <tr *ngFor="let item of detailedTransactionIntList">
                                     <td class="text-left px-1 py-1 fsp-bdr-right fsp-bdr-bottom">{{item.Client_Name}}</td>
-                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">{{item.Member_Ref}}</td>
-                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">{{item.Policy_Ref}}</td>
-                                    <td class="fsp-bdr-right fsp-bdr-bottom px-1">{{item.Description}}</td>
+                                    <td class="text-left fsp-bdr-right fsp-bdr-bottom px-1">{{item.Member_Ref}}</td>
+                                    <td class="text-left fsp-bdr-right fsp-bdr-bottom px-1">{{item.Policy_Ref}}</td>
+                                    <td class="text-left fsp-bdr-right fsp-bdr-bottom px-1">{{item.Description}}</td>
                                     <td class="text-left fsp-bdr-right fsp-bdr-bottom px-1">{{item.Commission_Type}}</td>
                                     <td class="text-left fsp-bdr-right fsp-bdr-bottom px-1">{{item.POSTED_DATE}}</td>
                                     <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">{{formatCurrency(item.Display_Amount)}}</td>
@@ -408,12 +403,12 @@ export class DetailedTransactionsComponent {
   widgetsGridsterItemArray: any[] = [];
 
   public detailedTransactionList: any[] = [
-    { INT_EXT_REF: '2164250', Int_Name: 'Mr SCHOELER', Client_Name: 'Mr SCHOELER', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '17.55', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'Safe Custody Fee' },
-    { INT_EXT_REF: '2164250', Int_Name: 'Yvonne Van Heerden', Client_Name: 'Mr SCHOELER', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee VAT', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '2.63', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'Safe Custody Fee' },
+    { INT_EXT_REF: '2164250', Int_Name: 'Mr SCHOELER', Client_Name: 'Mr SCHOELER', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount:'17.55', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'Safe Custody Fee' },
+    { INT_EXT_REF: '2164250', Int_Name: 'Yvonne Van Heerden', Client_Name: 'Mr SCHOELER', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee VAT', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount:'2.63', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'Safe Custody Fee' },
   ]
   public detailedTransactionIntList: any[] = [
-    { INT_EXT_REF: '124411745', Int_Name: 'Kruger Van Heerden', Client_Name: 'DR N J Olivier', Member_Ref: '1217181', Policy_Ref: '5524069', Description: 'Safe Custody Service Fee', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '17.55', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'Safe Custody Fee' },
-    { INT_EXT_REF: '124411745', Int_Name: 'Kruger Van Heerden', Client_Name: 'DR N J Olivier', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee VAT	', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '2.63', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'VAT' },
+    { INT_EXT_REF: '124411745', Int_Name: 'Kruger Van Heerden', Client_Name: 'DR N J Olivier', Member_Ref: '1217181', Policy_Ref: '5524069', Description: 'Safe Custody Service Fee', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount:'17.55', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'Safe Custody Fee' },
+    { INT_EXT_REF: '124411745', Int_Name: 'Kruger Van Heerden', Client_Name: 'DR N J Olivier', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee VAT	', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount:'2.63', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'VAT' },
   ]
   public formatCurrency(input: any): any {
     const amount: number = parseFloat(input); // Parse the string to a decimal
@@ -570,10 +565,8 @@ export class PPSDetails1Component {
                         </div>
 
                         <div class="col-3 py-2 bdr-end-5">
+                            <h4 class="font-weight-bold">Address</h4>
                             <h4 class="font-weight-bold">hard coded</h4>
-                            // <div class="client-content">
-                            //    <p>1 John Vorster Drive<br/>Randburg<br/>Gauteng</p>
-                            //</div>
                         </div>
 
                         <div class="col-5 py-2">
