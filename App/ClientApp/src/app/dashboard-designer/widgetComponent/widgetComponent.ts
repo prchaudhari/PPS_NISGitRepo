@@ -296,7 +296,7 @@ export class ProductSummaryComponent {
   
 <div class="container_area">
         <div class="fsp-earnings-section">
-            <div class="dark-blue-bg payment-sum text-white text-center">Detailed Transactions</div>
+            <div class="dark-blue-bg payment-sum text-white text-center">Detailed transactions</div>
             <div class="fsp-product-summery">
                 <div class="text-center py-3">
                     <a href="#"><img src="assets/images/IfQueryBtn.jpg"></a>
