@@ -58,10 +58,10 @@ export class CustomerInformationComponent {
                   <div class="fsp-payment-sum d-flex gap-1 w-100 py-4">
                         <div class="col-2"></div>
                         <div class="col-4">
-                            <div class="font-weight-bold mb-1">Intermediary Total – March 2023</div>
-                            <div class="font-weight-bold mb-1">Vat</div>
+                            <div class="text-left font-weight-bold mb-1">Intermediary Total – March 2023</div>
+                            <div class="text-left font-weight-bold mb-1">Vat</div>
                             <div class="pt-1 mb-1"></div>
-                            <div class="font-weight-bold">Total Due</div>
+                            <div class="text-left font-weight-bold">Total Due</div>
                         </div>
                         <div class="col-3">
                             <div class="font-weight-bold mb-1 text-right pe-2">R256 670.66</div>
@@ -116,40 +116,40 @@ export class FSPHeadingComponent {
                 <div class="col-49">
                     <ul>
                         <li>
-                            <dd>FSP:</dd>
-                            <dt class="text-gray">124529534</dt>
+                            <dd class="text-left">FSP:</dd>
+                            <dt class="text-left text-gray">124529534</dt>
                         </li>
                         <li>
-                            <dd>FSP Agreement #:</dd>
-                            <dt class="text-gray">2452953</dt>
+                            <dd class="text-left">FSP Agreement #:</dd>
+                            <dt class="text-left text-gray">2452953</dt>
                         </li>
                         <li>
-                            <dd>Vat Reg #:</dd>
-                            <dt class="text-gray">2452953</dt>
+                            <dd class="text-left">Vat Reg #:</dd>
+                            <dt class="text-left text-gray">2452953</dt>
                         </li>
                         <li>
-                            <dd>Month:</dd>
-                            <dt class="text-gray">September 2023</dt>
+                            <dd class="text-left">Month:</dd>
+                            <dt class="text-left text-gray">September 2023</dt>
                         </li>
                     </ul>
                 </div>
                 <div class="col-49">
                     <ul>
                         <li>
-                            <dd>Contact details:</dd>
+                            <dd class="text-left">Contact details:</dd>
                             <dt></dt>
                         </li>
                         <li>
-                            <dd>Mobile</dd>
-                            <dt class="text-gray">hard coded</dt>
+                            <dd class="text-left">Mobile</dd>
+                            <dt class="text-left text-gray">hard coded</dt>
                         </li>
                         <li>
-                            <dd>Email</dd>
-                            <dt class="text-gray1">hard coded</dt>
+                            <dd class="text-left">Email</dd>
+                            <dt class="text-left text-gray1">hard coded</dt>
                         </li>
                         <li>
-                            <dd>Address</dd>
-                            <dt class="text-gray">hard coded</dt>
+                            <dd class="text-left">Address</dd>
+                            <dt class="text-left text-gray">hard coded</dt>
                         </li>
                     </ul>
                 </div>
@@ -212,7 +212,7 @@ export class PPSFooter1Component {
               <table width="100%" cellpadding="0" cellspacing="0">
                   <thead>
                                 <tr>
-                                    <th class="font-weight-bold text-white">No.</th>
+                                    <th class="text-left font-weight-bold text-white">No.</th>
                                     <th class="font-weight-bold text-white text-right pe-0 bdr-r-0">Product</th>
                                     <th class="font-weight-bold text-white text-left">Summary</th>
                                     <th class="font-weight-bold text-white text-center">Amount Payable</th>
@@ -222,16 +222,16 @@ export class PPSFooter1Component {
                             <tbody>
                               <tr *ngFor="let item of actionPSList;let index=index">
                                     <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"> {{index+1}}</td>
-                                    <td class="fsp-bdr-right fsp-bdr-bottom px-1"> {{item.Commission_Type}}  </td>
-                                    <td class="fsp-bdr-right fsp-bdr-bottom px-1">
+                                    <td class="text-left fsp-bdr-right fsp-bdr-bottom px-1"> {{item.Commission_Type}}</td>
+                                    <td class="text-left fsp-bdr-right fsp-bdr-bottom px-1">
                                 {{ item.Prod_Group.trim() == 'Service Fee' ? 'Premium Under Advise Fee' : item.Prod_Group }}
                                     </td>
                                 <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">{{formatCurrency(item.Display_Amount)}}
                                 </td></tr>
                                 <tr>
                                     <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"></td>
-                                    <td colspan="2" class="fsp-bdr-right fsp-bdr-bottom ps-1 text-center">Total Due</td>
-                                    <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">R256 670.66</td>
+                                   <td colspan='2' class='fsp-bdr-bottom ps-1 text-center fsp-bdr-right'>Total Due</td>
+                                   <td class='text-right fsp-bdr-right fsp-bdr-bottom px-1'>R256 670.66</td>
                                 </tr>
                                 <tr>
                                     <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"></td>
@@ -240,7 +240,7 @@ export class PPSFooter1Component {
                                 </tr>
                                 <tr>
                                     <td align="center" valign="center" class="px-1 py-1 fsp-bdr-right fsp-bdr-bottom"></td>
-                                    <td cplspan="2" class="fsp-bdr-right fsp-bdr-bottom ps-1 text-center">Grand Total Due</td>
+                                    <td colspan="2" class="fsp-bdr-right fsp-bdr-bottom ps-1 text-center">Grand Total Due</td>
                                     <td class="text-right fsp-bdr-right fsp-bdr-bottom px-1">R294 671.93</td>
                                 </tr>
                                 <tr>
@@ -267,10 +267,10 @@ export class ProductSummaryComponent {
   widgetsGridsterItemArray: any[] = [];
 
   public actionPSList: any[] = [
-    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Safe Custody Fee', Display_Amount:'52.65', Query_Link: "https://facebook.com" },
-    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Service Fee', Display_Amount:'52.66', Query_Link: "https://facebook.com" },
-    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Safe Custody Fee', Display_Amount:'52.67', Query_Link: "https://facebook.com" },
-    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Service Fee', Display_Amount:'52.68', Query_Link: "https://facebook.com" }
+    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Safe Custody Fee', Display_Amount: '52.65', Query_Link: "https://facebook.com" },
+    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Service Fee', Display_Amount: '52.66', Query_Link: "https://facebook.com" },
+    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Safe Custody Fee', Display_Amount: '52.67', Query_Link: "https://facebook.com" },
+    { Commission_Type: 'Safe Custody Fee', Prod_Group: ' Service Fee', Display_Amount: '52.68', Query_Link: "https://facebook.com" }
   ]
   public formatCurrency(input: any): any {
     const amount: number = parseFloat(input); // Parse the string to a decimal
@@ -403,12 +403,12 @@ export class DetailedTransactionsComponent {
   widgetsGridsterItemArray: any[] = [];
 
   public detailedTransactionList: any[] = [
-    { INT_EXT_REF: '2164250', Int_Name: 'Mr SCHOELER', Client_Name: 'Mr SCHOELER', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount:'17.55', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'Safe Custody Fee' },
-    { INT_EXT_REF: '2164250', Int_Name: 'Yvonne Van Heerden', Client_Name: 'Mr SCHOELER', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee VAT', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount:'2.63', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'Safe Custody Fee' },
+    { INT_EXT_REF: '2164250', Int_Name: 'Mr SCHOELER', Client_Name: 'Mr SCHOELER', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '17.55', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'Safe Custody Fee' },
+    { INT_EXT_REF: '2164250', Int_Name: 'Yvonne Van Heerden', Client_Name: 'Mr SCHOELER', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee VAT', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '2.63', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'Safe Custody Fee' },
   ]
   public detailedTransactionIntList: any[] = [
-    { INT_EXT_REF: '124411745', Int_Name: 'Kruger Van Heerden', Client_Name: 'DR N J Olivier', Member_Ref: '1217181', Policy_Ref: '5524069', Description: 'Safe Custody Service Fee', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount:'17.55', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'Safe Custody Fee' },
-    { INT_EXT_REF: '124411745', Int_Name: 'Kruger Van Heerden', Client_Name: 'DR N J Olivier', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee VAT	', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount:'2.63', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'VAT' },
+    { INT_EXT_REF: '124411745', Int_Name: 'Kruger Van Heerden', Client_Name: 'DR N J Olivier', Member_Ref: '1217181', Policy_Ref: '5524069', Description: 'Safe Custody Service Fee', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '17.55', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'Safe Custody Fee' },
+    { INT_EXT_REF: '124411745', Int_Name: 'Kruger Van Heerden', Client_Name: 'DR N J Olivier', Member_Ref: '124556686', Policy_Ref: '5596100', Description: 'Safe Custody Service Fee VAT	', Commission_Type: 'Safe Custody Fee', POSTED_DATE: '20-Mar-23', Display_Amount: '2.63', Query_Link: "https://facebook.com", TYPE: 'Fiduciary_Data', Prod_Group: 'VAT' },
   ]
   public formatCurrency(input: any): any {
     const amount: number = parseFloat(input); // Parse the string to a decimal
@@ -499,39 +499,39 @@ export class AccountInformationComponent {
                 <div class="col-49">
                 <ul>
                         <li>
-                            <dd>Reference:</dd>
-                            <dt class="text-gray">124529534</dt>
+                            <dd class="text-left">Reference:</dd>
+                            <dt class="text-left text-gray">124529534</dt>
                         </li>
                         <li>
-                            <dd>Measure type:</dd>
-                            <dt class="text-gray">Commission</dt>
+                            <dd class="text-left">Measure type:</dd>
+                            <dt class="text-left text-gray">Commission</dt>
                         </li>
                         <li>
-                            <dd>Month:</dd>
-                            <dt class="text-gray">September 2023</dt>
+                            <dd class="text-left">Month:</dd>
+                            <dt class="text-left text-gray">September 2023</dt>
                         </li>
                         <li>
-                            <dd>Date:</dd>
-                            <dt class="text-gray">2023-09-01 to 2023-01-01</dt>
+                            <dd class="text-left">Date:</dd>
+                            <dt class="text-left text-gray">2023-09-01 to 2023-01-01</dt>
                         </li>
                     </ul>
                 </div>
                 <div class="col-49">
                 <ul>
                         <li>
-                            <dd>Contact details:</dd>
+                            <dd class="text-left">Contact details:</dd>
                             <dt></dt>
                         </li>
                         <li>
-                            <dd>M:</dd>
+                            <dd class="text-left">M:</dd>
                             <dt class="text-gray">hard coded</dt>
                         </li>
                         <li>
-                            <dd>E:</dd>
+                            <dd class="text-left">E:</dd>
                             <dt class="text-gray1">hard coded</dt>
                         </li>
                         <li>
-                            <dd>A:</dd>
+                            <dd class="text-left">A:</dd>
                             <dt class="text-gray">hard coded</dt>
                         </li>
                     </ul>
@@ -621,34 +621,34 @@ export class PPSDetails2Component {
                             <table cellpadding="0" cellspacing="0" width="100%">
                                <thead>
                                     <tr>
-                                    <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Client<br/>name</th>
-                                    <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Age</th>
-                                    <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Member Number</th>
-                                    <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Policy Number</th>
-                                    <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Product</th>
-                                    <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Date<br/>issued</th>
-                                    <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Inception<br/>date</th>
-                                    <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Com<br/>type</th>
-                                    <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Quantity</th>
-                                    <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Posted<br/>date</th>
-                                    <th class="bdr-right-white sky-blue-bg text-white font-weight-bold">Earnings</th>
+                                    <th class="text-left bdr-right-white sky-blue-bg text-white font-weight-bold">Client<br/>name</th>
+                                    <th class="text-left bdr-right-white sky-blue-bg text-white font-weight-bold">Age</th>
+                                    <th class="text-left bdr-right-white sky-blue-bg text-white font-weight-bold">Member Number</th>
+                                    <th class="text-left bdr-right-white sky-blue-bg text-white font-weight-bold">Policy Number</th>
+                                    <th class="text-left bdr-right-white sky-blue-bg text-white font-weight-bold">Product</th>
+                                    <th class="text-left bdr-right-white sky-blue-bg text-white font-weight-bold">Date<br/>issued</th>
+                                    <th class="text-left bdr-right-white sky-blue-bg text-white font-weight-bold">Inception<br/>date</th>
+                                    <th class="text-left bdr-right-white sky-blue-bg text-white font-weight-bold">Com<br/>type</th>
+                                    <th class="text-left bdr-right-white sky-blue-bg text-white font-weight-bold">Quantity</th>
+                                    <th class="text-left bdr-right-white sky-blue-bg text-white font-weight-bold">Posted<br/>date</th>
+                                    <th class="text-left bdr-right-white sky-blue-bg text-white font-weight-bold">Earnings</th>
                                 </tr>
                             </thead>
                                 <tr>
                                   <td colspan = '11' class='text-left font-weight-bold'>PPS INSURANCE</td>
                                 </tr>
                                 <tr>
-                                    <td class="bdr-right-white">Dr L Guvha</td>
-                                    <td class="bdr-right-white">54</td>
-                                    <td class="bdr-right-white">1012890</td>
-                                    <td class="bdr-right-white">1845387</td>
-                                    <td class="bdr-right-white">Professional Health<br/>Provider Whole Life<br/>Professional Health</td>
-                                    <td class="bdr-right-white text-nowrap">22-Aug-2022</td>
-                                    <td class="bdr-right-white text-nowrap">01-Oct-2022</td>
-                                    <td class="bdr-right-white">2nd Year</td>
-                                    <td class="bdr-right-white text-right">R3 964.19</td>
-                                    <td class="bdr-right-white text-nowrap">06-Sept-2023</td>
-                                    <td class="bdr-right-white text-right ewidth">R10 822.24</td>
+                                    <td class="text-left bdr-right-white">Dr L Guvha</td>
+                                    <td class="text-left bdr-right-white">54</td>
+                                    <td class="text-left bdr-right-white">1012890</td>
+                                    <td class="text-left bdr-right-white">1845387</td>
+                                    <td class="text-left bdr-right-white">Professional Health<br/>Provider Whole Life<br/>Professional Health</td>
+                                    <td class="text-left bdr-right-white text-nowrap">22-Aug-2022</td>
+                                    <td class="text-left bdr-right-white text-nowrap">01-Oct-2022</td>
+                                    <td class="text-left bdr-right-white">2nd Year</td>
+                                    <td class="text-right bdr-right-white text-right">R3 964.19</td>
+                                    <td class="text-left bdr-right-white text-nowrap">06-Sept-2023</td>
+                                    <td class="text-right bdr-right-white text-right ewidth">R10 822.24</td>
                                 </tr>
 
                                 <tr>
@@ -833,10 +833,10 @@ export class PPSDetailedTransactionsComponent {
                       </tr>
                       <!-- Total row for FSP account postings summary -->
                       <tr>
-                        <td class="dark-blue-bg text-white font-weight-bold">Total</td>
+                        <td class="dark-blue-bg text-left text-white font-weight-bold">Total</td>
                        <td class="text-right font-weight-bold">{{ formatCurrency(firstYearSum) }}</td>
                        <td class="text-right font-weight-bold">{{ formatCurrency(secondYearSum) }}</td>
-                       <td class="text-right font-weight-bold">{{ formatCurrency(totalSum) }}</td>
+                       <td class="text-right font-weight-bold">{{formatCurrency(totalSum)}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -861,13 +861,13 @@ export class PPSDetailedTransactionsComponent {
                     <!-- Table Body - Display Future-dated production -->
                     <tbody>
                       <tr *ngFor="let item of FutureDatedProductionList;">
-                        <td class="text-nowrap">{{item.Due_Date }}</td>
-                        <td> {{ item.Product_Description.trim() == 'Commission Service Fee' ? 'Premium Under Advise Fee' : item.Product_Description }} </td>
+                        <td class="text-left text-nowrap">{{item.Due_Date }}</td>
+                        <td class="text-left"> {{ item.Product_Description.trim() == 'Commission Service Fee' ? 'Premium Under Advise Fee' : item.Product_Description }} </td>
                         <td class="text-right">{{ formatCurrency(item.Allocated_Amount.toFixed(2)) }}</td>
                       </tr>
                       <!-- Total row for Future-dated production -->
                       <tr>
-                        <td class="text-right font-weight-bold" colspan="2">SubTotal</td>
+                        <td class="text-left font-weight-bold" colspan="2">Total earnings</td>
                         <td class="text-right font-weight-bold">{{ formatCurrency(allocatedAmountSum) }}</td>
                       </tr>
                     </tbody>
@@ -898,13 +898,13 @@ export class PPSDetailedTransactionsComponent {
                     <!-- Table Body - Display Monthly production summary T1 -->
                     <tbody>
                       <tr *ngFor="let item of monthlyProductionSummaryT1List">
-                        <td class="text-nowrap">{{item.Month }}</td>
+                        <td class="text-left text-nowrap">{{item.Month }}</td>
                         <td class="text-right">{{ formatCurrency(item.Premium_Under_Advice_Td1.toFixed(2)) }}</td>
                         <td class="text-right">{{ formatCurrency(item.Premium_Under_Advice_Td2.toFixed(2)) }}</td>
                       </tr>
                       <!-- Total row for Monthly production summary T1 -->
                       <tr>
-                        <td class="dark-blue-bg text-white font-weight-bold">Total</td>
+                        <td class="dark-blue-bg text-left text-white font-weight-bold">Total</td>
                         <td class="text-right font-weight-bold">{{formatCurrency(premiumUnderAdviceTd1Sum)}}</td>
                         <td class="text-right font-weight-bold">{{formatCurrency(premiumUnderAdviceTd2Sum)}}</td>
                       </tr>
@@ -931,13 +931,13 @@ export class PPSDetailedTransactionsComponent {
                     <!-- Table Body - Display Monthly production summary T2 -->
                     <tbody>
                       <tr *ngFor="let item of monthlyProductionSummaryT2List">
-                        <td class="text-nowrap">{{ item.Month }}</td>
+                        <td class="text-left text-nowrap">{{ item.Month }}</td>
                         <td class="text-right">{{ formatCurrency(item.Fiduciary_Fees_Td1.toFixed(2)) }}</td>
                         <td class="text-right">{{ formatCurrency(item.Fiduciary_Fees_Td2.toFixed(2)) }}</td>
                       </tr>
                       <!-- Total row for Monthly production summary T2 -->
                       <tr>
-                        <td class="dark-blue-bg text-white font-weight-bold">Total</td>
+                        <td class="dark-blue-bg text-left text-white font-weight-bold">Total</td>
                         <td class="text-right font-weight-bold">{{formatCurrency(fiduciaryFeesTd1Sum)}}</td>
                         <td class="text-right font-weight-bold">{{formatCurrency(fiduciaryFeesTd2Sum)}}</td>
                       </tr>
