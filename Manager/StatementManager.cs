@@ -2242,9 +2242,9 @@ namespace nIS
                                                         spIAA_PaymentDetail paymentInfo = JsonConvert.DeserializeObject<spIAA_PaymentDetail>(paymentInfoJson);
                                                         var paymentHtmlWidget = HtmlConstants.PAYMENT_SUMMARY_WIDGET_HTML;
                                                         paymentHtmlWidget = paymentHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
-                                                        paymentHtmlWidget = paymentHtmlWidget.Replace("{{IntTotal}}", paymentInfo.Earning_Amount);
-                                                        paymentHtmlWidget = paymentHtmlWidget.Replace("{{Vat}}", paymentInfo.VAT_Amount);
-                                                        paymentHtmlWidget = paymentHtmlWidget.Replace("{{TotalDue}}", (Convert.ToDouble(paymentInfo.Earning_Amount) + Convert.ToDouble(paymentInfo.VAT_Amount)).ToString());
+                                                        paymentHtmlWidget = paymentHtmlWidget.Replace("{{IntTotal}}", "R" + paymentInfo.Earning_Amount);
+                                                        paymentHtmlWidget = paymentHtmlWidget.Replace("{{Vat}}", "R" + paymentInfo.VAT_Amount);
+                                                        paymentHtmlWidget = paymentHtmlWidget.Replace("{{TotalDue}}", "R" + (Convert.ToDouble(paymentInfo.Earning_Amount) + Convert.ToDouble(paymentInfo.VAT_Amount)).ToString());
 
                                                         // Format the date to month-year format                                                   
                                                         paymentHtmlWidget = paymentHtmlWidget.Replace("{{IntTotalDate}}", paymentInfo.POSTED_DATE.ToString("MMMM yyyy"));
@@ -2439,7 +2439,7 @@ namespace nIS
                                                                 }).ToList();
 
                                                             // Appending HTML for the earnings section
-                                                            commisionDetailSrc.Append("<!--FSPAccountPostingsSummarySection--><div class='earnings-section-monthly d-flex mb-2'><div class='d-flex gap-1 w-100'><!--FSP account postings summary--><div class='col-6'><!--Headingfor FSP Account PostingsSummary--><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>FSP account postings summary</h4><div class='monthly-table'><!--Table forFSPAccountPostingsSummary--><table width='100%' cellpadding='0' cellspacing='0'><!--TableHeaders--><thead><tr><th style='height:50px' class='text-white font-weight-bold'>PostedDate</th>");
+                                                            commisionDetailSrc.Append("<!--FSPAccountPostingsSummarySection--><div class='earnings-section-monthly d-flex mb-2'><div class='d-flex gap-1 w-100'><!--FSP account postings summary--><div class='col-6'><!--Headingfor FSP Account PostingsSummary--><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>FSP account postings summary</h4><div class='monthly-table'><!--Table forFSPAccountPostingsSummary--><table width='100%' cellpadding='0' cellspacing='0'><!--TableHeaders--><thead><tr><th style='height:50px' class='text-white font-weight-bold'>Posted Date</th>");
 
                                                             // Appending HTML for Commission Type headers
                                                             gpCommisionType.ForEach(gpCommisionTypeitem =>
@@ -7405,9 +7405,9 @@ namespace nIS
             if (paymentInfoJson != string.Empty && validationEngine.IsValidJson(paymentInfoJson))
             {
                 var paymentInfo = JsonConvert.DeserializeObject<spIAA_PaymentDetail>(paymentInfoJson);
-                pageContent.Replace("{{IntTotal}}", paymentInfo.Earning_Amount);
-                pageContent.Replace("{{Vat}}", paymentInfo.VAT_Amount);
-                pageContent.Replace("{{TotalDue}}", (Convert.ToDouble(paymentInfo.Earning_Amount) + Convert.ToDouble(paymentInfo.VAT_Amount)).ToString());
+                pageContent.Replace("{{IntTotal}}", "R" + paymentInfo.Earning_Amount);
+                pageContent.Replace("{{Vat}}", "R" + paymentInfo.VAT_Amount);
+                pageContent.Replace("{{TotalDue}}", "R" + (Convert.ToDouble(paymentInfo.Earning_Amount) + Convert.ToDouble(paymentInfo.VAT_Amount)).ToString());
 
                 // Format the date to month-year format                                                   
                 pageContent.Replace("{{IntTotalDate}}", paymentInfo.POSTED_DATE.ToString("MMMM yyyy"));
@@ -7655,7 +7655,7 @@ namespace nIS
                         }).ToList();
 
                         // Appending HTML for the earnings section
-                        commisionDetailSrc.Append("<!--FSPAccountPostingsSummarySection--><div class='earnings-section-monthly d-flex mb-2'><div class='d-flex gap-1 w-100'><!--FSP account postings summary--><div class='col-6'><!--Headingfor FSP Account PostingsSummary--><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>FSP account postings summary</h4><div class='monthly-table'><!--Table forFSPAccountPostingsSummary--><table width='100%' cellpadding='0' cellspacing='0'><!--TableHeaders--><thead><tr><th style='height:50px' class='text-white font-weight-bold'>PostedDate</th>");
+                        commisionDetailSrc.Append("<!--FSPAccountPostingsSummarySection--><div class='earnings-section-monthly d-flex mb-2'><div class='d-flex gap-1 w-100'><!--FSP account postings summary--><div class='col-6'><!--Headingfor FSP Account PostingsSummary--><h4 class='monthly-production-summary skyblue-bg-title text-white text-center'>FSP account postings summary</h4><div class='monthly-table'><!--Table forFSPAccountPostingsSummary--><table width='100%' cellpadding='0' cellspacing='0'><!--TableHeaders--><thead><tr><th style='height:50px' class='text-white font-weight-bold'>Posted Date</th>");
 
                         // Appending HTML for Commission Type headers
                         gpCommisionType.ForEach(gpCommisionTypeitem =>

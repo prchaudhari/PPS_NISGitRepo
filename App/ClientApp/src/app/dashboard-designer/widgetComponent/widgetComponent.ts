@@ -815,7 +815,7 @@ export class PPSDetailedTransactionsComponent {
                   <!-- Table for FSP account postings summary -->
                   <table width="100%" cellpadding="0" cellspacing="0">
                     <!-- Table Headers -->
-                    <thead>
+                    <thead style='height:50px'>
                       <tr>
                         <th class="text-white text-nowrap font-weight-bold">Posted Date</th>
                         <th class="text-left">Posted (1st Year)</th>
@@ -851,10 +851,10 @@ export class PPSDetailedTransactionsComponent {
                   <!-- Table for Future-dated production -->
                   <table width="100%" cellpadding="0" cellspacing="0">
                     <!-- Table Headers -->
-                    <thead>
+                    <thead style='height:50px'>
                       <tr>
                         <th class="text-left text-nowrap text-white font-weight-bold">Due date</th>
-                        <th style='height:50px;' class='text-left'>Fiduciary fees</th>
+                        <th class='text-left'>Fiduciary fees</th>
                         <th class="text-left">Allocated amount</th>
                       </tr>
                     </thead>
@@ -888,7 +888,7 @@ export class PPSDetailedTransactionsComponent {
                   <!-- Table for Monthly production summary T1 -->
                   <table width="100%" cellpadding="0" cellspacing="0">
                     <!-- Table Headers -->
-                  <thead>
+                  <thead style='height:50px'>
                     <tr>
                       <th class="text-nowrap text-white font-weight-bold text-left">Month</th>
                       <th class="text-left">Premium Under Advice(1st Year)</th>
@@ -921,7 +921,7 @@ export class PPSDetailedTransactionsComponent {
                   <!-- Table for Monthly production summary T2 -->
                   <table width="100%" cellpadding="0" cellspacing="0">
                     <!-- Table Headers -->
-                  <thead>
+                  <thead style='height:50px'>
                     <tr>
                       <th class="text-nowrap text-white font-weight-bold text-left">Month</th>
                       <th class="text-left">Fiduciary Fees(1st Year)</th>
