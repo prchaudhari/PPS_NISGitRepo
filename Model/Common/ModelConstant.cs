@@ -405,28 +405,16 @@ namespace nIS
         public const string IS_WANT_TO_USE_NIS_ENGINES = "IsWantToUseNisEngines";
 
         public const string PREVIEW_FINANCIAL_STATEMENT_FUNCTION_NAME = "PreviewFinancialStatement";
-        
-        //public const string PREVIEW_NEDBANK_STATEMENT_FUNCTION_NAME = "PreviewNedbankStatement";
 
         public const string GENERATE_FINANCIAL_CUSTOEMR_STATEMENT_BY_SCHEDULE_RUN_NOW = "GenerateFinancialTenantCustomerStatementsByScheduleRunNow";
 
         public const string GENERATE_FINANCIAL_CUSTOEMR_STATEMENT_BY_SCHEDULE_TIME = "GenerateFinancialTenantCustomerStatementsByScheduleRunTime";
 
-        //public const string GENERATE_NEDBANK_CUSTOEMR_STATEMENT_BY_SCHEDULE_RUN_NOW = "GenerateNedbankCustomerStatementsByScheduleRunNow";
-
-        //public const string GENERATE_NEDBANK_CUSTOEMR_STATEMENT_BY_SCHEDULE_TIME = "GenerateNedbankCustomerStatementsByScheduleRunTime";
-
         public const string GENERATE_HTML_FORMAT_OF_FINANCIAL_TENANT_STATEMENT = "GenerateHtmlFormatOfStatement";
-
-        //public const string GENERATE_HTML_FORMAT_OF_NEDBANK_TENANT_STATEMENT = "GenerateHtmlFormatOfNedbankStatement";
 
         public const string RETRY_FAILED_FINANCIAL_TENANT_CUSTOMER_STATEMENT_API_NAME = "RetryToCreateFailedCustomerStatements";
 
         public const string FINANCIAL_TENANT_ARCHIVAL_PROCESS_API_NAME = "RunArchivalForCustomerRecord";
-
-        //public const string RETRY_FAILED_NEDBANK_TENANT_CUSTOMER_STATEMENT_API_NAME = "RetryToCreateFailedNedbankCustomerStatements";
-
-        //public const string NEDBANK_TENANT_ARCHIVAL_PROCESS_API_NAME = "RunArchivalForNedbankCustomerRecord";
 
         #endregion
 
