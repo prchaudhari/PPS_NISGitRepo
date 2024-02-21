@@ -31,7 +31,8 @@ steps:
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
-    version: '8.0.102'
+    useGlobalJson: true
+  displayName: 'Use .NET SDK'
 
 - task: VSTest@2
   inputs:
