@@ -2,20 +2,6 @@ trigger:
 - main
 
 stages:
-- stage: BuildAngular
-  displayName: 'Build Angular Project'
-  jobs:
-  - job: BuildAngular
-    steps:
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '14.x'
-
-    - script: |
-        npm install
-        npm run build
-      displayName: 'Build Angular'
-
 - stage: BuildDotNetCore
   displayName: 'Build .NET Core Project'
   jobs:
@@ -47,3 +33,17 @@ stages:
       inputs:
         PathtoPublish: $(build.artifactstagingdirectory)
         ArtifactName: 'PublishBuildArtifacts'
+        
+- stage: BuildAngular
+  displayName: 'Build Angular Project'
+  jobs:
+  - job: BuildAngular
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '14.x'
+
+    - script: |
+        npm install
+        npm run build
+      displayName: 'Build Angular'
