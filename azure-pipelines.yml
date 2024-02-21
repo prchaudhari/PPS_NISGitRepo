@@ -21,11 +21,10 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
-
 - task: NodeTool@0
   inputs:
     versionSpec: '14.x'
-	
+
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
