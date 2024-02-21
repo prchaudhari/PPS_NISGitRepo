@@ -24,7 +24,12 @@ steps:
 - task: NodeTool@0
   inputs:
     versionSpec: '14.x'
-    
+
+- script: |
+    npm install
+    npm run build
+  displayName: 'Build Angular'
+  
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
