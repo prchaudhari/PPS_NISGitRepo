@@ -759,10 +759,7 @@ namespace nIS
 
                     //get client logo in string format and pass it hidden input tag, so it will be render in right side of header of html statement
                     var clientlogo = statementRawData.Client.TenantLogo != null ? statementRawData.Client.TenantLogo : "";
-                    //if (statement.Name == "Investment Wealth")
-                    //{
-                    //    clientlogo = "../common/images/NedBankLogoBlack.png";
-                    //}
+                  
                     navbarHtml = navbarHtml + "<input type='hidden' id='TenantLogoImageValue' value='" + clientlogo + "'>";
                     htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
 
@@ -1024,7 +1021,7 @@ namespace nIS
                                                 this.BindDynamicPieChartWidgetData(pageContent, scriptHtmlRenderer, page, widget, searchParameter, dynawidget, httpClient, themeDetails, tenantCode);
                                                 break;
                                             case HtmlConstants.HTML_DYNAMICWIDGET:
-                                                this.BindDynamicHtmlWidgetData(pageContent, page, widget, searchParameter, dynawidget, httpClient);
+                                                this.BindDynamicHtmlWidgetData(pageContent, page, widget, searchParameter, dynawidget, httpClient, themeDetails);
                                                 break;
                                         }
                                     }
@@ -3148,7 +3145,7 @@ namespace nIS
             }
         }
 
-        private void BindDynamicHtmlWidgetData(StringBuilder pageContent, Page page, PageWidget widget, JObject searchParameter, DynamicWidget dynawidget, HttpClient httpClient)
+        private void BindDynamicHtmlWidgetData(StringBuilder pageContent, Page page, PageWidget widget, JObject searchParameter, DynamicWidget dynawidget, HttpClient httpClient, CustomeTheme themeDetails)
         {
             try
             {

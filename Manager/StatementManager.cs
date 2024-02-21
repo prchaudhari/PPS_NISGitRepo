@@ -1046,6 +1046,27 @@ namespace nIS
             }
             html = html.Replace("{{HeaderStyle}}", style.ToString());
 
+
+            style = new StringBuilder();
+            style.Append(HtmlConstants.STYLE);
+            if (themeDetails.DataColor != null)
+            {
+                style = style.Replace("{{COLOR}}", themeDetails.DataColor);
+            }
+            if (themeDetails.DataSize != null)
+            {
+                style = style.Replace("{{SIZE}}", themeDetails.DataSize);
+            }
+            if (themeDetails.DataWeight != null)
+            {
+                style = style.Replace("{{WEIGHT}}", themeDetails.DataWeight);
+            }
+            if (themeDetails.DataType != null)
+            {
+                style = style.Replace("{{TYPE}}", themeDetails.DataType);
+            }
+            html = html.Replace("{{DataStyle}}", style.ToString());
+
             style = new StringBuilder();
             style.Append(HtmlConstants.STYLE);
             if (themeDetails.DataColor != null)

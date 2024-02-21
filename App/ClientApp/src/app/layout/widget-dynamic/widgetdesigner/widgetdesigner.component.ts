@@ -53,8 +53,23 @@ export class WidgetdesignerComponent implements OnInit {
       "SourceCode",
       "|",
       "Undo",
-      "Redo"
+      "Redo",
+      'FontColor', 'BackgroundColor',
+      'FontName', 'FontSize',
+      'CreateTable'
     ]
+  };
+  public bgColor = {
+    modeSwitcher: true
+  };
+  public fontColor = {
+    modeSwitcher: true
+  };
+  public size = {
+    width: '40px'
+  };
+  public family = {
+    width: '60px'
   };
   public value: any = "<p> test data</p><!---->";
   public isDefault: boolean = true;
