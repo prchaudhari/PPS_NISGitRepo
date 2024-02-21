@@ -24,7 +24,9 @@ steps:
 - task: NodeTool@0
   inputs:
     versionSpec: '14.x'
-
+- script: |
+    npm run build:prod
+    
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
