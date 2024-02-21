@@ -21,9 +21,18 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
-- task: NodeTool@0
+- task: Npm@1
+  displayName: "npm install"
   inputs:
-    versionSpec: '14.x'
+    command: 'install'
+    workingDir: 'ClientApp'
+
+- task: Npm@1
+  displayName: "npm run build:$(buildConfiguration)"
+  inputs:
+    command: 'custom'
+    workingDir: 'ClientApp'
+    customCommand: 'run build:$(buildConfiguration)'
 
 - task: VSBuild@1
   inputs:
