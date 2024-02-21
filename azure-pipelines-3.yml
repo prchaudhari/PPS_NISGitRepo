@@ -21,19 +21,6 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
-- task: Npm@1
-  displayName: "npm install"
-  inputs:
-    command: 'install'
-    workingDir: 'ClientApp'
-
-- task: Npm@1
-  displayName: "npm run build:$(buildConfiguration)"
-  inputs:
-    command: 'custom'
-    workingDir: 'ClientApp'
-    customCommand: 'run build:$(buildConfiguration)'
-
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
