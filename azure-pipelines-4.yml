@@ -1,0 +1,49 @@
+trigger:
+- main
+
+stages:
+- stage: BuildAngular
+  displayName: 'Build Angular Project'
+  jobs:
+  - job: BuildAngular
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '14.x'
+
+    - script: |
+        npm install
+        npm run build
+      displayName: 'Build Angular'
+
+- stage: BuildDotNetCore
+  displayName: 'Build .NET Core Project'
+  jobs:
+  - job: BuildDotNetCore
+    steps:
+    - task: NuGetToolInstaller@0
+
+    - task: NuGetCommand@2
+      inputs:
+        restoreSolution: '$(solution)'
+    - task: VSBuild@1
+      inputs:
+        solution: '$(solution)'
+        msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        useGlobalJson: true
+
+    - task: VSTest@2
+      inputs:
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish artifacts'
+      inputs:
+        PathtoPublish: $(build.artifactstagingdirectory)
+        ArtifactName: 'PublishBuildArtifacts'
