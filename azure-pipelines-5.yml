@@ -27,6 +27,7 @@ steps:
 
 - script: |
     npm install
+    npm install typescript@3.5.3
     npm run build
   displayName: 'Build Angular'
   
