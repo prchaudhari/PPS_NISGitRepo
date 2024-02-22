@@ -27,12 +27,12 @@ steps:
 - script: npm --version
   displayName: 'Print npm Version'
   
-- script: npm install -g npm@8.11.0  # Add this script to install npm version 8.11.0
 - task: UseNode@1  # Add this task to specify Node.js version
   inputs:
     version: '16.16.0'  # Specify the desired Node.js version (e.g., 16.x)
 
 - script: |
+    npm install -g npm@8.11.0 
     npm install
     npm install typescript@3.5.3
     npm cache clean --force
