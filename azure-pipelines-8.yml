@@ -32,6 +32,7 @@ steps:
     version: '16.16.0'  # Specify the desired Node.js version (e.g., 16.x)
 
 - script: |
+    npm install bootstrap@5.0
     npm install -g npm@8.11.0
     npm install -g npm-force-resolutions
     npm install typescript@3.5.3
