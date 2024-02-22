@@ -28,6 +28,9 @@ steps:
 - script: |
     npm install
     npm install typescript@3.5.3
+    node --version
+    npm --version
+    npm cache clean --force
     npm run build
   displayName: 'Build Angular'
   
