@@ -26,9 +26,13 @@ steps:
   
 - script: npm --version
   displayName: 'Print npm Version'
-- task: NodeTool@0
+- task: UseNode@1  # Add this task to specify Node.js version
   inputs:
-    versionSpec: '12.x'
+    version: '16.16.0'  # Specify the desired Node.js version (e.g., 16.x)
+
+- script: npm install -g npm@8.11.0  # Add this script to install npm version 8.11.0
+  displayName: 'Install npm'
+
 
 - script: |
     npm install
