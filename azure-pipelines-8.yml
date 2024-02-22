@@ -37,6 +37,7 @@ steps:
     npm install typescript@3.5.3
     npm cache clean --force
     npm-force-resolutions --package-lock-only
+    node -e "const fs = require('fs'); let packageLock = JSON.parse(fs.readFileSync('package-lock.json')); packageLock.dependencies['@angular/common'].version = '8.2.14'; fs.writeFileSync('package-lock.json', JSON.stringify(packageLock, null, 2));"
     npm install --force
     npm run build
   displayName: 'Build Angular'
