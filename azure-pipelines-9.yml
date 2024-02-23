@@ -53,3 +53,9 @@ steps:
   inputs:
     PathtoPublish: $(build.artifactstagingdirectory)
     ArtifactName: 'PublishBuildArtifacts'
+  
+# Exclude the ClientApp folder
+- checkout: self
+  persistCredentials: true
+  clean: true
+  path: API/*
