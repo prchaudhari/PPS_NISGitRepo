@@ -1,0 +1,68 @@
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- dev
+
+pool:
+  vmImage: 'windows-2019'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- task: NuGetToolInstaller@0
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
+
+- script: node --version
+  displayName: 'Print Node.js Version'
+  
+- script: npm --version
+  displayName: 'Print npm Version'
+  
+- task: UseNode@1  # Add this task to specify Node.js version
+  inputs:
+    version: '16.16.0'  # Specify the desired Node.js version (e.g., 16.x)
+
+- script: |
+    npm install bootstrap@5.0
+    npm install -g npm@8.11.0
+    npm install -g npm-force-resolutions
+    npm install typescript@3.5.3
+    npm cache clean --force
+    npm-force-resolutions --package-lock-only
+    node -e "const fs = require('fs'); let packageLock = JSON.parse(fs.readFileSync('package-lock.json')); packageLock.dependencies['@angular/common'].version = '8.2.14'; fs.writeFileSync('package-lock.json', JSON.stringify(packageLock, null, 2));"
+    npm install --force
+    npm run build
+  displayName: 'Build Angular'
+  
+- task: VSBuild@1
+  inputs:
+    solution: '$(solution)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    useGlobalJson: true
+  displayName: 'Use .NET SDK'
+
+- task: VSTest@2
+  inputs:
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish artifacts'
+  inputs:
+    PathtoPublish: $(build.artifactstagingdirectory)
+    ArtifactName: 'PublishBuildArtifacts'
