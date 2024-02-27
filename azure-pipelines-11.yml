@@ -11,7 +11,7 @@ pool:
 
 variables:
   solution: '**/API.sln'
-  projects: |
+ projects: |
     **/*.csproj
     !**/App.csproj
   buildPlatform: 'Any CPU'
