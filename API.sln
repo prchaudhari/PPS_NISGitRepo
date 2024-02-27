@@ -1,0 +1,204 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.34114.132
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{F0D96183-2E1E-4919-ACBC-B9297EFA4633}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoManager", "CryptoManager\CryptoManager.csproj", "{A8E2F6E4-374C-49F5-9BE3-A25F855876F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{0DE03C69-31FA-40CC-A2A3-DE671EF011DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exception", "Exception\Exception.csproj", "{21AE8607-0557-4D67-96D1-7830E57EAB4F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Manager", "Manager\Manager.csproj", "{2C79C4C3-119B-4297-A885-961813E6A168}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{C24293E6-BCF7-43BE-B437-F180C261CC8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.csproj", "{8C2D7FE4-C754-46D8-A590-3981EFF6BAD8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidationEngine", "ValidationEngine\ValidationEngine.csproj", "{D0A399AF-38E5-4A15-8BB4-78BA4A578FFC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", "{B5B42337-A14B-44FE-BDFE-82C9D1D73980}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration Manager", "Configuration Manager", "{EBDFD02F-354E-4ECD-941E-0417C3EA2EA5}"
+	ProjectSection(SolutionItems) = preProject
+		References\Configuration Manager\Websym.Core.ConfigurationManager.Exception.dll = References\Configuration Manager\Websym.Core.ConfigurationManager.Exception.dll
+		References\Configuration Manager\Websym.Core.ConfigurationManager.Manager.dll = References\Configuration Manager\Websym.Core.ConfigurationManager.Manager.dll
+		References\Configuration Manager\Websym.Core.ConfigurationManager.Model.dll = References\Configuration Manager\Websym.Core.ConfigurationManager.Model.dll
+		References\Configuration Manager\Websym.Core.ConfigurationManager.Repository.dll = References\Configuration Manager\Websym.Core.ConfigurationManager.Repository.dll
+		References\Configuration Manager\Websym.Core.ConfigurationManager.Utility.dll = References\Configuration Manager\Websym.Core.ConfigurationManager.Utility.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Event Manager", "Event Manager", "{C9003CD2-40C5-45A1-9C3A-BD4EE451CD30}"
+	ProjectSection(SolutionItems) = preProject
+		References\Event Manager\Websym.Core.EventManager.Exception.dll = References\Event Manager\Websym.Core.EventManager.Exception.dll
+		References\Event Manager\Websym.Core.EventManager.Manager.dll = References\Event Manager\Websym.Core.EventManager.Manager.dll
+		References\Event Manager\Websym.Core.EventManager.Model.dll = References\Event Manager\Websym.Core.EventManager.Model.dll
+		References\Event Manager\Websym.Core.EventManager.Repository.dll = References\Event Manager\Websym.Core.EventManager.Repository.dll
+		References\Event Manager\Websym.Core.EventManager.Utility.dll = References\Event Manager\Websym.Core.EventManager.Utility.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Entity Manager", "Entity Manager", "{F4D1AD6D-B95C-4AEC-A8C3-15E390F57BFB}"
+	ProjectSection(SolutionItems) = preProject
+		References\Entity Manager\Websym.Core.EntityManager.Exception.dll = References\Entity Manager\Websym.Core.EntityManager.Exception.dll
+		References\Entity Manager\Websym.Core.EntityManager.Manager.dll = References\Entity Manager\Websym.Core.EntityManager.Manager.dll
+		References\Entity Manager\Websym.Core.EntityManager.Model.dll = References\Entity Manager\Websym.Core.EntityManager.Model.dll
+		References\Entity Manager\Websym.Core.EntityManager.Repository.dll = References\Entity Manager\Websym.Core.EntityManager.Repository.dll
+		References\Entity Manager\Websym.Core.EntityManager.Utility.dll = References\Entity Manager\Websym.Core.EntityManager.Utility.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resource Manager", "Resource Manager", "{33C4BC59-7894-4178-A5F1-357B346C8CF5}"
+	ProjectSection(SolutionItems) = preProject
+		References\Resource Manager\Websym.Core.ResourceManager.Model.dll = References\Resource Manager\Websym.Core.ResourceManager.Model.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tenant Manager", "Tenant Manager", "{8F106082-6B72-4D09-8396-0F3C177B304A}"
+	ProjectSection(SolutionItems) = preProject
+		References\Tenant Manager\Websym.Core.TenantManager.Exception.dll = References\Tenant Manager\Websym.Core.TenantManager.Exception.dll
+		References\Tenant Manager\Websym.Core.TenantManager.Manager.dll = References\Tenant Manager\Websym.Core.TenantManager.Manager.dll
+		References\Tenant Manager\Websym.Core.TenantManager.Model.dll = References\Tenant Manager\Websym.Core.TenantManager.Model.dll
+		References\Tenant Manager\Websym.Core.TenantManager.Repository.dll = References\Tenant Manager\Websym.Core.TenantManager.Repository.dll
+		References\Tenant Manager\Websym.Core.TenantManager.Utility.dll = References\Tenant Manager\Websym.Core.TenantManager.Utility.dll
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateStatementRenderEngine", "GenerateStatementRenderEngine\GenerateStatementRenderEngine.csproj", "{2E0CD6FE-E144-4DFC-A33B-524B6D7BA700}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OtherFiles", "OtherFiles", "{94432251-4CE7-4325-AC9A-E765FC0CE3CA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HeaderFooters", "HeaderFooters", "{8137012A-3267-40D3-9113-89D6A93F5A32}"
+	ProjectSection(SolutionItems) = preProject
+		HeaderFooters\Greenbacks_footer.html = HeaderFooters\Greenbacks_footer.html
+		HeaderFooters\Greenbacks_header.html = HeaderFooters\Greenbacks_header.html
+		HeaderFooters\header_header.html = HeaderFooters\header_header.html
+		HeaderFooters\Home Loan For Other Segment African_footer.html = HeaderFooters\Home Loan For Other Segment African_footer.html
+		HeaderFooters\Home Loan For Other Segment African_header.html = HeaderFooters\Home Loan For Other Segment African_header.html
+		HeaderFooters\Home Loan For Other Segment English_footer.html = HeaderFooters\Home Loan For Other Segment English_footer.html
+		HeaderFooters\Home Loan For Other Segment English_header.html = HeaderFooters\Home Loan For Other Segment English_header.html
+		HeaderFooters\Home Loan For PML Segment African_footer.html = HeaderFooters\Home Loan For PML Segment African_footer.html
+		HeaderFooters\Home Loan For PML Segment African_header.html = HeaderFooters\Home Loan For PML Segment African_header.html
+		HeaderFooters\Home Loan For PML Segment English_footer.html = HeaderFooters\Home Loan For PML Segment English_footer.html
+		HeaderFooters\Home Loan For PML Segment English_header.html = HeaderFooters\Home Loan For PML Segment English_header.html
+		HeaderFooters\Home Loan For Wealth Segment African_footer.html = HeaderFooters\Home Loan For Wealth Segment African_footer.html
+		HeaderFooters\Home Loan For Wealth Segment African_header.html = HeaderFooters\Home Loan For Wealth Segment African_header.html
+		HeaderFooters\Home Loan For Wealth Segment English_footer.html = HeaderFooters\Home Loan For Wealth Segment English_footer.html
+		HeaderFooters\Home Loan For Wealth Segment English_header.html = HeaderFooters\Home Loan For Wealth Segment English_header.html
+		HeaderFooters\Multi Currency For CIB_footer.html = HeaderFooters\Multi Currency For CIB_footer.html
+		HeaderFooters\Multi Currency For CIB_header.html = HeaderFooters\Multi Currency For CIB_header.html
+		HeaderFooters\Multi Currency For Wealth_footer.html = HeaderFooters\Multi Currency For Wealth_footer.html
+		HeaderFooters\Multi Currency For Wealth_header.html = HeaderFooters\Multi Currency For Wealth_header.html
+		HeaderFooters\Personal Loan_footer.html = HeaderFooters\Personal Loan_footer.html
+		HeaderFooters\Personal Loan_header.html = HeaderFooters\Personal Loan_header.html
+		HeaderFooters\Wealth_header.html = HeaderFooters\Wealth_header.html
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SelectPDF", "SelectPDF", "{8D88A9B8-659C-4DE7-95D1-6CB820EC46D0}"
+	ProjectSection(SolutionItems) = preProject
+		References\SelectPDF\readme.txt = References\SelectPDF\readme.txt
+		References\SelectPDF\Select.Html.dep = References\SelectPDF\Select.Html.dep
+		References\SelectPDF\Select.Pdf.dll = References\SelectPDF\Select.Pdf.dll
+		References\SelectPDF\Select.Pdf.xml = References\SelectPDF\Select.Pdf.xml
+		References\SelectPDF\Select.Tools.dep = References\SelectPDF\Select.Tools.dep
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EFEF69A9-12D9-4761-92A1-C834AE3BFF6C}"
+	ProjectSection(SolutionItems) = preProject
+		azure-pipelines.yml = azure-pipelines.yml
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F0D96183-2E1E-4919-ACBC-B9297EFA4633}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0D96183-2E1E-4919-ACBC-B9297EFA4633}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0D96183-2E1E-4919-ACBC-B9297EFA4633}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F0D96183-2E1E-4919-ACBC-B9297EFA4633}.Debug|x86.Build.0 = Debug|Any CPU
+		{F0D96183-2E1E-4919-ACBC-B9297EFA4633}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0D96183-2E1E-4919-ACBC-B9297EFA4633}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0D96183-2E1E-4919-ACBC-B9297EFA4633}.Release|x86.ActiveCfg = Release|Any CPU
+		{F0D96183-2E1E-4919-ACBC-B9297EFA4633}.Release|x86.Build.0 = Release|Any CPU
+		{A8E2F6E4-374C-49F5-9BE3-A25F855876F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8E2F6E4-374C-49F5-9BE3-A25F855876F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8E2F6E4-374C-49F5-9BE3-A25F855876F0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A8E2F6E4-374C-49F5-9BE3-A25F855876F0}.Debug|x86.Build.0 = Debug|Any CPU
+		{A8E2F6E4-374C-49F5-9BE3-A25F855876F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8E2F6E4-374C-49F5-9BE3-A25F855876F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8E2F6E4-374C-49F5-9BE3-A25F855876F0}.Release|x86.ActiveCfg = Release|Any CPU
+		{A8E2F6E4-374C-49F5-9BE3-A25F855876F0}.Release|x86.Build.0 = Release|Any CPU
+		{0DE03C69-31FA-40CC-A2A3-DE671EF011DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DE03C69-31FA-40CC-A2A3-DE671EF011DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DE03C69-31FA-40CC-A2A3-DE671EF011DD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0DE03C69-31FA-40CC-A2A3-DE671EF011DD}.Debug|x86.Build.0 = Debug|Any CPU
+		{0DE03C69-31FA-40CC-A2A3-DE671EF011DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DE03C69-31FA-40CC-A2A3-DE671EF011DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DE03C69-31FA-40CC-A2A3-DE671EF011DD}.Release|x86.ActiveCfg = Release|Any CPU
+		{0DE03C69-31FA-40CC-A2A3-DE671EF011DD}.Release|x86.Build.0 = Release|Any CPU
+		{21AE8607-0557-4D67-96D1-7830E57EAB4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21AE8607-0557-4D67-96D1-7830E57EAB4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21AE8607-0557-4D67-96D1-7830E57EAB4F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{21AE8607-0557-4D67-96D1-7830E57EAB4F}.Debug|x86.Build.0 = Debug|Any CPU
+		{21AE8607-0557-4D67-96D1-7830E57EAB4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21AE8607-0557-4D67-96D1-7830E57EAB4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21AE8607-0557-4D67-96D1-7830E57EAB4F}.Release|x86.ActiveCfg = Release|Any CPU
+		{21AE8607-0557-4D67-96D1-7830E57EAB4F}.Release|x86.Build.0 = Release|Any CPU
+		{2C79C4C3-119B-4297-A885-961813E6A168}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C79C4C3-119B-4297-A885-961813E6A168}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C79C4C3-119B-4297-A885-961813E6A168}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2C79C4C3-119B-4297-A885-961813E6A168}.Debug|x86.Build.0 = Debug|Any CPU
+		{2C79C4C3-119B-4297-A885-961813E6A168}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C79C4C3-119B-4297-A885-961813E6A168}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C79C4C3-119B-4297-A885-961813E6A168}.Release|x86.ActiveCfg = Release|Any CPU
+		{2C79C4C3-119B-4297-A885-961813E6A168}.Release|x86.Build.0 = Release|Any CPU
+		{C24293E6-BCF7-43BE-B437-F180C261CC8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C24293E6-BCF7-43BE-B437-F180C261CC8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C24293E6-BCF7-43BE-B437-F180C261CC8E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C24293E6-BCF7-43BE-B437-F180C261CC8E}.Debug|x86.Build.0 = Debug|Any CPU
+		{C24293E6-BCF7-43BE-B437-F180C261CC8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C24293E6-BCF7-43BE-B437-F180C261CC8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C24293E6-BCF7-43BE-B437-F180C261CC8E}.Release|x86.ActiveCfg = Release|Any CPU
+		{C24293E6-BCF7-43BE-B437-F180C261CC8E}.Release|x86.Build.0 = Release|Any CPU
+		{8C2D7FE4-C754-46D8-A590-3981EFF6BAD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C2D7FE4-C754-46D8-A590-3981EFF6BAD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C2D7FE4-C754-46D8-A590-3981EFF6BAD8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8C2D7FE4-C754-46D8-A590-3981EFF6BAD8}.Debug|x86.Build.0 = Debug|Any CPU
+		{8C2D7FE4-C754-46D8-A590-3981EFF6BAD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C2D7FE4-C754-46D8-A590-3981EFF6BAD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C2D7FE4-C754-46D8-A590-3981EFF6BAD8}.Release|x86.ActiveCfg = Release|Any CPU
+		{8C2D7FE4-C754-46D8-A590-3981EFF6BAD8}.Release|x86.Build.0 = Release|Any CPU
+		{D0A399AF-38E5-4A15-8BB4-78BA4A578FFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0A399AF-38E5-4A15-8BB4-78BA4A578FFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0A399AF-38E5-4A15-8BB4-78BA4A578FFC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D0A399AF-38E5-4A15-8BB4-78BA4A578FFC}.Debug|x86.Build.0 = Debug|Any CPU
+		{D0A399AF-38E5-4A15-8BB4-78BA4A578FFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0A399AF-38E5-4A15-8BB4-78BA4A578FFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0A399AF-38E5-4A15-8BB4-78BA4A578FFC}.Release|x86.ActiveCfg = Release|Any CPU
+		{D0A399AF-38E5-4A15-8BB4-78BA4A578FFC}.Release|x86.Build.0 = Release|Any CPU
+		{2E0CD6FE-E144-4DFC-A33B-524B6D7BA700}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E0CD6FE-E144-4DFC-A33B-524B6D7BA700}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E0CD6FE-E144-4DFC-A33B-524B6D7BA700}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2E0CD6FE-E144-4DFC-A33B-524B6D7BA700}.Debug|x86.Build.0 = Debug|Any CPU
+		{2E0CD6FE-E144-4DFC-A33B-524B6D7BA700}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E0CD6FE-E144-4DFC-A33B-524B6D7BA700}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E0CD6FE-E144-4DFC-A33B-524B6D7BA700}.Release|x86.ActiveCfg = Release|Any CPU
+		{2E0CD6FE-E144-4DFC-A33B-524B6D7BA700}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EBDFD02F-354E-4ECD-941E-0417C3EA2EA5} = {B5B42337-A14B-44FE-BDFE-82C9D1D73980}
+		{C9003CD2-40C5-45A1-9C3A-BD4EE451CD30} = {B5B42337-A14B-44FE-BDFE-82C9D1D73980}
+		{F4D1AD6D-B95C-4AEC-A8C3-15E390F57BFB} = {B5B42337-A14B-44FE-BDFE-82C9D1D73980}
+		{33C4BC59-7894-4178-A5F1-357B346C8CF5} = {B5B42337-A14B-44FE-BDFE-82C9D1D73980}
+		{8F106082-6B72-4D09-8396-0F3C177B304A} = {B5B42337-A14B-44FE-BDFE-82C9D1D73980}
+		{8137012A-3267-40D3-9113-89D6A93F5A32} = {94432251-4CE7-4325-AC9A-E765FC0CE3CA}
+		{8D88A9B8-659C-4DE7-95D1-6CB820EC46D0} = {B5B42337-A14B-44FE-BDFE-82C9D1D73980}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FE2FF880-80B7-4CAC-ABF3-0464E99CA78C}
+	EndGlobalSection
+EndGlobal
