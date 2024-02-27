@@ -61,6 +61,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tenant Manager", "Tenant Ma
 		References\Tenant Manager\Websym.Core.TenantManager.Utility.dll = References\Tenant Manager\Websym.Core.TenantManager.Utility.dll
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StatementGeneratorService", "StatementGeneratorService\StatementGeneratorService.csproj", "{AE6ADE04-DF7C-4D52-85A9-61EAB52A3B43}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateStatementRenderEngine", "GenerateStatementRenderEngine\GenerateStatementRenderEngine.csproj", "{2E0CD6FE-E144-4DFC-A33B-524B6D7BA700}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OtherFiles", "OtherFiles", "{94432251-4CE7-4325-AC9A-E765FC0CE3CA}"
@@ -177,6 +179,14 @@ Global
 		{D0A399AF-38E5-4A15-8BB4-78BA4A578FFC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D0A399AF-38E5-4A15-8BB4-78BA4A578FFC}.Release|x86.ActiveCfg = Release|Any CPU
 		{D0A399AF-38E5-4A15-8BB4-78BA4A578FFC}.Release|x86.Build.0 = Release|Any CPU
+		{AE6ADE04-DF7C-4D52-85A9-61EAB52A3B43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE6ADE04-DF7C-4D52-85A9-61EAB52A3B43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE6ADE04-DF7C-4D52-85A9-61EAB52A3B43}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AE6ADE04-DF7C-4D52-85A9-61EAB52A3B43}.Debug|x86.Build.0 = Debug|Any CPU
+		{AE6ADE04-DF7C-4D52-85A9-61EAB52A3B43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE6ADE04-DF7C-4D52-85A9-61EAB52A3B43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE6ADE04-DF7C-4D52-85A9-61EAB52A3B43}.Release|x86.ActiveCfg = Release|Any CPU
+		{AE6ADE04-DF7C-4D52-85A9-61EAB52A3B43}.Release|x86.Build.0 = Release|Any CPU
 		{2E0CD6FE-E144-4DFC-A33B-524B6D7BA700}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2E0CD6FE-E144-4DFC-A33B-524B6D7BA700}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E0CD6FE-E144-4DFC-A33B-524B6D7BA700}.Debug|x86.ActiveCfg = Debug|Any CPU
